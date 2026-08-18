@@ -1,0 +1,61 @@
+export const ROUTES = {
+  // Public
+  HOME: '/',
+  SHOP: '/shop',
+  COLLECTIONS: '/collections',
+  COLLECTION: (slug: string) => `/collections/${slug}`,
+  PRODUCT: (slug: string) => `/product/${slug}`,
+  SEARCH: '/search',
+  CART: '/cart',
+  CHECKOUT: '/checkout',
+  CHECKOUT_SUCCESS: '/checkout/success',
+  TRACK_ORDER: '/track-order',
+  WISHLIST: '/wishlist',
+  BLOG: '/blog',
+  BLOG_POST: (slug: string) => `/blog/${slug}`,
+
+  // Info
+  ABOUT: '/about',
+  CONTACT: '/contact',
+  FAQ: '/faq',
+  PRIVACY: '/privacy-policy',
+  TERMS: '/terms',
+  SHIPPING: '/shipping-policy',
+
+  // Auth
+  LOGIN: '/login',
+  REGISTER: '/register',
+  FORGOT_PASSWORD: '/forgot-password',
+  VERIFY_EMAIL: '/verify-email',
+
+  // Account
+  DASHBOARD: '/dashboard',
+  ORDERS: '/orders',
+  ORDER: (id: string) => `/orders/${id}`,
+  PROFILE: '/profile',
+  ADDRESSES: '/addresses',
+  RETURNS: '/returns',
+  NOTIFICATIONS: '/notifications',
+
+  // Admin
+  ADMIN: '/admin',
+  ADMIN_PRODUCTS: '/admin/products',
+  ADMIN_PRODUCT_NEW: '/admin/products/new',
+  ADMIN_PRODUCT: (id: string) => `/admin/products/${id}`,
+  ADMIN_ORDERS: '/admin/orders',
+  ADMIN_ORDER: (id: string) => `/admin/orders/${id}`,
+  ADMIN_CUSTOMERS: '/admin/customers',
+  ADMIN_CATEGORIES: '/admin/categories',
+  ADMIN_COLLECTIONS: '/admin/collections',
+  ADMIN_INVENTORY: '/admin/inventory',
+  ADMIN_COUPONS: '/admin/coupons',
+  ADMIN_BANNERS: '/admin/banners',
+  ADMIN_CMS: '/admin/cms',
+  ADMIN_BLOG: '/admin/blog',
+  ADMIN_REVIEWS: '/admin/reviews',
+  ADMIN_RETURNS: '/admin/returns',
+  ADMIN_ANALYTICS: '/admin/analytics',
+  ADMIN_SETTINGS: '/admin/settings',
+  ADMIN_ROLES: '/admin/roles',
+  ADMIN_AUDIT_LOGS: '/admin/audit-logs',
+} as const;
