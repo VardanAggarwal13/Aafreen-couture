@@ -1,4 +1,4 @@
-import { Shield, Plus, UserCheck } from 'lucide-react';
+import { Plus, UserCheck } from 'lucide-react';
 
 export const metadata = { title: 'Roles & Permissions | Admin' };
 

@@ -1,4 +1,4 @@
-import { Save, Store, CreditCard, Truck, Bell, Shield } from 'lucide-react';
+import { Save, Store, CreditCard, Truck } from 'lucide-react';
 
 export const metadata = { title: 'Settings | Admin' };
 

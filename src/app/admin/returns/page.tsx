@@ -1,4 +1,3 @@
-import { RotateCcw, Check, X, Eye } from 'lucide-react';
 import { formatPrice } from '@/utils/format';
 
 export const metadata = { title: 'Returns | Admin' };

@@ -1,4 +1,4 @@
-import { ClipboardList, ShieldAlert, CheckCircle2, User } from 'lucide-react';
+import { User } from 'lucide-react';
 
 export const metadata = { title: 'Audit Logs | Admin' };
 

@@ -1,4 +1,4 @@
-import { Plus, FileText, ExternalLink, Calendar } from 'lucide-react';
+import { Plus, FileText, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { BLOG_POSTS } from '@/data/blog.data';
 

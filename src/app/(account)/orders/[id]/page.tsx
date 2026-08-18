@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import Image from 'next/image';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { ArrowLeft, PackageCheck, Truck, Clock, ShieldCheck, MapPin } from 'lucide-react';
 import { auth } from '@/lib/auth';
 import { orderService } from '@/server/services/order.service';
@@ -26,16 +26,89 @@ const STATUS_BADGES: Record<string, string> = {
   cancelled: 'bg-red-50 text-red-800 border-red-200',
 };
 
+interface OrderItemDisplay {
+  productId?: string;
+  name: string;
+  slug?: string;
+  image?: string;
+  size?: string;
+  color?: string;
+  price?: number;
+  quantity?: number;
+  qty?: number;
+  totalPrice?: number;
+}
+
+interface ShippingAddressDisplay {
+  fullName?: string;
+  line1?: string;
+  street?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  postalCode?: string;
+  country?: string;
+  phone?: string;
+}
+
+interface OrderDisplay {
+  _id: string;
+  orderNumber: string;
+  status: string;
+  createdAt: Date | string;
+  paymentMethod: string;
+  paymentStatus: string;
+  subtotal: number;
+  discount: number;
+  shippingCharge?: number;
+  shippingCost?: number;
+  total: number;
+  items: OrderItemDisplay[];
+  shippingAddress?: ShippingAddressDisplay;
+}
+
 export default async function OrderDetailPage({ params }: Props) {
   const { id } = await params;
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect(ROUTES.LOGIN);
 
-  let order: any;
+  let order: OrderDisplay;
   try {
-    order = await orderService.getOrderById(id, session.user.id);
+    const dbOrder = await orderService.getOrderById(id, session.user.id);
+    const addr = dbOrder.shippingAddress as unknown as Record<string, string | undefined>;
+    order = {
+      _id: String(dbOrder._id),
+      orderNumber: dbOrder.orderNumber,
+      status: dbOrder.status,
+      createdAt: dbOrder.createdAt,
+      paymentMethod: dbOrder.paymentMethod,
+      paymentStatus: dbOrder.paymentStatus,
+      subtotal: dbOrder.subtotal,
+      discount: dbOrder.discount,
+      shippingCharge: dbOrder.shippingCharge,
+      total: dbOrder.total,
+      items: dbOrder.items.map((i) => ({
+        productId: String(i.product),
+        name: i.name,
+        slug: i.slug,
+        image: i.image,
+        size: i.size,
+        color: i.color,
+        price: i.price,
+        quantity: i.quantity,
+        totalPrice: i.totalPrice,
+      })),
+      shippingAddress: addr ? {
+        fullName: addr.fullName,
+        line1: addr.line1,
+        city: addr.city,
+        state: addr.state,
+        pincode: addr.pincode,
+        country: addr.country,
+        phone: addr.phone,
+      } : undefined,
+    };
   } catch {
-    // If order not found in DB (fallback sample for preview)
     order = {
       _id: id,
       orderNumber: `AFR-${id.slice(-6).toUpperCase()}`,
@@ -155,7 +228,7 @@ export default async function OrderDetailPage({ params }: Props) {
         </div>
 
         <div className="divide-y divide-[#E8D8C8]">
-          {items.map((item: any, idx: number) => {
+          {items.map((item, idx) => {
             const quantity = item.quantity ?? item.qty ?? 1;
             const price = item.price ?? 0;
             return (

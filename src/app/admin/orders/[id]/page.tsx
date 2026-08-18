@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
-import { ArrowLeft, Package, User, MapPin, CreditCard, Clock } from 'lucide-react';
+import { ArrowLeft, Package, User, MapPin, CreditCard } from 'lucide-react';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
@@ -20,17 +19,86 @@ const STATUS_BADGE: Record<string, string> = {
   cancelled: 'bg-red-500/15 text-red-400',
 };
 
+interface AdminOrderItemDisplay {
+  productId?: string;
+  name: string;
+  image?: string;
+  size?: string;
+  color?: string;
+  price?: number;
+  quantity?: number;
+  qty?: number;
+  totalPrice?: number;
+}
+
+interface AdminAddressDisplay {
+  fullName?: string;
+  line1?: string;
+  street?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  postalCode?: string;
+  country?: string;
+  phone?: string;
+}
+
+interface AdminOrderDisplay {
+  _id: string;
+  orderNumber: string;
+  status: string;
+  createdAt: Date | string;
+  paymentMethod: string;
+  paymentStatus: string;
+  subtotal: number;
+  discount: number;
+  shippingCharge?: number;
+  shippingCost?: number;
+  total: number;
+  customer?: { name?: string; email?: string; phone?: string };
+  items: AdminOrderItemDisplay[];
+  shippingAddress?: AdminAddressDisplay;
+}
+
 export default async function AdminOrderDetailPage({ params }: Props) {
   const { id } = await params;
-  let order: any;
+  let order: AdminOrderDisplay;
   try {
-    order = await orderRepository.findById(id);
+    const dbOrder = await orderRepository.findById(id);
+    if (!dbOrder) throw new Error('Not found');
+    const addr = dbOrder.shippingAddress as unknown as Record<string, string | undefined>;
+    order = {
+      _id: String(dbOrder._id),
+      orderNumber: dbOrder.orderNumber,
+      status: dbOrder.status,
+      createdAt: dbOrder.createdAt,
+      paymentMethod: dbOrder.paymentMethod,
+      paymentStatus: dbOrder.paymentStatus,
+      subtotal: dbOrder.subtotal,
+      discount: dbOrder.discount,
+      shippingCharge: dbOrder.shippingCharge,
+      total: dbOrder.total,
+      items: dbOrder.items.map((i) => ({
+        productId: String(i.product),
+        name: i.name,
+        image: i.image,
+        size: i.size,
+        color: i.color,
+        price: i.price,
+        quantity: i.quantity,
+        totalPrice: i.totalPrice,
+      })),
+      shippingAddress: addr ? {
+        fullName: addr.fullName,
+        line1: addr.line1,
+        city: addr.city,
+        state: addr.state,
+        pincode: addr.pincode,
+        country: addr.country,
+        phone: addr.phone,
+      } : undefined,
+    };
   } catch {
-    order = null;
-  }
-
-  // Fallback sample for display if order not in DB
-  if (!order) {
     order = {
       _id: id,
       orderNumber: `AFR-${id.slice(-6).toUpperCase()}`,
@@ -119,7 +187,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
             </h2>
 
             <div className="divide-y divide-white/5">
-              {items.map((item: any, idx: number) => {
+              {items.map((item, idx) => {
                 const quantity = item.quantity ?? item.qty ?? 1;
                 const price = item.price ?? 0;
                 return (

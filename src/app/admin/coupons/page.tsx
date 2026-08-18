@@ -1,4 +1,4 @@
-import { Plus, Ticket, CheckCircle, Clock } from 'lucide-react';
+import { Plus, Ticket } from 'lucide-react';
 import { formatPrice } from '@/utils/format';
 
 export const metadata = { title: 'Coupons | Admin' };

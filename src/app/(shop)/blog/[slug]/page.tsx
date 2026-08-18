@@ -2,9 +2,8 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Clock, Calendar, User, Share2 } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, User } from 'lucide-react';
 import { BLOG_POSTS } from '@/data/blog.data';
-import { siteConfig } from '@/config/site.config';
 
 interface Props {
   params: Promise<{ slug: string }>;

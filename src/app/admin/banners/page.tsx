@@ -1,4 +1,4 @@
-import { Plus, Eye, Trash2, Move } from 'lucide-react';
+import { Plus, Eye, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
 export const metadata = { title: 'Banners | Admin' };

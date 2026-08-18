@@ -136,7 +136,7 @@ export class ProductRepository {
     }
 
     // Filter fallback products
-    let list = (FALLBACK_PRODUCTS as unknown as IProduct[]).filter((p) =>
+    const list = (FALLBACK_PRODUCTS as unknown as IProduct[]).filter((p) =>
       matchFallbackFilters(p, filters)
     );
 
