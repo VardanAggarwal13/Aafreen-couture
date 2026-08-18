@@ -22,6 +22,11 @@ export async function connectDB(): Promise<typeof mongoose> {
     cached.promise = mongoose.connect(uri, {
       bufferCommands: false,
       maxPoolSize: 10,
+      serverSelectionTimeoutMS: 2500,
+      connectTimeoutMS: 2500,
+    }).catch((err) => {
+      cached.promise = null;
+      throw err;
     });
   }
 

@@ -21,13 +21,19 @@ function ProductCardSkeleton({ index }: { index: number }) {
   );
 }
 
+import { FALLBACK_PRODUCTS } from '@/data/products.data';
+
 export async function BestSellers() {
   let products: IProduct[] = [];
   try {
     const raw = await productService.getBestSellers(4);
     products = JSON.parse(JSON.stringify(raw)) as IProduct[];
   } catch {
-    // DB unavailable — show placeholders
+    products = FALLBACK_PRODUCTS.filter((p) => p.isBestSeller && p.isActive).slice(0, 4);
+  }
+
+  if (products.length === 0) {
+    products = FALLBACK_PRODUCTS.filter((p) => p.isBestSeller && p.isActive).slice(0, 4);
   }
 
   return (

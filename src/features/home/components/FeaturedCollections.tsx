@@ -15,7 +15,7 @@ const COLLECTIONS = [
     name: 'Signature Co-Ord Sets',
     description: 'Curated sets that define modern elegance',
     itemCount: '18 pieces',
-    image: '/images/products/signature-coord.webp',
+    image: '/images/products/roshani-coord.webp',
   },
   {
     slug: 'saree-edit',
@@ -29,7 +29,7 @@ const COLLECTIONS = [
     name: 'The Bag Edit',
     description: 'Handcrafted potlis and luxury clutches',
     itemCount: '20 pieces',
-    image: '/images/products/luxury-potli.webp',
+    image: '/images/products/begum-potli.webp',
   },
 ];
 

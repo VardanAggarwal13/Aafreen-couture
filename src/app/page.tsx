@@ -6,7 +6,6 @@ import { ShopByOccasion } from '@/features/home/components/ShopByOccasion';
 import { FeaturedCollections } from '@/features/home/components/FeaturedCollections';
 import { BestSellers } from '@/features/home/components/BestSellers';
 import { Testimonials } from '@/features/home/components/Testimonials';
-import { InstagramFeed } from '@/features/home/components/InstagramFeed';
 import { siteConfig } from '@/config/site.config';
 import type { Metadata } from 'next';
 
@@ -46,9 +45,6 @@ export default function HomePage() {
 
       {/* 8. Testimonials */}
       <Testimonials />
-
-      {/* 9. Instagram gallery */}
-      <InstagramFeed />
     </>
   );
 }

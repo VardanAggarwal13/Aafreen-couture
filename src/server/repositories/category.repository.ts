@@ -1,16 +1,30 @@
 import { connectDB } from '@/lib/db';
 import Category from '@/models/Category';
 import type { ICategory } from '@/models/Category';
+import { FALLBACK_CATEGORIES } from '@/data/products.data';
 
 export class CategoryRepository {
   async findAll(): Promise<ICategory[]> {
-    await connectDB();
-    return Category.find({ isActive: true }).sort({ sortOrder: 1, name: 1 }).lean<ICategory[]>();
+    try {
+      await connectDB();
+      const docs = await Category.find({ isActive: true }).sort({ sortOrder: 1, name: 1 }).lean<ICategory[]>();
+      if (docs.length > 0) return docs;
+    } catch {
+      // Fallback
+    }
+    return FALLBACK_CATEGORIES as unknown as ICategory[];
   }
 
   async findBySlug(slug: string): Promise<ICategory | null> {
-    await connectDB();
-    return Category.findOne({ slug, isActive: true }).lean<ICategory>();
+    try {
+      await connectDB();
+      const doc = await Category.findOne({ slug, isActive: true }).lean<ICategory>();
+      if (doc) return doc;
+    } catch {
+      // Fallback
+    }
+    const found = FALLBACK_CATEGORIES.find((c) => c.slug === slug);
+    return (found as unknown as ICategory) ?? null;
   }
 
   async create(data: Partial<ICategory>): Promise<ICategory> {
