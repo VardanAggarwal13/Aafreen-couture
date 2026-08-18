@@ -127,52 +127,32 @@ export const shopByOccasion = [
   {
     label: 'Wedding',
     href: '/shop?occasion=wedding',
-    image: 'https://images.unsplash.com/photo-1762201698238-bf412e297016?w=400&q=80',
+    image: '/images/occasions/wedding.webp',
   },
   {
     label: 'Engagement',
     href: '/shop?occasion=engagement',
-    image: 'https://images.unsplash.com/photo-1742891603547-950f510710d7?w=400&q=80',
+    image: '/images/occasions/engagement.webp',
   },
   {
     label: 'Reception',
     href: '/shop?occasion=reception',
-    image: 'https://images.unsplash.com/photo-1717835806988-3739f9e55926?w=400&q=80',
+    image: '/images/occasions/reception.webp',
   },
   {
     label: 'Mehendi',
     href: '/shop?occasion=mehendi',
-    image: 'https://images.unsplash.com/photo-1745482036066-5d215ed6b910?w=400&q=80',
+    image: '/images/occasions/mehendi.webp',
   },
   {
     label: 'Haldi',
     href: '/shop?occasion=haldi',
-    image: 'https://plus.unsplash.com/premium_photo-1682096062732-a86d39069a4a?w=400&q=80',
+    image: '/images/occasions/haldi.webp',
   },
   {
     label: 'Sangeet',
     href: '/shop?occasion=sangeet',
-    image: 'https://images.unsplash.com/photo-1587012521796-6359d3678f2a?w=400&q=80',
-  },
-  {
-    label: 'Cocktail',
-    href: '/shop?occasion=cocktail',
-    image: 'https://images.unsplash.com/photo-1645862755924-9f4e7f200b83?w=400&q=80',
-  },
-  {
-    label: 'Festive',
-    href: '/shop?occasion=festive',
-    image: 'https://plus.unsplash.com/premium_photo-1682096159299-5e8a6d5d442b?w=400&q=80',
-  },
-  {
-    label: 'Party Wear',
-    href: '/shop?occasion=party-wear',
-    image: 'https://images.unsplash.com/photo-1722952908681-944d47e45853?w=400&q=80',
-  },
-  {
-    label: 'Formal',
-    href: '/shop?occasion=formal',
-    image: 'https://images.unsplash.com/photo-1743229995505-d6374996df1c?w=400&q=80',
+    image: '/images/occasions/sangeet.webp',
   },
 ] as const;
 

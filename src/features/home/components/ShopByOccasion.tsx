@@ -23,25 +23,35 @@ function OccasionCard({ label, href, image }: { label: string; href: string; ima
   const gradient = OCCASION_GRADIENTS[label] ?? 'from-[#221617] to-[#A67C52]';
 
   return (
-    <Link href={href} className="group flex flex-col items-center gap-3">
-      <div className="relative w-[84px] h-[106px] sm:w-[104px] sm:h-[130px] lg:w-[118px] lg:h-[148px] overflow-hidden rounded-xs border border-[#E8D8C8] shadow-2xs">
-        {!err ? (
-          <Image
-            src={image}
-            alt={label}
-            fill
-            className="object-cover object-top group-hover:scale-108 transition-transform duration-500"
-            sizes="130px"
-            onError={() => setErr(true)}
-          />
-        ) : (
-          <div className={`absolute inset-0 bg-linear-to-br ${gradient}`} />
-        )}
-        <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
+    <Link
+      href={href}
+      className="group relative overflow-hidden aspect-[3/4] rounded-xs border border-[#E8D8C8] shadow-2xs bg-[#FAF7F2]"
+    >
+      {!err ? (
+        <Image
+          src={image}
+          alt={label}
+          fill
+          className="object-cover object-center group-hover:scale-108 transition-transform duration-700"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+          onError={() => setErr(true)}
+        />
+      ) : (
+        <div className={`absolute inset-0 bg-linear-to-br ${gradient}`} />
+      )}
+
+      {/* Dark gradient overlay for text readability */}
+      <div className="absolute inset-0 bg-linear-to-t from-[#221617]/85 via-[#221617]/20 to-transparent" />
+
+      {/* Content overlay */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+        <h3 className="font-serif text-base sm:text-lg text-white tracking-wide uppercase leading-snug">
+          {label}
+        </h3>
+        <span className="text-[10px] text-[#A67C52] uppercase tracking-[0.2em] font-semibold mt-1 inline-flex items-center gap-1 group-hover:text-white transition-colors">
+          Explore →
+        </span>
       </div>
-      <span className="text-[11px] font-semibold text-[#221617] tracking-[0.12em] uppercase text-center group-hover:text-[#A67C52] transition-colors">
-        {label}
-      </span>
     </Link>
   );
 }
@@ -57,7 +67,7 @@ export function ShopByOccasion() {
           <p className="text-xs text-[#6E6A66] tracking-wide font-sans">Find the perfect look for every moment</p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-6 sm:gap-8 lg:gap-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 sm:gap-6 lg:gap-8">
           {shopByOccasion.map((occ) => (
             <OccasionCard key={occ.href} {...occ} />
           ))}
