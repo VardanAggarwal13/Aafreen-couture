@@ -23,7 +23,10 @@ export function middleware(request: NextRequest) {
   }
 
   // Protect customer account routes
-  if (ACCOUNT_PREFIXES.some((prefix) => pathname.startsWith(prefix)) && !isAuthenticated) {
+  const isAccountRoute = ACCOUNT_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  );
+  if (isAccountRoute && !isAuthenticated) {
     return NextResponse.redirect(
       new URL(`/login?redirect=${encodeURIComponent(pathname)}`, request.url)
     );

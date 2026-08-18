@@ -1,10 +1,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { collections } from '@/config/navigation.config';
 
 export const metadata: Metadata = {
   title: 'All Collections | Aafreen Couture',
   description: 'Explore our curated collections of bridal lehengas, suits, dresses, and accessories.',
+};
+
+const COLLECTION_IMAGES: Record<string, string> = {
+  'bridal-lehengas-suits': '/images/products/noor-e-ishq.webp',
+  'bridesmaid-lehengas': '/images/products/gulbahar.webp',
+  'formals-cotton-kurta-set': '/images/products/mehrunissa-anarkali.webp',
+  'indo-western': '/images/products/roshani-coord.webp',
+  'signature-co-ord-sets': '/images/products/roshani-coord.webp',
+  'summer-essentials': '/images/products/zarafshan.webp',
+  'partywear-unstitched': '/images/products/shahzadi-sharara.webp',
+  'custom-embroidered-suits': '/images/products/mehrunissa-anarkali.webp',
+  'saree-edit': '/images/products/zarafshan.webp',
+  'jewellery': '/images/products/sitara-polki-choker.webp',
+  'the-bag-edit': '/images/products/begum-potli.webp',
+  'occasion-lehengas': '/images/products/noor-e-ishq.webp',
 };
 
 const COLLECTION_GRADIENTS: Record<string, string> = {
@@ -24,15 +40,15 @@ const COLLECTION_GRADIENTS: Record<string, string> = {
 
 export default function CollectionsPage() {
   return (
-    <main className="min-h-screen bg-brand-pearl">
+    <main className="min-h-screen bg-[#FAF7F2]">
       {/* Page header */}
-      <div className="bg-white border-b border-brand-cream py-14 text-center">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-brand-gold mb-3">
+      <div className="bg-white border-b border-[#E8D8C8] py-14 text-center">
+        <p className="text-[10.5px] font-semibold uppercase tracking-[0.4em] text-[#A67C52] mb-3">
           Curated For You
         </p>
-        <h1 className="text-3xl sm:text-4xl font-serif text-brand-black">All Collections</h1>
-        <p className="mt-3 text-sm text-brand-stone max-w-md mx-auto">
-          Discover our world of timeless bridal fashion, handcrafted with love.
+        <h1 className="text-3xl sm:text-4xl font-serif text-[#221617] uppercase tracking-wider">All Collections</h1>
+        <p className="mt-3 text-xs sm:text-sm text-[#6E6A66] max-w-md mx-auto font-sans">
+          Discover our world of timeless bridal and ethnic fashion, handcrafted with love.
         </p>
       </div>
 
@@ -41,20 +57,31 @@ export default function CollectionsPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {collections.map((col) => {
             const slug = col.href.replace('/collections/', '');
+            const imgSrc = COLLECTION_IMAGES[slug];
             const gradient = COLLECTION_GRADIENTS[slug] ?? 'from-[#1A1A1A] via-[#2A2A2A] to-[#C49A5A]';
             return (
               <Link
                 key={col.href}
                 href={col.href}
-                className="group relative overflow-hidden aspect-[3/4] bg-brand-cream"
+                className="group relative overflow-hidden aspect-[3/4] rounded-xs border border-[#E8D8C8] shadow-2xs bg-[#FAF7F2]"
               >
-                <div
-                  className={`absolute inset-0 bg-linear-to-br ${gradient} transition-transform duration-700 group-hover:scale-105`}
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/65 via-black/10 to-transparent" />
+                {imgSrc ? (
+                  <Image
+                    src={imgSrc}
+                    alt={col.label}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="object-cover group-hover:scale-108 transition-transform duration-700"
+                  />
+                ) : (
+                  <div
+                    className={`absolute inset-0 bg-linear-to-br ${gradient} transition-transform duration-700 group-hover:scale-105`}
+                  />
+                )}
+                <div className="absolute inset-0 bg-linear-to-t from-[#221617]/90 via-[#221617]/25 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h2 className="text-white font-serif text-base leading-snug">{col.label}</h2>
-                  <span className="inline-block mt-2 text-[10px] text-brand-gold tracking-wider uppercase border-b border-brand-gold/40 pb-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="inline-block mt-2 text-[10px] text-[#A67C52] font-semibold tracking-wider uppercase border-b border-[#A67C52]/40 pb-0.5 opacity-90 group-hover:text-white transition-colors">
                     Explore →
                   </span>
                 </div>

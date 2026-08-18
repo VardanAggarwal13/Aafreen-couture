@@ -10,10 +10,19 @@ export const FALLBACK_CATEGORIES: ICategory[] = [
 ];
 
 export const FALLBACK_COLLECTIONS: ICollection[] = [
-  { _id: 'col-bridal-lehengas-suits', name: 'Bridal Collection', slug: 'bridal-lehengas-suits', description: 'Statement pieces crafted for your special day', image: '/images/products/noor-e-ishq.webp', isFeatured: true, isActive: true },
-  { _id: 'col-signature-co-ord-sets', name: 'Signature Co-Ord Sets', slug: 'signature-co-ord-sets', description: 'Curated sets that define modern elegance', image: '/images/products/roshani-coord.webp', isFeatured: true, isActive: true },
-  { _id: 'col-saree-edit', name: 'The Saree Edit', slug: 'saree-edit', description: 'Grace in every drape — timeless silk sarees', image: '/images/products/zarafshan.webp', isFeatured: true, isActive: true },
-  { _id: 'col-the-bag-edit', name: 'The Bag Edit', slug: 'the-bag-edit', description: 'Handcrafted potlis and luxury clutches', image: '/images/products/begum-potli.webp', isFeatured: true, isActive: true },
+  { _id: 'col-bridal-lehengas-suits', name: 'Bridal Lehengas & Suits', slug: 'bridal-lehengas-suits', description: 'Statement bridal pieces crafted with intricate zari work and premium fabrics.', image: '/images/products/noor-e-ishq.webp', isFeatured: true, isActive: true },
+  { _id: 'col-bridal', name: 'Bridal Collection', slug: 'bridal', description: 'Curated royal bridal lehengas and wedding ensembles.', image: '/images/products/noor-e-ishq.webp', isFeatured: true, isActive: true },
+  { _id: 'col-bridesmaid-lehengas', name: 'Bridesmaid Lehengas', slug: 'bridesmaid-lehengas', description: 'Beautiful coordinated looks for the bridal squad.', image: '/images/products/gulbahar.webp', isFeatured: true, isActive: true },
+  { _id: 'col-formals-cotton-kurta-set', name: 'Formals — Cotton Kurta Set', slug: 'formals-cotton-kurta-set', description: 'Polished cotton kurta sets for professional and casual occasions.', image: '/images/products/mehrunissa-anarkali.webp', isFeatured: false, isActive: true },
+  { _id: 'col-indo-western', name: 'Indo-Western', slug: 'indo-western', description: 'Where tradition meets contemporary silhouette.', image: '/images/products/roshani-coord.webp', isFeatured: true, isActive: true },
+  { _id: 'col-signature-co-ord-sets', name: 'Signature Co-Ord Sets', slug: 'signature-co-ord-sets', description: 'Curated sets that define modern elegance.', image: '/images/products/roshani-coord.webp', isFeatured: true, isActive: true },
+  { _id: 'col-summer-essentials', name: 'Summer Essential Cotton Suits', slug: 'summer-essentials', description: 'Lightweight cotton suits for warm days and festive evenings.', image: '/images/products/zarafshan.webp', isFeatured: true, isActive: true },
+  { _id: 'col-partywear-unstitched', name: 'Partywear Unstitched Suits', slug: 'partywear-unstitched', description: 'Rich fabrics ready for your bespoke tailoring.', image: '/images/products/shahzadi-sharara.webp', isFeatured: false, isActive: true },
+  { _id: 'col-custom-embroidered-suits', name: 'Custom Embroidered Suits', slug: 'custom-embroidered-suits', description: 'Bespoke embroidered suits crafted to your vision.', image: '/images/products/mehrunissa-anarkali.webp', isFeatured: false, isActive: true },
+  { _id: 'col-saree-edit', name: 'The Saree Edit', slug: 'saree-edit', description: 'Grace in every drape — our curated pure silk saree collection.', image: '/images/products/zarafshan.webp', isFeatured: true, isActive: true },
+  { _id: 'col-jewellery', name: 'Jewellery Collection', slug: 'jewellery', description: 'Statement Jadau & Kundan polki jewellery pieces to complete your look.', image: '/images/products/sitara-polki-choker.webp', isFeatured: true, isActive: true },
+  { _id: 'col-the-bag-edit', name: 'The Bag Edit', slug: 'the-bag-edit', description: 'Luxury in every detail — handcrafted potlis and clutches.', image: '/images/products/begum-potli.webp', isFeatured: true, isActive: true },
+  { _id: 'col-occasion-lehengas', name: 'Occasion-Based Lehengas', slug: 'occasion-lehengas', description: 'Crafted for every milestone celebration.', image: '/images/products/noor-e-ishq.webp', isFeatured: false, isActive: true },
 ];
 
 export const FALLBACK_PRODUCTS: IProduct[] = [
