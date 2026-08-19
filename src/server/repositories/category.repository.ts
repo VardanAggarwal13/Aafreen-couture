@@ -27,6 +27,18 @@ export class CategoryRepository {
     return (found as unknown as ICategory) ?? null;
   }
 
+  async findById(id: string): Promise<ICategory | null> {
+    try {
+      await connectDB();
+      const doc = await Category.findById(id).lean<ICategory>();
+      if (doc) return doc;
+    } catch {
+      // Fallback
+    }
+    const found = FALLBACK_CATEGORIES.find((c) => c._id === id || c.slug === id);
+    return (found as unknown as ICategory) ?? null;
+  }
+
   async create(data: Partial<ICategory>): Promise<ICategory> {
     await connectDB();
     const doc = await Category.create(data);

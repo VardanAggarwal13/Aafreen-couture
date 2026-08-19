@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Search } from 'lucide-react';
 
 export function TrackOrderClient() {
@@ -57,15 +58,15 @@ export function TrackOrderClient() {
       {status === 'not-found' && (
         <div className="mt-6 p-4 bg-red-50 border border-red-200 text-sm text-red-700">
           <strong>Order not found.</strong> Please check the order number and email address, or{' '}
-          <a href="/contact" className="underline">contact support</a>.
+          <Link href="/contact" className="underline">contact support</Link>.
         </div>
       )}
 
       <div className="mt-6 pt-6 border-t border-brand-cream text-xs text-brand-stone text-center">
         Your order number is in your confirmation email.{' '}
-        <a href="/contact" className="text-brand-gold hover:underline">
+        <Link href="/contact" className="text-brand-gold hover:underline">
           Need help?
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -229,6 +229,25 @@ export class ProductRepository {
       .filter((p) => String(p._id) !== String(productId))
       .slice(0, limit);
   }
+
+  async create(data: Partial<IProduct>): Promise<IProduct> {
+    await connectDB();
+    const doc = await Product.create(data);
+    return doc.toObject() as IProduct;
+  }
+
+  async update(idOrSlug: string, data: Partial<IProduct>): Promise<IProduct | null> {
+    await connectDB();
+    const query = idOrSlug.match(/^[0-9a-fA-F]{24}$/) ? { _id: idOrSlug } : { slug: idOrSlug };
+    return Product.findOneAndUpdate(query, data, { new: true }).lean<IProduct>();
+  }
+
+  async delete(idOrSlug: string): Promise<boolean> {
+    await connectDB();
+    const query = idOrSlug.match(/^[0-9a-fA-F]{24}$/) ? { _id: idOrSlug } : { slug: idOrSlug };
+    const result = await Product.findOneAndDelete(query);
+    return !!result;
+  }
 }
 
 export const productRepository = new ProductRepository();

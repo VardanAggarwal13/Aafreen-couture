@@ -21,10 +21,6 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // Turbopack config (root workaround for multiple lockfiles)
-  turbopack: {
-    root: __dirname,
-  },
 
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', '@tanstack/react-query'],

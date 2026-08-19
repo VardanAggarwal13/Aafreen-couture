@@ -27,6 +27,18 @@ export class CollectionRepository {
     return (found as unknown as ICollection) ?? null;
   }
 
+  async findById(id: string): Promise<ICollection | null> {
+    try {
+      await connectDB();
+      const doc = await Collection.findById(id).lean<ICollection>();
+      if (doc) return doc;
+    } catch {
+      // Fallback
+    }
+    const found = FALLBACK_COLLECTIONS.find((c) => c._id === id || c.slug === id);
+    return (found as unknown as ICollection) ?? null;
+  }
+
   async findFeatured(): Promise<ICollection[]> {
     try {
       await connectDB();

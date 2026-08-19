@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Plus, Pencil, Trash2, Star } from 'lucide-react';
 
 interface Collection {
@@ -29,12 +30,12 @@ export function AdminCollectionsClient({ collections }: { collections: Collectio
     <div>
       <div className="flex items-center justify-between mb-6">
         <p className="text-sm text-white/40">{collections.length} collections</p>
-        <a
+        <Link
           href="/admin/collections/new"
           className="flex items-center gap-2 bg-brand-gold text-white text-[11px] font-semibold tracking-wider uppercase px-5 py-2.5 hover:bg-[#b8893f] transition-colors"
         >
           <Plus size={14} /> Add Collection
-        </a>
+        </Link>
       </div>
 
       <div className="bg-[#1A1A1A] border border-white/5 overflow-hidden">
@@ -63,9 +64,9 @@ export function AdminCollectionsClient({ collections }: { collections: Collectio
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-3">
-                    <a href={`/admin/collections/${col._id}`} className="text-white/40 hover:text-brand-gold transition-colors">
+                    <Link href={`/admin/collections/${col._id}`} className="text-white/40 hover:text-brand-gold transition-colors">
                       <Pencil size={14} />
-                    </a>
+                    </Link>
                     <button
                       onClick={() => handleDelete(col._id)}
                       disabled={deleting === col._id}

@@ -9,12 +9,14 @@ import type { IProduct } from '@/types';
 
 const schema = z.object({
   name: z.string().min(2, 'Name is required'),
+  slug: z.string().optional(),
   description: z.string().min(10, 'Description is required'),
   basePrice: z.number().min(1, 'Price is required'),
   comparePrice: z.number().optional(),
   category: z.string().min(1, 'Category is required'),
   fabric: z.string().optional(),
   workType: z.string().optional(),
+  images: z.string().optional(),
   isActive: z.boolean(),
   isFeatured: z.boolean(),
   isNewArrival: z.boolean(),
@@ -42,31 +44,52 @@ export function ProductForm({ product }: Props) {
     defaultValues: product
       ? {
           name: product.name,
+          slug: product.slug,
           description: product.description,
           basePrice: product.basePrice / 100,
           comparePrice: product.comparePrice ? product.comparePrice / 100 : undefined,
+          category: typeof product.category === 'string' ? product.category : ((product.category as { slug?: string; name?: string })?.slug || 'bridal-lehengas-suits'),
           isActive: product.isActive,
           isFeatured: product.isFeatured,
           isNewArrival: product.isNewArrival,
           isBestSeller: product.isBestSeller ?? false,
           fabric: product.fabric ?? '',
-          workType: '',
+          workType: product.workType ?? '',
+          images: product.images?.join(', ') ?? '',
           tags: product.tags?.join(', ') ?? '',
           seoTitle: product.seoTitle ?? '',
           seoDescription: product.seoDescription ?? '',
         }
-      : { isActive: true, isFeatured: false, isNewArrival: false, isBestSeller: false },
+      : {
+          category: 'bridal-lehengas-suits',
+          isActive: true,
+          isFeatured: false,
+          isNewArrival: true,
+          isBestSeller: false,
+          images: '/images/products/noor-e-ishq.webp',
+        },
   });
 
   async function onSubmit(data: FormValues) {
     setSaving(true);
     setError('');
     try {
+      const imageList = data.images
+        ? data.images.split(',').map((url, idx) => ({
+            url: url.trim(),
+            alt: `${data.name} View ${idx + 1}`,
+            isPrimary: idx === 0,
+            sortOrder: idx,
+          })).filter((img) => Boolean(img.url))
+        : [];
+
       const payload = {
         ...data,
+        slug: data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
         basePrice: Math.round(data.basePrice * 100),
         comparePrice: data.comparePrice ? Math.round(data.comparePrice * 100) : undefined,
         tags: data.tags ? data.tags.split(',').map((t) => t.trim()).filter(Boolean) : [],
+        images: imageList,
       };
 
       const url = isEdit ? `/api/products/${product._id}` : '/api/products';
@@ -106,38 +129,66 @@ export function ProductForm({ product }: Props) {
       <div className="bg-[#1A1A1A] border border-white/5 p-6 space-y-5">
         <h2 className="text-sm font-semibold text-white/60 uppercase tracking-wider">Basic Information</h2>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className={labelClass}>Product Name *</label>
+            <input {...register('name')} className={inputClass} placeholder="e.g. Noor-e-Ishq Royal Bridal Lehenga" />
+            {errors.name && <p className={errorClass}>{errors.name.message}</p>}
+          </div>
+
+          <div>
+            <label className={labelClass}>Slug</label>
+            <input {...register('slug')} className={inputClass} placeholder="noor-e-ishq-royal-bridal-lehenga" />
+          </div>
+        </div>
+
         <div>
-          <label className={labelClass}>Product Name *</label>
-          <input {...register('name')} className={inputClass} placeholder="e.g. Noor-e-ishq Lehenga" />
-          {errors.name && <p className={errorClass}>{errors.name.message}</p>}
+          <label className={labelClass}>Category *</label>
+          <select {...register('category')} className={inputClass}>
+            <option value="bridal-lehengas-suits">Bridal Lehengas & Suits</option>
+            <option value="festive-wear">Festive Wear</option>
+            <option value="anarkalis">Royal Anarkalis</option>
+            <option value="sharara-gharara">Shararas & Ghararas</option>
+            <option value="sarees">Heritage Sarees</option>
+            <option value="contemporary-fusion">Contemporary Fusion</option>
+            <option value="signature-co-ord-sets">Signature Co-Ord Sets</option>
+            <option value="jewellery">Jadau Jewellery</option>
+            <option value="accessories">Luxury Potlis & Accessories</option>
+          </select>
+          {errors.category && <p className={errorClass}>{errors.category.message}</p>}
         </div>
 
         <div>
           <label className={labelClass}>Description *</label>
-          <textarea {...register('description')} rows={4} className={inputClass} placeholder="Describe the product…" />
+          <textarea {...register('description')} rows={4} className={inputClass} placeholder="Describe the craftsmanship, silhouette, and story of the piece…" />
           {errors.description && <p className={errorClass}>{errors.description.message}</p>}
+        </div>
+
+        <div>
+          <label className={labelClass}>Image URLs / Paths (comma separated)</label>
+          <input {...register('images')} className={inputClass} placeholder="/images/products/noor-e-ishq.webp, /images/products/zarafshan.webp" />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Price (₹) *</label>
-            <input {...register('basePrice')} type="number" step="0.01" className={inputClass} placeholder="e.g. 89999" />
+            <input {...register('basePrice', { valueAsNumber: true })} type="number" step="0.01" className={inputClass} placeholder="e.g. 89999" />
             {errors.basePrice && <p className={errorClass}>{errors.basePrice.message}</p>}
           </div>
           <div>
             <label className={labelClass}>Compare Price (₹)</label>
-            <input {...register('comparePrice')} type="number" step="0.01" className={inputClass} placeholder="e.g. 109999" />
+            <input {...register('comparePrice', { valueAsNumber: true })} type="number" step="0.01" className={inputClass} placeholder="e.g. 109999" />
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Fabric</label>
-            <input {...register('fabric')} className={inputClass} placeholder="e.g. Banarasi Silk" />
+            <input {...register('fabric')} className={inputClass} placeholder="e.g. Pure Silk Velvet, Organza" />
           </div>
           <div>
             <label className={labelClass}>Work Type</label>
-            <input {...register('workType')} className={inputClass} placeholder="e.g. Zari Embroidery" />
+            <input {...register('workType')} className={inputClass} placeholder="e.g. Real Zardozi, Marodi & Dabka" />
           </div>
         </div>
 
@@ -156,7 +207,7 @@ export function ProductForm({ product }: Props) {
               <input
                 {...register(field)}
                 type="checkbox"
-                className="w-4 h-4 border border-white/20 bg-[#111111] checked:bg-brand-gold checked:border-brand-gold appearance-none rounded-sm"
+                className="w-4 h-4 border border-white/20 bg-[#111111] checked:bg-brand-gold checked:border-brand-gold accent-brand-gold rounded-sm"
               />
               <span className="text-xs text-white/70 capitalize">{field.replace('is', '')}</span>
             </label>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 
 interface Category {
@@ -28,12 +29,12 @@ export function AdminCategoriesClient({ categories }: { categories: Category[] }
     <div>
       <div className="flex items-center justify-between mb-6">
         <p className="text-sm text-white/40">{categories.length} categories</p>
-        <a
+        <Link
           href="/admin/categories/new"
           className="flex items-center gap-2 bg-brand-gold text-white text-[11px] font-semibold tracking-wider uppercase px-5 py-2.5 hover:bg-[#b8893f] transition-colors"
         >
           <Plus size={14} /> Add Category
-        </a>
+        </Link>
       </div>
 
       <div className="bg-[#1A1A1A] border border-white/5 overflow-hidden">
@@ -60,9 +61,9 @@ export function AdminCategoriesClient({ categories }: { categories: Category[] }
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-3">
-                    <a href={`/admin/categories/${cat._id}`} className="text-white/40 hover:text-brand-gold transition-colors">
+                    <Link href={`/admin/categories/${cat._id}`} className="text-white/40 hover:text-brand-gold transition-colors">
                       <Pencil size={14} />
-                    </a>
+                    </Link>
                     <button
                       onClick={() => handleDelete(cat._id)}
                       disabled={deleting === cat._id}

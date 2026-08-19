@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -61,8 +61,13 @@ export function CheckoutClientPage() {
     formState: { errors },
   } = useForm<AddressInput>({ resolver: zodResolver(AddressSchema), defaultValues: { country: 'India' } });
 
+  useEffect(() => {
+    if (items.length === 0) {
+      router.replace(ROUTES.CART);
+    }
+  }, [items.length, router]);
+
   if (items.length === 0) {
-    router.replace(ROUTES.CART);
     return null;
   }
 

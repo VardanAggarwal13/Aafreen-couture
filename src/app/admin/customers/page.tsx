@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { userRepository } from '@/server/repositories/user.repository';
 
 export const metadata: Metadata = { title: 'Customers | Admin' };
@@ -37,9 +38,9 @@ export default async function AdminCustomersPage() {
                   {new Date(user.createdAt as string).toLocaleDateString('en-IN')}
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <a href={`/admin/customers/${user._id}`} className="text-xs text-brand-gold hover:underline">
+                  <Link href={`/admin/customers/${user._id}`} className="text-xs text-brand-gold hover:underline">
                     View
-                  </a>
+                  </Link>
                 </td>
               </tr>
             ))}

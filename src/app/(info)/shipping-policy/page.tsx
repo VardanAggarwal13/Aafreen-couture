@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Shipping Policy | Aafreen Couture',
@@ -42,7 +43,7 @@ export default function ShippingPolicyPage() {
 
           <section>
             <h2 className="text-xl font-serif text-brand-black mb-3">Tracking</h2>
-            <p>Once your order is shipped, you will receive an email and SMS with the tracking number. You can track your order on our <a href="/track-order" className="text-brand-gold hover:underline">Track Order page</a>.</p>
+            <p>Once your order is shipped, you will receive an email and SMS with the tracking number. You can track your order on our <Link href="/track-order" className="text-brand-gold hover:underline">Track Order page</Link>.</p>
           </section>
 
           <section>
