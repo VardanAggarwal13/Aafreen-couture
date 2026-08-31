@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Menu, X, Search, ShoppingBag, Heart, User, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -46,21 +47,19 @@ export function Navbar() {
               <Menu size={21} />
             </button>
 
-            {/* Logo — centered on mobile, left-anchored on desktop */}
+            {/* Brand Logo */}
             <Link
               href={ROUTES.HOME}
-              className="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 lg:mr-10 xl:mr-14 flex flex-col items-center justify-center py-2 select-none group transition-opacity hover:opacity-95"
+              className="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 lg:mr-8 xl:mr-12 flex items-center justify-center py-1 select-none group transition-opacity hover:opacity-90"
             >
-              <span className="font-serif text-2xl lg:text-[26px] xl:text-3xl tracking-[0.28em] text-[#221617] uppercase font-normal leading-tight group-hover:text-[#A67C52] transition-colors">
-                Aafreen
-              </span>
-              <div className="flex items-center justify-center gap-2 w-full mt-1">
-                <span className="h-[1px] w-3 bg-[#A67C52]/40" />
-                <span className="text-[9px] lg:text-[9.5px] tracking-[0.42em] text-[#A67C52] uppercase font-semibold font-sans whitespace-nowrap">
-                  Couture By Pearl
-                </span>
-                <span className="h-[1px] w-3 bg-[#A67C52]/40" />
-              </div>
+              <Image
+                src="/images/logo-header.webp"
+                alt="Aafreen Couture By Pearl"
+                width={260}
+                height={123}
+                className="h-14 sm:h-16 lg:h-[70px] w-auto object-contain drop-shadow-2xs"
+                priority
+              />
             </Link>
 
             {/* Desktop nav links */}
@@ -119,14 +118,20 @@ export function Navbar() {
               transition={{ type: 'tween', duration: 0.22 }}
               className="fixed left-0 top-0 bottom-0 w-[300px] bg-[#FAF7F2] z-50 flex flex-col"
             >
-              <div className="flex items-center justify-between px-5 h-16 border-b border-[#E8D8C8]">
+              <div className="flex items-center justify-between px-5 h-20 border-b border-[#E8D8C8]">
                 <Link
                   href={ROUTES.HOME}
-                  className="flex flex-col items-start leading-none"
+                  className="flex items-center"
                   onClick={() => setMobileOpen(false)}
                 >
-                  <span className="font-serif text-[17px] tracking-[0.2em] text-[#221617] uppercase">Aafreen</span>
-                  <span className="text-[7.5px] tracking-[0.35em] text-[#A67C52] uppercase font-semibold">Couture By Pearl</span>
+                  <Image
+                    src="/images/logo-header.webp"
+                    alt="Aafreen Couture By Pearl"
+                    width={160}
+                    height={76}
+                    className="h-11 w-auto object-contain"
+                    priority
+                  />
                 </Link>
                 <button onClick={() => setMobileOpen(false)} aria-label="Close" className="p-1 text-[#1A1A1A]/60">
                   <X size={18} />

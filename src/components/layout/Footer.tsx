@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { MessageCircle, Mail, Phone, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import { MessageCircle, Mail, Phone, ArrowRight, ShieldCheck } from 'lucide-react';
 import { InstagramIcon } from '@/components/ui/icons';
 import { toast } from 'sonner';
 import { siteConfig } from '@/config/site.config';
@@ -65,17 +66,14 @@ export function Footer() {
             
             {/* Brand Column */}
             <div className="lg:col-span-2 space-y-6">
-              <Link href="/" className="inline-flex flex-col select-none group">
-                <span className="font-serif text-3xl tracking-[0.28em] text-white uppercase font-normal leading-tight group-hover:text-[#C49A5A] transition-colors">
-                  Aafreen
-                </span>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="h-[1px] w-4 bg-[#C49A5A]/50" />
-                  <span className="text-[9.5px] tracking-[0.42em] text-[#C49A5A] uppercase font-semibold font-sans whitespace-nowrap">
-                    Couture By Pearl
-                  </span>
-                  <span className="h-[1px] w-4 bg-[#C49A5A]/50" />
-                </div>
+              <Link href="/" className="inline-block select-none group transition-opacity hover:opacity-90">
+                <Image
+                  src="/images/logo-footer.webp"
+                  alt="Aafreen Couture By Pearl"
+                  width={280}
+                  height={133}
+                  className="h-16 sm:h-20 lg:h-24 w-auto object-contain"
+                />
               </Link>
 
               <p className="text-xs text-white/70 font-sans leading-relaxed max-w-sm">
@@ -133,12 +131,12 @@ export function Footer() {
                 Client Care
               </h3>
               <ul className="space-y-2.5 text-xs font-sans">
-                <li><Link href="/about" className="text-white/70 hover:text-white transition-colors">Our Story & Atelier</Link></li>
+                <li><Link href="/about" className="text-white/70 hover:text-white transition-colors">Our Story &amp; Atelier</Link></li>
                 <li><Link href="/account" className="text-white/70 hover:text-white transition-colors">My Account</Link></li>
-                <li><Link href="/orders" className="text-white/70 hover:text-white transition-colors">Track Your Order</Link></li>
-                <li><Link href="/shipping-policy" className="text-white/70 hover:text-white transition-colors">Shipping & Delivery</Link></li>
-                <li><Link href="/return-policy" className="text-white/70 hover:text-white transition-colors">Returns & Exchange</Link></li>
-                <li><Link href="/faqs" className="text-white/70 hover:text-white transition-colors">FAQs</Link></li>
+                <li><Link href="/track-order" className="text-white/70 hover:text-white transition-colors">Track Your Order</Link></li>
+                <li><Link href="/shipping-policy" className="text-white/70 hover:text-white transition-colors">Shipping &amp; Delivery</Link></li>
+                <li><Link href="/returns-policy" className="text-white/70 hover:text-white transition-colors">Exchange &amp; Returns</Link></li>
+                <li><Link href="/faq" className="text-white/70 hover:text-white transition-colors">Help &amp; FAQs</Link></li>
               </ul>
             </div>
 
@@ -151,13 +149,13 @@ export function Footer() {
                 <li>
                   <a href={`tel:${siteConfig.phone}`} className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
                     <Phone size={13} className="text-[#C49A5A]" />
-                    <span>+91 99999 99999</span>
+                    <span>{siteConfig.phone}</span>
                   </a>
                 </li>
                 <li>
                   <a href={`mailto:${siteConfig.email}`} className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
                     <Mail size={13} className="text-[#C49A5A]" />
-                    <span>concierge@aafreencouture.com</span>
+                    <span>{siteConfig.email}</span>
                   </a>
                 </li>
                 <li>
@@ -171,6 +169,12 @@ export function Footer() {
                     <span>WhatsApp Bridal Consultation</span>
                   </a>
                 </li>
+                <li className="pt-1">
+                  <Link href="/contact" className="text-[#C49A5A] hover:underline flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider">
+                    <span>Contact Concierge Desk</span>
+                    <ArrowRight size={11} />
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -183,14 +187,15 @@ export function Footer() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/50 font-sans">
           <p>© {year} Aafreen Couture By Pearl. All Rights Reserved.</p>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-6">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link href="/return-policy" className="hover:text-white transition-colors">Return Policy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms &amp; Conditions</Link>
+            <Link href="/returns-policy" className="hover:text-white transition-colors">Exchange &amp; Refund Policy</Link>
+            <Link href="/shipping-policy" className="hover:text-white transition-colors">Shipping Policy</Link>
           </div>
 
           <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase text-white/40">
-            <span>VISA</span> · <span>MASTERCARD</span> · <span>UPI</span> · <span>NETBANKING</span>
+            <span>VISA</span> · <span>MASTERCARD</span> · <span>UPI</span> · <span>RUPAY</span> · <span>NETBANKING</span>
           </div>
         </div>
       </div>

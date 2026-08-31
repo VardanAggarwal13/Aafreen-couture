@@ -87,7 +87,6 @@ export const navLinks: NavLink[] = [
     ],
   },
   { label: 'Occasions', href: '/occasions' },
-  { label: 'Sale', href: '/shop?sale=true', isSale: true },
 ];
 
 export const homeCategories = [
