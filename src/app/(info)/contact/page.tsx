@@ -126,13 +126,13 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="font-semibold text-[#1A1011] text-xs uppercase tracking-wider">
-                      Registered Brand &amp; Atelier
+                      Registered Atelier &amp; Studio
                     </p>
-                    <p className="text-[#5C554E] mt-0.5">
+                    <p className="text-[#5C554E] mt-0.5 font-medium">
                       Aafreen Couture By Pearl
                     </p>
-                    <p className="text-[11px] text-[#7D756C] mt-0.5">
-                      India
+                    <p className="text-[11px] text-[#7D756C] mt-0.5 leading-relaxed">
+                      SCO No. 43, 1st Floor, B-Block Market, New Amritsar, Amritsar, Punjab — 143001, India
                     </p>
                   </div>
                 </div>

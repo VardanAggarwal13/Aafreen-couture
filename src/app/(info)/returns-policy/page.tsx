@@ -423,7 +423,7 @@ export default function ReturnsPolicyPage() {
               </div>
 
               <div className="mt-6 pt-6 border-t border-[#C49A5A]/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60 font-sans">
-                <p>Aafreen Couture By Pearl · Luxury Bridal Atelier</p>
+                <p>Aafreen Couture By Pearl · SCO No. 43, 1st Floor, B-Block Market, New Amritsar, Amritsar, Punjab — 143001</p>
                 <Link
                   href="/contact"
                   className="bg-[#C49A5A] text-[#1A1011] hover:bg-white text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-colors flex items-center gap-1.5 rounded-xs"
