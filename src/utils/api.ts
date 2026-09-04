@@ -15,18 +15,21 @@ async function request<T>(
     ...options,
   });
 
-  let data: any;
+  let data: (Record<string, unknown> & { error?: string; message?: string }) | null = null;
   try {
-    data = await res.json();
+    data = (await res.json()) as Record<string, unknown> & { error?: string; message?: string };
   } catch {
     data = null;
   }
 
   if (!res.ok) {
-    throw new Error(data?.error ?? data?.message ?? `Request failed with status ${res.status}`);
+    const errorMsg = (typeof data?.error === 'string' ? data.error : undefined)
+      ?? (typeof data?.message === 'string' ? data.message : undefined)
+      ?? `Request failed with status ${res.status}`;
+    throw new Error(errorMsg);
   }
 
-  return data as ApiResponse<T>;
+  return data as unknown as ApiResponse<T>;
 }
 
 export const api = {

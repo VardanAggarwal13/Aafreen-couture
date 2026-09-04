@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
-import { Search, PackageCheck, Truck, Clock, CheckCircle2, AlertCircle, MessageCircle, Phone, ArrowRight } from 'lucide-react';
+import { Search, Truck, CheckCircle2, MessageCircle } from 'lucide-react';
 import { siteConfig } from '@/config/site.config';
 
 interface TimelineStep {
