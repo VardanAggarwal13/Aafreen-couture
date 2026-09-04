@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Sparkles, Heart, Award, Scissors, Users, ShieldCheck, ArrowRight } from 'lucide-react';
-import { siteConfig } from '@/config/site.config';
+import { Sparkles, Heart, Scissors, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Our Story & Atelier | Aafreen Couture',

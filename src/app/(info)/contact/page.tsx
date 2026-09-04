@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { ContactForm } from '@/features/contact/components/ContactForm';
 import { siteConfig } from '@/config/site.config';
-import { Mail, Phone, MessageCircle, Clock, MapPin, Sparkles, ShieldCheck } from 'lucide-react';
-import { InstagramIcon } from '@/components/ui/icons';
+import { Mail, Phone, MessageCircle, Clock, MapPin, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Contact Us | Aafreen Couture',

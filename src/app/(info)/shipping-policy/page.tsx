@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site.config';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
-import { Truck, Globe, PackageCheck, ShieldAlert, Clock, Mail, Phone, ArrowRight, Video, Sparkles } from 'lucide-react';
+import { Truck, Globe, PackageCheck, Clock, Mail, Phone, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Shipping & Delivery Policy | Aafreen Couture',

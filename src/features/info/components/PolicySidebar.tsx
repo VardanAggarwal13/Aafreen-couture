@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Share2, Printer, Check, ShieldCheck, MessageCircle, Phone, Mail, ArrowUp } from 'lucide-react';
+import { Share2, Printer, Check, ShieldCheck, MessageCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { siteConfig } from '@/config/site.config';
 
@@ -14,7 +13,7 @@ export interface TocItem {
 
 interface PolicySidebarProps {
   toc: TocItem[];
-  title: string;
+  title?: string;
 }
 
 export function PolicySidebar({ toc, title }: PolicySidebarProps) {
@@ -67,7 +66,7 @@ export function PolicySidebar({ toc, title }: PolicySidebarProps) {
   };
 
   return (
-    <aside className="space-y-6">
+    <aside aria-label={title || 'Policy navigation'} className="space-y-6">
       {/* Table of Contents Card */}
       <div className="bg-white border border-[#E8D8C8] rounded-sm p-5 shadow-xs sticky top-16 space-y-5">
         <div>

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { MessageCircle, Mail, Phone, ArrowRight, ShieldCheck } from 'lucide-react';
+import { MessageCircle, Mail, Phone, ArrowRight } from 'lucide-react';
 import { InstagramIcon } from '@/components/ui/icons';
 import { toast } from 'sonner';
 import { siteConfig } from '@/config/site.config';

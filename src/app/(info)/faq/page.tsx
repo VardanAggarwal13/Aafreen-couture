@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { FaqAccordion, type FaqCategory } from '@/features/faq/components/FaqAccordion';
-import { HelpCircle, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions (FAQs) | Aafreen Couture',

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site.config';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
-import { Shield, Lock, Eye, Database, Mail, Phone, Clock, ArrowRight } from 'lucide-react';
+import { Shield, Lock, Mail, Phone, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Aafreen Couture',

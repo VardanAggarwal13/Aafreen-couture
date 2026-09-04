@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site.config';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
-import { Scale, ShieldCheck, Mail, Phone, Clock, FileText, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Scale, Mail, Phone, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions | Aafreen Couture',

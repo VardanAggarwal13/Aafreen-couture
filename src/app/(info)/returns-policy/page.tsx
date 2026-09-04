@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site.config';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
-import { RefreshCw, ShieldCheck, Video, CheckCircle2, PackageCheck, Mail, Phone, ArrowRight, Clock, Sparkles } from 'lucide-react';
+import { RefreshCw, ShieldCheck, Video, CheckCircle2, PackageCheck, Mail, Phone, ArrowRight, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Exchange, Cancellation & Refund Policy | Aafreen Couture',
