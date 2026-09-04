@@ -11,6 +11,10 @@ export async function GET(request: NextRequest) {
     const filters: ProductFilters = {
       category: searchParams.get('category') ?? undefined,
       collectionRef: searchParams.get('collection') ?? undefined,
+      occasion: searchParams.get('occasion') ?? undefined,
+      color: searchParams.get('color') ?? undefined,
+      size: searchParams.get('size') ?? undefined,
+      fabric: searchParams.get('fabric') ?? undefined,
       minPrice: searchParams.get('minPrice') ? Number(searchParams.get('minPrice')) : undefined,
       maxPrice: searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : undefined,
       sort: (searchParams.get('sort') as ProductFilters['sort']) ?? undefined,

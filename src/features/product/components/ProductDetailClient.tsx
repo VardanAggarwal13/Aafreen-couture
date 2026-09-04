@@ -82,6 +82,30 @@ export function ProductDetailClient({ product, related }: Props) {
     }
   }
 
+  const isGown =
+    (typeof product.category === 'object' && product.category?.slug === 'gowns') ||
+    (typeof product.collection === 'object' &&
+      (product.collection?.slug === 'reception-gowns' || product.collection?.slug === 'reception')) ||
+    product.tags?.includes('gowns');
+
+  const isFreeSize =
+    isGown ||
+    Boolean(
+      product.variants &&
+      product.variants.length > 0 &&
+      product.variants.every(
+        (v) => !v.size || v.size.toLowerCase().includes('free') || v.size.toLowerCase().includes('one')
+      )
+    );
+
+  const uniqueColors = Array.from(
+    new Map(
+      (product.variants ?? [])
+        .filter((v) => v.color && v.colorHex)
+        .map((v) => [v.color, v])
+    ).values()
+  );
+
   return (
     <>
       {/* Breadcrumb */}
@@ -191,64 +215,82 @@ export function ProductDetailClient({ product, related }: Props) {
               </div>
             </div>
 
-            {/* Variants — Color */}
+            {/* Variants — Color & Size */}
             {product.variants && product.variants.length > 0 && (
               <div className="space-y-4">
-                {product.variants[0]?.color && (
+                {activeVariant?.color && (
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider text-[#221617] mb-2">
                       Color: <span className="font-normal text-[#6E6A66]">{activeVariant?.color}</span>
                     </p>
                     <div className="flex gap-2.5">
-                      {product.variants.map((v, i) =>
-                        v.colorHex ? (
-                          <button
-                            key={i}
-                            onClick={() => setSelectedVariantIdx(i)}
-                            title={v.color}
-                            className={cn(
-                              'w-8 h-8 rounded-full border-2 transition-all relative',
-                              i === selectedVariantIdx ? 'border-[#A67C52] scale-110 ring-2 ring-[#A67C52]/30' : 'border-transparent hover:border-[#A67C52]/50'
-                            )}
-                            style={{ backgroundColor: v.colorHex }}
-                          />
-                        ) : null
-                      )}
+                      {uniqueColors.length > 1 ? (
+                        uniqueColors.map((v, i) => {
+                          const actualIdx = (product.variants ?? []).findIndex((pv) => pv.color === v.color);
+                          const isSelected = activeVariant?.color === v.color;
+                          return (
+                            <button
+                              key={v.color ?? i}
+                              onClick={() => setSelectedVariantIdx(actualIdx !== -1 ? actualIdx : 0)}
+                              title={v.color}
+                              className={cn(
+                                'w-8 h-8 rounded-full border-2 transition-all relative',
+                                isSelected ? 'border-[#A67C52] scale-110 ring-2 ring-[#A67C52]/30' : 'border-transparent hover:border-[#A67C52]/50'
+                              )}
+                              style={{ backgroundColor: v.colorHex }}
+                            />
+                          );
+                        })
+                      ) : activeVariant?.colorHex ? (
+                        <div
+                          title={activeVariant.color}
+                          className="w-8 h-8 rounded-full border-2 border-[#A67C52] ring-2 ring-[#A67C52]/20"
+                          style={{ backgroundColor: activeVariant.colorHex }}
+                        />
+                      ) : null}
                     </div>
                   </div>
                 )}
 
                 {/* Size */}
-                {product.variants[0]?.size && (
+                {isFreeSize ? (
                   <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="text-xs font-semibold uppercase tracking-wider text-[#221617]">
-                        Size: <span className="font-normal text-[#6E6A66]">{activeVariant?.size}</span>
-                      </p>
-                      <button className="text-xs text-[#A67C52] underline underline-offset-2 hover:text-[#221617] transition-colors">
-                        Size Guide
-                      </button>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {product.variants.map((v, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setSelectedVariantIdx(i)}
-                          disabled={!v.isActive || v.stock === 0}
-                          className={cn(
-                            'min-w-[40px] px-3.5 py-2 text-xs font-semibold tracking-wider uppercase border transition-all',
-                            !v.isActive || v.stock === 0
-                              ? 'border-[#E8D8C8] text-[#6E6A66]/40 line-through cursor-not-allowed'
-                              : i === selectedVariantIdx
-                              ? 'border-[#221617] bg-[#221617] text-white'
-                              : 'border-[#E8D8C8] bg-white text-[#221617] hover:border-[#A67C52]'
-                          )}
-                        >
-                          {v.size}
-                        </button>
-                      ))}
-                    </div>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-[#221617]">
+                      Size: <span className="font-normal text-[#6E6A66]">Free Size</span>
+                    </p>
                   </div>
+                ) : (
+                  product.variants[0]?.size && (
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-[#221617]">
+                          Size: <span className="font-normal text-[#6E6A66]">{activeVariant?.size}</span>
+                        </p>
+                        <button className="text-xs text-[#A67C52] underline underline-offset-2 hover:text-[#221617] transition-colors">
+                          Size Guide
+                        </button>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {product.variants.map((v, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setSelectedVariantIdx(i)}
+                            disabled={!v.isActive || v.stock === 0}
+                            className={cn(
+                              'min-w-[40px] px-3.5 py-2 text-xs font-semibold tracking-wider uppercase border transition-all',
+                              !v.isActive || v.stock === 0
+                                ? 'border-[#E8D8C8] text-[#6E6A66]/40 line-through cursor-not-allowed'
+                                : i === selectedVariantIdx
+                                ? 'border-[#221617] bg-[#221617] text-white'
+                                : 'border-[#E8D8C8] bg-white text-[#221617] hover:border-[#A67C52]'
+                            )}
+                          >
+                            {v.size}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )
                 )}
               </div>
             )}

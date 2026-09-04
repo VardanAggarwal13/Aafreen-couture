@@ -6,18 +6,27 @@ async function request<T>(
   endpoint: string,
   options?: RequestInit
 ): Promise<ApiResponse<T>> {
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
+  const url = endpoint.startsWith('/api/') || endpoint.startsWith('/api?') || endpoint === '/api'
+    ? endpoint
+    : `${BASE_URL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
+
+  const res = await fetch(url, {
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     ...options,
   });
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.error ?? 'Request failed');
+  let data: any;
+  try {
+    data = await res.json();
+  } catch {
+    data = null;
   }
 
-  return data;
+  if (!res.ok) {
+    throw new Error(data?.error ?? data?.message ?? `Request failed with status ${res.status}`);
+  }
+
+  return data as ApiResponse<T>;
 }
 
 export const api = {

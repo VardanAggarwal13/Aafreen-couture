@@ -20,7 +20,7 @@ const SORT_OPTIONS = [
 const PRICE_RANGES = [
   { label: 'Under ₹30,000', min: 0, max: 3000000 },
   { label: '₹30,000 – ₹50,000', min: 3000000, max: 5000000 },
-  { label: '₹50,000 – ₹75,000', min: 7500000, max: 7500000 },
+  { label: '₹50,000 – ₹75,000', min: 5000000, max: 7500000 },
   { label: '₹75,000+', min: 7500000, max: undefined },
 ];
 
@@ -28,12 +28,14 @@ const CATEGORY_FILTERS = [
   { label: 'Bridal Lehengas', slug: 'bridal-lehengas' },
   { label: 'Bridal Suits', slug: 'bridal-suits' },
   { label: 'Bridesmaid Lehengas', slug: 'bridesmaid-lehengas' },
+  { label: 'Reception Gowns', slug: 'gowns' },
   { label: 'Wedding Guest', slug: 'wedding-guest' },
   { label: 'Reception Collection', slug: 'reception' },
   { label: 'Engagement Collection', slug: 'engagement' },
   { label: 'Mehendi Collection', slug: 'mehendi' },
   { label: 'Haldi Collection', slug: 'haldi' },
   { label: 'Sangeet Collection', slug: 'sangeet' },
+  { label: 'Jago Edit', slug: 'jago' },
 ];
 
 const COLOR_SWATCHES = [
@@ -56,15 +58,39 @@ export function ShopClientPage() {
 
   const sort = searchParams.get('sort') ?? 'newest';
   const category = searchParams.get('category') ?? '';
+  const occasion = searchParams.get('occasion') ?? '';
   const selectedColor = searchParams.get('color') ?? '';
   const selectedSize = searchParams.get('size') ?? '';
   const selectedFabric = searchParams.get('fabric') ?? '';
+  const minPrice = searchParams.get('minPrice') ?? '';
+  const maxPrice = searchParams.get('maxPrice') ?? '';
   const page = Number(searchParams.get('page') ?? 1);
 
   const { data, isLoading } = useQuery({
-    queryKey: queryKeys.products.list({ sort, category, page }),
-    queryFn: () =>
-      api.getPaginated<IProduct>(`/api/products?sort=${sort}&category=${category}&page=${page}`),
+    queryKey: queryKeys.products.list({
+      sort,
+      category,
+      occasion,
+      color: selectedColor,
+      size: selectedSize,
+      fabric: selectedFabric,
+      minPrice,
+      maxPrice,
+      page,
+    }),
+    queryFn: () => {
+      const q = new URLSearchParams();
+      if (sort) q.set('sort', sort);
+      if (category) q.set('category', category);
+      if (occasion) q.set('occasion', occasion);
+      if (selectedColor) q.set('color', selectedColor);
+      if (selectedSize) q.set('size', selectedSize);
+      if (selectedFabric) q.set('fabric', selectedFabric);
+      if (minPrice) q.set('minPrice', minPrice);
+      if (maxPrice) q.set('maxPrice', maxPrice);
+      if (page) q.set('page', String(page));
+      return api.getPaginated<IProduct>(`/api/products?${q.toString()}`);
+    },
     placeholderData: (prev) => prev,
   });
 
@@ -82,13 +108,25 @@ export function ShopClientPage() {
   const products = data?.data ?? [];
   const pagination = data?.pagination;
 
+  const activeCatObj = CATEGORY_FILTERS.find((c) => c.slug === category);
+  const activeOccObj = CATEGORY_FILTERS.find((c) => c.slug === occasion);
+  const pageTitle = activeCatObj
+    ? activeCatObj.label
+    : category
+    ? category.replace(/-/g, ' ')
+    : activeOccObj
+    ? activeOccObj.label
+    : occasion
+    ? `${occasion.replace(/-/g, ' ')} Collection`
+    : 'Bridal & Ethnic Couture';
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Header matching reference mockup */}
       <div className="flex items-center justify-between pb-6 border-b border-[#E8D8C8] mb-8">
         <div>
           <h1 className="text-3xl lg:text-4xl font-serif uppercase tracking-wider text-[#221617]">
-            {category ? category.replace(/-/g, ' ') : 'Bridal & Ethnic Couture'}
+            {pageTitle}
           </h1>
           <p className="text-xs text-[#6E6A66] mt-1.5 font-sans">
             For the bride and family who love timeless elegance · {pagination?.total ?? products.length} items
@@ -127,7 +165,7 @@ export function ShopClientPage() {
               <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#221617]">
                 FILTERS
               </h2>
-              {(category || selectedColor || selectedSize || selectedFabric || searchParams.get('minPrice')) && (
+              {(category || occasion || selectedColor || selectedSize || selectedFabric || minPrice || maxPrice) && (
                 <button
                   onClick={() => router.push('/shop')}
                   className="flex items-center gap-1 text-[10px] text-[#A67C52] font-semibold uppercase tracking-wider hover:underline"
@@ -143,17 +181,34 @@ export function ShopClientPage() {
                 Category
               </h3>
               <div className="space-y-1.5">
-                {CATEGORY_FILTERS.map((cat) => (
-                  <button
-                    key={cat.slug}
-                    onClick={() => setParam('category', cat.slug)}
-                    className={`block w-full text-left text-xs transition-colors ${
-                      category === cat.slug ? 'text-[#A67C52] font-semibold' : 'text-[#6E6A66] hover:text-[#221617]'
-                    }`}
-                  >
-                    • {cat.label}
-                  </button>
-                ))}
+                {CATEGORY_FILTERS.map((cat) => {
+                  const isOccasion = ['reception', 'engagement', 'wedding-guest', 'mehendi', 'haldi', 'sangeet', 'jago'].includes(cat.slug);
+                  const isSelected = isOccasion ? occasion === cat.slug : category === cat.slug;
+                  return (
+                    <button
+                      key={cat.slug}
+                      onClick={() => {
+                        const params = new URLSearchParams(searchParams.toString());
+                        if (isOccasion) {
+                          params.delete('category');
+                          if (occasion === cat.slug) params.delete('occasion');
+                          else params.set('occasion', cat.slug);
+                        } else {
+                          params.delete('occasion');
+                          if (category === cat.slug) params.delete('category');
+                          else params.set('category', cat.slug);
+                        }
+                        params.delete('page');
+                        router.push(`/shop?${params.toString()}`, { scroll: false });
+                      }}
+                      className={`block w-full text-left text-xs transition-colors ${
+                        isSelected ? 'text-[#A67C52] font-semibold' : 'text-[#6E6A66] hover:text-[#221617]'
+                      }`}
+                    >
+                      • {cat.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

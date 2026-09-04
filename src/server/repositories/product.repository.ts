@@ -8,6 +8,10 @@ import { FALLBACK_PRODUCTS } from '@/data/products.data';
 export interface ProductFilters {
   category?: string;
   collectionRef?: string;
+  occasion?: string;
+  color?: string;
+  size?: string;
+  fabric?: string;
   minPrice?: number;
   maxPrice?: number;
   tags?: string[];
@@ -25,18 +29,61 @@ function matchFallbackFilters(p: IProduct, filters: ProductFilters): boolean {
   if (filters.isNewArrival !== undefined && p.isNewArrival !== filters.isNewArrival) return false;
   if (filters.isBestSeller !== undefined && p.isBestSeller !== filters.isBestSeller) return false;
 
+  if (filters.occasion) {
+    const occ = filters.occasion.toLowerCase();
+    const matchesOcc = p.occasion?.some((o) => {
+      const ol = o.toLowerCase().replace(/\s+/g, '-');
+      return ol === occ || o.toLowerCase() === occ || ol.includes(occ);
+    });
+    if (!matchesOcc) return false;
+  }
+
   if (filters.category) {
     const catSlug = typeof p.category === 'object' && p.category ? (p.category as { slug?: string }).slug : String(p.category);
-    if (catSlug !== filters.category) return false;
+    const matchesCat = catSlug === filters.category;
+    const matchesOcc = p.occasion?.some((o) => {
+      const ol = o.toLowerCase().replace(/\s+/g, '-');
+      return ol === filters.category?.toLowerCase() || o.toLowerCase() === filters.category?.toLowerCase();
+    });
+    const matchesBridalSuits = filters.category === 'bridal-suits' &&
+      (catSlug === 'suits' || catSlug === 'bridal-suits' || p.tags?.includes('suits')) &&
+      (p.occasion?.some((o) => o.toLowerCase().includes('bridal') || o.toLowerCase().includes('wedding')) || p.tags?.includes('bridal'));
+    const matchesBridalGeneral = filters.category === 'bridal' &&
+      (catSlug?.includes('bridal') || p.occasion?.some((o) => o.toLowerCase().includes('bridal')));
+
+    if (!matchesCat && !matchesOcc && !matchesBridalSuits && !matchesBridalGeneral) return false;
   }
 
   if (filters.collectionRef) {
-    const colSlug = typeof p.collectionRef === 'object' && p.collectionRef ? (p.collectionRef as { slug?: string }).slug : String(p.collectionRef);
-    if (colSlug !== filters.collectionRef) return false;
+    const rawCol = (p as { collectionRef?: unknown; collection?: unknown }).collectionRef
+      ?? (p as { collection?: unknown }).collection;
+    const colId = typeof rawCol === 'object' && rawCol && '_id' in rawCol ? String((rawCol as { _id: unknown })._id) : undefined;
+    const colSlug = typeof rawCol === 'object' && rawCol && 'slug' in rawCol ? String((rawCol as { slug?: string }).slug) : String(rawCol ?? '');
+    const isBridalCol = (filters.collectionRef === 'bridal' || filters.collectionRef === 'col-bridal') &&
+      (colSlug === 'bridal-lehengas-suits' || colSlug === 'bridal' || colId === 'col-bridal-lehengas-suits' || colId === 'col-bridal');
+    const isReceptionCol = (filters.collectionRef === 'reception' || filters.collectionRef === 'col-reception') &&
+      (colSlug === 'reception-gowns' || colSlug === 'reception' || p.occasion?.some((o) => o.toLowerCase() === 'reception'));
+    const matchesCol = filters.collectionRef === colId || filters.collectionRef === colSlug || isBridalCol || isReceptionCol;
+    if (!matchesCol) return false;
   }
 
   if (filters.minPrice !== undefined && p.basePrice < filters.minPrice) return false;
   if (filters.maxPrice !== undefined && p.basePrice > filters.maxPrice) return false;
+
+  if (filters.color) {
+    const c = filters.color.toLowerCase();
+    const matchesColor =
+      p.name.toLowerCase().includes(c) ||
+      p.description.toLowerCase().includes(c) ||
+      p.tags?.some((t) => t.toLowerCase().includes(c));
+    if (!matchesColor) return false;
+  }
+
+  if (filters.fabric) {
+    const f = filters.fabric.toLowerCase();
+    const matchesFabric = p.fabric?.toLowerCase().includes(f);
+    if (!matchesFabric) return false;
+  }
 
   if (filters.tags?.length) {
     const hasTag = filters.tags.some((t) => p.tags.includes(t));
@@ -93,6 +140,7 @@ export class ProductRepository {
 
       if (filters.category) query.category = filters.category;
       if (filters.collectionRef) query.collectionRef = filters.collectionRef;
+      if (filters.occasion) query.occasion = { $regex: new RegExp(`^${filters.occasion}$`, 'i') };
       if (filters.isFeatured !== undefined) query.isFeatured = filters.isFeatured;
       if (filters.isNewArrival !== undefined) query.isNewArrival = filters.isNewArrival;
       if (filters.isBestSeller !== undefined) query.isBestSeller = filters.isBestSeller;

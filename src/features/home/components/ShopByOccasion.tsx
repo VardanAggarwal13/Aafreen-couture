@@ -16,6 +16,7 @@ const OCCASION_GRADIENTS: Record<string, string> = {
   'Festive':    'from-[#2C1A0E] to-[#C49A5A]',
   'Party Wear': 'from-[#1A0E18] to-[#C45A8B]',
   'Formal':     'from-[#0E0E14] to-[#6A6A8A]',
+  'Jago Edit':  'from-[#2A1015] to-[#D65A8B]',
 };
 
 function OccasionCard({ label, href, image }: { label: string; href: string; image: string }) {

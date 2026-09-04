@@ -11,7 +11,6 @@ export interface MegaMenuGroup {
 }
 
 export const navLinks: NavLink[] = [
-  { label: 'New In', href: '/shop?sort=newest' },
   {
     label: 'Bridal',
     href: '/collections/bridal',
@@ -22,7 +21,7 @@ export const navLinks: NavLink[] = [
           { label: 'Bridal Lehengas', href: '/collections/bridal-lehengas-suits' },
           { label: 'Bridal Suits', href: '/shop?category=bridal-suits' },
           { label: 'Bridesmaid Lehengas', href: '/collections/bridesmaid-lehengas' },
-          { label: 'Wedding Guest', href: '/shop?occasion=wedding-guest' },
+          { label: 'Reception Gowns', href: '/shop?category=gowns' },
           { label: 'Reception Collection', href: '/shop?occasion=reception' },
           { label: 'Engagement Collection', href: '/shop?occasion=engagement' },
           { label: 'Mehendi Collection', href: '/shop?occasion=mehendi' },
@@ -44,7 +43,7 @@ export const navLinks: NavLink[] = [
           { label: 'Co-ord Sets', href: '/collections/signature-co-ord-sets' },
           { label: 'Summer Essentials', href: '/collections/summer-essentials' },
           { label: 'Partywear Unstitched', href: '/collections/partywear-unstitched' },
-          { label: 'Custom Embroidered', href: '/collections/custom-embroidered-suits' },
+          { label: 'Handcrafted Luxury', href: '/collections/custom-embroidered-suits' },
           { label: 'Indo-Western', href: '/collections/indo-western' },
           { label: 'View All Suits', href: '/shop?category=suits' },
         ],
@@ -86,7 +85,25 @@ export const navLinks: NavLink[] = [
       },
     ],
   },
-  { label: 'Occasions', href: '/occasions' },
+  {
+    label: 'Occasions',
+    href: '/occasions',
+    megaMenu: [
+      {
+        title: 'Occasions',
+        links: [
+          { label: 'Engagement', href: '/shop?occasion=engagement' },
+          { label: 'Haldi', href: '/shop?occasion=haldi' },
+          { label: 'Mehendi', href: '/shop?occasion=mehendi' },
+          { label: 'Sangeet', href: '/shop?occasion=sangeet' },
+          { label: 'Jago Edit', href: '/shop?occasion=jago' },
+          { label: 'Wedding', href: '/shop?occasion=wedding' },
+          { label: 'Reception', href: '/shop?occasion=reception' },
+          { label: 'View All Occasions', href: '/occasions' },
+        ],
+      },
+    ],
+  },
 ];
 
 export const homeCategories = [
@@ -124,24 +141,9 @@ export const homeCategories = [
 
 export const shopByOccasion = [
   {
-    label: 'Wedding',
-    href: '/shop?occasion=wedding',
-    image: '/images/occasions/wedding.webp',
-  },
-  {
     label: 'Engagement',
     href: '/shop?occasion=engagement',
     image: '/images/occasions/engagement.webp',
-  },
-  {
-    label: 'Reception',
-    href: '/shop?occasion=reception',
-    image: '/images/occasions/reception.webp',
-  },
-  {
-    label: 'Mehendi',
-    href: '/shop?occasion=mehendi',
-    image: '/images/occasions/mehendi.webp',
   },
   {
     label: 'Haldi',
@@ -149,9 +151,29 @@ export const shopByOccasion = [
     image: '/images/occasions/haldi.webp',
   },
   {
+    label: 'Mehendi',
+    href: '/shop?occasion=mehendi',
+    image: '/images/occasions/mehendi.webp',
+  },
+  {
     label: 'Sangeet',
     href: '/shop?occasion=sangeet',
     image: '/images/occasions/sangeet.webp',
+  },
+  {
+    label: 'Jago Edit',
+    href: '/shop?occasion=jago',
+    image: '/images/occasions/sangeet.webp',
+  },
+  {
+    label: 'Wedding',
+    href: '/shop?occasion=wedding',
+    image: '/images/occasions/wedding.webp',
+  },
+  {
+    label: 'Reception',
+    href: '/shop?occasion=reception',
+    image: '/images/occasions/reception.webp',
   },
 ] as const;
 

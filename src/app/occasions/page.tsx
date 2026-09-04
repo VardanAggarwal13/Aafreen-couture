@@ -15,6 +15,7 @@ const OCCASION_GRADIENTS: Record<string, string> = {
   'Mehendi':    'from-[#1A2008] to-[#8BAA5A]',
   'Haldi':      'from-[#2C2010] to-[#E8C06A]',
   'Sangeet':    'from-[#1A0E24] to-[#8B5AD6]',
+  'Jago Edit':  'from-[#2A1015] to-[#D65A8B]',
 };
 
 export default function OccasionsPage() {
