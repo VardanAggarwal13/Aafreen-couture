@@ -5,47 +5,58 @@ interface Props {
   params: Promise<{ subcategory: string }>;
 }
 
-const BRIDAL_SUB_TITLES: Record<string, { title: string; subtitle: string; isOccasion?: boolean }> = {
+interface BridalSubInfo {
+  title: string;
+  subtitle: string;
+  categorySlug?: string;
+  occasionSlug?: string;
+}
+
+const BRIDAL_SUB_TITLES: Record<string, BridalSubInfo> = {
   'bridal-lehengas': {
     title: 'Bridal Lehengas',
     subtitle: 'Heirloom bridal lehengas hand-embroidered with zardozi, dabka, and real silk threads.',
+    categorySlug: 'bridal-lehengas',
   },
   'bridal-suits': {
     title: 'Bridal Suits',
     subtitle: 'Regal ceremonial suits and royal anarkalis crafted for intimate wedding rituals.',
+    categorySlug: 'bridal-suits',
   },
   'bridesmaid-lehengas': {
     title: 'Bridesmaid Lehengas',
     subtitle: 'Coordinated luxury lehengas and graceful silhouettes curated for the bridal squad.',
+    categorySlug: 'bridesmaid-lehengas',
   },
   'reception-gowns': {
     title: 'Reception Gowns',
     subtitle: 'Opulent evening couture ballgowns adorned with crystals, sequins, and dramatic capes.',
+    categorySlug: 'reception-gowns',
   },
   'reception': {
     title: 'Reception Collection',
     subtitle: 'Grand couture designs tailored for unforgettable wedding receptions.',
-    isOccasion: true,
+    categorySlug: 'reception-gowns',
   },
   'engagement': {
     title: 'Engagement Collection',
     subtitle: 'Sparkling cocktail lehengas and modern silhouettes for your ring ceremony.',
-    isOccasion: true,
+    occasionSlug: 'engagement',
   },
   'mehendi': {
     title: 'Mehendi Collection',
     subtitle: 'Vibrant handcrafted ensembles bathed in festive greens, yellows, and mirror accents.',
-    isOccasion: true,
+    occasionSlug: 'mehendi',
   },
   'haldi': {
     title: 'Haldi Collection',
     subtitle: 'Sunshine hues, delicate gota patti, and playful silhouettes for the joyous haldi ceremony.',
-    isOccasion: true,
+    categorySlug: 'haldi',
   },
   'sangeet': {
     title: 'Sangeet Collection',
     subtitle: 'Dazzling shimmering lehengas designed for unforgettable dance and celebration.',
-    isOccasion: true,
+    occasionSlug: 'sangeet',
   },
 };
 
@@ -63,14 +74,16 @@ export default async function BridalSubcategoryPage({ params }: Props) {
   const { subcategory } = await params;
   const info = BRIDAL_SUB_TITLES[subcategory];
   const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const isOccasion = info?.isOccasion || ['reception', 'engagement', 'mehendi', 'haldi', 'sangeet'].includes(subcategory);
+
+  const categorySlug = info?.categorySlug ?? subcategory;
+  const occasionSlug = info?.occasionSlug;
 
   return (
     <CoutureCatalogView
       title={title}
       subtitle={info?.subtitle}
-      categorySlug={isOccasion ? undefined : subcategory}
-      occasionSlug={isOccasion ? subcategory : undefined}
+      categorySlug={categorySlug}
+      occasionSlug={occasionSlug}
       breadcrumbs={[
         { label: 'Bridal', href: '/bridal' },
         { label: title },

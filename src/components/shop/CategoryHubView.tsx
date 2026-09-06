@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { Sparkles, ArrowRight, ChevronDown } from 'lucide-react';
+import { Sparkles, ArrowRight, ChevronDown, ChevronRight } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import { api } from '@/utils/api';
 import { ProductCard } from '@/components/product/ProductCard';
@@ -156,83 +156,115 @@ export function CategoryHubView({
 }: CategoryHubProps) {
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
-      {/* 1. Haute Couture Editorial Split Hero (Left: Text on Pure Ivory Canvas | Right: Full-Height Picture with ZERO Overlap) */}
-      <section className="w-full bg-[#FAF5EE] border-b border-[#E8D4BE] overflow-hidden">
-        <div className="max-w-[1560px] mx-auto grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[460px] lg:min-h-[480px] xl:min-h-[500px]">
-          {/* Left Side: Pure Editorial Text Canvas (NO Image Behind Text, 100% Crisp Legibility) */}
-          <div className="lg:col-span-6 xl:col-span-5 flex flex-col justify-center px-6 sm:px-8 lg:px-8 xl:px-12 py-6 sm:py-8 lg:py-8 xl:py-9 bg-[#FAF5EE] text-[#221617] z-10">
-            {/* Royal Atelier Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-[#E8D4BE]/40 border border-[#C49A5A]/50 text-[9.5px] sm:text-[10px] uppercase tracking-[0.3em] text-[#A67C52] font-semibold w-fit mb-2.5">
-              <Sparkles size={11} className="text-[#C49A5A]" />
-              <span>{badge}</span>
+      {/* 0. Top Breadcrumb Bar (Distinct breathing separation from Navbar) */}
+      <div className="w-full bg-[#FAF7F2] border-b border-[#E8D8C8]/70">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[10.5px] uppercase tracking-[0.2em] text-[#8C7A6B]">
+            <Link href="/" className="hover:text-[#A67C52] transition-colors">Home</Link>
+            <ChevronRight size={10} className="text-[#C49A5A]" />
+            <span className="text-[#221617] font-semibold">{title}</span>
+          </nav>
+        </div>
+      </div>
+
+      {/* 1. Haute Couture Editorial Framed Split Hero (Safe Inset Frame - ZERO Navbar Merging) */}
+      <section className="w-full bg-[#FAF5EE] border-b border-[#E8D4BE]">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left Side: Pure Editorial Text Canvas (100% Crisp Legibility) */}
+            <div className="lg:col-span-6 xl:col-span-5 flex flex-col justify-center text-[#221617] z-10">
+              {/* Royal Atelier Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-[#E8D4BE]/40 border border-[#C49A5A]/50 text-[9.5px] sm:text-[10px] uppercase tracking-[0.3em] text-[#A67C52] font-semibold w-fit mb-2.5">
+                <Sparkles size={11} className="text-[#C49A5A]" />
+                <span>{badge}</span>
+              </div>
+
+              {/* Grand Serif Title */}
+              <h1 className="text-3xl sm:text-4xl lg:text-[38px] xl:text-[42px] font-serif text-[#221617] tracking-tight leading-[1.12] mb-1.5">
+                {title}{' '}
+                {italicTitle && (
+                  <span className="italic font-light text-[#A67C52]">{italicTitle}</span>
+                )}
+              </h1>
+
+              {/* Gold Diamond Accent Divider */}
+              <div className="flex items-center gap-2.5 my-2">
+                <div className="h-px w-8 bg-gradient-to-r from-[#C49A5A] to-transparent" />
+                <span className="text-[#C49A5A] text-xs">✦</span>
+                <div className="h-px w-8 bg-gradient-to-l from-[#C49A5A] to-transparent" />
+              </div>
+
+              {/* Narrative Subtitle */}
+              <p className="text-xs sm:text-[12.5px] text-[#5C554E] font-sans leading-relaxed mb-3.5 max-w-lg">
+                {heroSubtitle}
+              </p>
+
+              {/* Key Craftsmanship Highlights */}
+              <div className="space-y-1 pb-3 mb-3.5 border-b border-[#E8D4BE]/70">
+                {heroHighlights.map((highlight) => (
+                  <div key={highlight} className="flex items-center gap-2 text-xs text-[#3D332A] font-serif tracking-wide">
+                    <span className="w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0" />
+                    <span>{highlight}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-2.5">
+                <a
+                  href="#chapters"
+                  className={buttonVariants({ variant: 'couture', size: 'couture' })}
+                >
+                  <span>Explore Subcategories</span>
+                  <ChevronDown size={13} className="text-[#C49A5A]" />
+                </a>
+
+                <a
+                  href={consultationLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonVariants({ variant: 'couture-outline', size: 'couture' })}
+                >
+                  <span>Book Consultation</span>
+                  <ArrowRight size={13} className="text-[#C49A5A]" />
+                </a>
+              </div>
+
+              <p className="text-[9.5px] uppercase tracking-[0.2em] text-[#8C7A6B] font-sans mt-2.5">
+                {chapters.length} Curated Subcategory Chapters Available
+              </p>
             </div>
 
-            {/* Grand Serif Title */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[38px] xl:text-[42px] font-serif text-[#221617] tracking-tight leading-[1.12] mb-1.5">
-              {title}{' '}
-              {italicTitle && (
-                <span className="italic font-light text-[#A67C52]">{italicTitle}</span>
-              )}
-            </h1>
-
-            {/* Gold Diamond Accent Divider */}
-            <div className="flex items-center gap-2.5 my-2">
-              <div className="h-px w-8 bg-gradient-to-r from-[#C49A5A] to-transparent" />
-              <span className="text-[#C49A5A] text-xs">✦</span>
-              <div className="h-px w-8 bg-gradient-to-l from-[#C49A5A] to-transparent" />
-            </div>
-
-            {/* Narrative Subtitle */}
-            <p className="text-xs sm:text-[12.5px] text-[#5C554E] font-sans leading-relaxed mb-3.5 max-w-lg">
-              {heroSubtitle}
-            </p>
-
-            {/* Key Craftsmanship Highlights */}
-            <div className="space-y-1 pb-3 mb-3.5 border-b border-[#E8D4BE]/70">
-              {heroHighlights.map((highlight) => (
-                <div key={highlight} className="flex items-center gap-2 text-xs text-[#3D332A] font-serif tracking-wide">
-                  <span className="w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0" />
-                  <span>{highlight}</span>
+            {/* Right Side: Museum-Grade Framed Picture Showcase (Zero Navbar Merging) */}
+            <div className="lg:col-span-6 xl:col-span-7">
+              <div className="relative p-2.5 sm:p-3.5 bg-white/95 border border-[#E8D4BE] shadow-[0_12px_40px_rgba(34,22,23,0.08)] rounded-xs">
+                <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/11] overflow-hidden rounded-2xs border border-[#C49A5A]/35 bg-[#FAF5EE]">
+                  <Image
+                    src={heroImage}
+                    alt={title}
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    className={`object-cover ${heroObjectPosition}`}
+                  />
                 </div>
-              ))}
+
+                {/* Plaque Cleanly Beneath the Photo (Zero Overlay / Zero Dark Gradient) */}
+                <div className="mt-3 pt-2.5 border-t border-[#E8D4BE]/70 flex items-center justify-between text-[#221617]">
+                  <div>
+                    <span className="text-[9.5px] uppercase font-bold tracking-[0.25em] text-[#C49A5A] block">
+                      Haute Couture Edit
+                    </span>
+                    <p className="font-serif text-xs sm:text-sm font-medium tracking-wide text-[#221617] mt-0.5">
+                      {title} {italicTitle}
+                    </p>
+                  </div>
+                  <span className="text-[10px] text-[#8C7A6B] uppercase tracking-widest font-sans border-b border-[#C49A5A] pb-0.5 shrink-0">
+                    {chapters.length} Subcategories
+                  </span>
+                </div>
+              </div>
             </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-2.5">
-              <a
-                href="#chapters"
-                className={buttonVariants({ variant: 'couture', size: 'couture' })}
-              >
-                <span>Explore Subcategories</span>
-                <ChevronDown size={13} className="text-[#C49A5A]" />
-              </a>
-
-              <a
-                href={consultationLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonVariants({ variant: 'couture-outline', size: 'couture' })}
-              >
-                <span>Book Consultation</span>
-                <ArrowRight size={13} className="text-[#C49A5A]" />
-              </a>
-            </div>
-
-            <p className="text-[9.5px] uppercase tracking-[0.2em] text-[#8C7A6B] font-sans mt-2.5">
-              {chapters.length} Curated Subcategory Chapters Available
-            </p>
-          </div>
-
-          {/* Right Side: Full-Height Picture Showcase (Proper Alignment, ZERO Text Overlap, Full Vibrancy) */}
-          <div className="lg:col-span-6 xl:col-span-7 relative w-full h-[360px] sm:h-[420px] lg:h-auto min-h-[360px] lg:min-h-[480px] xl:min-h-[500px] overflow-hidden bg-[#1A0E0C] border-t lg:border-t-0 lg:border-l border-[#E8D4BE]/80">
-            <Image
-              src={heroImage}
-              alt={title}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 58vw"
-              className={`object-cover ${heroObjectPosition}`}
-            />
           </div>
         </div>
       </section>

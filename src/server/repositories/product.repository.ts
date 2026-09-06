@@ -42,24 +42,49 @@ function matchFallbackFilters(p: IProduct, filters: ProductFilters): boolean {
   }
 
   if (filters.category) {
-    const catSlug = typeof p.category === 'object' && p.category ? (p.category as { slug?: string }).slug?.toLowerCase() : String(p.category).toLowerCase();
+    const catSlug = (typeof p.category === 'object' && p.category ? (p.category as { slug?: string }).slug?.toLowerCase() : String(p.category).toLowerCase()) ?? '';
+    const colSlug = (typeof p.collection === 'object' && p.collection ? (p.collection as unknown as { slug?: string }).slug?.toLowerCase() : String(p.collection).toLowerCase()) ?? '';
     const reqCat = filters.category.toLowerCase();
 
-    if (catSlug === reqCat) {
-      // direct match
-    } else if (reqCat === 'bridal') {
-      const isBridal = catSlug?.includes('bridal') || p.occasion?.some((o) => o.toLowerCase().includes('bridal') || o.toLowerCase().includes('wedding'));
-      if (!isBridal) return false;
-    } else if (reqCat === 'bridal-suits') {
-      const isSuit = catSlug === 'suits' || p.tags?.includes('suits') || p.name.toLowerCase().includes('suit') || p.name.toLowerCase().includes('anarkali');
-      const isBridal = p.occasion?.some((o) => o.toLowerCase().includes('bridal') || o.toLowerCase().includes('wedding')) || p.tags?.includes('bridal');
-      if (!isSuit || !isBridal) return false;
-    } else if (reqCat === 'bridesmaid-lehengas') {
-      const isBridesmaid = catSlug === 'bridesmaid-lehengas' || p.occasion?.some((o) => o.toLowerCase().includes('bridesmaid'));
-      if (!isBridesmaid) return false;
+    if (reqCat === 'bridal-lehengas' || reqCat === 'bridal-lehenga') {
+      // STRICT: Only pure Bridal Lehengas (No Haldi, No Gowns, No Suits)
+      if (catSlug !== 'bridal-lehengas') return false;
+      const isHaldi = colSlug === 'haldi-collection' || p.tags?.includes('haldi');
+      const isGown = colSlug === 'reception-gowns' || p.tags?.includes('gown');
+      if (isHaldi || isGown) return false;
+      return true;
     } else if (reqCat === 'reception-gowns' || reqCat === 'gowns') {
-      const isGown = catSlug === 'gowns' || catSlug === 'reception-gowns' || p.tags?.includes('gown') || p.name.toLowerCase().includes('gown');
+      // STRICT: Only Reception Gowns
+      const isGown = catSlug === 'gowns' || catSlug === 'reception-gowns' || colSlug === 'reception-gowns';
       if (!isGown) return false;
+      return true;
+    } else if (reqCat === 'bridal') {
+      // Entire Bridal category: includes bridal-lehengas, bridal-suits, bridesmaid-lehengas, reception-gowns
+      const isBridalSub = catSlug === 'bridal-lehengas' ||
+        catSlug === 'bridal-suits' ||
+        catSlug === 'bridesmaid-lehengas' ||
+        catSlug === 'reception-gowns' ||
+        catSlug === 'gowns';
+      const isHaldi = catSlug === 'haldi' || colSlug === 'haldi-collection';
+      if (isHaldi) return false;
+      if (!isBridalSub) return false;
+      return true;
+    } else if (reqCat === 'bridal-suits') {
+      const isSuit = catSlug === 'bridal-suits' || (catSlug === 'suits' && (p.tags?.includes('bridal') || p.tags?.includes('bridal-suits')));
+      if (!isSuit) return false;
+      return true;
+    } else if (reqCat === 'bridesmaid-lehengas') {
+      const isBridesmaid = catSlug === 'bridesmaid-lehengas';
+      if (!isBridesmaid) return false;
+      return true;
+    } else if (reqCat === 'haldi' || reqCat === 'haldi-collection' || reqCat === 'haldi-lehengas') {
+      // STRICT: Only Haldi Collection
+      const isHaldi = catSlug === 'haldi' || colSlug === 'haldi-collection' || p.tags?.includes('haldi');
+      if (!isHaldi) return false;
+      return true;
+    } else if (catSlug === reqCat) {
+      // direct match for other categories
+      return true;
     } else if (reqCat === 'cotton-kurta-sets') {
       const isCottonKurta = (catSlug === 'suits' || catSlug === 'co-ord-sets' || catSlug === 'cotton-kurta-sets') &&
         (p.fabric?.toLowerCase().includes('cotton') || p.tags?.includes('cotton') || p.name.toLowerCase().includes('kurta') || p.name.toLowerCase().includes('anarkali') || p.fabric?.toLowerCase().includes('chanderi'));
@@ -292,6 +317,8 @@ export class ProductRepository {
       list.sort((a, b) => (b.soldCount ?? 0) - (a.soldCount ?? 0));
     } else if (filters.sort === 'rating') {
       list.sort((a, b) => (b.averageRating ?? 0) - (a.averageRating ?? 0));
+    } else {
+      list.sort((a, b) => new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime());
     }
 
     const { page = 1, limit = 24 } = pagination;
