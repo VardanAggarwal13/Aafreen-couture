@@ -29,17 +29,25 @@ const TESTIMONIALS = [
 
 export function Testimonials() {
   return (
-    <section className="py-16 bg-white border-t border-[#F0E8DC]">
+    <section className="py-10 sm:py-12 lg:py-14 bg-[#FAF7F2] border-b border-[#E8D8C8]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="text-center mb-10">
-          <h2 className="font-serif text-[22px] sm:text-[28px] tracking-[0.02em] text-[#1A1A1A]">What Our Brides Say</h2>
+        <div className="text-center mb-6 sm:mb-8 lg:mb-10">
+          <p className="text-[10px] sm:text-[10.5px] uppercase font-bold tracking-[0.3em] text-[#C49A5A] mb-1.5">
+            Client Testimonials
+          </p>
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#221617] uppercase tracking-wide">
+            What Our Brides Say
+          </h2>
+          <p className="text-xs text-[#6E6A66] mt-1 font-sans">
+            Real stories and heirloom experiences from our celebrated brides
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={t.name}
-              className="bg-white rounded-sm p-6 flex flex-col gap-4 border border-brand-cream"
+              className="bg-white rounded-xs p-5 sm:p-6 flex flex-col gap-3.5 border border-[#E8D8C8] shadow-2xs"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

@@ -39,9 +39,9 @@ export async function NewArrivals() {
   }
 
   return (
-    <section className="py-20 lg:py-24 bg-white border-b border-[#E8D8C8]">
+    <section className="py-10 sm:py-12 lg:py-14 bg-white border-b border-[#E8D8C8]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="flex items-center justify-between mb-12 lg:mb-16">
+        <div className="flex items-center justify-between mb-6 sm:mb-8 lg:mb-10">
           <div>
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-wide text-[#221617] uppercase">
               New Arrivals
@@ -52,13 +52,13 @@ export async function NewArrivals() {
           </div>
           <Link
             href={`${ROUTES.SHOP}?filter=new`}
-            className="hidden sm:inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
           >
-            View All <ArrowRight size={14} />
+            View All <ArrowRight size={13} />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
           {products.length > 0
             ? products.map((product, i) => (
                 <ProductCard key={product._id} product={product} priority={i < 4} />
@@ -68,12 +68,12 @@ export async function NewArrivals() {
               ))}
         </div>
 
-        <div className="mt-12 text-center sm:hidden">
+        <div className="mt-8 text-center sm:hidden">
           <Link
             href={`${ROUTES.SHOP}?filter=new`}
-            className="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
           >
-            View All New Arrivals <ArrowRight size={14} />
+            View All New Arrivals <ArrowRight size={13} />
           </Link>
         </div>
       </div>

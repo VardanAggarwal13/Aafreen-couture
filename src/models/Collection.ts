@@ -31,7 +31,6 @@ const CollectionSchema = new Schema<ICollection>(
   { timestamps: true }
 );
 
-CollectionSchema.index({ slug: 1 });
 CollectionSchema.index({ isActive: 1, isFeatured: 1 });
 
 const Collection = models.Collection ?? model<ICollection>('Collection', CollectionSchema);

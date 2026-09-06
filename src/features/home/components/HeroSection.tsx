@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { buttonVariants } from '@/components/ui/button';
 
 export function HeroSection() {
   return (
@@ -23,17 +24,17 @@ export function HeroSection() {
 
       {/* Content — scoped to left column so it never overlaps the background bride or pillars */}
       <div className="relative h-full flex items-center">
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-12 lg:px-20 w-full">
-          <div className="max-w-[380px] sm:max-w-[440px] lg:max-w-[480px] text-left">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20 w-full">
+          <div className="max-w-[340px] sm:max-w-[440px] lg:max-w-[480px] text-left">
 
             {/* Tagline */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.6 }}
-              className="mb-5 lg:mb-6"
+              className="mb-4 sm:mb-5 lg:mb-6"
             >
-              <span className="text-[10.5px] sm:text-xs font-semibold uppercase tracking-[0.45em] text-[#C49A5A]">
+              <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.35em] sm:tracking-[0.45em] text-[#C49A5A]">
                 Bridal Collection 2026
               </span>
             </motion.div>
@@ -43,7 +44,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.22, duration: 0.7 }}
-              className="font-serif text-4xl sm:text-5xl lg:text-6xl text-white font-normal leading-[1.08] uppercase tracking-[0.1em] mb-6 lg:mb-7 drop-shadow-md"
+              className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal leading-[1.08] uppercase tracking-[0.08em] sm:tracking-[0.1em] mb-5 sm:mb-6 lg:mb-7 drop-shadow-md"
             >
               The Bridal<br />Edit
             </motion.h1>
@@ -66,7 +67,7 @@ export function HeroSection() {
             >
               <Link
                 href="/collections/bridal-lehengas-suits"
-                className="inline-block bg-[#C49A5A] text-[#1A0E0E] text-[10.5px] font-semibold tracking-[0.3em] uppercase px-9 py-3.5 hover:bg-white hover:text-[#1A0E0E] transition-all shadow-xl rounded-xs"
+                className={buttonVariants({ variant: 'couture-gold', size: 'couture-lg' })}
               >
                 Discover Collection
               </Link>

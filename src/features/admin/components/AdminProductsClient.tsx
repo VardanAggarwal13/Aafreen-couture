@@ -108,13 +108,37 @@ export function AdminProductsClient({ initialProducts }: { initialProducts: Prod
           className="bg-[#1A1A1A] border border-white/10 rounded-xs px-3 py-2 text-xs text-white/70 outline-none"
         >
           <option value="">All Categories</option>
-          <option value="bridal-lehengas-suits">Bridal Lehengas</option>
-          <option value="festive-wear">Festive Wear</option>
-          <option value="anarkalis">Anarkalis</option>
-          <option value="sharara-gharara">Shararas</option>
-          <option value="sarees">Sarees</option>
-          <option value="signature-co-ord-sets">Co-Ord Sets</option>
-          <option value="jewellery">Jewellery</option>
+          <optgroup label="Bridal">
+            <option value="bridal-lehengas">Bridal Lehengas</option>
+            <option value="bridal-suits">Bridal Suits</option>
+            <option value="bridesmaid-lehengas">Bridesmaid Lehengas</option>
+            <option value="reception-gowns">Reception Gowns</option>
+          </optgroup>
+          <optgroup label="Suits">
+            <option value="cotton-kurta-sets">Cotton Kurta Sets</option>
+            <option value="co-ord-sets">Co-ord Sets</option>
+            <option value="summer-essentials">Summer Essentials</option>
+            <option value="partywear-unstitched">Partywear Unstitched</option>
+            <option value="handcrafted-luxury">Handcrafted Luxury</option>
+            <option value="indo-western">Indo-Western</option>
+          </optgroup>
+          <optgroup label="Ready To Wear">
+            <option value="new-arrivals">New Arrivals</option>
+            <option value="signature-co-ords">Signature Co-Ords</option>
+            <option value="dresses">Dresses</option>
+            <option value="sharara-sets">Sharara Sets</option>
+            <option value="occasion-lehengas">Occasion Lehengas</option>
+          </optgroup>
+          <optgroup label="Bags">
+            <option value="handbags">Handbags</option>
+            <option value="potlis">Potlis</option>
+            <option value="clutches">Clutches</option>
+            <option value="totes">Totes</option>
+            <option value="shoulder-bags">Shoulder Bags</option>
+          </optgroup>
+          <optgroup label="Jewellery">
+            <option value="jewellery">Royal Jewellery</option>
+          </optgroup>
         </select>
 
         <select

@@ -29,7 +29,6 @@ const CategorySchema = new Schema<ICategory>(
   { timestamps: true }
 );
 
-CategorySchema.index({ slug: 1 });
 CategorySchema.index({ parent: 1, isActive: 1 });
 
 const Category = models.Category ?? model<ICategory>('Category', CategorySchema);

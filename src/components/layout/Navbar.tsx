@@ -35,35 +35,38 @@ export function Navbar() {
           isScrolled ? 'shadow-[0_1px_4px_0_rgba(34,22,23,0.08)] border-b border-[#E8D8C8]' : 'border-b border-[#E8D8C8]'
         )}
       >
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="flex items-center h-[76px] lg:h-[86px] py-2">
+        <div className="max-w-[1440px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-10">
+          <div className="relative flex items-center justify-between lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] h-[72px] sm:h-[76px] lg:h-[84px] py-1.5">
 
-            {/* Mobile hamburger */}
-            <button
-              className="lg:hidden p-2 -ml-2 text-[#221617]"
-              onClick={() => setMobileOpen(true)}
-              aria-label="Open navigation"
-            >
-              <Menu size={21} />
-            </button>
+            {/* Left section: Hamburger on mobile, Brand logo on desktop */}
+            <div className="flex items-center justify-start min-w-0">
+              {/* Mobile hamburger */}
+              <button
+                className="lg:hidden p-2 -ml-1.5 text-[#221617] hover:text-brand-gold transition-colors"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Open navigation"
+              >
+                <Menu size={22} />
+              </button>
 
-            {/* Brand Logo */}
-            <Link
-              href={ROUTES.HOME}
-              className="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 lg:mr-8 xl:mr-12 flex items-center justify-center py-1 select-none group transition-opacity hover:opacity-90"
-            >
-              <Image
-                src="/images/logo-header.webp"
-                alt="Aafreen Couture By Pearl"
-                width={260}
-                height={123}
-                className="h-14 sm:h-16 lg:h-[70px] w-auto object-contain drop-shadow-2xs"
-                priority
-              />
-            </Link>
+              {/* Brand Logo */}
+              <Link
+                href={ROUTES.HOME}
+                className="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 flex items-center justify-center py-1 select-none group transition-opacity hover:opacity-90 max-w-[50vw] sm:max-w-none"
+              >
+                <Image
+                  src="/images/logo-header.webp"
+                  alt="Aafreen Couture By Pearl"
+                  width={260}
+                  height={123}
+                  className="h-11 sm:h-14 lg:h-[62px] xl:h-[66px] w-auto object-contain drop-shadow-2xs"
+                  priority
+                />
+              </Link>
+            </div>
 
-            {/* Desktop nav links */}
-            <nav className="hidden lg:flex items-center gap-1 flex-1">
+            {/* Center section: Desktop nav links, horizontally centered */}
+            <nav className="hidden lg:flex items-center justify-center gap-0.5 xl:gap-2">
               {navLinks.map((link) => (
                 <NavItem
                   key={link.href}
@@ -75,26 +78,26 @@ export function Navbar() {
               ))}
             </nav>
 
-            {/* Icons */}
-            <div className="flex items-center gap-1 ml-auto lg:ml-0">
-              <Link href={ROUTES.SEARCH} aria-label="Search" className="p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors">
+            {/* Right section: Action Icons */}
+            <div className="flex items-center justify-end gap-0.5 sm:gap-1 min-w-0">
+              <Link href={ROUTES.SEARCH} aria-label="Search" className="p-1.5 sm:p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors">
                 <Search size={18} />
               </Link>
-              <Link href={ROUTES.PROFILE} aria-label="Account" className="p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors hidden sm:flex">
+              <Link href={ROUTES.PROFILE} aria-label="Account" className="p-1.5 sm:p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors hidden sm:flex">
                 <User size={18} />
               </Link>
-              <Link href={ROUTES.WISHLIST} aria-label="Wishlist" className="p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors relative">
+              <Link href={ROUTES.WISHLIST} aria-label="Wishlist" className="p-1.5 sm:p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors relative">
                 <Heart size={18} />
                 {wishlistCount > 0 && (
-                  <span className="absolute top-1.5 right-1 bg-brand-gold text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
+                  <span className="absolute top-1 right-0.5 bg-brand-gold text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
                     {wishlistCount > 9 ? '9+' : wishlistCount}
                   </span>
                 )}
               </Link>
-              <Link href={ROUTES.CART} aria-label="Cart" className="p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors relative">
+              <Link href={ROUTES.CART} aria-label="Cart" className="p-1.5 sm:p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors relative">
                 <ShoppingBag size={18} />
                 {cartItemCount > 0 && (
-                  <span className="absolute top-1.5 right-1 bg-[#A67C52] text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
+                  <span className="absolute top-1 right-0.5 bg-[#A67C52] text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
                     {cartItemCount > 9 ? '9+' : cartItemCount}
                   </span>
                 )}
@@ -158,11 +161,15 @@ export function Navbar() {
                         </button>
                         {mobileExpanded === link.label && (
                           <div className="bg-[#FAF8F5] pb-2">
-                            {link.megaMenu.flatMap((g) => g.links).map((sub) => (
+                            {link.megaMenu.flatMap((g) => g.links).map((sub, i, arr) => (
                               <Link
                                 key={sub.href}
                                 href={sub.href}
-                                className="block pl-8 pr-5 py-2.5 text-[11px] text-[#1A1A1A]/70 hover:text-brand-gold transition-colors"
+                                prefetch={true}
+                                className={cn(
+                                  'block pl-8 pr-5 py-2.5 text-[11px] text-[#1A1A1A]/70 hover:text-brand-gold transition-colors',
+                                  i === arr.length - 1 && 'font-semibold text-brand-gold border-t border-[#F0E8DC] mt-1 pt-2.5'
+                                )}
                                 onClick={() => setMobileOpen(false)}
                               >
                                 {sub.label}
@@ -223,19 +230,20 @@ function NavItem({
     >
       <Link
         href={link.href}
+        prefetch={true}
         className={cn(
-          'flex items-center gap-0.5 px-3 xl:px-3.5 py-2 text-[10.5px] xl:text-[11px] font-semibold tracking-[0.12em] uppercase transition-colors whitespace-nowrap',
+          'flex items-center gap-0.5 xl:gap-1 px-2 xl:px-3 py-2 text-[10px] xl:text-[11px] font-semibold tracking-[0.11em] xl:tracking-[0.14em] uppercase transition-colors whitespace-nowrap',
           link.isSale
             ? 'text-red-600 hover:text-red-700'
             : isActive
             ? 'text-brand-gold'
-            : 'text-[#1A1A1A]/75 hover:text-[#1A1A1A]'
+            : 'text-[#1A1A1A]/80 hover:text-brand-gold'
         )}
       >
         {link.label}
         {link.megaMenu && (
           <ChevronDown
-            size={10}
+            size={11}
             className={cn('mt-px transition-transform duration-200', isActive && 'rotate-180 text-brand-gold')}
           />
         )}
@@ -249,17 +257,19 @@ function NavItem({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.15, ease: 'easeOut' }}
-            className="absolute top-full left-0 mt-0 bg-white border border-[#E8D4A8] shadow-lg z-50 min-w-[200px]"
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-0 bg-white border border-[#E8D4A8] shadow-lg z-50 min-w-[210px] py-1.5"
           >
             {link.megaMenu.map((group) => (
-              <div key={group.title} className="py-2">
+              <div key={group.title} className="py-1">
                 {group.links.map((sub, i) => (
                   <Link
                     key={sub.href}
                     href={sub.href}
+                    prefetch={true}
+                    onClick={onLeave}
                     className={cn(
-                      'block px-5 py-2 text-[11px] text-[#1A1A1A]/75 hover:text-brand-gold hover:bg-[#FAF8F5] transition-colors',
-                      i === group.links.length - 1 && 'font-semibold text-brand-gold border-t border-[#F0E8DC] mt-1 pt-3'
+                      'block px-5 py-2 text-[11.5px] text-[#221617]/80 hover:text-[#A67C52] hover:bg-[#FAF8F5] transition-colors whitespace-nowrap',
+                      i === group.links.length - 1 && 'font-semibold text-[#A67C52] border-t border-[#F0E8DC] mt-1 pt-2.5'
                     )}
                   >
                     {sub.label}

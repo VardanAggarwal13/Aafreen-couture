@@ -9,15 +9,15 @@ const BADGES = [
 
 export function TrustBadges() {
   return (
-    <section className="border-b border-[#E8D8C8] bg-white py-6 sm:py-8">
+    <section className="border-b border-[#E8D8C8] bg-white py-4 sm:py-5">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#E8D8C8] gap-y-4 sm:gap-y-0">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-0 lg:divide-x lg:divide-[#E8D8C8]">
           {BADGES.map(({ icon: Icon, label, sub }) => (
-            <div key={label} className="flex items-center justify-center gap-3 py-2 px-4">
-              <Icon size={20} className="text-[#A67C52] shrink-0" strokeWidth={1.5} />
-              <div>
-                <p className="text-xs font-semibold text-[#221617] uppercase tracking-wider leading-tight">{label}</p>
-                <p className="text-[10.5px] text-[#6E6A66] leading-tight mt-0.5">{sub}</p>
+            <div key={label} className="flex items-center justify-start sm:justify-center gap-2 sm:gap-2.5 py-1 px-2 sm:px-4">
+              <Icon size={18} className="text-[#A67C52] shrink-0" strokeWidth={1.5} />
+              <div className="min-w-0">
+                <p className="text-[11px] sm:text-xs font-semibold text-[#221617] uppercase tracking-wider leading-tight truncate">{label}</p>
+                <p className="text-[10px] sm:text-[10.5px] text-[#6E6A66] leading-tight mt-0.5 truncate">{sub}</p>
               </div>
             </div>
           ))}

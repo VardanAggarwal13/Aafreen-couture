@@ -1,5 +1,8 @@
 import { connectDB } from '@/lib/db';
+import mongoose from 'mongoose';
 import Product from '@/models/Product';
+import Category from '@/models/Category';
+import Collection from '@/models/Collection';
 import type { IProduct } from '@/models/Product';
 import type { PaginationParams } from '@/types';
 import type { SortOrder } from 'mongoose';
@@ -39,19 +42,83 @@ function matchFallbackFilters(p: IProduct, filters: ProductFilters): boolean {
   }
 
   if (filters.category) {
-    const catSlug = typeof p.category === 'object' && p.category ? (p.category as { slug?: string }).slug : String(p.category);
-    const matchesCat = catSlug === filters.category;
-    const matchesOcc = p.occasion?.some((o) => {
-      const ol = o.toLowerCase().replace(/\s+/g, '-');
-      return ol === filters.category?.toLowerCase() || o.toLowerCase() === filters.category?.toLowerCase();
-    });
-    const matchesBridalSuits = filters.category === 'bridal-suits' &&
-      (catSlug === 'suits' || catSlug === 'bridal-suits' || p.tags?.includes('suits')) &&
-      (p.occasion?.some((o) => o.toLowerCase().includes('bridal') || o.toLowerCase().includes('wedding')) || p.tags?.includes('bridal'));
-    const matchesBridalGeneral = filters.category === 'bridal' &&
-      (catSlug?.includes('bridal') || p.occasion?.some((o) => o.toLowerCase().includes('bridal')));
+    const catSlug = typeof p.category === 'object' && p.category ? (p.category as { slug?: string }).slug?.toLowerCase() : String(p.category).toLowerCase();
+    const reqCat = filters.category.toLowerCase();
 
-    if (!matchesCat && !matchesOcc && !matchesBridalSuits && !matchesBridalGeneral) return false;
+    if (catSlug === reqCat) {
+      // direct match
+    } else if (reqCat === 'bridal') {
+      const isBridal = catSlug?.includes('bridal') || p.occasion?.some((o) => o.toLowerCase().includes('bridal') || o.toLowerCase().includes('wedding'));
+      if (!isBridal) return false;
+    } else if (reqCat === 'bridal-suits') {
+      const isSuit = catSlug === 'suits' || p.tags?.includes('suits') || p.name.toLowerCase().includes('suit') || p.name.toLowerCase().includes('anarkali');
+      const isBridal = p.occasion?.some((o) => o.toLowerCase().includes('bridal') || o.toLowerCase().includes('wedding')) || p.tags?.includes('bridal');
+      if (!isSuit || !isBridal) return false;
+    } else if (reqCat === 'bridesmaid-lehengas') {
+      const isBridesmaid = catSlug === 'bridesmaid-lehengas' || p.occasion?.some((o) => o.toLowerCase().includes('bridesmaid'));
+      if (!isBridesmaid) return false;
+    } else if (reqCat === 'reception-gowns' || reqCat === 'gowns') {
+      const isGown = catSlug === 'gowns' || catSlug === 'reception-gowns' || p.tags?.includes('gown') || p.name.toLowerCase().includes('gown');
+      if (!isGown) return false;
+    } else if (reqCat === 'cotton-kurta-sets') {
+      const isCottonKurta = (catSlug === 'suits' || catSlug === 'co-ord-sets' || catSlug === 'cotton-kurta-sets') &&
+        (p.fabric?.toLowerCase().includes('cotton') || p.tags?.includes('cotton') || p.name.toLowerCase().includes('kurta') || p.name.toLowerCase().includes('anarkali') || p.fabric?.toLowerCase().includes('chanderi'));
+      if (!isCottonKurta) return false;
+    } else if (reqCat === 'co-ord-sets' || reqCat === 'signature-co-ords') {
+      const isCoord = catSlug === 'co-ord-sets' || p.tags?.includes('coord') || p.name.toLowerCase().includes('coord');
+      if (!isCoord) return false;
+    } else if (reqCat === 'new-arrivals') {
+      const isNew = p.isNewArrival || p.tags?.includes('new') || p.tags?.includes('new-arrival') || true;
+      if (!isNew) return false;
+    } else if (reqCat === 'summer-essentials') {
+      const isSummer = catSlug === 'suits' || p.fabric?.toLowerCase().includes('cotton') || p.tags?.includes('summer') || p.name.toLowerCase().includes('anarkali') || p.fabric?.toLowerCase().includes('chanderi');
+      if (!isSummer) return false;
+    } else if (reqCat === 'partywear-unstitched') {
+      const isPartywear = catSlug === 'suits' || p.tags?.includes('partywear') || p.tags?.includes('unstitched') || p.name.toLowerCase().includes('sharara') || p.name.toLowerCase().includes('anarkali');
+      if (!isPartywear) return false;
+    } else if (reqCat === 'custom-embroidered-suits' || reqCat === 'handcrafted-luxury') {
+      const isEmb = catSlug === 'suits' || p.tags?.includes('embroidered') || p.name.toLowerCase().includes('anarkali') || p.name.toLowerCase().includes('sharara');
+      if (!isEmb) return false;
+    } else if (reqCat === 'indo-western') {
+      const isIndo = catSlug === 'co-ord-sets' || catSlug === 'indo-western' || p.tags?.includes('indo-western') || p.name.toLowerCase().includes('coord');
+      if (!isIndo) return false;
+    } else if (reqCat === 'dresses') {
+      const isDress = catSlug === 'gowns' || p.name.toLowerCase().includes('gown') || p.tags?.includes('dress') || p.tags?.includes('gown');
+      if (!isDress) return false;
+    } else if (reqCat === 'sharara' || reqCat === 'sharara-sets') {
+      const isSharara = p.name.toLowerCase().includes('sharara') || p.tags?.includes('sharara') || p.description.toLowerCase().includes('sharara');
+      if (!isSharara) return false;
+    } else if (reqCat === 'occasion-lehengas') {
+      const isLehenga = catSlug === 'bridal-lehengas' || catSlug === 'bridesmaid-lehengas' || p.name.toLowerCase().includes('lehenga');
+      if (!isLehenga) return false;
+    } else if (reqCat === 'handbags' || reqCat === 'the-bag-edit') {
+      const isBag = catSlug === 'the-bag-edit' || p.tags?.includes('bag') || p.name.toLowerCase().includes('bag') || p.name.toLowerCase().includes('potli');
+      if (!isBag) return false;
+    } else if (reqCat === 'potlis') {
+      const isPotli = catSlug === 'the-bag-edit' || p.name.toLowerCase().includes('potli') || p.tags?.includes('potli');
+      if (!isPotli) return false;
+    } else if (reqCat === 'clutches') {
+      const isClutch = catSlug === 'the-bag-edit' || p.name.toLowerCase().includes('clutch') || p.tags?.includes('clutch');
+      if (!isClutch) return false;
+    } else if (reqCat === 'totes') {
+      const isTote = catSlug === 'the-bag-edit' || p.name.toLowerCase().includes('tote') || p.tags?.includes('tote');
+      if (!isTote) return false;
+    } else if (reqCat === 'shoulder-bags') {
+      const isShoulder = catSlug === 'the-bag-edit' || p.name.toLowerCase().includes('shoulder') || p.tags?.includes('bag');
+      if (!isShoulder) return false;
+    } else if (reqCat === 'jewellery') {
+      const isJewel = catSlug === 'jewellery' || p.tags?.includes('jewellery') || p.name.toLowerCase().includes('choker') || p.name.toLowerCase().includes('jewellery');
+      if (!isJewel) return false;
+    } else if (reqCat === 'suits') {
+      const isSuit = catSlug === 'suits' || p.name.toLowerCase().includes('suit') || p.name.toLowerCase().includes('anarkali') || p.name.toLowerCase().includes('sharara');
+      if (!isSuit) return false;
+    } else {
+      const matchesOcc = p.occasion?.some((o) => {
+        const ol = o.toLowerCase().replace(/\s+/g, '-');
+        return ol === reqCat || o.toLowerCase() === reqCat;
+      });
+      if (!matchesOcc) return false;
+    }
   }
 
   if (filters.collectionRef) {
@@ -106,12 +173,15 @@ export class ProductRepository {
   async findById(id: string): Promise<IProduct | null> {
     try {
       await connectDB();
-      const doc = await Product.findById(id).populate('category').lean<IProduct>();
+      const query = mongoose.isValidObjectId(id)
+        ? { _id: id }
+        : { slug: id };
+      const doc = await Product.findOne(query).populate('category', 'name slug').lean<IProduct>();
       if (doc) return doc;
     } catch {
       // Fallback below
     }
-    const found = FALLBACK_PRODUCTS.find((p) => p._id === id || String(p._id) === id);
+    const found = FALLBACK_PRODUCTS.find((p) => p._id === id || String(p._id) === id || p.slug === id);
     return (found as unknown as IProduct) ?? null;
   }
 
@@ -138,8 +208,33 @@ export class ProductRepository {
 
       const query: Record<string, unknown> = { isActive: true };
 
-      if (filters.category) query.category = filters.category;
-      if (filters.collectionRef) query.collectionRef = filters.collectionRef;
+      if (filters.category) {
+        if (mongoose.Types.ObjectId.isValid(filters.category)) {
+          query.category = filters.category;
+        } else {
+          const cat = await Category.findOne({ slug: filters.category.toLowerCase() }).lean();
+          if (cat) {
+            query.category = cat._id;
+          } else {
+            query.$or = [
+              { tags: filters.category.toLowerCase() },
+              { occasion: { $regex: new RegExp(`^${filters.category}$`, 'i') } },
+              { fabric: { $regex: new RegExp(`^${filters.category}$`, 'i') } },
+              { name: { $regex: new RegExp(filters.category.replace(/-/g, ' '), 'i') } },
+            ];
+          }
+        }
+      }
+      if (filters.collectionRef) {
+        if (mongoose.Types.ObjectId.isValid(filters.collectionRef)) {
+          query.collectionRef = filters.collectionRef;
+        } else {
+          const col = await Collection.findOne({ slug: filters.collectionRef.toLowerCase() }).lean();
+          if (col) {
+            query.collectionRef = col._id;
+          }
+        }
+      }
       if (filters.occasion) query.occasion = { $regex: new RegExp(`^${filters.occasion}$`, 'i') };
       if (filters.isFeatured !== undefined) query.isFeatured = filters.isFeatured;
       if (filters.isNewArrival !== undefined) query.isNewArrival = filters.isNewArrival;
@@ -280,19 +375,74 @@ export class ProductRepository {
 
   async create(data: Partial<IProduct>): Promise<IProduct> {
     await connectDB();
+    if (data.category && typeof data.category === 'string' && !mongoose.isValidObjectId(data.category)) {
+      const slug = (data.category as string).toLowerCase();
+      let cat = await Category.findOne({ slug });
+      if (!cat) {
+        cat = await Category.create({
+          name: slug.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+          slug,
+          isActive: true,
+        });
+      }
+      data.category = cat._id as unknown as mongoose.Types.ObjectId;
+    }
+    if (data.collectionRef && typeof data.collectionRef === 'string' && !mongoose.isValidObjectId(data.collectionRef)) {
+      const col = await Collection.findOne({ slug: (data.collectionRef as string).toLowerCase() });
+      if (col) {
+        data.collectionRef = col._id as unknown as mongoose.Types.ObjectId;
+      } else {
+        delete data.collectionRef;
+      }
+    }
+    if (!data.variants || data.variants.length === 0) {
+      const pSlug = data.slug || 'prod';
+      const pPrice = data.basePrice || 100000;
+      data.variants = ['XS', 'S', 'M', 'L', 'XL'].map((sz) => ({
+        size: sz,
+        sku: `${pSlug}-${sz}`.toUpperCase(),
+        price: pPrice,
+        stock: 10,
+        isActive: true,
+      })) as unknown as IProduct['variants'];
+    }
     const doc = await Product.create(data);
     return doc.toObject() as IProduct;
   }
 
   async update(idOrSlug: string, data: Partial<IProduct>): Promise<IProduct | null> {
     await connectDB();
-    const query = idOrSlug.match(/^[0-9a-fA-F]{24}$/) ? { _id: idOrSlug } : { slug: idOrSlug };
+    if (data.category && typeof data.category === 'string' && !mongoose.isValidObjectId(data.category)) {
+      const slug = (data.category as string).toLowerCase();
+      let cat = await Category.findOne({ slug });
+      if (!cat) {
+        cat = await Category.create({
+          name: slug.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+          slug,
+          isActive: true,
+        });
+      }
+      data.category = cat._id as unknown as mongoose.Types.ObjectId;
+    }
+    if (data.collectionRef && typeof data.collectionRef === 'string' && !mongoose.isValidObjectId(data.collectionRef)) {
+      const col = await Collection.findOne({ slug: (data.collectionRef as string).toLowerCase() });
+      if (col) {
+        data.collectionRef = col._id as unknown as mongoose.Types.ObjectId;
+      } else {
+        delete data.collectionRef;
+      }
+    }
+    const query = mongoose.isValidObjectId(idOrSlug)
+      ? { _id: idOrSlug }
+      : { slug: idOrSlug };
     return Product.findOneAndUpdate(query, data, { new: true }).lean<IProduct>();
   }
 
   async delete(idOrSlug: string): Promise<boolean> {
     await connectDB();
-    const query = idOrSlug.match(/^[0-9a-fA-F]{24}$/) ? { _id: idOrSlug } : { slug: idOrSlug };
+    const query = mongoose.isValidObjectId(idOrSlug)
+      ? { _id: idOrSlug }
+      : { slug: idOrSlug };
     const result = await Product.findOneAndDelete(query);
     return !!result;
   }

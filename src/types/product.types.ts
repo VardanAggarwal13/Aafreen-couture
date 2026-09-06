@@ -16,6 +16,7 @@ export interface ICollection {
   slug: string;
   description?: string;
   image?: string;
+  bannerImage?: string;
   isFeatured: boolean;
   isActive: boolean;
 }

@@ -27,42 +27,42 @@ export function Footer() {
   return (
     <footer className="bg-[#1A1011] text-[#FAF7F2] mt-auto border-t border-[#C49A5A]/30">
       {/* Newsletter Subscription Banner */}
-      <div className="border-b border-[#C49A5A]/20 bg-[#221617] py-12 lg:py-16">
+      <div className="border-b border-[#C49A5A]/20 bg-[#221617] py-8 sm:py-10 lg:py-12">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.45em] text-[#C49A5A] mb-3">
+          <p className="text-[10px] sm:text-[10.5px] font-semibold uppercase tracking-[0.35em] text-[#C49A5A] mb-2">
             The Atelier Newsletter
           </p>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white uppercase tracking-wide mb-3">
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white uppercase tracking-wide mb-2">
             Join The World of Aafreen Couture
           </h2>
-          <p className="text-xs sm:text-sm text-white/70 font-sans max-w-xl mx-auto mb-8 leading-relaxed">
+          <p className="text-xs sm:text-sm text-white/70 font-sans max-w-xl mx-auto mb-5 sm:mb-6 leading-relaxed">
             Subscribe to receive private previews, bespoke bridal trunk show invitations, and exclusive new collection releases.
           </p>
 
-          <form onSubmit={handleSubscribe} className="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+          <form onSubmit={handleSubscribe} className="max-w-md mx-auto flex flex-col sm:flex-row gap-2.5">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address"
-              className="flex-1 bg-[#2C1A1C] border border-[#C49A5A]/40 text-white placeholder:text-white/40 px-5 py-3.5 text-xs font-sans focus:outline-none focus:border-[#C49A5A] transition-colors rounded-xs"
+              className="flex-1 bg-[#2C1A1C] border border-[#C49A5A]/40 text-white placeholder:text-white/40 px-4 py-2.5 text-xs font-sans focus:outline-none focus:border-[#C49A5A] transition-colors rounded-xs"
               required
             />
             <button
               type="submit"
-              className="bg-[#C49A5A] text-[#1A0E0E] hover:bg-white text-xs font-semibold uppercase tracking-[0.25em] px-8 py-3.5 transition-colors flex items-center justify-center gap-2 rounded-xs shrink-0"
+              className="bg-[#C49A5A] text-[#1A0E0E] hover:bg-white text-[11px] font-semibold uppercase tracking-[0.2em] px-5 py-2.5 transition-colors flex items-center justify-center gap-1.5 rounded-xs shrink-0 cursor-pointer"
             >
               <span>Subscribe</span>
-              <ArrowRight size={14} />
+              <ArrowRight size={13} />
             </button>
           </form>
         </div>
       </div>
 
       {/* Main Footer Links & Brand Section */}
-      <div className="py-16 lg:py-20">
+      <div className="py-10 sm:py-12 lg:py-14">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-8">
             
             {/* Brand Column */}
             <div className="lg:col-span-2 space-y-6">
@@ -183,7 +183,7 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar: Copyright, Policies & Payment Methods */}
-      <div className="border-t border-[#C49A5A]/20 bg-[#140C0D] py-6">
+      <div className="border-t border-[#C49A5A]/20 bg-[#140C0D] py-4 sm:py-5">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/50 font-sans">
           <p>© {year} Aafreen Couture By Pearl. All Rights Reserved.</p>
 

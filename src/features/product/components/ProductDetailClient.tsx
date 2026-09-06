@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { formatPrice, getDiscountPercentage } from '@/utils/format';
 import { useCartStore } from '@/store/cart.store';
 import { useWishlistStore } from '@/store/wishlist.store';
+import { buttonVariants } from '@/components/ui/button';
 import { ProductCard } from '@/components/product/ProductCard';
 import { siteConfig } from '@/config/site.config';
 import type { IProduct } from '@/types';
@@ -109,7 +110,7 @@ export function ProductDetailClient({ product, related }: Props) {
   return (
     <>
       {/* Breadcrumb */}
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-xs text-[#6E6A66] flex items-center gap-2">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 text-xs text-[#6E6A66] flex items-center gap-2">
         <Link href="/" className="hover:text-brand-gold transition-colors">Home</Link>
         <span>/</span>
         <Link href="/shop" className="hover:text-brand-gold transition-colors">Shop</Link>
@@ -117,19 +118,19 @@ export function ProductDetailClient({ product, related }: Props) {
         <span className="text-[#221617] font-medium">{product.name}</span>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 xl:gap-12">
           {/* Image gallery */}
-          <div className="flex gap-3">
+          <div className="flex flex-col-reverse sm:flex-row gap-3">
             {/* Thumbnails */}
             {allImages.length > 1 && (
-              <div className="flex flex-col gap-2 w-16 shrink-0">
+              <div className="flex sm:flex-col gap-2 overflow-x-auto sm:overflow-visible sm:w-16 shrink-0 no-scrollbar pb-1 sm:pb-0">
                 {allImages.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImage(i)}
                     className={cn(
-                      'aspect-square overflow-hidden rounded-sm border-2 transition-colors',
+                      'w-14 h-14 sm:w-16 sm:h-16 shrink-0 aspect-square overflow-hidden rounded-sm border-2 transition-colors cursor-pointer',
                       i === selectedImage ? 'border-[#A67C52]' : 'border-transparent'
                     )}
                   >
@@ -320,18 +321,17 @@ export function ProductDetailClient({ product, related }: Props) {
             </div>
 
             {/* Dual CTAs matching reference mockup: ADD TO CART (Dark Maroon) & BUY NOW (Gold Tan) */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
               <button
                 onClick={handleAddToCart}
                 disabled={!inStock}
                 className={cn(
-                  'flex-1 flex items-center justify-center gap-2 py-3.5 px-6 text-xs font-semibold tracking-[0.18em] uppercase transition-all shadow-xs',
-                  inStock
-                    ? 'bg-[#221617] text-white hover:bg-[#3A2224]'
-                    : 'bg-[#E8D8C8] text-[#6E6A66] cursor-not-allowed'
+                  buttonVariants({ variant: 'couture', size: 'couture' }),
+                  'flex-1 gap-2 cursor-pointer',
+                  !inStock && 'opacity-40 cursor-not-allowed'
                 )}
               >
-                <ShoppingBag size={15} />
+                <ShoppingBag size={14} />
                 {inStock ? 'Add to Cart' : 'Out of Stock'}
               </button>
 
@@ -339,10 +339,9 @@ export function ProductDetailClient({ product, related }: Props) {
                 onClick={handleBuyNow}
                 disabled={!inStock}
                 className={cn(
-                  'flex-1 flex items-center justify-center gap-2 py-3.5 px-6 text-xs font-semibold tracking-[0.18em] uppercase transition-all shadow-xs',
-                  inStock
-                    ? 'bg-[#A67C52] text-white hover:bg-[#8F6841]'
-                    : 'bg-[#E8D8C8] text-[#6E6A66] cursor-not-allowed'
+                  buttonVariants({ variant: 'couture-gold', size: 'couture' }),
+                  'flex-1 gap-2 cursor-pointer',
+                  !inStock && 'opacity-40 cursor-not-allowed'
                 )}
               >
                 Buy Now
@@ -380,7 +379,7 @@ export function ProductDetailClient({ product, related }: Props) {
             </div>
 
             {/* PDP Trust Badges Bar matching reference image */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4 border-y border-[#E8D8C8] bg-white/60 p-3 text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3 border-y border-[#E8D8C8] bg-white/60 p-2 text-center">
               <div className="space-y-0.5">
                 <span className="text-base">🚚</span>
                 <p className="text-[10px] font-semibold text-[#221617] uppercase">Free Shipping</p>
@@ -410,7 +409,7 @@ export function ProductDetailClient({ product, related }: Props) {
               { key: 'shipping', label: 'SHIPPING & DELIVERY', content: 'Free express shipping across India. Standard dispatch within 3-5 business days. International shipping available.' },
               { key: 'returns', label: 'RETURN & EXCHANGE', content: 'Hassle-free 7-day return and exchange policy. Items must be unused and in original packaging.' },
             ].map(({ key, label, content }) => (
-              <div key={key} className="border-b border-[#E8D8C8] pb-3">
+              <div key={key} className="border-b border-[#E8D8C8] pb-2.5">
                 <button
                   onClick={() => setAccordionOpen(accordionOpen === key ? null : key)}
                   className="flex items-center justify-between w-full text-left py-1"
@@ -435,9 +434,9 @@ export function ProductDetailClient({ product, related }: Props) {
 
         {/* Related products */}
         {related.length > 0 && (
-          <section className="mt-16 pt-16 border-t border-brand-cream">
-            <h2 className="text-2xl text-brand-black mb-8">You May Also Like</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+          <section className="mt-10 sm:mt-12 pt-8 sm:pt-10 border-t border-[#E8D8C8]">
+            <h2 className="font-serif text-2xl text-[#221617] uppercase tracking-wide mb-5 sm:mb-6">You May Also Like</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-6">
               {related.map((p) => (
                 <ProductCard key={p._id as string} product={p} />
               ))}

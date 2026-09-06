@@ -59,16 +59,16 @@ function OccasionCard({ label, href, image }: { label: string; href: string; ima
 
 export function ShopByOccasion() {
   return (
-    <section className="py-20 lg:py-24 bg-[#FAF7F2] border-b border-[#E8D8C8]">
+    <section className="py-10 sm:py-12 lg:py-14 bg-[#FAF7F2] border-b border-[#E8D8C8]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-xs lg:text-sm font-semibold tracking-[0.35em] text-[#221617] uppercase mb-2">
+        <div className="text-center mb-6 sm:mb-8 lg:mb-10">
+          <h2 className="text-xs lg:text-sm font-semibold tracking-[0.35em] text-[#221617] uppercase mb-1.5">
             Shop By Occasion
           </h2>
           <p className="text-xs text-[#6E6A66] tracking-wide font-sans">Find the perfect look for every moment</p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4 lg:gap-5">
           {shopByOccasion.map((occ) => (
             <OccasionCard key={occ.href} {...occ} />
           ))}

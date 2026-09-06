@@ -19,22 +19,22 @@ function CategoryCircle({ label, href, image }: { label: string; href: string; i
   const gradient = FALLBACK_GRADIENTS[label] ?? 'from-[#221617] to-[#A67C52]';
 
   return (
-    <Link href={href} className="group flex flex-col items-center gap-3.5">
-      <div className="relative w-[96px] h-[96px] sm:w-[120px] sm:h-[120px] lg:w-[136px] lg:h-[136px] rounded-full overflow-hidden ring-[2px] ring-[#E8D8C8] group-hover:ring-[#A67C52] group-hover:ring-2 transition-all duration-300 shadow-xs">
+    <Link href={href} className="group flex flex-col items-center gap-2.5 sm:gap-3.5">
+      <div className="relative w-[80px] h-[80px] xs:w-[88px] xs:h-[88px] sm:w-[116px] sm:h-[116px] lg:w-[136px] lg:h-[136px] rounded-full overflow-hidden ring-[2px] ring-[#E8D8C8] group-hover:ring-[#A67C52] group-hover:ring-2 transition-all duration-300 shadow-xs">
         {!err ? (
           <Image
             src={image}
             alt={label}
             fill
             className="object-cover object-center group-hover:scale-108 transition-transform duration-500"
-            sizes="(max-width: 640px) 96px, (max-width: 1024px) 120px, 136px"
+            sizes="(max-width: 640px) 88px, (max-width: 1024px) 116px, 136px"
             onError={() => setErr(true)}
           />
         ) : (
           <div className={`absolute inset-0 bg-linear-to-br ${gradient}`} />
         )}
       </div>
-      <span className="text-xs font-semibold text-[#221617] tracking-[0.08em] text-center leading-tight group-hover:text-[#A67C52] transition-colors uppercase max-w-[110px]">
+      <span className="text-[11px] sm:text-xs font-semibold text-[#221617] tracking-[0.06em] sm:tracking-[0.08em] text-center leading-tight group-hover:text-[#A67C52] transition-colors uppercase max-w-[85px] xs:max-w-[95px] sm:max-w-[110px]">
         {label}
       </span>
     </Link>
@@ -43,12 +43,12 @@ function CategoryCircle({ label, href, image }: { label: string; href: string; i
 
 export function CategoryGrid() {
   return (
-    <section className="py-20 lg:py-24 bg-[#FAF7F2] border-b border-[#E8D8C8]">
+    <section className="py-10 sm:py-12 lg:py-14 bg-[#FAF7F2] border-b border-[#E8D8C8]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-        <h2 className="text-center text-xs lg:text-sm font-semibold tracking-[0.35em] text-[#221617] uppercase mb-12 lg:mb-16">
+        <h2 className="text-center text-xs lg:text-sm font-semibold tracking-[0.35em] text-[#221617] uppercase mb-6 sm:mb-8 lg:mb-10">
           Shop By Category
         </h2>
-        <div className="flex items-start justify-center gap-6 sm:gap-10 lg:gap-14 flex-wrap">
+        <div className="flex items-start justify-center gap-3.5 xs:gap-5 sm:gap-10 lg:gap-14 flex-wrap">
           {homeCategories.map((cat) => (
             <CategoryCircle key={cat.href} {...cat} />
           ))}

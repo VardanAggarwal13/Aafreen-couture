@@ -1,18 +1,22 @@
+import mongoose from 'mongoose';
 import { connectDB } from '@/lib/db';
 import Category from '@/models/Category';
 import type { ICategory } from '@/models/Category';
 import { FALLBACK_CATEGORIES } from '@/data/products.data';
 
 export class CategoryRepository {
-  async findAll(): Promise<ICategory[]> {
+  async findAll(includeInactive = false): Promise<ICategory[]> {
     try {
       await connectDB();
-      const docs = await Category.find({ isActive: true }).sort({ sortOrder: 1, name: 1 }).lean<ICategory[]>();
+      const query = includeInactive ? {} : { isActive: true };
+      const docs = await Category.find(query).sort({ sortOrder: 1, name: 1 }).lean<ICategory[]>();
       if (docs.length > 0) return docs;
     } catch {
       // Fallback
     }
-    return FALLBACK_CATEGORIES as unknown as ICategory[];
+    return (includeInactive
+      ? FALLBACK_CATEGORIES
+      : FALLBACK_CATEGORIES.filter((c) => c.isActive)) as unknown as ICategory[];
   }
 
   async findBySlug(slug: string): Promise<ICategory | null> {
@@ -30,7 +34,8 @@ export class CategoryRepository {
   async findById(id: string): Promise<ICategory | null> {
     try {
       await connectDB();
-      const doc = await Category.findById(id).lean<ICategory>();
+      const query = mongoose.isValidObjectId(id) ? { _id: id } : { slug: id };
+      const doc = await Category.findOne(query).lean<ICategory>();
       if (doc) return doc;
     } catch {
       // Fallback
@@ -47,12 +52,14 @@ export class CategoryRepository {
 
   async update(id: string, data: Partial<ICategory>): Promise<ICategory | null> {
     await connectDB();
-    return Category.findByIdAndUpdate(id, data, { new: true }).lean<ICategory>();
+    const query = mongoose.isValidObjectId(id) ? { _id: id } : { slug: id };
+    return Category.findOneAndUpdate(query, data, { new: true }).lean<ICategory>();
   }
 
   async delete(id: string): Promise<boolean> {
     await connectDB();
-    const result = await Category.findByIdAndDelete(id);
+    const query = mongoose.isValidObjectId(id) ? { _id: id } : { slug: id };
+    const result = await Category.findOneAndDelete(query);
     return !!result;
   }
 }

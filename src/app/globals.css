@@ -5,9 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Brand fonts — CSS vars injected by next/font/google on <html> */
-  --font-sans: var(--font-poppins, 'Poppins'), 'Poppins', system-ui, -apple-system, sans-serif;
-  --font-serif: var(--font-playfair, 'Playfair Display'), 'Playfair Display', 'Palatino Linotype', Georgia, serif;
+  /* Brand luxury fonts — CSS vars injected by next/font/google on <html> */
+  --font-sans: var(--font-montserrat, 'Montserrat'), 'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-cormorant, 'Cormorant Garamond'), 'Cormorant Garamond', 'Garamond', Georgia, serif;
   --font-mono: ui-monospace, 'Cascadia Code', monospace;
 
   /* Brand color palette — matching reference luxury theme */
