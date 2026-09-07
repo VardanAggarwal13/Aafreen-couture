@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Shop ready-to-wear designer dresses, co-ords, sharara sets, and occasion lehengas ready for immediate shipping.',
 };
 
+export const revalidate = 120;
+
 const RTW_CHAPTERS = [
   {
     id: 'new-arrivals',
@@ -63,7 +65,7 @@ export default function ReadyToWearPage() {
         'Flawlessly proportioned contemporary silhouettes',
         'Sculpted co-ords, sharara sets & festive floor-sweepers',
       ]}
-      consultationLink="https://wa.me/919876543210?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Ready%20To%20Wear%20Collection."
+      consultationLink="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Ready%20To%20Wear%20Collection."
       chapters={RTW_CHAPTERS}
       showOccasionsGrid={false}
     />

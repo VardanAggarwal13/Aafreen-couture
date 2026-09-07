@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
 
+export const revalidate = 120;
+
 interface Props {
   params: Promise<{ subcategory: string }>;
 }

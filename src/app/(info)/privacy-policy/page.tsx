@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site.config';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
+import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { Shield, Lock, Mail, Phone, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -24,35 +25,14 @@ const TOC: TocItem[] = [
 export default function PrivacyPolicyPage() {
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
-      {/* Luxury Hero Banner */}
-      <div className="bg-[#1A1011] text-[#FAF7F2] py-14 sm:py-20 border-b border-[#C49A5A]/30 relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(45deg, #C49A5A 0px, #C49A5A 1px, transparent 1px, transparent 14px)',
-          }}
-        />
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-[#2C1A1C] border border-[#C49A5A]/30 px-3.5 py-1 rounded-full text-[10.5px] text-[#C49A5A] uppercase tracking-[0.3em] font-semibold mb-4">
-            <span>✦ Data Protection &amp; Security</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif uppercase tracking-wider text-white">
-            Privacy Policy
-          </h1>
-          <p className="mt-4 text-xs sm:text-sm text-white/75 font-sans max-w-2xl mx-auto leading-relaxed">
-            At Aafreen Couture, we value your trust. Learn how we collect, safeguard, and responsibly process your personal information.
-          </p>
-          <div className="mt-5 flex items-center justify-center gap-4 text-xs text-white/60 font-sans">
-            <span className="flex items-center gap-1.5">
-              <Clock size={13} className="text-[#C49A5A]" />
-              <span>Effective Date: August 31, 2026</span>
-            </span>
-            <span>·</span>
-            <span>Est. Reading Time: 4 mins</span>
-          </div>
-        </div>
-      </div>
+      {/* Luxury Editorial Hero */}
+      <InfoHeroBanner
+        badge="✦ Data Protection &amp; Security"
+        title="Privacy Policy"
+        italicTitle="Client Confidentiality"
+        subtitle="At Aafreen Couture, we value your trust. Learn how we collect, safeguard, and responsibly process your personal information with banking-grade security."
+        metaInfo="Effective Season 2026 · Compliant with the Information Technology Act, 2000 &amp; Digital Personal Data Protection Norms, India"
+      />
 
       {/* Main Container with 2-Column Responsive Layout */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-12 sm:py-16">

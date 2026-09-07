@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
-import { Menu, X, Search, ShoppingBag, Heart, User, ChevronDown } from 'lucide-react';
+import { Menu, X, Search, ShoppingBag, Heart, User, ChevronDown, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { navLinks } from '@/config/navigation.config';
@@ -11,13 +13,17 @@ import type { NavLink } from '@/config/navigation.config';
 import { ROUTES } from '@/constants/routes';
 import { useCartStore } from '@/store/cart.store';
 import { useWishlistStore } from '@/store/wishlist.store';
+import { useSession, authClient } from '@/lib/auth-client';
+import { api } from '@/utils/api';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMega, setActiveMega] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
+  const { data: session } = useSession();
   const cartItemCount = useCartStore((s) => s.getTotalItems());
   const wishlistCount = useWishlistStore((s) => s.items.length);
 
@@ -83,9 +89,99 @@ export function Navbar() {
               <Link href={ROUTES.SEARCH} aria-label="Search" className="p-1.5 sm:p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors">
                 <Search size={18} />
               </Link>
-              <Link href={ROUTES.PROFILE} aria-label="Account" className="p-1.5 sm:p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors hidden sm:flex">
-                <User size={18} />
-              </Link>
+              
+              {/* Account / Sign In Dropdown */}
+              <div
+                className="relative hidden sm:block"
+                onMouseEnter={() => setAccountMenuOpen(true)}
+                onMouseLeave={() => setAccountMenuOpen(false)}
+              >
+                <Link
+                  href={session ? ROUTES.DASHBOARD : ROUTES.LOGIN}
+                  aria-label="Account"
+                  className="p-1.5 sm:p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors flex items-center gap-1.5"
+                >
+                  <User size={18} />
+                  {session?.user && (
+                    <span className="text-[11px] font-medium text-[#221617] max-w-[85px] truncate hidden md:inline">
+                      {session.user.name?.split(' ')[0]}
+                    </span>
+                  )}
+                </Link>
+
+                {/* Dropdown Menu */}
+                {accountMenuOpen && (
+                  <div className="absolute right-0 top-full pt-1.5 z-50 w-56 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="bg-white border border-[#E8D8C8] shadow-lg rounded-xs py-2 text-xs font-sans">
+                      {session?.user ? (
+                        <>
+                          <div className="px-4 py-2.5 border-b border-[#E8D8C8]/60">
+                            <p className="font-serif text-xs font-semibold text-[#221617] truncate">{session.user.name}</p>
+                            <p className="text-[10.5px] text-[#6E6A66] truncate">{session.user.email}</p>
+                          </div>
+                          <Link
+                            href={ROUTES.DASHBOARD}
+                            className="block px-4 py-2 text-[#221617] hover:bg-[#FAF7F2] hover:text-[#A67C52] transition-colors"
+                          >
+                            My Dashboard
+                          </Link>
+                          <Link
+                            href={ROUTES.ORDERS}
+                            className="block px-4 py-2 text-[#221617] hover:bg-[#FAF7F2] hover:text-[#A67C52] transition-colors"
+                          >
+                            My Orders & Purchases
+                          </Link>
+                          <Link
+                            href={ROUTES.ADDRESSES}
+                            className="block px-4 py-2 text-[#221617] hover:bg-[#FAF7F2] hover:text-[#A67C52] transition-colors"
+                          >
+                            Saved Delivery Addresses
+                          </Link>
+                          <Link
+                            href={ROUTES.PROFILE}
+                            className="block px-4 py-2 text-[#221617] hover:bg-[#FAF7F2] hover:text-[#A67C52] transition-colors"
+                          >
+                            Profile Details
+                          </Link>
+                          <div className="border-t border-[#E8D8C8]/60 mt-1 pt-1">
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                await authClient.signOut();
+                                window.location.href = '/';
+                              }}
+                              className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors font-medium"
+                            >
+                              Sign Out
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="px-4 py-2 text-[#6E6A66]">
+                            <p className="font-serif text-xs font-semibold text-[#221617] mb-0.5">Welcome Patron</p>
+                            <p className="text-[10.5px] text-[#6E6A66]">Access orders & saved addresses</p>
+                          </div>
+                          <div className="px-4 py-2 border-t border-[#E8D8C8]/60 space-y-2">
+                            <Link
+                              href={ROUTES.LOGIN}
+                              className="block text-center py-2 bg-[#221617] text-white font-semibold uppercase tracking-wider text-[11px] rounded-xs hover:bg-[#A67C52] transition-colors"
+                            >
+                              Sign In
+                            </Link>
+                            <Link
+                              href={ROUTES.REGISTER}
+                              className="block text-center py-1.5 border border-[#E8D8C8] text-[#221617] font-medium text-[11px] rounded-xs hover:border-[#A67C52] transition-colors"
+                            >
+                              Create Account
+                            </Link>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
               <Link href={ROUTES.WISHLIST} aria-label="Wishlist" className="p-1.5 sm:p-2.5 text-[#221617]/80 hover:text-brand-gold transition-colors relative">
                 <Heart size={18} />
                 {wishlistCount > 0 && (
@@ -194,14 +290,62 @@ export function Navbar() {
                 ))}
               </nav>
 
-              <div className="px-5 py-5 border-t border-[#E8D4A8] space-y-3">
-                <Link
-                  href={ROUTES.PROFILE}
-                  className="flex items-center gap-2 text-sm text-[#1A1A1A]/70 hover:text-brand-gold transition-colors"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  <User size={15} /> My Account
-                </Link>
+              <div className="px-5 py-5 border-t border-[#E8D8C8] space-y-3">
+                {session?.user ? (
+                  <>
+                    <div className="pb-2 border-b border-[#E8D8C8]/60">
+                      <p className="font-serif text-xs font-semibold text-[#221617]">{session.user.name}</p>
+                      <p className="text-[11px] text-[#6E6A66]">{session.user.email}</p>
+                    </div>
+                    <Link
+                      href={ROUTES.DASHBOARD}
+                      className="flex items-center gap-2 text-xs text-[#221617] hover:text-[#A67C52] transition-colors font-medium"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <User size={14} /> My Dashboard
+                    </Link>
+                    <Link
+                      href={ROUTES.ORDERS}
+                      className="flex items-center gap-2 text-xs text-[#221617] hover:text-[#A67C52] transition-colors font-medium"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <ShoppingBag size={14} /> My Orders
+                    </Link>
+                    <Link
+                      href={ROUTES.ADDRESSES}
+                      className="flex items-center gap-2 text-xs text-[#221617] hover:text-[#A67C52] transition-colors font-medium"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <MapPin size={14} /> Saved Addresses
+                    </Link>
+                    <button
+                      onClick={async () => {
+                        await authClient.signOut();
+                        window.location.href = '/';
+                      }}
+                      className="text-xs font-semibold text-red-600 hover:underline pt-1 block"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <div className="space-y-2">
+                    <Link
+                      href={ROUTES.LOGIN}
+                      className="block text-center py-2 bg-[#221617] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#A67C52] transition-colors rounded-xs"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href={ROUTES.REGISTER}
+                      className="block text-center py-2 border border-[#E8D8C8] text-[#221617] text-xs font-medium hover:border-[#A67C52] transition-colors rounded-xs"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Create Account
+                    </Link>
+                  </div>
+                )}
               </div>
             </motion.aside>
           </>
@@ -222,10 +366,52 @@ function NavItem({
   onEnter: () => void;
   onLeave: () => void;
 }) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const handleWarm = () => {
+    try {
+      router.prefetch(link.href);
+    } catch {
+      // Safe fallback
+    }
+
+    // Warm TanStack query cache for target category products
+    if (link.href === '/jewellery') {
+      queryClient.prefetchQuery({
+        queryKey: ['couture-catalog', 'jewellery', '', 'newest', '', '', '', null, 1],
+        queryFn: () => api.getPaginated('/api/products?category=jewellery&sort=newest'),
+      });
+    } else if (link.href === '/bridal') {
+      queryClient.prefetchQuery({
+        queryKey: ['hub-chapter', 'bridal-lehengas', '', ''],
+        queryFn: () => api.getPaginated('/api/products?category=bridal-lehengas&limit=4'),
+      });
+    } else if (link.href === '/suits') {
+      queryClient.prefetchQuery({
+        queryKey: ['hub-chapter', 'cotton-kurta-sets', '', ''],
+        queryFn: () => api.getPaginated('/api/products?category=cotton-kurta-sets&limit=4'),
+      });
+    } else if (link.href === '/bags') {
+      queryClient.prefetchQuery({
+        queryKey: ['hub-chapter', 'handbags', '', ''],
+        queryFn: () => api.getPaginated('/api/products?category=handbags&limit=4'),
+      });
+    } else if (link.href === '/ready-to-wear') {
+      queryClient.prefetchQuery({
+        queryKey: ['hub-chapter', 'new-arrivals', '', ''],
+        queryFn: () => api.getPaginated('/api/products?category=new-arrivals&limit=4'),
+      });
+    }
+  };
+
   return (
     <div
       className="relative"
-      onMouseEnter={onEnter}
+      onMouseEnter={() => {
+        handleWarm();
+        onEnter();
+      }}
       onMouseLeave={onLeave}
     >
       <Link
@@ -266,6 +452,11 @@ function NavItem({
                     key={sub.href}
                     href={sub.href}
                     prefetch={true}
+                    onMouseEnter={() => {
+                      try {
+                        router.prefetch(sub.href);
+                      } catch {}
+                    }}
                     onClick={onLeave}
                     className={cn(
                       'block px-5 py-2 text-[11.5px] text-[#221617]/80 hover:text-[#A67C52] hover:bg-[#FAF8F5] transition-colors whitespace-nowrap',
@@ -283,3 +474,4 @@ function NavItem({
     </div>
   );
 }
+

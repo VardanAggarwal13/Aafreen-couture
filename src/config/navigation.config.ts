@@ -218,7 +218,7 @@ export const footerLinks = {
     { label: 'Contact', href: '/contact' },
     { label: 'FAQs', href: '/faq' },
     { label: 'Shipping Policy', href: '/shipping-policy' },
-    { label: 'Returns Policy', href: '/returns' },
+    { label: 'Returns Policy', href: '/returns-policy' },
     { label: 'Privacy Policy', href: '/privacy-policy' },
   ],
 } as const;

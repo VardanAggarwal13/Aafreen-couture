@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: 'Handcrafted couture for every milestone celebration — from sacred morning Haldi rituals and midnight Jago celebrations to opulent reception galas.',
 };
 
+export const revalidate = 120;
+
 const OCCASIONS_PRE_WEDDING = [
   {
     num: '01',
@@ -151,7 +153,7 @@ export default async function OccasionsPage() {
                 </a>
 
                 <a
-                  href="https://wa.me/919876543210?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20Occasion%20Wear."
+                  href="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20Occasion%20Wear."
                   target="_blank"
                   rel="noopener noreferrer"
                   className={buttonVariants({ variant: 'couture-outline', size: 'couture' })}
@@ -447,7 +449,7 @@ export default async function OccasionsPage() {
 
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a
-                href="https://wa.me/919876543210?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20consult%20for%20my%20Wedding%20Occasions."
+                href="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20consult%20for%20my%20Wedding%20Occasions."
                 target="_blank"
                 rel="noopener noreferrer"
                 className={buttonVariants({ variant: 'couture', size: 'couture' })}

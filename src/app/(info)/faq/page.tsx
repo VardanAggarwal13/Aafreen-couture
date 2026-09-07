@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { FaqAccordion, type FaqCategory } from '@/features/faq/components/FaqAccordion';
+import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions (FAQs) | Aafreen Couture',
@@ -13,19 +14,19 @@ const FAQS: FaqCategory[] = [
     items: [
       {
         q: 'How do I place an order?',
-        a: 'Browse our curated collections, select your desired ensemble and size, and proceed to secure checkout. You can complete payment using UPI, Credit/Debit cards, Netbanking via Razorpay, or select Cash on Delivery (COD) for eligible domestic orders.',
+        a: 'Browse our curated collections, select your desired silhouette and size, and proceed to checkout. Complete payment securely via UPI, Credit/Debit cards, Netbanking via Razorpay, or select Cash on Delivery (COD) for eligible domestic destinations.',
       },
       {
         q: 'What payment methods do you accept?',
-        a: 'We accept all major credit and debit cards (Visa, MasterCard, RuPay, American Express), UPI (Google Pay, PhonePe, Paytm), Netbanking across 50+ Indian banks, and secure digital wallets via Razorpay with 256-bit SSL encryption.',
+        a: 'We accept all major credit and debit cards (Visa, MasterCard, RuPay, American Express), UPI (Google Pay, PhonePe, Paytm), Netbanking across 50+ Indian banks, and secure digital wallets via Razorpay with 256-bit SSL banking-grade encryption.',
       },
       {
         q: 'Can I cancel or modify my order after placing it?',
-        a: 'Orders can be modified or cancelled before they enter fabric cutting, custom tailoring, or dispatch (typically within 12–24 hours of placement). Once handcrafting or dispatch has begun, cancellation is no longer possible.',
+        a: 'Orders can be modified or cancelled before fabric cutting or dispatch begins (within 12 hours for ready-to-wear and 24 hours for bespoke bridal lehengas). Please reach out to our concierge immediately on WhatsApp.',
       },
       {
         q: 'Is Cash on Delivery (COD) available?',
-        a: 'Yes, we offer Cash on Delivery across most serviceable Indian pincodes for orders up to ₹50,000.',
+        a: 'Yes, Cash on Delivery is available across most serviceable Indian pincodes for orders up to ₹50,000.',
       },
     ],
   },
@@ -34,7 +35,7 @@ const FAQS: FaqCategory[] = [
     items: [
       {
         q: 'Can I customize a bridal lehenga or suit to my measurements?',
-        a: 'Yes! We specialize in bespoke bridal and ethnic customisation. You can provide your custom body measurements during order placement or connect with our concierge team on WhatsApp for dedicated virtual sizing guidance.',
+        a: 'Yes! We specialize in bespoke bridal customisation. You can provide your custom body measurements during checkout or connect with our concierge team on WhatsApp for dedicated virtual sizing guidance.',
       },
       {
         q: 'How long does a made-to-order bridal piece take to craft?',
@@ -42,12 +43,12 @@ const FAQS: FaqCategory[] = [
       },
       {
         q: 'Do you offer complimentary alterations?',
-        a: 'Yes, we offer complimentary fit alterations on all custom bridal pieces within 10 days of delivery to ensure a flawless fit for your wedding day.',
+        a: 'Yes, we offer complimentary fit alterations on all custom bridal pieces within 10 days of delivery to ensure a flawless fit for your wedding celebrations.',
       },
     ],
   },
   {
-    category: 'Shipping & Delivery',
+    category: 'Shipping & Transit',
     items: [
       {
         q: 'How long does domestic shipping take across India?',
@@ -59,15 +60,15 @@ const FAQS: FaqCategory[] = [
       },
       {
         q: 'How can I track my shipment?',
-        a: 'Once your order is handed over to the courier partner, an automated email and WhatsApp notification with your AWB tracking link will be sent. You can also track your shipment live on our Track Order page.',
+        a: 'Once your order is handed over to the courier partner, an automated email and WhatsApp notification with your AWB tracking link will be sent. You can also track your shipment live on our dedicated Track Order portal.',
       },
     ],
   },
   {
-    category: 'Exchanges & Refunds',
+    category: 'Exchanges & Fitting',
     items: [
       {
-        q: 'What is your exchange policy?',
+        q: 'What is your size exchange policy?',
         a: 'Unaltered, standard ready-to-wear pieces may be exchanged for a different size within 7 days of delivery, provided all tags and original packaging remain intact.',
       },
       {
@@ -89,29 +90,16 @@ const FAQS: FaqCategory[] = [
 export default function FAQPage() {
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
-      {/* Luxury Hero Banner */}
-      <div className="bg-[#1A1011] text-[#FAF7F2] py-14 sm:py-20 border-b border-[#C49A5A]/30 relative overflow-hidden text-center">
-        <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(45deg, #C49A5A 0px, #C49A5A 1px, transparent 1px, transparent 14px)',
-          }}
-        />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="inline-flex items-center gap-2 bg-[#2C1A1C] border border-[#C49A5A]/30 px-3.5 py-1 rounded-full text-[10.5px] text-[#C49A5A] uppercase tracking-[0.3em] font-semibold mb-4">
-            <span>✦ Client Help &amp; Guidance</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif uppercase tracking-wider text-white">
-            Frequently Asked Questions
-          </h1>
-          <p className="mt-4 text-xs sm:text-sm text-white/75 font-sans max-w-xl mx-auto leading-relaxed">
-            Everything you need to know about bespoke bridal couture, sizing, orders, Razorpay payments, and international deliveries.
-          </p>
-        </div>
-      </div>
+      {/* Luxury Editorial Hero */}
+      <InfoHeroBanner
+        badge="✦ Aafreen Client Helpdesk"
+        title="Frequently Asked Questions"
+        italicTitle="Atelier Guidance"
+        subtitle="Everything you need to know regarding bespoke bridal sizing, payment security, express air transit, and our fitting guarantee."
+        metaInfo="Dedicated Styling Concierge · Direct WhatsApp Assistance · 24-48h Response Guarantee"
+      />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <FaqAccordion faqs={FAQS} />
       </div>
     </main>

@@ -4,6 +4,7 @@ import { ArrowLeft, Package, User, MapPin, CreditCard } from 'lucide-react';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
+import { AdminOrderStatusUpdater } from '@/features/admin/components/AdminOrderStatusUpdater';
 
 export const metadata = { title: 'Order Details | Admin' };
 
@@ -88,8 +89,13 @@ export default async function AdminOrderDetailPage({ params }: Props) {
         quantity: i.quantity,
         totalPrice: i.totalPrice,
       })),
+      customer: {
+        name: addr?.fullName || addr?.name || 'Valued Client',
+        email: addr?.email || 'client@aafreen-couture.com',
+        phone: addr?.phone || '+91 95179 01117',
+      },
       shippingAddress: addr ? {
-        fullName: addr.fullName,
+        fullName: addr.fullName || addr.name,
         line1: addr.line1,
         city: addr.city,
         state: addr.state,
@@ -104,8 +110,8 @@ export default async function AdminOrderDetailPage({ params }: Props) {
       orderNumber: `AFR-${id.slice(-6).toUpperCase()}`,
       status: 'confirmed',
       createdAt: new Date(),
-      paymentMethod: 'Prepaid (Razorpay)',
-      paymentStatus: 'paid',
+      paymentMethod: 'Cash on Delivery (COD)',
+      paymentStatus: 'pending',
       subtotal: 8999900,
       discount: 0,
       shippingCharge: 0,
@@ -113,7 +119,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
       customer: {
         name: 'Priya Sharma',
         email: 'priya.sharma@example.com',
-        phone: '+91 98765 43210',
+        phone: '+91 95179 01117',
       },
       items: [
         {
@@ -134,7 +140,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
         state: 'Delhi',
         pincode: '110001',
         country: 'India',
-        phone: '+91 98765 43210',
+        phone: '+91 95179 01117',
       },
     };
   }
@@ -164,18 +170,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
         </div>
 
         {/* Status update buttons */}
-        <div className="flex items-center gap-2">
-          <select className="bg-[#1A1A1A] border border-white/10 rounded-xs px-3 py-2 text-xs text-white outline-none focus:border-brand-gold/50">
-            <option value="confirmed">Mark as Confirmed</option>
-            <option value="processing">Mark as In Tailoring</option>
-            <option value="shipped">Mark as Shipped</option>
-            <option value="delivered">Mark as Delivered</option>
-            <option value="cancelled">Cancel Order</option>
-          </select>
-          <button className="bg-brand-gold text-white text-xs font-medium px-4 py-2 hover:bg-brand-gold/90 transition-colors rounded-xs">
-            Update Status
-          </button>
-        </div>
+        <AdminOrderStatusUpdater orderId={order._id} currentStatus={order.status} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -200,7 +200,7 @@ export function ShopClientPage() {
                 {/* Call-to-action row */}
                 <div className="flex flex-wrap items-center gap-4">
                   <a
-                    href="https://wa.me/919876543210?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Royal%20Bridal%20Collection."
+                    href="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Royal%20Bridal%20Collection."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#221617] hover:bg-[#3D2628] text-[#F9F5EF] text-[11px] uppercase tracking-[0.2em] font-semibold rounded-xs transition-all duration-300 shadow-md hover:shadow-lg"

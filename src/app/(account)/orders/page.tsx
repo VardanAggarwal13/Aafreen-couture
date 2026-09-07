@@ -23,7 +23,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default async function OrdersPage() {
   const session = await auth.api.getSession({ headers: await headers() });
-  const { items: orders } = await orderService.getUserOrders(session!.user.id, 1);
+  const { items: orders } = await orderService.getUserOrders(session!.user.id, 1, session!.user.email);
 
   return (
     <div className="space-y-6">

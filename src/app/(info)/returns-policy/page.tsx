@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site.config';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
-import { RefreshCw, ShieldCheck, Video, CheckCircle2, PackageCheck, Mail, Phone, ArrowRight, Clock } from 'lucide-react';
+import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
+import { RefreshCw, ShieldCheck, Video, CheckCircle2, PackageCheck, Mail, Phone, ArrowRight, Clock, AlertCircle, Scissors } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Exchange, Cancellation & Refund Policy | Aafreen Couture',
@@ -12,435 +13,407 @@ export const metadata: Metadata = {
 
 const TOC: TocItem[] = [
   { id: 'sec-overview', number: '01', title: 'Policy Overview' },
-  { id: 'sec-no-returns', number: '02', title: 'No Standard Returns' },
+  { id: 'sec-exchange-flow', number: '02', title: '3-Step Exchange Process' },
   { id: 'sec-exchange-policy', number: '03', title: '7-Day Size Exchange' },
-  { id: 'sec-unboxing-video', number: '04', title: 'Unboxing Video Advisory' },
-  { id: 'sec-ineligible', number: '05', title: 'Non-Exchangeable Items' },
-  { id: 'sec-refused-parcels', number: '06', title: '100% Refund on Refused Parcels' },
-  { id: 'sec-cancellation', number: '07', title: 'Order Cancellation' },
-  { id: 'sec-custom-bridal', number: '08', title: 'Custom & Bridal Pieces' },
-  { id: 'sec-charges', number: '09', title: 'Exchange Shipping Fees' },
-  { id: 'sec-request-flow', number: '10', title: 'Step-by-Step Request Flow' },
-  { id: 'sec-refund-timelines', number: '11', title: 'Refund Turnaround (5–7 Days)' },
-  { id: 'sec-cod-policy', number: '12', title: 'COD Order Refunds' },
-  { id: 'sec-abuse', number: '13', title: 'Fair Use & Policy Updates' },
-  { id: 'sec-concierge', number: '14', title: 'Contact Customer Concierge' },
+  { id: 'sec-custom-bridal', number: '04', title: 'Custom Bridal Alterations' },
+  { id: 'sec-unboxing-video', number: '05', title: 'Unboxing Video Advisory' },
+  { id: 'sec-ineligible', number: '06', title: 'Non-Exchangeable Items' },
+  { id: 'sec-refused-parcels', number: '07', title: '100% Refund on Refused Parcels' },
+  { id: 'sec-cancellation', number: '08', title: 'Order Cancellation Windows' },
+  { id: 'sec-refund-timelines', number: '09', title: 'Refund Turnaround (5–7 Days)' },
+  { id: 'sec-concierge', number: '10', title: 'Contact Customer Concierge' },
 ];
 
 export default function ReturnsPolicyPage() {
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
-      {/* Luxury Hero Banner */}
-      <div className="bg-[#1A1011] text-[#FAF7F2] py-14 sm:py-20 border-b border-[#C49A5A]/30 relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(45deg, #C49A5A 0px, #C49A5A 1px, transparent 1px, transparent 14px)',
-          }}
-        />
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-[#2C1A1C] border border-[#C49A5A]/30 px-3.5 py-1 rounded-full text-[10.5px] text-[#C49A5A] uppercase tracking-[0.3em] font-semibold mb-4">
-            <span>✦ Client Care &amp; Guarantees</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif uppercase tracking-wider text-white">
-            Exchange, Cancellation &amp; Refund Policy
-          </h1>
-          <p className="mt-4 text-xs sm:text-sm text-white/75 font-sans max-w-2xl mx-auto leading-relaxed">
-            Every piece at Aafreen Couture is handcrafted with utmost dedication. Please explore our transparent exchange, cancellation, and refund principles.
-          </p>
-          <div className="mt-5 flex items-center justify-center gap-4 text-xs text-white/60 font-sans">
-            <span className="flex items-center gap-1.5">
-              <Clock size={13} className="text-[#C49A5A]" />
-              <span>Effective Date: August 31, 2026</span>
-            </span>
-            <span>·</span>
-            <span>Est. Reading Time: 5 mins</span>
-          </div>
-        </div>
-      </div>
+      {/* Luxury Editorial Hero */}
+      <InfoHeroBanner
+        badge="✦ Aafreen Atelier Fitting Protocols"
+        title="Exchange &amp; Returns"
+        italicTitle="Client Care &amp; Fitting Guarantee"
+        subtitle="Dedicated to ensuring every heirloom ensemble fits you flawlessly. Learn about our 7-day size exchanges, complimentary bridal alterations, and full refund guarantees."
+        metaInfo="Effective Season 2026 · Compliant with Consumer Protection (E-Commerce) Rules"
+      />
 
-      {/* Main Container with 2-Column Responsive Layout */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-12 sm:py-16">
-        
+      {/* Main Container */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-16">
         {/* Visual 3-Card Summary Banner */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
-          
-          <div className="bg-white border border-[#E8D8C8] p-6 rounded-sm shadow-xs flex flex-col justify-between transition-transform hover:-translate-y-0.5">
+          <div className="bg-white border border-[#E8D8C8] p-6 sm:p-7 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)] flex flex-col justify-between transition-all hover:border-[#C49A5A]/60">
             <div>
-              <div className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/40 flex items-center justify-center text-[#C49A5A] mb-4">
+              <div className="w-11 h-11 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/40 flex items-center justify-center text-[#C49A5A] mb-4">
                 <RefreshCw size={20} />
               </div>
-              <h3 className="font-serif text-base uppercase tracking-wide text-[#1A1011] mb-2">
+              <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#A67C52] block mb-1">
+                Standard Ensembles
+              </span>
+              <h3 className="font-serif text-lg uppercase tracking-wide text-[#221617] mb-2">
                 7-Day Size Exchange
               </h3>
-              <p className="text-xs text-[#5C554E] leading-relaxed font-sans">
-                Eligible ready-to-wear pieces can be exchanged for size/fit within <strong>7 days of delivery</strong>, provided tags and original packaging remain intact.
+              <p className="text-xs sm:text-[13px] text-[#5C554E] leading-relaxed font-sans">
+                Eligible ready-to-wear pieces can be exchanged for size or fit within <strong>7 days of delivery</strong>, provided original tags remain attached.
               </p>
             </div>
-            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#A67C52] mt-5 block border-t border-[#E8D8C8] pt-3">
-              Standard Apparel
-            </span>
+            <div className="mt-5 pt-3 border-t border-[#E8D8C8] flex items-center justify-between text-[11px] text-[#8C7A6B]">
+              <span>Ready-To-Wear</span>
+              <span className="font-semibold text-[#221617]">Free Size Swap</span>
+            </div>
           </div>
 
-          <div className="bg-white border-2 border-[#C49A5A]/50 p-6 rounded-sm shadow-xs flex flex-col justify-between bg-gradient-to-b from-white to-[#FAF7F2] transition-transform hover:-translate-y-0.5">
+          <div className="bg-white border border-[#E8D8C8] p-6 sm:p-7 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)] flex flex-col justify-between transition-all hover:border-[#C49A5A]/60">
             <div>
-              <div className="w-10 h-10 rounded-full bg-[#221617] border border-[#C49A5A] flex items-center justify-center text-[#C49A5A] mb-4">
+              <div className="w-11 h-11 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/40 flex items-center justify-center text-[#C49A5A] mb-4">
+                <Scissors size={20} />
+              </div>
+              <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#A67C52] block mb-1">
+                Bespoke &amp; Bridal
+              </span>
+              <h3 className="font-serif text-lg uppercase tracking-wide text-[#221617] mb-2">
+                Complimentary Alterations
+              </h3>
+              <p className="text-xs sm:text-[13px] text-[#5C554E] leading-relaxed font-sans">
+                Custom bridal creations tailored to personal body measurements receive <strong>complimentary studio alterations</strong> to achieve a perfect drape.
+              </p>
+            </div>
+            <div className="mt-5 pt-3 border-t border-[#E8D8C8] flex items-center justify-between text-[11px] text-[#8C7A6B]">
+              <span>Couture Bridal</span>
+              <span className="font-semibold text-[#221617]">Studio Fit Guarantee</span>
+            </div>
+          </div>
+
+          <div className="bg-white border border-[#C49A5A]/50 p-6 sm:p-7 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.04)] flex flex-col justify-between bg-gradient-to-b from-white via-[#FAF7F2]/40 to-white transition-all hover:border-[#C49A5A]">
+            <div>
+              <div className="w-11 h-11 rounded-full bg-[#221617] border border-[#C49A5A] flex items-center justify-center text-[#C49A5A] mb-4">
                 <ShieldCheck size={20} />
               </div>
-              <h3 className="font-serif text-base uppercase tracking-wide text-[#1A1011] mb-2">
-                100% Refund On Refused Parcels
+              <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#C49A5A] block mb-1">
+                Transparent Assurance
+              </span>
+              <h3 className="font-serif text-lg uppercase tracking-wide text-[#221617] mb-2">
+                100% Refund On Refusal
               </h3>
-              <p className="text-xs text-[#5C554E] leading-relaxed font-sans">
-                If you choose not to accept delivery and the parcel returns intact, we refund <strong>100% of your payment</strong> once verified at our atelier.
+              <p className="text-xs sm:text-[13px] text-[#5C554E] leading-relaxed font-sans">
+                If you choose not to accept delivery and the unopened consignment returns intact, we refund <strong>100% of your payment</strong> upon verification.
               </p>
             </div>
-            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#A67C52] mt-5 block border-t border-[#E8D8C8] pt-3">
-              Transparent Assurance
-            </span>
-          </div>
-
-          <div className="bg-white border border-[#E8D8C8] p-6 rounded-sm shadow-xs flex flex-col justify-between transition-transform hover:-translate-y-0.5">
-            <div>
-              <div className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/40 flex items-center justify-center text-[#C49A5A] mb-4">
-                <PackageCheck size={20} />
-              </div>
-              <h3 className="font-serif text-base uppercase tracking-wide text-[#1A1011] mb-2">
-                Custom Bridal Wear
-              </h3>
-              <p className="text-xs text-[#5C554E] leading-relaxed font-sans">
-                Bespoke bridal lehengas and customized orders are made to personal measurements and non-returnable, backed by complimentary tailoring adjustments.
-              </p>
+            <div className="mt-5 pt-3 border-t border-[#E8D8C8] flex items-center justify-between text-[11px] text-[#8C7A6B]">
+              <span>Unaccepted Parcels</span>
+              <span className="font-semibold text-[#221617]">Full Refund</span>
             </div>
-            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#A67C52] mt-5 block border-t border-[#E8D8C8] pt-3">
-              Bespoke Couture
-            </span>
           </div>
-
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          
+        {/* 2-Column Responsive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Main Article Content */}
-          <article className="lg:col-span-8 space-y-8 font-sans text-xs sm:text-sm text-[#5C554E] leading-relaxed">
-            
+          <article className="lg:col-span-8 space-y-8 font-sans text-xs sm:text-[13px] text-[#5C554E] leading-relaxed">
             {/* Section 1: Overview */}
-            <section id="sec-overview" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">01</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Policy Overview &amp; Brand Philosophy
-                </h2>
+            <section id="sec-overview" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">01</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Craftsmanship Principle</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Atelier Policy Overview
+                  </h2>
+                </div>
               </div>
               <p className="mb-3">
-                At <strong>Aafreen Couture</strong>, every piece is carefully selected, prepared, and packed to uphold the standards of our brand.
+                At <strong>Aafreen Couture By Pearl</strong>, each bridal lehenga, embellished suit, and couture silhouette is handcrafted with pure silks, fine zari, and hundreds of karigari hours. Because these pieces are prepared specifically for each client, we maintain a dedicated size exchange and tailoring policy rather than impersonal bulk returns.
               </p>
-              <p className="mb-3">
-                As our collections may include premium, limited, customised, and made-to-order pieces, we follow a carefully defined Exchange, Cancellation &amp; Refund Policy to ensure a fair experience for both our customers and our brand.
-              </p>
-              <p className="text-xs font-semibold text-[#1A1011]">
-                By placing an order with Aafreen Couture, you acknowledge and agree to the terms outlined below.
+              <p>
+                Our master tailors and concierge team work closely with you from initial sizing consultation to post-delivery alterations to guarantee you look radiant on your momentous day.
               </p>
             </section>
 
-            {/* Section 2: No Standard Returns */}
-            <section id="sec-no-returns" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">02</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  No Standard Returns on Accepted Orders
-                </h2>
+            {/* Section 2: 3-Step Exchange Process */}
+            <section id="sec-exchange-flow" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">02</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Simple Steps</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    3-Step Hassle-Free Exchange Process
+                  </h2>
+                </div>
               </div>
-              <p className="mb-3">
-                Aafreen Couture does not offer standard returns on delivered and accepted orders.
-              </p>
-              <p>
-                Once an order has been delivered and accepted by the customer, it cannot be returned simply because the customer has changed their mind or no longer wishes to keep the product. However, eligible products may be exchanged in accordance with our Exchange Policy below.
-              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                <div className="bg-[#FAF7F2] p-5 rounded-xs border border-[#E8D8C8] flex flex-col justify-between">
+                  <div>
+                    <span className="font-mono text-xs font-bold text-[#A67C52] mb-1 block">Step 01</span>
+                    <h3 className="font-serif text-xs uppercase tracking-wider text-[#221617] mb-1.5 font-semibold">Notify Concierge</h3>
+                    <p className="text-[11.5px] text-[#6E6A66] leading-relaxed">
+                      Message our team on WhatsApp (<code className="text-[#221617] font-semibold">{siteConfig.phone}</code>) within 7 days of delivery with your order ID.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-[#FAF7F2] p-5 rounded-xs border border-[#E8D8C8] flex flex-col justify-between">
+                  <div>
+                    <span className="font-mono text-xs font-bold text-[#A67C52] mb-1 block">Step 02</span>
+                    <h3 className="font-serif text-xs uppercase tracking-wider text-[#221617] mb-1.5 font-semibold">Reverse Pickup</h3>
+                    <p className="text-[11.5px] text-[#6E6A66] leading-relaxed">
+                      Our air logistics partner arrives at your doorstep to inspect packaging and collect the parcel securely.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-[#FAF7F2] p-5 rounded-xs border border-[#E8D8C8] flex flex-col justify-between">
+                  <div>
+                    <span className="font-mono text-xs font-bold text-[#A67C52] mb-1 block">Step 03</span>
+                    <h3 className="font-serif text-xs uppercase tracking-wider text-[#221617] mb-1.5 font-semibold">Alteration or Swap</h3>
+                    <p className="text-[11.5px] text-[#6E6A66] leading-relaxed">
+                      Our master atelier completes the size adjustment or dispatches your replacement piece with priority transit.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </section>
 
             {/* Section 3: 7-Day Size Exchange */}
-            <section id="sec-exchange-policy" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">03</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  7-Day Exchange Policy &amp; Size Exchanges
-                </h2>
-              </div>
-              <p className="mb-3">
-                We offer an exchange facility on eligible products. An exchange request must be raised within <strong>7 days from the date of delivery</strong>.
-              </p>
-              <p className="font-semibold text-[#1A1011] mb-2">To qualify for an exchange, the product must:</p>
-              <ul className="list-disc pl-5 space-y-1.5 marker:text-[#C49A5A] mb-4">
-                <li>Be unused, unworn, and unwashed</li>
-                <li>Be completely unaltered and free from sizing changes</li>
-                <li>Have all original designer tags, barcodes, and dust bags intact</li>
-                <li>Be in its original brand box and packaging</li>
-                <li>Be free from makeup stains, perfume odors, body oils, snags, or signs of wear</li>
-                <li>Be returned in a condition suitable for resale</li>
-              </ul>
-              <div className="bg-[#FAF7F2] p-4 border-l-2 border-[#C49A5A] rounded-xs text-xs text-[#5C554E]">
-                <strong>Exchange Due to Size or Fit:</strong> If the size of an eligible ready-to-wear product is not suitable, you may request an exchange for another available size. Where the requested size is unavailable in our inventory, our styling team will assist with an alternative solution or credit note. An exchange does not automatically entitle the customer to a cash refund.
-              </div>
-            </section>
-
-            {/* Section 4: Unboxing Video */}
-            <section id="sec-unboxing-video" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">04</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Damaged Items &amp; Continuous Unboxing Video Advisory
-                </h2>
-              </div>
-              <p className="mb-3">
-                If you receive a product that is damaged, defective, or materially different from what was ordered, please contact Aafreen Couture within <strong>48 hours of delivery</strong>.
-              </p>
-              
-              <div className="bg-[#FAF7F2] border border-[#C49A5A]/40 p-4 rounded-xs mb-4 flex items-start gap-3.5">
-                <Video className="text-[#C49A5A] shrink-0 mt-0.5" size={20} />
+            <section id="sec-exchange-policy" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">03</span>
                 <div>
-                  <p className="font-semibold text-[#1A1011] text-xs uppercase tracking-wider mb-1">
-                    Continuous Unboxing Video Requirement
-                  </p>
-                  <p className="text-xs text-[#5C554E] leading-relaxed">
-                    For damaged, defective, missing, or incorrect-product claims, customers are strongly encouraged to record a continuous, unedited unboxing video beginning from the sealed outer courier parcel and continuing until the garment is fully inspected. This provides definitive proof to resolve logistics and carrier issues immediately.
-                  </p>
-                </div>
-              </div>
-
-              <p className="font-semibold text-[#1A1011] mb-2">After assessing the issue, Aafreen Couture will provide:</p>
-              <ul className="list-disc pl-5 space-y-1 marker:text-[#C49A5A]">
-                <li>An immediate replacement of the identical ensemble</li>
-                <li>An exchange for another piece of equivalent value</li>
-                <li>Complimentary repair or master artisan alteration</li>
-                <li>A full refund where replacement cannot be provided</li>
-              </ul>
-            </section>
-
-            {/* Section 5: Ineligible Products */}
-            <section id="sec-ineligible" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">05</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Products Not Eligible for Exchange
-                </h2>
-              </div>
-              <p className="mb-3 font-semibold text-[#1A1011]">The following products are strictly non-exchangeable:</p>
-              <ul className="list-disc pl-5 space-y-1.5 marker:text-[#C49A5A]">
-                <li>Customised and personalized products crafted to specific measurements</li>
-                <li>Made-to-order couture and bespoke bridal lehengas</li>
-                <li>Garments altered or stitched according to custom client instructions</li>
-                <li>Items that have been worn, washed, perfume-scented, or damaged</li>
-                <li>Garments missing original price tags, designer security seals, or dust bags</li>
-                <li>Clearance and special promotional sale items marked non-exchangeable</li>
-                <li>Requests submitted beyond the 7-day delivery window</li>
-              </ul>
-            </section>
-
-            {/* Section 6: Refused Parcels (100% Refund) */}
-            <section id="sec-refused-parcels" className="bg-[#FAF7F2] border-2 border-[#C49A5A]/50 p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-3">
-                <CheckCircle2 className="text-[#C49A5A] shrink-0" size={22} />
-                <div>
-                  <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                    06. If You Do Not Want to Accept Your Parcel (100% Full Refund)
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Ready-To-Wear</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    7-Day Size &amp; Fit Exchange Conditions
                   </h2>
-                  <p className="text-xs text-[#A67C52] uppercase tracking-wider font-semibold">
-                    Doorstep Delivery Refusal Terms
-                  </p>
                 </div>
               </div>
-              
-              <p className="mb-3">
-                We understand that circumstances may change after an order has been placed. If you no longer wish to receive your parcel, you may refuse delivery at your doorstep or notify our customer support team prior to delivery.
-              </p>
-              <p className="mb-3 font-semibold text-[#1A1011]">
-                If the parcel is returned to Aafreen Couture and is successfully received in its original unopened condition, we will refund 100% of the payment received for the order.
-              </p>
-              <p className="text-xs text-[#5C554E]">
-                The refund will be initiated immediately after the returned parcel reaches our atelier and is verified by our team.
-              </p>
-            </section>
-
-            {/* Section 7 & 8 */}
-            <section id="sec-cancellation" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">07</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Order Cancellation Guidelines
-                </h2>
-              </div>
-              <ul className="list-disc pl-5 space-y-2 marker:text-[#C49A5A]">
-                <li>Cancellation requests should be submitted as soon as possible after placing an order.</li>
-                <li>An order may be cancelled before it has entered processing, fabric cutting, customisation, packing, or dispatch.</li>
-                <li>Once an order has been dispatched or handed to the courier, cancellation is no longer possible.</li>
-                <li>If an eligible cancellation is approved, the applicable 100% refund will be credited through the original payment method.</li>
+              <ul className="space-y-3 font-sans">
+                <li className="flex items-start gap-3 pb-3 border-b border-[#E8D8C8]/60">
+                  <CheckCircle2 size={16} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#221617]">Original Condition:</strong> Garments must be unwashed, unworn, and unaltered with all atelier tags and barcode seals attached.
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 pb-3 border-b border-[#E8D8C8]/60">
+                  <CheckCircle2 size={16} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#221617]">Keepsake Packaging:</strong> The item must be repacked in the original keepsake box with heirloom muslin dust cover and accessories.
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 size={16} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#221617]">Single Free Exchange:</strong> The first size exchange on eligible domestic orders carries zero reverse pickup or reshipment charge.
+                  </div>
+                </li>
               </ul>
             </section>
 
-            {/* Section 8: Custom Bridal */}
-            <section id="sec-custom-bridal" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">08</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Custom &amp; Made-to-Order Bridal Pieces
-                </h2>
-              </div>
-              <p className="mb-3">
-                Certain Aafreen Couture pieces are prepared specifically according to customer measurements and bespoke preferences. Because these involve individual artisan allocation, they are subject to stricter terms:
-              </p>
-              <ul className="list-disc pl-5 space-y-1.5 marker:text-[#C49A5A]">
-                <li>Customers are responsible for providing accurate measurements and fitting details.</li>
-                <li>Once embroidery or fabric cutting has commenced, order cancellation is not permitted.</li>
-                <li>We provide complimentary alteration support on bridal pieces within 10 days of delivery.</li>
-              </ul>
-            </section>
-
-            {/* Section 9: Exchange Charges */}
-            <section id="sec-charges" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">09</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Shipping &amp; Exchange Handling Charges
-                </h2>
-              </div>
-              <p className="mb-3">
-                Where an exchange is requested for size adjustment or personal preference, reverse pickup and reshipping fees (typically ₹150–₹250 for domestic couriers) may apply and will be communicated prior to processing.
-              </p>
-              <p>
-                For products confirmed to be damaged, defective, or incorrectly supplied by Aafreen Couture, all return and replacement shipping charges are 100% borne by us.
-              </p>
-            </section>
-
-            {/* Section 10: Step-by-Step Flow */}
-            <section id="sec-request-flow" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">10</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Step-by-Step: How to Request an Exchange
-                </h2>
+            {/* Section 4: Custom Bridal Pieces */}
+            <section id="sec-custom-bridal" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">04</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Bespoke Couture</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Custom Made-to-Measure Bridal Garments
+                  </h2>
+                </div>
               </div>
               <p className="mb-4">
-                To request an exchange, contact our customer concierge with the following four details:
+                Ensembles commissioned to bespoke body measurements (such as bridal lehengas with custom blouse necklines, sleeve lengths, and skirt flares) cannot be returned for cash refund, as they cannot be restocked for another client.
               </p>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                <div className="bg-[#FAF7F2] p-3.5 border border-[#E8D8C8] rounded-xs">
-                  <span className="font-semibold text-[#1A1011] text-xs block mb-0.5">1. Order Number</span>
-                  <p className="text-xs text-[#6E6A66]">e.g., #AC-10294</p>
-                </div>
-                <div className="bg-[#FAF7F2] p-3.5 border border-[#E8D8C8] rounded-xs">
-                  <span className="font-semibold text-[#1A1011] text-xs block mb-0.5">2. Customer Name &amp; Phone</span>
-                  <p className="text-xs text-[#6E6A66]">Your registered mobile / WhatsApp number</p>
-                </div>
-                <div className="bg-[#FAF7F2] p-3.5 border border-[#E8D8C8] rounded-xs">
-                  <span className="font-semibold text-[#1A1011] text-xs block mb-0.5">3. Product Details</span>
-                  <p className="text-xs text-[#6E6A66]">Garment name and delivered size</p>
-                </div>
-                <div className="bg-[#FAF7F2] p-3.5 border border-[#E8D8C8] rounded-xs">
-                  <span className="font-semibold text-[#1A1011] text-xs block mb-0.5">4. Reason &amp; Replacement Size</span>
-                  <p className="text-xs text-[#6E6A66]">Target size or photos for inspection</p>
-                </div>
-              </div>
-
-              <p className="text-xs text-[#7D756C] italic">
-                Please do not ship any parcel back without receiving prior written approval from Aafreen Couture. Unauthorised return packages will not be accepted.
-              </p>
-            </section>
-
-            {/* Section 11 & 12: Refund Turnaround (Razorpay) */}
-            <section id="sec-refund-timelines" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">11</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Refund Processing &amp; Bank Timelines (5–7 Business Days)
-                </h2>
-              </div>
-              <ul className="list-disc pl-5 space-y-2 marker:text-[#C49A5A] mb-4">
-                <li>
-                  Approved refunds are initiated through your <strong>original payment method</strong> (Razorpay payment gateway: Cards, UPI, Netbanking).
-                </li>
-                <li>
-                  Our atelier initiates the refund transfer within <strong>24–48 hours</strong> of returned item verification.
-                </li>
-                <li>
-                  The funds typically reflect in your bank account or card statement within <strong>5–7 business days</strong>, depending on your financial institution.
-                </li>
-              </ul>
-
-              <div id="sec-cod-policy" className="mt-4 pt-4 border-t border-[#E8D8C8] text-xs text-[#5C554E]">
-                <strong className="text-[#1A1011] block mb-1">Cash-on-Delivery (COD) Orders:</strong>
-                For eligible COD refunds, our concierge team will request verified bank account details (Account Name, Account Number, IFSC Code) to execute a secure NEFT/IMPS bank transfer.
+              <div className="bg-[#FAF7F2] p-5 border-l-3 border-[#C49A5A] rounded-xs space-y-2">
+                <span className="font-serif text-[#221617] uppercase tracking-wide block text-xs font-semibold">
+                  ✦ Complimentary Atelier Alteration Guarantee
+                </span>
+                <p className="text-xs text-[#5C554E] leading-relaxed">
+                  If your bespoke piece requires micro-adjustments around the bust, waist, or sleeve hem, our studio provides <strong>complimentary alterations within 10 days of delivery</strong>. You may also arrange a virtual fitting with our master drape stylist.
+                </p>
               </div>
             </section>
 
-            {/* Section 13: Abuse */}
-            <section id="sec-abuse" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">13</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Fair Use, Policy Abuse &amp; Updates
-                </h2>
+            {/* Section 5: Unboxing Video */}
+            <section id="sec-unboxing-video" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">05</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Transit Verification</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Unboxing Video Advisory
+                  </h2>
+                </div>
+              </div>
+              <p className="mb-4">
+                To protect against counterfeit swaps and ensure transparent transit insurance claims with air couriers, we encourage clients to record an unboxing video:
+              </p>
+              <div className="space-y-2.5 bg-[#FAF7F2] p-5 border border-[#E8D8C8] rounded-xs text-xs">
+                <div className="flex items-start gap-2.5">
+                  <Video size={15} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <span>Record an uninterrupted 360° video beginning with the sealed outer shipping carton and AWB label.</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Video size={15} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <span>Capture the unbroken security tape before opening the keepsake box.</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Video size={15} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <span>Unbox the garment and inspect embroidery, zips, and trims on camera.</span>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 6: Ineligible Items */}
+            <section id="sec-ineligible" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">06</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Exceptions</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Non-Exchangeable Categories
+                  </h2>
+                </div>
+              </div>
+              <p className="mb-3">For hygiene, security, and custom craftsmanship reasons, the following are final sale:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="bg-[#FAF7F2] p-3.5 border border-[#E8D8C8] rounded-xs">
+                  <strong className="text-[#221617] block mb-0.5">Heritage Jewellery:</strong>
+                  <span>Earrings, maang tikkas, passas, and necklaces (hygiene protocols).</span>
+                </div>
+                <div className="bg-[#FAF7F2] p-3.5 border border-[#E8D8C8] rounded-xs">
+                  <strong className="text-[#221617] block mb-0.5">Custom Embroidered Bridal:</strong>
+                  <span>Personalized monograms, customized blouse silhouettes, dyed-to-order silks.</span>
+                </div>
+                <div className="bg-[#FAF7F2] p-3.5 border border-[#E8D8C8] rounded-xs">
+                  <strong className="text-[#221617] block mb-0.5">Worn or Altered Apparel:</strong>
+                  <span>Any item showing perfume, deodorant, stains, or third-party tailoring.</span>
+                </div>
+                <div className="bg-[#FAF7F2] p-3.5 border border-[#E8D8C8] rounded-xs">
+                  <strong className="text-[#221617] block mb-0.5">Final Sale &amp; Sample Pieces:</strong>
+                  <span>Items purchased during sample sales marked with final sale tags.</span>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 7: 100% Refund on Refused Parcels */}
+            <section id="sec-refused-parcels" className="bg-gradient-to-b from-[#FAF7F2] to-white border-2 border-[#C49A5A]/50 p-6 sm:p-8 rounded-xs shadow-xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-3 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">07</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Full Reimbursement</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    100% Refund On Refused Parcels
+                  </h2>
+                </div>
               </div>
               <p className="mb-3">
-                Aafreen Couture reserves the right to restrict future orders where there is evidence of repeated unjustified parcel refusals, fraudulent claims, or misuse of exchange privileges.
+                If you choose not to accept delivery and the air courier returns the unopened package to our atelier intact, we initiate a <strong>100% refund of your payment</strong> upon arrival and intake inspection.
               </p>
-              <p>
-                We may revise this policy periodically. The updated version will always be published on this page with the effective date.
+              <p className="text-xs text-[#5C554E] leading-relaxed">
+                Refunds are processed to your original payment method (Credit card, Debit card, UPI, Netbanking) within 24–48 hours of verification and reflect in your account within 5–7 banking days.
               </p>
             </section>
 
-            {/* Section 14: Concierge Contact */}
-            <section id="sec-concierge" className="bg-[#221617] text-white border border-[#C49A5A]/40 p-6 sm:p-8 rounded-sm shadow-sm scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">14</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#C49A5A] uppercase tracking-wide">
-                  Contact Concierge for Exchanges &amp; Refunds
-                </h2>
+            {/* Section 8: Cancellation */}
+            <section id="sec-cancellation" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">08</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Pre-Dispatch</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Order Cancellation Windows
+                  </h2>
+                </div>
               </div>
-              <p className="text-xs sm:text-sm text-white/80 leading-relaxed mb-6 font-sans">
-                Our customer concierge team is available to assist you with sizing questions, exchanges, or returns:
+              <p className="mb-3">
+                Orders may be cancelled before handcrafting, fabric cutting, or dispatch commences:
+              </p>
+              <ul className="space-y-2 font-sans pl-2">
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0 mt-1.5" />
+                  <span><strong>Ready-to-Ship Pieces:</strong> Cancellations accepted within <strong>12 hours</strong> of placement.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0 mt-1.5" />
+                  <span><strong>Custom Bridal Lehengas:</strong> Cancellations accepted within <strong>24 hours</strong> of order placement before raw silk sourcing and karigari frame setup.</span>
+                </li>
+              </ul>
+            </section>
+
+            {/* Section 9: Refund Timelines */}
+            <section id="sec-refund-timelines" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">09</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Banking Turnaround</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Refund Turnaround Timelines (5–7 Days)
+                  </h2>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-1">
+                <div className="bg-[#FAF7F2] p-4 rounded-xs border border-[#E8D8C8]">
+                  <strong className="text-[#221617] block mb-1">UPI &amp; Wallets:</strong>
+                  <span className="text-[#6E6A66]">Reflects within 24–48 banking hours.</span>
+                </div>
+                <div className="bg-[#FAF7F2] p-4 rounded-xs border border-[#E8D8C8]">
+                  <strong className="text-[#221617] block mb-1">Cards &amp; Netbanking:</strong>
+                  <span className="text-[#6E6A66]">Reflects within 5–7 business days per bank cycles.</span>
+                </div>
+                <div className="bg-[#FAF7F2] p-4 rounded-xs border border-[#E8D8C8]">
+                  <strong className="text-[#221617] block mb-1">COD Orders:</strong>
+                  <span className="text-[#6E6A66]">Reimbursed via direct NEFT/IMPS bank transfer.</span>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 10: Concierge Support */}
+            <section id="sec-concierge" className="bg-[#221617] text-white border border-[#C49A5A]/40 p-6 sm:p-8 rounded-xs shadow-md scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
+                <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">10</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#C49A5A] font-semibold block">Direct Assistance</span>
+                  <h2 className="text-base sm:text-lg font-serif text-white uppercase tracking-wide">
+                    Contact Atelier Fitting Concierge
+                  </h2>
+                </div>
+              </div>
+              <p className="text-xs sm:text-[13px] text-white/80 leading-relaxed mb-6 font-sans">
+                Need to discuss size alterations, exchange eligibility, or verify parcel tracking with our master stylists?
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
-                <div className="bg-[#2C1A1C] p-4 rounded-xs border border-[#C49A5A]/20">
+                <div className="bg-white/5 p-4 rounded-xs border border-white/10">
                   <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                    <Mail size={13} /> Support Email
+                    <Mail size={13} /> Concierge Email
                   </p>
-                  <a href={`mailto:${siteConfig.email}`} className="text-white hover:text-[#C49A5A] transition-colors">
+                  <a href={`mailto:${siteConfig.email}`} className="text-white hover:text-[#C49A5A] transition-colors font-sans">
                     {siteConfig.email}
                   </a>
                 </div>
 
-                <div className="bg-[#2C1A1C] p-4 rounded-xs border border-[#C49A5A]/20">
+                <div className="bg-white/5 p-4 rounded-xs border border-white/10">
                   <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                    <Phone size={13} /> WhatsApp Concierge
+                    <Phone size={13} /> Phone &amp; WhatsApp Concierge
                   </p>
-                  <a href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#C49A5A] transition-colors">
+                  <a href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#C49A5A] transition-colors font-sans">
                     {siteConfig.phone}
                   </a>
                 </div>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-[#C49A5A]/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60 font-sans">
-                <p>Aafreen Couture By Pearl · SCO No. 43, 1st Floor, B-Block Market, New Amritsar, Amritsar, Punjab — 143001</p>
+              <div className="mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60 font-sans">
+                <p>Aafreen Couture By Pearl · Amritsar, Punjab — 143001</p>
                 <Link
                   href="/contact"
-                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-white text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-colors flex items-center gap-1.5 rounded-xs"
+                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-[#FAF7F2] text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-all rounded-xs shrink-0 shadow-xs"
                 >
-                  <span>Contact Concierge Desk</span>
-                  <ArrowRight size={13} />
+                  Contact Desk →
                 </Link>
               </div>
             </section>
-
           </article>
 
-          {/* Sticky Sidebar */}
+          {/* Sticky Table of Contents Sidebar */}
           <div className="lg:col-span-4 hidden lg:block">
-            <PolicySidebar toc={TOC} title="Exchange & Refund Policy" />
+            <PolicySidebar toc={TOC} title="Returns Policy Navigation" />
           </div>
-
         </div>
       </div>
     </main>

@@ -8,19 +8,21 @@ export const metadata: Metadata = {
   description: 'Explore our curated collections of bridal lehengas, suits, dresses, and accessories.',
 };
 
+export const revalidate = 120;
+
 const COLLECTION_IMAGES: Record<string, string> = {
-  'bridal-lehengas-suits': '/images/products/noor-e-ishq.webp',
+  'bridal-lehengas-suits': '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp',
   'bridesmaid-lehengas': '/images/products/gulbahar.webp',
   'formals-cotton-kurta-set': '/images/products/mehrunissa-anarkali.webp',
   'indo-western': '/images/products/roshani-coord.webp',
   'signature-co-ord-sets': '/images/products/roshani-coord.webp',
-  'summer-essentials': '/images/products/zarafshan.webp',
+  'summer-essentials': '/images/products/gulrang-peach-bridal-lehenga-0913.webp',
   'partywear-unstitched': '/images/products/shahzadi-sharara.webp',
   'custom-embroidered-suits': '/images/products/mehrunissa-anarkali.webp',
-  'saree-edit': '/images/products/zarafshan.webp',
+  'saree-edit': '/images/products/rivaayat-bridal-lehenga-1072.webp',
   'jewellery': '/images/products/sitara-polki-choker.webp',
   'the-bag-edit': '/images/products/begum-potli.webp',
-  'occasion-lehengas': '/images/products/noor-e-ishq.webp',
+  'occasion-lehengas': '/images/products/meherbaan-rani-pink-bridal-lehenga-1011.webp',
 };
 
 const COLLECTION_GRADIENTS: Record<string, string> = {

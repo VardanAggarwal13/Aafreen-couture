@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     if (!session) return unauthorized();
 
     const page = Number(request.nextUrl.searchParams.get('page') ?? 1);
-    const { items, total } = await orderService.getUserOrders(session.user.id, page);
+    const { items, total } = await orderService.getUserOrders(session.user.id, page, session.user.email);
 
     return NextResponse.json({
       success: true,
@@ -25,11 +25,11 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await auth.api.getSession({ headers: request.headers });
-    if (!session) return unauthorized();
+    const userId = session?.user?.id;
 
     const body = await request.json();
     const input = CreateOrderSchema.parse(body);
-    const order = await orderService.createOrder(session.user.id, input);
+    const order = await orderService.createOrder(userId, input);
 
     return NextResponse.json({ success: true, data: order }, { status: 201 });
   } catch (error) {

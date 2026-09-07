@@ -12,15 +12,19 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true,
-    minPasswordLength: 8,
+    requireEmailVerification: false,
+    minPasswordLength: 6,
   },
 
   socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    },
+    ...(process.env.GOOGLE_CLIENT_ID?.trim() && process.env.GOOGLE_CLIENT_SECRET?.trim()
+      ? {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID.trim(),
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET.trim(),
+          },
+        }
+      : {}),
   },
 
   session: {

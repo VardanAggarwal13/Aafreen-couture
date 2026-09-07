@@ -9,12 +9,13 @@ export const AddressSchema = z.object({
   state: z.string().min(2).max(100),
   pincode: z.string().regex(/^\d{6}$/, 'Enter a valid 6-digit pincode'),
   country: z.string().min(1),
+  email: z.string().email('Enter a valid email address').optional().or(z.literal('')),
 });
 
 export const CreateOrderSchema = z.object({
   items: z.array(
     z.object({
-      productId: z.string().length(24),
+      productId: z.string().min(1),
       variantId: z.string().optional(),
       quantity: z.number().int().min(1).max(10),
     })

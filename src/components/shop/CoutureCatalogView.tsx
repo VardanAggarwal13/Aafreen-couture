@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { SlidersHorizontal, ChevronRight, ChevronDown, X, RotateCcw } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
@@ -60,14 +61,39 @@ export function CoutureCatalogView({
   defaultSort = 'newest',
   breadcrumbs,
 }: CoutureCatalogProps) {
+  const searchParams = useSearchParams();
+
   const [activeDropdown, setActiveDropdown] = useState<'price' | 'color' | 'size' | 'fabric' | null>(null);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const [sort, setSort] = useState(defaultSort);
-  const [selectedColor, setSelectedColor] = useState('');
-  const [selectedSize, setSelectedSize] = useState('');
-  const [selectedFabric, setSelectedFabric] = useState('');
-  const [priceIdx, setPriceIdx] = useState<number | null>(null);
-  const [page, setPage] = useState(1);
+  const [sort, setSort] = useState(searchParams?.get('sort') || defaultSort);
+  const [selectedColor, setSelectedColor] = useState(searchParams?.get('color') || '');
+  const [selectedSize, setSelectedSize] = useState(searchParams?.get('size') || '');
+  const [selectedFabric, setSelectedFabric] = useState(searchParams?.get('fabric') || '');
+  const initialPriceParam = searchParams?.get('price');
+  const [priceIdx, setPriceIdx] = useState<number | null>(
+    initialPriceParam !== null && initialPriceParam !== undefined && initialPriceParam !== ''
+      ? Number(initialPriceParam)
+      : null
+  );
+  const [page, setPage] = useState(
+    searchParams?.get('page') ? Number(searchParams.get('page')) : 1
+  );
+
+  // Sync state changes to browser URL query parameters without triggering full page reloads
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams();
+    if (sort && sort !== defaultSort) params.set('sort', sort);
+    if (selectedColor) params.set('color', selectedColor);
+    if (selectedSize) params.set('size', selectedSize);
+    if (selectedFabric) params.set('fabric', selectedFabric);
+    if (priceIdx !== null) params.set('price', String(priceIdx));
+    if (page > 1) params.set('page', String(page));
+
+    const qs = params.toString();
+    const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+    window.history.replaceState(null, '', newUrl);
+  }, [sort, selectedColor, selectedSize, selectedFabric, priceIdx, page, defaultSort]);
 
   const activeRange = priceIdx !== null ? PRICE_RANGES[priceIdx] : null;
 
@@ -97,6 +123,7 @@ export function CoutureCatalogView({
       return api.getPaginated<IProduct>(`/api/products?${q.toString()}`);
     },
     placeholderData: (prev) => prev,
+    staleTime: 60 * 1000,
   });
 
   const products = data?.data ?? [];

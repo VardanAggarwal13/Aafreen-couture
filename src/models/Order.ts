@@ -16,8 +16,8 @@ export type PaymentMethod = 'razorpay' | 'cod';
 export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded' | 'partially_refunded';
 
 export interface IOrderItem {
-  product: mongoose.Types.ObjectId;
-  variant?: mongoose.Types.ObjectId;
+  product: mongoose.Types.ObjectId | string;
+  variant?: mongoose.Types.ObjectId | string;
   name: string;
   slug: string;
   image: string;
@@ -37,6 +37,7 @@ export interface IShippingAddress {
   state: string;
   pincode: string;
   country: string;
+  email?: string;
 }
 
 export interface IStatusHistoryEntry {
@@ -47,7 +48,7 @@ export interface IStatusHistoryEntry {
 
 export interface IOrder extends Document {
   orderNumber: string;
-  user: mongoose.Types.ObjectId;
+  user?: mongoose.Types.ObjectId | string;
   items: IOrderItem[];
   shippingAddress: IShippingAddress;
   subtotal: number;          // paise
@@ -71,8 +72,8 @@ export interface IOrder extends Document {
 }
 
 const OrderItemSchema = new Schema<IOrderItem>({
-  product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-  variant: { type: Schema.Types.ObjectId },
+  product: { type: Schema.Types.Mixed, required: true },
+  variant: { type: Schema.Types.Mixed },
   name: { type: String, required: true },
   slug: { type: String, required: true },
   image: { type: String, required: true },
@@ -92,6 +93,7 @@ const ShippingAddressSchema = new Schema<IShippingAddress>({
   state: { type: String, required: true },
   pincode: { type: String, required: true },
   country: { type: String, required: true, default: 'India' },
+  email: { type: String },
 });
 
 const StatusHistorySchema = new Schema<IStatusHistoryEntry>({
@@ -109,7 +111,7 @@ const ORDER_STATUSES: OrderStatus[] = [
 const OrderSchema = new Schema<IOrder>(
   {
     orderNumber: { type: String, required: true, unique: true },
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: Schema.Types.Mixed, ref: 'User', required: false },
     items: [OrderItemSchema],
     shippingAddress: { type: ShippingAddressSchema, required: true },
     subtotal: { type: Number, required: true, min: 0 },

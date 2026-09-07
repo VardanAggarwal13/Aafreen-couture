@@ -37,7 +37,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
       <div className="relative aspect-[3/4] overflow-hidden bg-[#FAF7F2] border border-[#E8D8C8] rounded-xs shadow-2xs">
         <Link href={ROUTES.PRODUCT(product.slug)} className="block w-full h-full">
           <Image
-            src={product.images[0] ?? '/images/products/noor-e-ishq.webp'}
+            src={product.images[0] ?? '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"

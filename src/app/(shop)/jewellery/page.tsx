@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Heritage kundan, polki, and pearl jewellery crafted to complement royal bridal and festive ensembles.',
 };
 
+export const revalidate = 120;
+
 export default function JewelleryPage() {
   return (
     <CoutureCatalogView

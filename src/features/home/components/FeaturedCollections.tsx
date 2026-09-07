@@ -8,7 +8,7 @@ const COLLECTIONS = [
     name: 'Bridal Collection',
     description: 'Statement pieces crafted for your special day',
     itemCount: '24 pieces',
-    image: '/images/products/noor-e-ishq.webp',
+    image: '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp',
   },
   {
     slug: 'signature-co-ord-sets',
@@ -22,7 +22,7 @@ const COLLECTIONS = [
     name: 'The Saree Edit',
     description: 'Grace in every drape — timeless silk sarees',
     itemCount: '15 pieces',
-    image: '/images/products/zarafshan.webp',
+    image: '/images/products/rivaayat-bridal-lehenga-1072.webp',
   },
   {
     slug: 'the-bag-edit',

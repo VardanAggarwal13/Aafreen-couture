@@ -11,7 +11,7 @@ export function AdminSettingsClient() {
   const [settings, setSettings] = useState({
     storeName: 'Aafreen Couture',
     supportEmail: 'concierge@aafreencouture.com',
-    supportPhone: '+91 98765 43210',
+    supportPhone: '+91 95179 01117',
     currency: 'INR (₹)',
     taxRate: '12',
     freeShippingThreshold: '25000',
@@ -20,7 +20,7 @@ export function AdminSettingsClient() {
     razorpayKeySecret: '••••••••••••••••••••',
     enableCOD: true,
     enableRazorpay: true,
-    whatsappNumber: '+919876543210',
+    whatsappNumber: '+91 95179 01117',
     whatsappDefaultMessage: 'Hello Aafreen Couture, I would like to inquire about bridal bespoke consultations.',
   });
 
@@ -208,7 +208,7 @@ export function AdminSettingsClient() {
                       type="text"
                       value={settings.whatsappNumber}
                       onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value })}
-                      placeholder="+919876543210"
+                      placeholder="+91 95179 01117"
                       className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none"
                     />
                   </div>

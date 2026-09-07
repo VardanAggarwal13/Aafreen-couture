@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Handcrafted couture handbags, embroidered potlis, clutches, and totes designed to crown your festive look.',
 };
 
+export const revalidate = 120;
+
 const BAGS_CHAPTERS = [
   {
     id: 'handbags',
@@ -63,7 +65,7 @@ export default function BagsPage() {
         'Opulent metallic and embroidered evening clutches',
         'Artisanal structured bags for weddings and celebrations',
       ]}
-      consultationLink="https://wa.me/919876543210?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Bags%20Collection."
+      consultationLink="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Bags%20Collection."
       chapters={BAGS_CHAPTERS}
       showOccasionsGrid={false}
     />

@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site.config';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
-import { Truck, Globe, PackageCheck, Clock, Mail, Phone, ArrowRight } from 'lucide-react';
+import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
+import { Truck, Globe, PackageCheck, Clock, Mail, Phone, ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Shipping & Delivery Policy | Aafreen Couture',
@@ -11,282 +12,365 @@ export const metadata: Metadata = {
 };
 
 const TOC: TocItem[] = [
-  { id: 'sec-dispatch', number: '01', title: 'Processing & Dispatch' },
-  { id: 'sec-domestic', number: '02', title: 'Domestic Delivery (5–7 Days)' },
-  { id: 'sec-international', number: '03', title: 'International Shipping' },
-  { id: 'sec-tracking', number: '04', title: 'Real-Time Order Tracking' },
-  { id: 'sec-damaged-shipments', number: '05', title: 'Damaged or Lost Shipments' },
-  { id: 'sec-refused-delivery', number: '06', title: 'Refused Delivery Refund Guarantee' },
-  { id: 'sec-shipping-support', number: '07', title: 'Logistics Concierge' },
+  { id: 'sec-pipeline', number: '01', title: 'Atelier Transit Pipeline' },
+  { id: 'sec-dispatch', number: '02', title: 'Preparation & Dispatch' },
+  { id: 'sec-domestic', number: '03', title: 'Domestic Delivery (Pan-India)' },
+  { id: 'sec-international', number: '04', title: 'International Shipping' },
+  { id: 'sec-tracking', number: '05', title: 'Real-Time Order Tracking' },
+  { id: 'sec-damaged-shipments', number: '06', title: 'Damaged & Lost Protection' },
+  { id: 'sec-refused-delivery', number: '07', title: 'Doorstep Refusal Refund' },
+  { id: 'sec-shipping-support', number: '08', title: 'Logistics Concierge Desk' },
 ];
 
 export default function ShippingPolicyPage() {
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
-      {/* Luxury Hero Banner */}
-      <div className="bg-[#1A1011] text-[#FAF7F2] py-14 sm:py-20 border-b border-[#C49A5A]/30 relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(45deg, #C49A5A 0px, #C49A5A 1px, transparent 1px, transparent 14px)',
-          }}
-        />
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-[#2C1A1C] border border-[#C49A5A]/30 px-3.5 py-1 rounded-full text-[10.5px] text-[#C49A5A] uppercase tracking-[0.3em] font-semibold mb-4">
-            <span>✦ Atelier Logistics &amp; Transit</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif uppercase tracking-wider text-white">
-            Shipping &amp; Delivery Policy
-          </h1>
-          <p className="mt-4 text-xs sm:text-sm text-white/75 font-sans max-w-2xl mx-auto leading-relaxed">
-            Delivering handcrafted Indian luxury couture safely to your doorstep across India and worldwide.
-          </p>
-          <div className="mt-5 flex items-center justify-center gap-4 text-xs text-white/60 font-sans">
-            <span className="flex items-center gap-1.5">
-              <Clock size={13} className="text-[#C49A5A]" />
-              <span>Effective Date: August 31, 2026</span>
-            </span>
-            <span>·</span>
-            <span>Est. Reading Time: 4 mins</span>
-          </div>
-        </div>
-      </div>
+      {/* Luxury Editorial Hero */}
+      <InfoHeroBanner
+        badge="✦ Aafreen Atelier Transit Protocols"
+        title="Shipping &amp; Delivery"
+        italicTitle="Global Logistics &amp; Care"
+        subtitle="Delivering handcrafted Indian bridal couture with 100% transit insurance, white-glove packaging, and live milestone updates across India and 50+ countries."
+        metaInfo="Effective Season 2026 · Compliant with Indian E-Commerce Consumer Protection Rules"
+      />
 
-      {/* Main Container with 2-Column Responsive Layout */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-12 sm:py-16">
-        
-        {/* Visual 3-Card Summary */}
+      {/* Main Container */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-16">
+        {/* Visual 3-Card Summary Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
-          
-          <div className="bg-white border border-[#E8D8C8] p-6 rounded-sm shadow-xs flex flex-col justify-between transition-transform hover:-translate-y-0.5">
+          <div className="bg-white border border-[#E8D8C8] p-6 sm:p-7 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)] flex flex-col justify-between transition-all hover:border-[#C49A5A]/60">
             <div>
-              <div className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/40 flex items-center justify-center text-[#C49A5A] mb-4">
+              <div className="w-11 h-11 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/40 flex items-center justify-center text-[#C49A5A] mb-4">
                 <Truck size={20} />
               </div>
-              <h3 className="font-serif text-base uppercase tracking-wide text-[#1A1011] mb-2">
+              <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#A67C52] block mb-1">
+                Pan-India Express
+              </span>
+              <h3 className="font-serif text-lg uppercase tracking-wide text-[#221617] mb-2">
                 Domestic Delivery
               </h3>
-              <p className="text-xs text-[#5C554E] leading-relaxed font-sans">
-                <strong>5–7 Business Days</strong> across all Indian serviceable pincodes via insured express air cargo.
+              <p className="text-xs sm:text-[13px] text-[#5C554E] leading-relaxed font-sans">
+                <strong>5–7 Business Days</strong> across all serviceable Indian pincodes via Blue Dart, Delhivery, and express air networks.
               </p>
             </div>
-            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#A67C52] mt-5 block border-t border-[#E8D8C8] pt-3">
-              Pan-India Air Express
-            </span>
+            <div className="mt-5 pt-3 border-t border-[#E8D8C8] flex items-center justify-between text-[11px] text-[#8C7A6B]">
+              <span>Air Cargo Insured</span>
+              <span className="font-semibold text-[#221617]">100% Covered</span>
+            </div>
           </div>
 
-          <div className="bg-white border border-[#E8D8C8] p-6 rounded-sm shadow-xs flex flex-col justify-between transition-transform hover:-translate-y-0.5">
+          <div className="bg-white border border-[#E8D8C8] p-6 sm:p-7 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)] flex flex-col justify-between transition-all hover:border-[#C49A5A]/60">
             <div>
-              <div className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/40 flex items-center justify-center text-[#C49A5A] mb-4">
+              <div className="w-11 h-11 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/40 flex items-center justify-center text-[#C49A5A] mb-4">
                 <Globe size={20} />
               </div>
-              <h3 className="font-serif text-base uppercase tracking-wide text-[#1A1011] mb-2">
+              <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#A67C52] block mb-1">
+                50+ Global Destinations
+              </span>
+              <h3 className="font-serif text-lg uppercase tracking-wide text-[#221617] mb-2">
                 Worldwide Shipping
               </h3>
-              <p className="text-xs text-[#5C554E] leading-relaxed font-sans">
-                <strong>10–15 Business Days</strong> international transit to 50+ countries via DHL Express &amp; FedEx.
+              <p className="text-xs sm:text-[13px] text-[#5C554E] leading-relaxed font-sans">
+                <strong>10–15 Business Days</strong> international transit via DHL Express &amp; FedEx Priority across USA, UK, Canada, UAE, and Europe.
               </p>
             </div>
-            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#A67C52] mt-5 block border-t border-[#E8D8C8] pt-3">
-              Global Couture Access
-            </span>
+            <div className="mt-5 pt-3 border-t border-[#E8D8C8] flex items-center justify-between text-[11px] text-[#8C7A6B]">
+              <span>Global Couriers</span>
+              <span className="font-semibold text-[#221617]">DHL &amp; FedEx</span>
+            </div>
           </div>
 
-          <div className="bg-white border-2 border-[#C49A5A]/50 p-6 rounded-sm shadow-xs flex flex-col justify-between bg-gradient-to-b from-white to-[#FAF7F2] transition-transform hover:-translate-y-0.5">
+          <div className="bg-white border border-[#C49A5A]/50 p-6 sm:p-7 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.04)] flex flex-col justify-between bg-gradient-to-b from-white via-[#FAF7F2]/40 to-white transition-all hover:border-[#C49A5A]">
             <div>
-              <div className="w-10 h-10 rounded-full bg-[#221617] border border-[#C49A5A] flex items-center justify-center text-[#C49A5A] mb-4">
+              <div className="w-11 h-11 rounded-full bg-[#221617] border border-[#C49A5A] flex items-center justify-center text-[#C49A5A] mb-4">
                 <PackageCheck size={20} />
               </div>
-              <h3 className="font-serif text-base uppercase tracking-wide text-[#1A1011] mb-2">
+              <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#C49A5A] block mb-1">
+                Order Value Threshold
+              </span>
+              <h3 className="font-serif text-lg uppercase tracking-wide text-[#221617] mb-2">
                 Complimentary Shipping
               </h3>
-              <p className="text-xs text-[#5C554E] leading-relaxed font-sans">
-                Free standard shipping on all prepaid domestic orders above <strong>₹4,999</strong>.
+              <p className="text-xs sm:text-[13px] text-[#5C554E] leading-relaxed font-sans">
+                Free standard insured shipping on all domestic orders above <strong>₹5,000</strong>. Flat ₹149 for orders below ₹5,000.
               </p>
             </div>
-            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#A67C52] mt-5 block border-t border-[#E8D8C8] pt-3">
-              Prepaid Orders
-            </span>
+            <div className="mt-5 pt-3 border-t border-[#E8D8C8] flex items-center justify-between text-[11px] text-[#8C7A6B]">
+              <span>Domestic Prepaid</span>
+              <span className="font-semibold text-[#221617]">Auto-Applied</span>
+            </div>
           </div>
-
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          
+        {/* 2-Column Responsive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Main Article Content */}
-          <article className="lg:col-span-8 space-y-8 font-sans text-xs sm:text-sm text-[#5C554E] leading-relaxed">
-            
-            {/* Section 1 */}
-            <section id="sec-dispatch" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">01</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Order Processing &amp; Atelier Preparation
-                </h2>
+          <article className="lg:col-span-8 space-y-8 font-sans text-xs sm:text-[13px] text-[#5C554E] leading-relaxed">
+            {/* Section 1: Visual Transit Pipeline */}
+            <section id="sec-pipeline" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">01</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Transit Journey</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Atelier Preparation &amp; Transit Pipeline
+                  </h2>
+                </div>
               </div>
-              <p className="mb-4">
-                Every garment at Aafreen Couture undergoes rigorous quality inspection, steam finishing, and signature protective packaging prior to dispatch:
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-[#FAF7F2] p-4 border border-[#E8D8C8] rounded-xs">
-                  <span className="font-serif text-[#1A1011] uppercase tracking-wide block mb-1 text-xs">
-                    Ready-to-Ship Pieces
-                  </span>
-                  <p className="text-xs text-[#5C554E]">
-                    Dispatched from our atelier within <strong>1–2 business days</strong> of payment verification.
-                  </p>
-                </div>
-                <div className="bg-[#FAF7F2] p-4 border border-[#E8D8C8] rounded-xs">
-                  <span className="font-serif text-[#1A1011] uppercase tracking-wide block mb-1 text-xs">
-                    Bespoke &amp; Made-to-Order
-                  </span>
-                  <p className="text-xs text-[#5C554E]">
-                    Handcrafted to your measurements and dispatched within <strong>15–25 business days</strong>.
-                  </p>
-                </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2">
+                {[
+                  { step: '01', title: 'Atelier Tailoring', desc: 'Handcrafted by karigars, steam finished & measured' },
+                  { step: '02', title: '48-Point QC', desc: 'Seams, embroidery, zips & fabrics rigorously audited' },
+                  { step: '03', title: 'Keepsake Pack', desc: 'Encased in breathable heirloom muslin with moisture barrier' },
+                  { step: '04', title: 'Insured Delivery', desc: 'Dispatched via express air network with OTP handover' },
+                ].map((s) => (
+                  <div key={s.step} className="bg-[#FAF7F2] p-4 rounded-xs border border-[#E8D8C8] flex flex-col justify-between">
+                    <div>
+                      <span className="font-mono text-xs font-bold text-[#A67C52] mb-1 block">{s.step}</span>
+                      <h3 className="font-serif text-xs uppercase tracking-wider text-[#221617] mb-1">{s.title}</h3>
+                      <p className="text-[11px] text-[#6E6A66] leading-relaxed">{s.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </section>
 
             {/* Section 2 */}
-            <section id="sec-domestic" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">02</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Domestic Shipping (India)
-                </h2>
+            <section id="sec-dispatch" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">02</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Crafting Windows</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Processing Timelines by Garment Type
+                  </h2>
+                </div>
               </div>
-              <ul className="list-disc pl-5 space-y-2 marker:text-[#C49A5A]">
-                <li><strong>Delivery Timeline:</strong> 5–7 business days post-dispatch across major metros and tier-2/3 cities.</li>
-                <li><strong>Carrier Partners:</strong> Handled by premium air networks (Blue Dart, Delhivery, DTDC).</li>
-                <li><strong>Free Shipping:</strong> Complimentary delivery on all prepaid orders exceeding ₹4,999. A flat shipping fee of ₹149 applies to orders below ₹4,999.</li>
-                <li><strong>Cash on Delivery (COD):</strong> Available for domestic orders up to ₹50,000 across serviceable pincodes.</li>
-              </ul>
+              <p className="mb-4">
+                Every creation at Aafreen Couture is individually prepared to order. Depending on whether your ensemble is a curated unstitched suit, ready-to-ship silhouette, or custom bespoke bridal lehenga, dispatch timelines vary:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-[#FAF7F2] p-5 border border-[#E8D8C8] rounded-xs">
+                  <span className="font-serif text-[#221617] uppercase tracking-wide block mb-1.5 text-xs font-semibold">
+                    Ready-to-Wear &amp; Unstitched Suits
+                  </span>
+                  <p className="text-xs text-[#5C554E] leading-relaxed">
+                    Undergoes final press, verification, and signature packaging. Handed over to air couriers within <strong>1–2 business days</strong> of confirmed payment.
+                  </p>
+                </div>
+                <div className="bg-[#FAF7F2] p-5 border border-[#E8D8C8] rounded-xs">
+                  <span className="font-serif text-[#221617] uppercase tracking-wide block mb-1.5 text-xs font-semibold">
+                    Bespoke Bridal &amp; Custom Sized
+                  </span>
+                  <p className="text-xs text-[#5C554E] leading-relaxed">
+                    Individually hand-embroidered and customized to your exact posture measurements. Dispatched within <strong>15–25 business days</strong>.
+                  </p>
+                </div>
+              </div>
             </section>
 
             {/* Section 3 */}
-            <section id="sec-international" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">03</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  International Shipping &amp; Customs Duties
-                </h2>
+            <section id="sec-domestic" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">03</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">India Delivery</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Domestic Shipping Rules &amp; Timelines
+                  </h2>
+                </div>
               </div>
-              <ul className="list-disc pl-5 space-y-2 marker:text-[#C49A5A]">
-                <li><strong>Global Coverage:</strong> We ship worldwide to 50+ countries (USA, UK, Canada, UAE, Australia, Europe, Singapore).</li>
-                <li><strong>Transit Timeline:</strong> 10–15 business days via DHL Express and FedEx International Priority.</li>
-                <li><strong>Dynamic Freight Calculation:</strong> Shipping costs are calculated at checkout based on destination country and parcel weight.</li>
-                <li><strong>Import Tariffs:</strong> Customs duties and local import taxes are governed by the destination country and are payable by the recipient upon customs clearance.</li>
-              </ul>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 pb-3 border-b border-[#E8D8C8]/60">
+                  <CheckCircle2 size={16} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#221617]">Delivery Duration:</strong> 5–7 business days post-dispatch across Indian state capitals, tier-1 metros, and tier-2/3 cities.
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 pb-3 border-b border-[#E8D8C8]/60">
+                  <CheckCircle2 size={16} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#221617]">Carrier Air Express:</strong> Handled by Blue Dart Express, Delhivery Air, and DTDC Express Air with insured transit.
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 pb-3 border-b border-[#E8D8C8]/60">
+                  <CheckCircle2 size={16} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#221617]">Free Shipping:</strong> Complimentary standard shipping on all prepaid orders exceeding ₹5,000. Flat ₹149 delivery applies to domestic orders below ₹5,000.
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 size={16} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#221617]">Cash on Delivery (COD):</strong> Available for orders up to ₹50,000 across all verified domestic delivery pincodes.
+                  </div>
+                </div>
+              </div>
             </section>
 
             {/* Section 4 */}
-            <section id="sec-tracking" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">04</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Real-Time Order Tracking
-                </h2>
+            <section id="sec-international" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">04</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Global Shipments</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    International Shipping &amp; Customs Duties
+                  </h2>
+                </div>
               </div>
-              <p className="mb-3">
-                Upon handover to the courier, an automated email and WhatsApp notification with your live tracking AWB will be shared.
-              </p>
-              <p className="mb-4">
-                You can track shipment milestones directly on our tracking portal:
-              </p>
-              <Link
-                href="/track-order"
-                className="inline-flex items-center gap-2 bg-[#1A1011] text-white text-[11px] font-semibold tracking-[0.2em] uppercase px-6 py-2.5 hover:bg-[#C49A5A] hover:text-[#1A1011] transition-colors rounded-xs"
-              >
-                <span>Track Your Order Live</span>
-                <ArrowRight size={13} />
-              </Link>
-            </section>
-
-            {/* Section 5 */}
-            <section id="sec-damaged-shipments" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">05</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Damaged, Tampered or Lost Consignments
-                </h2>
-              </div>
-              <p className="mb-3">
-                Every consignment from Aafreen Couture is insured in transit. If your parcel shows visible tampering upon arrival:
-              </p>
-              <ul className="list-disc pl-5 space-y-1.5 marker:text-[#C49A5A] mb-4">
-                <li>Do not accept open, crushed, or visibly damaged parcels from the delivery executive.</li>
-                <li>Notify our team within <strong>48 hours of delivery</strong> with unboxing photographs or video proof.</li>
-                <li>We will immediately arrange a priority replacement or full refund.</li>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 pb-3 border-b border-[#E8D8C8]/60">
+                  <Globe size={16} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#221617]">Worldwide Coverage:</strong> We ship to 50+ countries including the USA, Canada, United Kingdom, UAE, Saudi Arabia, Australia, New Zealand, and the European Union.
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 pb-3 border-b border-[#E8D8C8]/60">
+                  <Clock size={16} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#221617]">Transit Window:</strong> 10–15 business days via DHL Express Priority and FedEx International.
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <AlertCircle size={16} className="text-[#A67C52] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#221617]">Customs Duties &amp; Taxes:</strong> Cross-border import duties and value-added taxes (VAT) are assessed by the destination country&apos;s customs authorities and are payable directly by the recipient upon clearance.
+                  </div>
+                </li>
               </ul>
             </section>
 
+            {/* Section 5 */}
+            <section id="sec-tracking" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">05</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Live Tracking</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Real-Time Order Tracking &amp; AWB
+                  </h2>
+                </div>
+              </div>
+              <p className="mb-4">
+                The moment your package is verified and collected by our air logistics partner, an automated SMS and WhatsApp update with your live tracking AWB link is generated:
+              </p>
+              <div className="p-5 bg-[#FAF7F2] border border-[#E8D8C8] rounded-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <p className="font-semibold text-[#221617] text-xs">Have an active order number?</p>
+                  <p className="text-[11.5px] text-[#6E6A66] mt-0.5">Track live milestones on our dedicated portal with zero hassle.</p>
+                </div>
+                <Link
+                  href="/track-order"
+                  className="inline-flex items-center gap-2 bg-[#221617] text-[#C49A5A] hover:bg-[#3D2628] hover:text-[#FAF7F2] text-[11px] font-semibold tracking-[0.2em] uppercase px-5 py-2.5 transition-all rounded-xs shrink-0 shadow-xs"
+                >
+                  <span>Track Order Live</span>
+                  <ArrowRight size={13} />
+                </Link>
+              </div>
+            </section>
+
             {/* Section 6 */}
-            <section id="sec-refused-delivery" className="bg-[#FAF7F2] border-2 border-[#C49A5A]/50 p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">06</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
-                  Doorstep Refusal 100% Refund Guarantee
-                </h2>
+            <section id="sec-damaged-shipments" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">06</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Protection</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Damaged, Tampered, or Lost Consignments
+                  </h2>
+                </div>
               </div>
               <p className="mb-3">
-                If you choose not to accept delivery and the courier returns the unopened parcel to our atelier intact, we refund <strong>100% of your payment</strong> upon receipt and verification.
+                Every consignment from Aafreen Couture carries 100% transit insurance. To ensure rapid claim processing:
               </p>
-              <p className="text-xs text-[#5C554E]">
-                Refunds are initiated to your original payment method within 24–48 hours of verification and reflect in your account in 5–7 business days.
+              <ul className="space-y-2.5 pl-2 font-sans">
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0 mt-1.5" />
+                  <span>Do not accept visibly tampered, open, or severely crushed outer shipping cartons from courier personnel.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0 mt-1.5" />
+                  <span>Notify our concierge within <strong>48 hours of delivery</strong> with unboxing photographs or uninterrupted video footage.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0 mt-1.5" />
+                  <span>Our atelier will immediately organize priority recreation, alterations, or a 100% full refund.</span>
+                </li>
+              </ul>
+            </section>
+
+            {/* Section 7 */}
+            <section id="sec-refused-delivery" className="bg-gradient-to-b from-[#FAF7F2] to-white border-2 border-[#C49A5A]/50 p-6 sm:p-8 rounded-xs shadow-xs scroll-mt-36">
+              <div className="flex items-center gap-3 mb-3 pb-3 border-b border-[#E8D8C8]">
+                <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">07</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Doorstep Guarantee</span>
+                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                    Doorstep Refusal 100% Refund Guarantee
+                  </h2>
+                </div>
+              </div>
+              <p className="mb-3">
+                If you choose not to accept delivery and the courier returns the unopened parcel intact to our atelier, we initiate a <strong>100% refund of your payment</strong> upon arrival and intake inspection.
+              </p>
+              <p className="text-xs text-[#5C554E] leading-relaxed">
+                Refunds are processed back to your original source of payment within 24–48 hours of verification and reflect in your account within 5–7 banking days.
               </p>
             </section>
 
-            {/* Section 7: Contact */}
-            <section id="sec-shipping-support" className="bg-[#221617] text-white border border-[#C49A5A]/40 p-6 sm:p-8 rounded-sm shadow-sm scroll-mt-24">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">07</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#C49A5A] uppercase tracking-wide">
-                  Priority Dispatch &amp; Logistics Desk
-                </h2>
+            {/* Section 8: Concierge Support */}
+            <section id="sec-shipping-support" className="bg-[#221617] text-white border border-[#C49A5A]/40 p-6 sm:p-8 rounded-xs shadow-md scroll-mt-36">
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
+                <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">08</span>
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[#C49A5A] font-semibold block">Direct Concierge</span>
+                  <h2 className="text-base sm:text-lg font-serif text-white uppercase tracking-wide">
+                    Priority Dispatch &amp; Logistics Desk
+                  </h2>
+                </div>
               </div>
-              <p className="text-xs sm:text-sm text-white/80 leading-relaxed mb-6 font-sans">
-                Need urgent express delivery for an upcoming wedding or international event? Connect with our logistics desk:
+              <p className="text-xs sm:text-[13px] text-white/80 leading-relaxed mb-6 font-sans">
+                Need express delivery coordination for an upcoming wedding or international celebration? Connect with our dedicated logistics desk:
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
-                <div className="bg-[#2C1A1C] p-4 rounded-xs border border-[#C49A5A]/20">
+                <div className="bg-white/5 p-4 rounded-xs border border-white/10">
                   <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
                     <Mail size={13} /> Support Email
                   </p>
-                  <a href={`mailto:${siteConfig.email}`} className="text-white hover:text-[#C49A5A] transition-colors">
+                  <a href={`mailto:${siteConfig.email}`} className="text-white hover:text-[#C49A5A] transition-colors font-sans">
                     {siteConfig.email}
                   </a>
                 </div>
 
-                <div className="bg-[#2C1A1C] p-4 rounded-xs border border-[#C49A5A]/20">
+                <div className="bg-white/5 p-4 rounded-xs border border-white/10">
                   <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                    <Phone size={13} /> WhatsApp Dispatch Desk
+                    <Phone size={13} /> Phone &amp; WhatsApp Desk
                   </p>
-                  <a href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#C49A5A] transition-colors">
+                  <a href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#C49A5A] transition-colors font-sans">
                     {siteConfig.phone}
                   </a>
                 </div>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-[#C49A5A]/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60 font-sans">
-                <p>Aafreen Couture By Pearl · SCO No. 43, 1st Floor, B-Block Market, New Amritsar, Amritsar, Punjab — 143001</p>
+              <div className="mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60 font-sans">
+                <p>Aafreen Couture By Pearl · Amritsar, Punjab — 143001</p>
                 <Link
                   href="/contact"
-                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-white text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-colors rounded-xs"
+                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-[#FAF7F2] text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-all rounded-xs shrink-0 shadow-xs"
                 >
                   Contact Desk →
                 </Link>
               </div>
             </section>
-
           </article>
 
-          {/* Sticky Sidebar */}
+          {/* Sticky Table of Contents Sidebar */}
           <div className="lg:col-span-4 hidden lg:block">
-            <PolicySidebar toc={TOC} title="Shipping Policy" />
+            <PolicySidebar toc={TOC} title="Shipping Policy Navigation" />
           </div>
-
         </div>
       </div>
     </main>

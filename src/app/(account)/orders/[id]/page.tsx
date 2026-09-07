@@ -74,7 +74,7 @@ export default async function OrderDetailPage({ params }: Props) {
 
   let order: OrderDisplay;
   try {
-    const dbOrder = await orderService.getOrderById(id, session.user.id);
+    const dbOrder = await orderService.getOrderById(id, session.user.id, session.user.email);
     const addr = dbOrder.shippingAddress as unknown as Record<string, string | undefined>;
     order = {
       _id: String(dbOrder._id),
@@ -140,7 +140,7 @@ export default async function OrderDetailPage({ params }: Props) {
         state: 'Delhi',
         pincode: '110001',
         country: 'India',
-        phone: '+91 98765 43210',
+        phone: '+91 95179 01117',
       },
     };
   }

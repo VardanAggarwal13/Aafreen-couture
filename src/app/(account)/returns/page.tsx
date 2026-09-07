@@ -35,7 +35,7 @@ export default function ReturnsPage() {
       {/* Return policy note */}
       <div className="mt-6 p-4 bg-brand-cream/40 border border-brand-cream text-sm text-brand-stone leading-relaxed">
         <strong className="text-brand-black">Return Policy:</strong> Items can be returned within 7 days of delivery. Custom-made and stitched items are not eligible for returns.{' '}
-        <Link href="/shipping-policy" className="text-brand-gold hover:underline">
+        <Link href="/returns-policy" className="text-brand-gold hover:underline">
           Read full policy →
         </Link>
       </div>

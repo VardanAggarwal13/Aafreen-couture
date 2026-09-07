@@ -194,40 +194,100 @@ function matchFallbackFilters(p: IProduct, filters: ProductFilters): boolean {
   return true;
 }
 
+// High-performance in-memory cache with TTL (120s)
+interface CacheEntry<T> {
+  data: T;
+  expiresAt: number;
+}
+
+const DEFAULT_TTL_MS = 120 * 1000; // 2 minutes
+const memoryQueryCache = new Map<string, CacheEntry<unknown>>();
+const categorySlugCache = new Map<string, mongoose.Types.ObjectId | null>();
+const collectionSlugCache = new Map<string, mongoose.Types.ObjectId | null>();
+
+function getFromCache<T>(key: string): T | null {
+  const entry = memoryQueryCache.get(key);
+  if (!entry) return null;
+  if (Date.now() > entry.expiresAt) {
+    memoryQueryCache.delete(key);
+    return null;
+  }
+  return entry.data as T;
+}
+
+function setToCache<T>(key: string, data: T, ttl = DEFAULT_TTL_MS): void {
+  // Guard max cache size to prevent memory leaks
+  if (memoryQueryCache.size > 2000) {
+    memoryQueryCache.clear();
+  }
+  memoryQueryCache.set(key, {
+    data,
+    expiresAt: Date.now() + ttl,
+  });
+}
+
 export class ProductRepository {
+  clearCache(): void {
+    memoryQueryCache.clear();
+    categorySlugCache.clear();
+    collectionSlugCache.clear();
+  }
+
   async findById(id: string): Promise<IProduct | null> {
+    const cacheKey = `id:${id}`;
+    const cached = getFromCache<IProduct>(cacheKey);
+    if (cached) return cached;
+
     try {
       await connectDB();
       const query = mongoose.isValidObjectId(id)
         ? { _id: id }
         : { slug: id };
       const doc = await Product.findOne(query).populate('category', 'name slug').lean<IProduct>();
-      if (doc) return doc;
+      if (doc) {
+        setToCache(cacheKey, doc);
+        return doc;
+      }
     } catch {
       // Fallback below
     }
     const found = FALLBACK_PRODUCTS.find((p) => p._id === id || String(p._id) === id || p.slug === id);
-    return (found as unknown as IProduct) ?? null;
+    const result = (found as unknown as IProduct) ?? null;
+    if (result) setToCache(cacheKey, result);
+    return result;
   }
 
   async findBySlug(slug: string): Promise<IProduct | null> {
+    const cacheKey = `slug:${slug}`;
+    const cached = getFromCache<IProduct>(cacheKey);
+    if (cached) return cached;
+
     try {
       await connectDB();
       const doc = await Product.findOne({ slug, isActive: true })
         .populate('category', 'name slug')
         .lean<IProduct>();
-      if (doc) return doc;
+      if (doc) {
+        setToCache(cacheKey, doc);
+        return doc;
+      }
     } catch {
       // Fallback below
     }
     const found = FALLBACK_PRODUCTS.find((p) => p.slug === slug);
-    return (found as unknown as IProduct) ?? null;
+    const result = (found as unknown as IProduct) ?? null;
+    if (result) setToCache(cacheKey, result);
+    return result;
   }
 
   async findMany(
     filters: ProductFilters,
     pagination: PaginationParams
   ): Promise<{ items: IProduct[]; total: number }> {
+    const cacheKey = `findMany:${JSON.stringify(filters)}:${JSON.stringify(pagination)}`;
+    const cached = getFromCache<{ items: IProduct[]; total: number }>(cacheKey);
+    if (cached) return cached;
+
     try {
       await connectDB();
 
@@ -237,9 +297,16 @@ export class ProductRepository {
         if (mongoose.Types.ObjectId.isValid(filters.category)) {
           query.category = filters.category;
         } else {
-          const cat = await Category.findOne({ slug: filters.category.toLowerCase() }).lean();
-          if (cat) {
-            query.category = cat._id;
+          const slugKey = filters.category.toLowerCase();
+          let catId = categorySlugCache.get(slugKey);
+          if (catId === undefined) {
+            const cat = await Category.findOne({ slug: slugKey }).lean();
+            catId = cat ? (cat._id as mongoose.Types.ObjectId) : null;
+            categorySlugCache.set(slugKey, catId);
+          }
+
+          if (catId) {
+            query.category = catId;
           } else {
             query.$or = [
               { tags: filters.category.toLowerCase() },
@@ -254,9 +321,15 @@ export class ProductRepository {
         if (mongoose.Types.ObjectId.isValid(filters.collectionRef)) {
           query.collectionRef = filters.collectionRef;
         } else {
-          const col = await Collection.findOne({ slug: filters.collectionRef.toLowerCase() }).lean();
-          if (col) {
-            query.collectionRef = col._id;
+          const colSlugKey = filters.collectionRef.toLowerCase();
+          let colId = collectionSlugCache.get(colSlugKey);
+          if (colId === undefined) {
+            const col = await Collection.findOne({ slug: colSlugKey }).lean();
+            colId = col ? (col._id as mongoose.Types.ObjectId) : null;
+            collectionSlugCache.set(colSlugKey, colId);
+          }
+          if (colId) {
+            query.collectionRef = colId;
           }
         }
       }
@@ -297,7 +370,9 @@ export class ProductRepository {
       ]);
 
       if (items.length > 0) {
-        return { items, total };
+        const result = { items, total };
+        setToCache(cacheKey, result);
+        return result;
       }
     } catch {
       // Fallback below
@@ -324,11 +399,16 @@ export class ProductRepository {
     const { page = 1, limit = 24 } = pagination;
     const skip = (page - 1) * limit;
     const items = list.slice(skip, skip + limit);
-
-    return { items, total: list.length };
+    const result = { items, total: list.length };
+    setToCache(cacheKey, result);
+    return result;
   }
 
   async findFeatured(limit = 8): Promise<IProduct[]> {
+    const cacheKey = `featured:${limit}`;
+    const cached = getFromCache<IProduct[]>(cacheKey);
+    if (cached) return cached;
+
     try {
       await connectDB();
       const docs = await Product.find({ isActive: true, isFeatured: true })
@@ -336,16 +416,25 @@ export class ProductRepository {
         .limit(limit)
         .populate('category', 'name slug')
         .lean<IProduct[]>();
-      if (docs.length > 0) return docs;
+      if (docs.length > 0) {
+        setToCache(cacheKey, docs);
+        return docs;
+      }
     } catch {
       // Fallback below
     }
-    return (FALLBACK_PRODUCTS as unknown as IProduct[])
+    const result = (FALLBACK_PRODUCTS as unknown as IProduct[])
       .filter((p) => p.isFeatured && p.isActive)
       .slice(0, limit);
+    setToCache(cacheKey, result);
+    return result;
   }
 
   async findNewArrivals(limit = 8): Promise<IProduct[]> {
+    const cacheKey = `newArrivals:${limit}`;
+    const cached = getFromCache<IProduct[]>(cacheKey);
+    if (cached) return cached;
+
     try {
       await connectDB();
       const docs = await Product.find({ isActive: true, isNewArrival: true })
@@ -353,16 +442,25 @@ export class ProductRepository {
         .limit(limit)
         .populate('category', 'name slug')
         .lean<IProduct[]>();
-      if (docs.length > 0) return docs;
+      if (docs.length > 0) {
+        setToCache(cacheKey, docs);
+        return docs;
+      }
     } catch {
       // Fallback below
     }
-    return (FALLBACK_PRODUCTS as unknown as IProduct[])
+    const result = (FALLBACK_PRODUCTS as unknown as IProduct[])
       .filter((p) => p.isNewArrival && p.isActive)
       .slice(0, limit);
+    setToCache(cacheKey, result);
+    return result;
   }
 
   async findBestSellers(limit = 8): Promise<IProduct[]> {
+    const cacheKey = `bestSellers:${limit}`;
+    const cached = getFromCache<IProduct[]>(cacheKey);
+    if (cached) return cached;
+
     try {
       await connectDB();
       const docs = await Product.find({ isActive: true, isBestSeller: true })
@@ -370,16 +468,25 @@ export class ProductRepository {
         .limit(limit)
         .populate('category', 'name slug')
         .lean<IProduct[]>();
-      if (docs.length > 0) return docs;
+      if (docs.length > 0) {
+        setToCache(cacheKey, docs);
+        return docs;
+      }
     } catch {
       // Fallback below
     }
-    return (FALLBACK_PRODUCTS as unknown as IProduct[])
+    const result = (FALLBACK_PRODUCTS as unknown as IProduct[])
       .filter((p) => p.isBestSeller && p.isActive)
       .slice(0, limit);
+    setToCache(cacheKey, result);
+    return result;
   }
 
   async findRelated(productId: string, categoryId: string, limit = 4): Promise<IProduct[]> {
+    const cacheKey = `related:${productId}:${categoryId}:${limit}`;
+    const cached = getFromCache<IProduct[]>(cacheKey);
+    if (cached) return cached;
+
     try {
       await connectDB();
       const docs = await Product.find({
@@ -391,16 +498,22 @@ export class ProductRepository {
         .limit(limit)
         .populate('category', 'name slug')
         .lean<IProduct[]>();
-      if (docs.length > 0) return docs;
+      if (docs.length > 0) {
+        setToCache(cacheKey, docs);
+        return docs;
+      }
     } catch {
       // Fallback below
     }
-    return (FALLBACK_PRODUCTS as unknown as IProduct[])
+    const result = (FALLBACK_PRODUCTS as unknown as IProduct[])
       .filter((p) => String(p._id) !== String(productId))
       .slice(0, limit);
+    setToCache(cacheKey, result);
+    return result;
   }
 
   async create(data: Partial<IProduct>): Promise<IProduct> {
+    this.clearCache();
     await connectDB();
     if (data.category && typeof data.category === 'string' && !mongoose.isValidObjectId(data.category)) {
       const slug = (data.category as string).toLowerCase();
@@ -434,10 +547,12 @@ export class ProductRepository {
       })) as unknown as IProduct['variants'];
     }
     const doc = await Product.create(data);
+    this.clearCache();
     return doc.toObject() as IProduct;
   }
 
   async update(idOrSlug: string, data: Partial<IProduct>): Promise<IProduct | null> {
+    this.clearCache();
     await connectDB();
     if (data.category && typeof data.category === 'string' && !mongoose.isValidObjectId(data.category)) {
       const slug = (data.category as string).toLowerCase();
@@ -462,15 +577,19 @@ export class ProductRepository {
     const query = mongoose.isValidObjectId(idOrSlug)
       ? { _id: idOrSlug }
       : { slug: idOrSlug };
-    return Product.findOneAndUpdate(query, data, { new: true }).lean<IProduct>();
+    const res = await Product.findOneAndUpdate(query, data, { new: true }).lean<IProduct>();
+    this.clearCache();
+    return res;
   }
 
   async delete(idOrSlug: string): Promise<boolean> {
+    this.clearCache();
     await connectDB();
     const query = mongoose.isValidObjectId(idOrSlug)
       ? { _id: idOrSlug }
       : { slug: idOrSlug };
     const result = await Product.findOneAndDelete(query);
+    this.clearCache();
     return !!result;
   }
 }

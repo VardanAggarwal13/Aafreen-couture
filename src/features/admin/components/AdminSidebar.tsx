@@ -31,7 +31,6 @@ const NAV_GROUPS = [
     items: [
       { href: ROUTES.ADMIN_ORDERS, label: 'Orders', icon: ShoppingCart },
       { href: ROUTES.ADMIN_RETURNS, label: 'Returns', icon: RotateCcw },
-      { href: ROUTES.ADMIN_COUPONS, label: 'Coupons', icon: Ticket },
     ],
   },
   {

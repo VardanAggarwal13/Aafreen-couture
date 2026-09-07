@@ -17,9 +17,24 @@ interface ProfileFormProps { user: User }
 
 export function ProfileForm({ user }: ProfileFormProps) {
   const [saving, setSaving] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<ProfileInput>({
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<ProfileInput>({
     resolver: zodResolver(ProfileSchema),
     defaultValues: { name: user.name ?? '', phone: (user as Record<string, unknown>).phone as string ?? '' },
+  });
+
+  // Load latest profile details from API
+  useState(() => {
+    fetch('/api/users/me')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          reset({
+            name: data.data.name || user.name || '',
+            phone: data.data.phone || '',
+          });
+        }
+      })
+      .catch(() => {});
   });
 
   async function onSubmit(data: ProfileInput) {
@@ -31,7 +46,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error();
-      toast.success('Profile updated');
+      toast.success('Profile updated successfully');
     } catch {
       toast.error('Could not update profile');
     } finally {

@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { handleApiError } from '@/lib/api-errors';
+import { requireAdmin } from '@/server/auth';
 import type { OrderStatus } from '@/models/Order';
 
 interface Props { params: Promise<{ id: string }> }
 
 export async function PATCH(req: NextRequest, { params }: Props) {
   try {
+    await requireAdmin(req);
     const { id } = await params;
     const { status, note } = await req.json();
 

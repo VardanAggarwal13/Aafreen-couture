@@ -10,7 +10,7 @@ export const metadata = { title: 'My Dashboard | Aafreen Couture' };
 
 export default async function DashboardPage() {
   const session = await auth.api.getSession({ headers: await headers() });
-  const { items: recentOrders } = await orderService.getUserOrders(session!.user.id, 1);
+  const { items: recentOrders } = await orderService.getUserOrders(session!.user.id, 1, session!.user.email);
   const latestOrders = recentOrders.slice(0, 3);
 
   const statusColors: Record<string, string> = {

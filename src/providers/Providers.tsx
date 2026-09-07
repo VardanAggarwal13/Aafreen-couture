@@ -30,7 +30,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           position="top-right"
           richColors
           toastOptions={{
-            style: { fontFamily: 'var(--font-manrope)' },
+            style: { fontFamily: 'var(--font-montserrat), sans-serif' },
           }}
         />
         </TooltipProvider>

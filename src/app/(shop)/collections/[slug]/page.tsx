@@ -5,14 +5,30 @@ import { collectionRepository } from '@/server/repositories/collection.repositor
 import { productService } from '@/server/services/product.service';
 import { ProductCard } from '@/components/product/ProductCard';
 import { siteConfig } from '@/config/site.config';
+import { FALLBACK_COLLECTIONS } from '@/data/products.data';
 import type { IProduct } from '@/types';
 
 interface Props { params: Promise<{ slug: string }> }
 
+export const revalidate = 120;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const collection = await collectionRepository.findBySlug(slug);
-  if (!collection) return { title: 'Collection Not Found' };
+  let collection;
+  try {
+    collection = await collectionRepository.findBySlug(slug);
+  } catch {
+    // DB might be connecting
+  }
+
+  if (!collection) {
+    const fallback = FALLBACK_COLLECTIONS.find((c) => c.slug === slug);
+    if (fallback) {
+      collection = fallback as unknown as import('@/models/Collection').ICollection;
+    }
+  }
+
+  if (!collection) return { title: 'Collection Not Found | Aafreen Couture' };
   return {
     title: `${collection.seoTitle ?? collection.name} | Aafreen Couture`,
     description: collection.seoDescription ?? collection.description,
@@ -27,24 +43,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CollectionPage({ params }: Props) {
   const { slug } = await params;
-  const collection = await collectionRepository.findBySlug(slug);
-  if (!collection) notFound();
+  let collection;
+  let products: IProduct[] = [];
 
-  const result = await productService.getProducts(
-    { collectionRef: collection.slug || String(collection._id) },
-    { page: 1, limit: 48 }
-  );
-  let products = (JSON.parse(JSON.stringify(result.data ?? [])) as IProduct[]);
-
-  if (products.length === 0) {
-    const catFallback = await productService.getProducts(
-      { category: slug },
-      { page: 1, limit: 48 }
-    );
-    if (catFallback.data?.length) {
-      products = JSON.parse(JSON.stringify(catFallback.data)) as IProduct[];
+  try {
+    collection = await collectionRepository.findBySlug(slug);
+    if (!collection) {
+      const fallback = FALLBACK_COLLECTIONS.find((c) => c.slug === slug);
+      if (fallback) {
+        collection = fallback as unknown as import('@/models/Collection').ICollection;
+      }
     }
+
+    if (collection) {
+      const result = await productService.getProducts(
+        { collectionRef: collection.slug || String(collection._id) },
+        { page: 1, limit: 48 }
+      );
+      products = (JSON.parse(JSON.stringify(result.data ?? [])) as IProduct[]);
+
+      if (products.length === 0) {
+        const catFallback = await productService.getProducts(
+          { category: slug },
+          { page: 1, limit: 48 }
+        );
+        if (catFallback.data?.length) {
+          products = JSON.parse(JSON.stringify(catFallback.data)) as IProduct[];
+        }
+      }
+    }
+  } catch (err) {
+    console.error('[CollectionPage Error for slug:', slug, ']:', err);
   }
+
+  if (!collection) notFound();
 
   const isBridal = slug === 'bridal' || slug === 'bridal-lehengas-suits';
 
@@ -102,7 +134,7 @@ export default async function CollectionPage({ params }: Props) {
                 {/* Call-to-action row */}
                 <div className="flex flex-wrap items-center gap-4">
                   <a
-                    href="https://wa.me/919876543210?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Royal%20Bridal%20Collection."
+                    href="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Royal%20Bridal%20Collection."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#221617] hover:bg-[#3D2628] text-[#F9F5EF] text-[11px] uppercase tracking-[0.2em] font-semibold rounded-xs transition-all duration-300 shadow-md hover:shadow-lg"

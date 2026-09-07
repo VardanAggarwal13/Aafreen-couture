@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Discover handcrafted luxury suits, cotton kurta sets, unstitched partywear, and contemporary co-ords by Aafreen Couture.',
 };
 
+export const revalidate = 120;
+
 const SUITS_CHAPTERS = [
   {
     id: 'cotton-kurta-sets',
@@ -71,7 +73,7 @@ export default function SuitsPage() {
         'Handcrafted gotta patti, resham and zardozi detailing',
         'Unstitched partywear & ready-to-wear luxury silhouettes',
       ]}
-      consultationLink="https://wa.me/919876543210?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Suits%20Collection."
+      consultationLink="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Suits%20Collection."
       chapters={SUITS_CHAPTERS}
       showOccasionsGrid={false}
     />

@@ -60,6 +60,8 @@ function ChapterShelf({
       q.set('limit', '4');
       return api.getPaginated<IProduct>(`/api/products?${q.toString()}`);
     },
+    placeholderData: (prev) => prev,
+    staleTime: 60 * 1000,
   });
 
   const products = data?.data ?? [];
@@ -150,7 +152,7 @@ export function CategoryHubView({
     'Pure raw silks, heritage velvets & sheer organza dupattas',
     'Personalized made-to-measure couture consultation',
   ],
-  consultationLink = 'https://wa.me/919876543210?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Collection.',
+  consultationLink = 'https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Collection.',
   chapters,
   showOccasionsGrid = false,
 }: CategoryHubProps) {

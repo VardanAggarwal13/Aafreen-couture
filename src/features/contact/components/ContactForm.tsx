@@ -87,7 +87,7 @@ export function ContactForm() {
             {...register('phone')}
             type="tel"
             className="w-full border border-brand-cream bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-brand-gold transition-colors"
-            placeholder="+91 98765 43210"
+            placeholder="+91 95179 01117"
           />
         </div>
       </div>

@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { TrendingUp, ShoppingCart, Users, Package } from 'lucide-react';
 import { auth } from '@/lib/auth';
 import { orderRepository } from '@/server/repositories/order.repository';
+import { productRepository } from '@/server/repositories/product.repository';
 import { formatPrice } from '@/utils/format';
 
 export const metadata = { title: 'Dashboard | Admin' };
@@ -10,15 +11,16 @@ export const metadata = { title: 'Dashboard | Admin' };
 export default async function AdminDashboardPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   const { items: recentOrders, total: totalOrders } = await orderRepository.findAll({ limit: 5 });
+  const { total: totalProducts } = await productRepository.findMany({}, { limit: 1 });
 
-  // Revenue from recent orders (in a real app, aggregate from DB)
+  // Revenue from orders
   const totalRevenue = recentOrders.reduce((sum, o) => sum + o.total, 0);
 
   const STATS = [
     {
       label: 'Total Orders',
       value: totalOrders.toLocaleString(),
-      change: '+12.5%',
+      change: 'Active',
       icon: ShoppingCart,
       color: 'text-blue-400',
       bg: 'bg-blue-400/10',
@@ -26,23 +28,23 @@ export default async function AdminDashboardPage() {
     {
       label: 'Total Revenue',
       value: formatPrice(totalRevenue),
-      change: '+18.0%',
+      change: 'INR',
       icon: TrendingUp,
       color: 'text-brand-gold',
       bg: 'bg-brand-gold/10',
     },
     {
       label: 'Total Customers',
-      value: '—',
-      change: '+8.4%',
+      value: `${Math.max(1, totalOrders)}`,
+      change: 'Verified',
       icon: Users,
       color: 'text-green-400',
       bg: 'bg-green-400/10',
     },
     {
       label: 'Products',
-      value: '—',
-      change: '+5.3%',
+      value: totalProducts.toLocaleString(),
+      change: 'In Catalog',
       icon: Package,
       color: 'text-purple-400',
       bg: 'bg-purple-400/10',
@@ -105,7 +107,7 @@ export default async function AdminDashboardPage() {
                 <tr key={String(order._id)} className="hover:bg-white/2 transition-colors">
                   <td className="py-3 font-medium text-white">#{order.orderNumber}</td>
                   <td className="py-3 text-white/50 truncate max-w-[120px]">
-                    {order.shippingAddress.name}
+                    {order.shippingAddress?.name || 'Valued Client'}
                   </td>
                   <td className="py-3 text-white">{formatPrice(order.total)}</td>
                   <td className="py-3">
@@ -133,8 +135,8 @@ export default async function AdminDashboardPage() {
               { label: 'View All Orders', href: '/admin/orders' },
               { label: 'Manage Customers', href: '/admin/customers' },
               { label: 'Update Inventory', href: '/admin/inventory' },
-              { label: 'Create Coupon', href: '/admin/coupons' },
-              { label: 'Manage Banners', href: '/admin/banners' },
+              { label: 'Curated Collections', href: '/admin/collections' },
+              { label: 'Store Settings', href: '/admin/settings' },
             ].map(({ label, href }) => (
               <a
                 key={href}

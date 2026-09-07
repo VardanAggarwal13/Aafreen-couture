@@ -10,7 +10,7 @@ import type { CreateOrderInput } from '@/validators/order.validators';
 const SHIPPING_CHARGE = 25000; // ₹250 in paise
 
 export class OrderService {
-  async createOrder(userId: string, input: CreateOrderInput): Promise<IOrder> {
+  async createOrder(userId: string | undefined, input: CreateOrderInput): Promise<IOrder> {
     // Validate each product/variant and build order items
     const orderItems: IOrder['items'] = [];
     let subtotal = 0;
@@ -43,8 +43,12 @@ export class OrderService {
       subtotal += totalPrice;
 
       orderItems.push({
-        product: product._id as mongoose.Types.ObjectId,
-        variant: item.variantId ? new mongoose.Types.ObjectId(item.variantId) : undefined,
+        product: (mongoose.Types.ObjectId.isValid(product._id)
+          ? new mongoose.Types.ObjectId(product._id)
+          : (product._id as unknown as mongoose.Types.ObjectId)),
+        variant: item.variantId && mongoose.Types.ObjectId.isValid(item.variantId)
+          ? new mongoose.Types.ObjectId(item.variantId)
+          : undefined,
         name: product.name,
         slug: product.slug,
         image,
@@ -62,7 +66,7 @@ export class OrderService {
 
     const order = await orderRepository.create({
       orderNumber,
-      user: new mongoose.Types.ObjectId(userId) as unknown as IOrder['user'],
+      user: userId || undefined,
       items: orderItems,
       shippingAddress: input.shippingAddress,
       subtotal,
@@ -78,15 +82,18 @@ export class OrderService {
     return order;
   }
 
-  async getOrderById(orderId: string, userId: string): Promise<IOrder> {
+  async getOrderById(orderId: string, userId: string, userEmail?: string): Promise<IOrder> {
     const order = await orderRepository.findById(orderId);
     if (!order) throw new NotFoundError('Order');
-    if (order.user.toString() !== userId) throw new NotFoundError('Order');
+    const matchesUser = order.user && String(order.user) === userId;
+    const matchesEmail =
+      Boolean(userEmail && order.shippingAddress?.email?.toLowerCase() === userEmail.toLowerCase());
+    if (!matchesUser && !matchesEmail) throw new NotFoundError('Order');
     return order;
   }
 
-  async getUserOrders(userId: string, page = 1) {
-    return orderRepository.findByUserId(userId, page);
+  async getUserOrders(userId: string, page = 1, userEmail?: string) {
+    return orderRepository.findByUserId(userId, page, 10, userEmail);
   }
 }
 

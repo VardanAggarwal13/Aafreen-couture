@@ -116,25 +116,8 @@ export function CartClientPage() {
           ))}
         </div>
 
-        {/* Order summary & Coupon panel matching reference image */}
+        {/* Order summary panel */}
         <div className="lg:col-span-1 space-y-6">
-          {/* Coupon box */}
-          <div className="bg-white border border-[#E8D8C8] rounded-xs p-5 shadow-2xs">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
-              Have a Coupon?
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Enter coupon code"
-                className="flex-1 bg-[#FAF7F2] border border-[#E8D8C8] px-3 py-2 text-xs uppercase tracking-wider text-[#221617] focus:outline-none focus:border-[#A67C52]"
-              />
-              <button className="bg-[#221617] text-white px-4 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-[#A67C52] transition-colors">
-                Apply
-              </button>
-            </div>
-          </div>
-
           {/* Cart Totals Box */}
           <div className="bg-white border border-[#E8D8C8] rounded-xs p-6 shadow-2xs sticky top-24">
             <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#221617] pb-4 border-b border-[#E8D8C8]">

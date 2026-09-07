@@ -42,7 +42,8 @@ export class PaymentService {
     razorpayPaymentId: string,
     razorpaySignature: string
   ): boolean {
-    const secret = process.env.RAZORPAY_KEY_SECRET!;
+    const secret = process.env.RAZORPAY_KEY_SECRET;
+    if (!secret) return false;
     const body = `${razorpayOrderId}|${razorpayPaymentId}`;
     const expectedSignature = crypto
       .createHmac('sha256', secret)
@@ -80,7 +81,8 @@ export class PaymentService {
   }
 
   verifyWebhookSignature(rawBody: string, signature: string): boolean {
-    const secret = process.env.RAZORPAY_WEBHOOK_SECRET!;
+    const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    if (!secret) return false;
     const expectedSignature = crypto
       .createHmac('sha256', secret)
       .update(rawBody)
