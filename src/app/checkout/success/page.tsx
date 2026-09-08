@@ -9,15 +9,37 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
+import { orderRepository } from '@/server/repositories/order.repository';
+import { paymentService } from '@/server/services/payment.service';
+
 interface Props {
   searchParams: Promise<{ orderId?: string; orderNumber?: string }>;
 }
 
 export default async function OrderSuccessPage({ searchParams }: Props) {
   const params = await searchParams;
-  const orderNumber = params.orderNumber || (params.orderId ? `AC-${params.orderId.slice(-6).toUpperCase()}` : 'AC-COUTURE');
+  let order = params.orderId ? await orderRepository.findById(params.orderId) : null;
+
+  // Auto-reconcile if order is Razorpay and still marked pending
+  if (order && order.paymentMethod === 'razorpay' && order.paymentStatus === 'pending' && order.razorpayOrderId) {
+    try {
+      const recResult = await paymentService.reconcilePayment(order._id.toString());
+      if (recResult.reconciled) {
+        order = recResult.order;
+      }
+    } catch (e) {
+      console.warn('[OrderSuccessPage] Auto-reconciliation check error:', e);
+    }
+  }
+
+  const isRazorpay = order?.paymentMethod === 'razorpay';
+  const isPaid = order?.paymentStatus === 'paid';
+  const orderNumber = order?.orderNumber || params.orderNumber || (params.orderId ? `AC-${params.orderId.slice(-6).toUpperCase()}` : 'AC-COUTURE');
+  
   const whatsappMsg = encodeURIComponent(
-    `Hello Aafreen Couture Concierge, I have placed Order #${orderNumber} via Cash on Delivery. Please confirm my order and sizing.`
+    isRazorpay
+      ? `Hello Aafreen Couture Concierge, I have placed Order #${orderNumber} via Online Payment (${isPaid ? 'Paid' : 'Payment Processing'}). Please confirm my order details.`
+      : `Hello Aafreen Couture Concierge, I have placed Order #${orderNumber} via Cash on Delivery. Please confirm my order and sizing.`
   );
 
   return (
@@ -37,13 +59,15 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
             Aafreen Atelier Confirmation
           </span>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#221617] uppercase tracking-wide mb-3">
-            Thank You · Order Placed!
+            {isRazorpay && !isPaid ? 'Payment In Verification' : 'Thank You · Order Placed!'}
           </h1>
           <p className="text-xs sm:text-sm text-[#6E6A66] max-w-md mx-auto leading-relaxed mb-6">
-            Your couture reservation has been received. Our master atelier is preparing your heirloom ensemble with meticulous care.
+            {isRazorpay && !isPaid
+              ? 'We are verifying your transaction with the payment gateway. If money was deducted from your account, your order will be confirmed automatically.'
+              : 'Your couture reservation has been received. Our master atelier is preparing your heirloom ensemble with meticulous care.'}
           </p>
 
-          {/* Order Reference & COD Badge */}
+          {/* Order Reference & Payment Status Badge */}
           <div className="bg-[#FAF5EE] border border-[#E8D8C8] p-4 sm:p-5 rounded-xs mb-8 text-left space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E8D8C8] pb-3">
               <div>
@@ -54,16 +78,47 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
                   #{orderNumber}
                 </span>
               </div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C49A5A] text-white text-[10px] uppercase font-bold tracking-wider">
-                <Sparkles size={11} /> Cash on Delivery Confirmed
-              </span>
+              {isRazorpay ? (
+                isPaid ? (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600 text-white text-[10px] uppercase font-bold tracking-wider shadow-xs">
+                    <ShieldCheck size={11} /> Online Payment Confirmed
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-600 text-white text-[10px] uppercase font-bold tracking-wider shadow-xs">
+                    <Clock size={11} /> Verifying Bank Payment
+                  </span>
+                )
+              ) : (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C49A5A] text-white text-[10px] uppercase font-bold tracking-wider">
+                  <Sparkles size={11} /> Cash on Delivery Confirmed
+                </span>
+              )}
             </div>
 
             <div className="text-xs text-[#5C554E] space-y-1.5">
-              <div className="flex items-center gap-2">
-                <Clock size={13} className="text-[#A67C52] shrink-0" />
-                <span>No advance payment deducted · Pay cash or UPI upon delivery</span>
-              </div>
+              {isRazorpay ? (
+                <>
+                  {order?.razorpayPaymentId && (
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck size={13} className="text-emerald-600 shrink-0" />
+                      <span>Razorpay Payment Ref: <strong className="font-mono text-[#221617]">{order.razorpayPaymentId}</strong></span>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <Clock size={13} className="text-[#A67C52] shrink-0" />
+                    <span>
+                      {isPaid
+                        ? '100% Payment Secured & Verified via Razorpay'
+                        : 'If payment was deducted, your bank confirmation is being synchronized.'}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Clock size={13} className="text-[#A67C52] shrink-0" />
+                  <span>No advance payment deducted · Pay cash or UPI upon delivery</span>
+                </div>
+              )}
               <div className="flex items-center gap-2">
                 <ShieldCheck size={13} className="text-emerald-600 shrink-0" />
                 <span>All pieces pass a 48-point quality &amp; embroidery inspection before dispatch</span>

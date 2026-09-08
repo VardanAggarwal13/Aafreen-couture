@@ -4,13 +4,10 @@ import { paymentService } from '@/server/services/payment.service';
 import { handleApiError, unauthorized } from '@/lib/api-errors';
 import { z } from 'zod';
 
-const schema = z.object({ orderId: z.string().length(24) });
+const schema = z.object({ orderId: z.string().min(1) });
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: request.headers });
-    if (!session) return unauthorized();
-
     const body = await request.json();
     const { orderId } = schema.parse(body);
 

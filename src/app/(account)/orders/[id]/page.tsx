@@ -2,7 +2,8 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
-import { ArrowLeft, PackageCheck, Truck, Clock, ShieldCheck, MapPin } from 'lucide-react';
+import { ArrowLeft, PackageCheck, Truck, Clock, ShieldCheck, MapPin, CreditCard } from 'lucide-react';
+import { CustomerPaymentReconcileButton } from '@/features/orders/components/CustomerPaymentReconcileButton';
 import { auth } from '@/lib/auth';
 import { orderService } from '@/server/services/order.service';
 import { formatPrice, formatDate } from '@/utils/format';
@@ -58,6 +59,8 @@ interface OrderDisplay {
   createdAt: Date | string;
   paymentMethod: string;
   paymentStatus: string;
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
   subtotal: number;
   discount: number;
   shippingCharge?: number;
@@ -83,6 +86,8 @@ export default async function OrderDetailPage({ params }: Props) {
       createdAt: dbOrder.createdAt,
       paymentMethod: dbOrder.paymentMethod,
       paymentStatus: dbOrder.paymentStatus,
+      razorpayOrderId: dbOrder.razorpayOrderId,
+      razorpayPaymentId: dbOrder.razorpayPaymentId,
       subtotal: dbOrder.subtotal,
       discount: dbOrder.discount,
       shippingCharge: dbOrder.shippingCharge,
@@ -289,21 +294,70 @@ export default async function OrderDetailPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Shipping Address */}
-      {address && (
-        <div className="bg-white border border-[#E8D8C8] p-6 rounded-xs shadow-xs">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#221617] mb-3 flex items-center gap-2">
-            <MapPin size={15} className="text-[#A67C52]" /> Shipping Address
-          </h2>
-          <div className="text-xs text-[#6E6A66] space-y-1 font-sans">
-            <p className="font-semibold text-[#221617]">{address.fullName}</p>
-            <p>{address.line1 || address.street}</p>
-            <p>{address.city}, {address.state} - {address.pincode || address.postalCode}</p>
-            <p>{address.country}</p>
-            {address.phone && <p>Phone: {address.phone}</p>}
+      {/* Payment & Shipping Details */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Payment Information */}
+        <div className="bg-white border border-[#E8D8C8] p-6 rounded-xs shadow-xs flex flex-col justify-between">
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#221617] mb-3 flex items-center gap-2">
+              <CreditCard size={15} className="text-[#A67C52]" /> Payment Information
+            </h2>
+            <div className="text-xs text-[#6E6A66] space-y-2 font-sans">
+              <div className="flex justify-between items-center">
+                <span>Payment Mode:</span>
+                <span className="font-medium text-[#221617] capitalize">
+                  {order.paymentMethod === 'razorpay' ? 'Prepaid (Razorpay)' : order.paymentMethod}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span>Payment Status:</span>
+                <span
+                  className={`px-2 py-0.5 text-[10px] rounded-full uppercase font-medium tracking-wider ${
+                    order.paymentStatus === 'paid'
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      : order.paymentStatus === 'pending'
+                      ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                      : 'bg-rose-50 text-rose-800 border border-rose-200'
+                  }`}
+                >
+                  {order.paymentStatus === 'paid' ? 'Paid & Verified' : order.paymentStatus}
+                </span>
+              </div>
+              {order.razorpayPaymentId && (
+                <div className="flex justify-between items-center pt-2 border-t border-[#E8D8C8]/50">
+                  <span className="text-[#6E6A66]">Transaction Ref:</span>
+                  <span className="font-mono text-[#221617] text-[11px] font-medium bg-[#FAF7F2] px-2 py-0.5 rounded-xs border border-[#E8D8C8]/60">
+                    {order.razorpayPaymentId}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
+
+          {order.paymentMethod === 'razorpay' && (
+            <CustomerPaymentReconcileButton
+              orderId={order._id}
+              paymentStatus={order.paymentStatus}
+            />
+          )}
         </div>
-      )}
+
+        {/* Shipping Address */}
+        {address && (
+          <div className="bg-white border border-[#E8D8C8] p-6 rounded-xs shadow-xs">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#221617] mb-3 flex items-center gap-2">
+              <MapPin size={15} className="text-[#A67C52]" /> Shipping Address
+            </h2>
+            <div className="text-xs text-[#6E6A66] space-y-1 font-sans">
+              <p className="font-semibold text-[#221617]">{address.fullName}</p>
+              <p>{address.line1 || address.street}</p>
+              <p>{address.city}, {address.state} - {address.pincode || address.postalCode}</p>
+              <p>{address.country}</p>
+              {address.phone && <p>Phone: {address.phone}</p>}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

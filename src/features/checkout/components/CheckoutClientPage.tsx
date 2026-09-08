@@ -16,7 +16,8 @@ import { api } from '@/utils/api';
 import { AddressSchema, type AddressInput } from '@/validators/order.validators';
 
 const STEPS = ['Address', 'Payment'] as const;
-type Step = (typeof STEPS)[number];
+type Step = (typeof STEPS)[number];  
+
 
 const INDIAN_STATES = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -26,12 +27,6 @@ const INDIAN_STATES = [
   'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh',
   'Uttarakhand', 'West Bengal',
 ];
-
-declare global {
-  interface Window {
-    Razorpay: new (options: unknown) => { open(): void };
-  }
-}
 
 function loadRazorpayScript(): Promise<boolean> {
   return new Promise((resolve) => {
@@ -226,14 +221,23 @@ export function CheckoutClientPage() {
         modal: {
           ondismiss: () => {
             setIsPlacing(false);
+            toast.info('Payment was cancelled.');
           },
         },
       };
 
       const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', (response: any) => {
+        const errorMsg =
+          response?.error?.description ||
+          response?.error?.reason ||
+          'Payment failed. Please try again with another method.';
+        toast.error(errorMsg);
+        setIsPlacing(false);
+      });
       rzp.open();
-    } catch {
-      toast.error('Something went wrong. Please try again.');
+    } catch (err: any) {
+      toast.error(err?.message || 'Something went wrong. Please try again.');
       setIsPlacing(false);
     }
   }

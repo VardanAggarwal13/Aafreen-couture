@@ -5,6 +5,7 @@ import { orderRepository } from '@/server/repositories/order.repository';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
 import { AdminOrderStatusUpdater } from '@/features/admin/components/AdminOrderStatusUpdater';
+import { AdminPaymentReconcileButton } from '@/features/admin/components/AdminPaymentReconcileButton';
 
 export const metadata = { title: 'Order Details | Admin' };
 
@@ -51,6 +52,8 @@ interface AdminOrderDisplay {
   createdAt: Date | string;
   paymentMethod: string;
   paymentStatus: string;
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
   subtotal: number;
   discount: number;
   shippingCharge?: number;
@@ -75,6 +78,8 @@ export default async function AdminOrderDetailPage({ params }: Props) {
       createdAt: dbOrder.createdAt,
       paymentMethod: dbOrder.paymentMethod,
       paymentStatus: dbOrder.paymentStatus,
+      razorpayOrderId: dbOrder.razorpayOrderId,
+      razorpayPaymentId: dbOrder.razorpayPaymentId,
       subtotal: dbOrder.subtotal,
       discount: dbOrder.discount,
       shippingCharge: dbOrder.shippingCharge,
@@ -257,9 +262,49 @@ export default async function AdminOrderDetailPage({ params }: Props) {
             <h2 className="text-sm font-semibold text-white flex items-center gap-2">
               <CreditCard size={15} className="text-brand-gold" /> Payment Information
             </h2>
-            <div className="text-xs space-y-1 text-white/70">
-              <p className="text-white font-medium capitalize">{order.paymentMethod}</p>
-              <p className="text-emerald-400 capitalize">Payment Status: {order.paymentStatus}</p>
+            <div className="text-xs space-y-2 text-white/70">
+              <div className="flex justify-between items-center">
+                <span className="text-white/40">Method:</span>
+                <span className="text-white font-medium capitalize">{order.paymentMethod}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-white/40">Status:</span>
+                <span
+                  className={`px-2 py-0.5 text-[10px] rounded-full uppercase font-medium ${
+                    order.paymentStatus === 'paid'
+                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
+                      : order.paymentStatus === 'pending'
+                      ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
+                      : 'bg-rose-500/15 text-rose-400 border border-rose-500/20'
+                  }`}
+                >
+                  {order.paymentStatus}
+                </span>
+              </div>
+
+              {order.razorpayOrderId && (
+                <div className="pt-2 border-t border-white/5 flex flex-col gap-0.5">
+                  <span className="text-white/40 text-[10px] uppercase">Razorpay Order ID</span>
+                  <span className="font-mono text-white/90 text-[11px] select-all bg-white/5 px-2 py-1 rounded-xs">
+                    {order.razorpayOrderId}
+                  </span>
+                </div>
+              )}
+
+              {order.razorpayPaymentId && (
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-white/40 text-[10px] uppercase">Razorpay Payment ID</span>
+                  <span className="font-mono text-emerald-400/90 text-[11px] select-all bg-white/5 px-2 py-1 rounded-xs">
+                    {order.razorpayPaymentId}
+                  </span>
+                </div>
+              )}
+
+              <AdminPaymentReconcileButton
+                orderId={order._id}
+                hasRazorpayOrder={Boolean(order.razorpayOrderId || order.paymentMethod === 'razorpay')}
+                paymentStatus={order.paymentStatus}
+              />
             </div>
           </div>
         </div>

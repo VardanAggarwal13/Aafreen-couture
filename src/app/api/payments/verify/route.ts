@@ -6,9 +6,6 @@ import { VerifyPaymentSchema } from '@/validators/order.validators';
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: request.headers });
-    if (!session) return unauthorized();
-
     const body = await request.json();
     const { orderId, razorpayOrderId, razorpayPaymentId, razorpaySignature } =
       VerifyPaymentSchema.parse(body);

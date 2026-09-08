@@ -592,6 +592,84 @@ export class ProductRepository {
     this.clearCache();
     return !!result;
   }
+
+  async decrementStock(
+    productId: string,
+    variantId: string | undefined,
+    quantity: number
+  ): Promise<boolean> {
+    this.clearCache();
+    try {
+      await connectDB();
+      const pId = mongoose.isValidObjectId(productId)
+        ? new mongoose.Types.ObjectId(productId)
+        : productId;
+
+      if (variantId && mongoose.isValidObjectId(variantId)) {
+        const vId = new mongoose.Types.ObjectId(variantId);
+        const result = await Product.updateOne(
+          { _id: pId, 'variants._id': vId },
+          {
+            $inc: {
+              'variants.$.stock': -quantity,
+              soldCount: quantity,
+            },
+          }
+        );
+        this.clearCache();
+        return result.modifiedCount > 0;
+      } else {
+        const result = await Product.updateOne(
+          { _id: pId },
+          { $inc: { soldCount: quantity } }
+        );
+        this.clearCache();
+        return result.modifiedCount > 0;
+      }
+    } catch (err) {
+      console.error('Error decrementing product stock:', err);
+      return false;
+    }
+  }
+
+  async incrementStock(
+    productId: string,
+    variantId: string | undefined,
+    quantity: number
+  ): Promise<boolean> {
+    this.clearCache();
+    try {
+      await connectDB();
+      const pId = mongoose.isValidObjectId(productId)
+        ? new mongoose.Types.ObjectId(productId)
+        : productId;
+
+      if (variantId && mongoose.isValidObjectId(variantId)) {
+        const vId = new mongoose.Types.ObjectId(variantId);
+        const result = await Product.updateOne(
+          { _id: pId, 'variants._id': vId },
+          {
+            $inc: {
+              'variants.$.stock': quantity,
+              soldCount: -quantity,
+            },
+          }
+        );
+        this.clearCache();
+        return result.modifiedCount > 0;
+      } else {
+        const result = await Product.updateOne(
+          { _id: pId },
+          { $inc: { soldCount: -quantity } }
+        );
+        this.clearCache();
+        return result.modifiedCount > 0;
+      }
+    } catch (err) {
+      console.error('Error incrementing product stock:', err);
+      return false;
+    }
+  }
 }
 
 export const productRepository = new ProductRepository();
