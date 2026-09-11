@@ -1,27 +1,33 @@
 import Link from 'next/link';
-import { CheckCircle2, MessageCircle, Phone, ArrowRight, ShieldCheck, Sparkles, Clock } from 'lucide-react';
+import { CheckCircle2, MessageCircle, Phone, ArrowRight, ShieldCheck, Sparkles, Clock, Check } from 'lucide-react';
 import { ROUTES } from '@/constants/routes';
 import { siteConfig } from '@/config/site.config';
 import type { Metadata } from 'next';
+import { orderRepository } from '@/server/repositories/order.repository';
+import { paymentService } from '@/server/services/payment.service';
+import { OrderPaymentReconcilePoller } from '@/features/checkout/components/OrderPaymentReconcilePoller';
+import { formatPrice } from '@/utils/format';
 
 export const metadata: Metadata = {
   title: `Order Confirmed — ${siteConfig.name}`,
   robots: { index: false },
 };
 
-import { orderRepository } from '@/server/repositories/order.repository';
-import { paymentService } from '@/server/services/payment.service';
-
 interface Props {
-  searchParams: Promise<{ orderId?: string; orderNumber?: string }>;
+  searchParams: Promise<{ orderId?: string; orderNumber?: string; reconcile?: string }>;
 }
 
 export default async function OrderSuccessPage({ searchParams }: Props) {
   const params = await searchParams;
   let order = params.orderId ? await orderRepository.findById(params.orderId) : null;
 
-  // Auto-reconcile if order is Razorpay and still marked pending
-  if (order && order.paymentMethod === 'razorpay' && order.paymentStatus === 'pending' && order.razorpayOrderId) {
+  // Auto-reconcile server-side if Razorpay order is still marked pending
+  if (
+    order &&
+    order.paymentMethod === 'razorpay' &&
+    order.paymentStatus === 'pending' &&
+    order.razorpayOrderId
+  ) {
     try {
       const recResult = await paymentService.reconcilePayment(order._id.toString());
       if (recResult.reconciled) {
@@ -34,47 +40,61 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
 
   const isRazorpay = order?.paymentMethod === 'razorpay';
   const isPaid = order?.paymentStatus === 'paid';
-  const orderNumber = order?.orderNumber || params.orderNumber || (params.orderId ? `AC-${params.orderId.slice(-6).toUpperCase()}` : 'AC-COUTURE');
-  
+  const orderNumber =
+    order?.orderNumber ||
+    params.orderNumber ||
+    (params.orderId ? `AC-${params.orderId.slice(-6).toUpperCase()}` : 'AC-COUTURE');
+
   const whatsappMsg = encodeURIComponent(
     isRazorpay
-      ? `Hello Aafreen Couture Concierge, I have placed Order #${orderNumber} via Online Payment (${isPaid ? 'Paid' : 'Payment Processing'}). Please confirm my order details.`
+      ? `Hello Aafreen Couture Concierge, I have placed Order #${orderNumber} via Online Payment (${
+          isPaid ? 'Paid & Verified' : 'Payment Processing'
+        }). Please confirm my order details.`
       : `Hello Aafreen Couture Concierge, I have placed Order #${orderNumber} via Cash on Delivery. Please confirm my order and sizing.`
   );
 
   return (
-    <div className="min-h-[80vh] bg-[#FAF7F2] py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-[80vh] bg-background py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-2xl mx-auto">
         {/* Main Confirmation Card */}
-        <div className="bg-white border border-[#E8D8C8] rounded-xs p-6 sm:p-10 shadow-[0_4px_24px_rgba(34,22,23,0.04)] text-center relative overflow-hidden">
+        <div className="bg-surface border border-border rounded-xs p-6 sm:p-10 shadow-2xs text-center relative overflow-hidden">
           {/* Subtle top gold accent bar */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#C49A5A] via-[#E8D4BE] to-[#C49A5A]" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/50 via-gold to-gold/50" />
 
           {/* Golden Seal Checkmark */}
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#FAF5EE] border-2 border-[#C49A5A] flex items-center justify-center mx-auto mb-6 shadow-sm">
-            <CheckCircle2 size={38} className="text-[#C49A5A]" />
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gold/10 border-2 border-gold flex items-center justify-center mx-auto mb-6 shadow-sm">
+            <CheckCircle2 size={38} className="text-gold" />
           </div>
 
-          <span className="inline-block text-[10.5px] uppercase font-bold tracking-[0.35em] text-[#A67C52] mb-2">
+          <span className="inline-block text-[10.5px] uppercase font-bold tracking-[0.35em] text-gold mb-2">
             Aafreen Atelier Confirmation
           </span>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#221617] uppercase tracking-wide mb-3">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-heading uppercase tracking-wide mb-3">
             {isRazorpay && !isPaid ? 'Payment In Verification' : 'Thank You · Order Placed!'}
           </h1>
-          <p className="text-xs sm:text-sm text-[#6E6A66] max-w-md mx-auto leading-relaxed mb-6">
+          <p className="text-xs sm:text-sm text-text max-w-md mx-auto leading-relaxed mb-6">
             {isRazorpay && !isPaid
-              ? 'We are verifying your transaction with the payment gateway. If money was deducted from your account, your order will be confirmed automatically.'
+              ? 'We are verifying your transaction with the payment gateway. If money was debited from your account, your order will be confirmed automatically.'
               : 'Your couture reservation has been received. Our master atelier is preparing your heirloom ensemble with meticulous care.'}
           </p>
 
+          {/* Client Auto-Reconcile Poller for pending online payments */}
+          {order && (
+            <OrderPaymentReconcilePoller
+              orderId={order._id.toString()}
+              initialPaymentStatus={order.paymentStatus}
+              paymentMethod={order.paymentMethod}
+            />
+          )}
+
           {/* Order Reference & Payment Status Badge */}
-          <div className="bg-[#FAF5EE] border border-[#E8D8C8] p-4 sm:p-5 rounded-xs mb-8 text-left space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E8D8C8] pb-3">
+          <div className="bg-background border border-border p-4 sm:p-5 rounded-xs mb-8 text-left space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
               <div>
-                <span className="text-[10px] uppercase font-semibold text-[#8C7E72] tracking-wider block">
+                <span className="text-[10px] uppercase font-semibold text-text/70 tracking-wider block">
                   Order Reference
                 </span>
-                <span className="text-base sm:text-lg font-serif font-bold text-[#221617] tracking-wider">
+                <span className="text-base sm:text-lg font-serif font-bold text-heading tracking-wider">
                   #{orderNumber}
                 </span>
               </div>
@@ -89,23 +109,26 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
                   </span>
                 )
               ) : (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C49A5A] text-white text-[10px] uppercase font-bold tracking-wider">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold text-surface text-[10px] uppercase font-bold tracking-wider">
                   <Sparkles size={11} /> Cash on Delivery Confirmed
                 </span>
               )}
             </div>
 
-            <div className="text-xs text-[#5C554E] space-y-1.5">
+            <div className="text-xs text-text space-y-1.5">
               {isRazorpay ? (
                 <>
                   {order?.razorpayPaymentId && (
                     <div className="flex items-center gap-2">
                       <ShieldCheck size={13} className="text-emerald-600 shrink-0" />
-                      <span>Razorpay Payment Ref: <strong className="font-mono text-[#221617]">{order.razorpayPaymentId}</strong></span>
+                      <span>
+                        Razorpay Payment Ref:{' '}
+                        <strong className="font-mono text-heading">{order.razorpayPaymentId}</strong>
+                      </span>
                     </div>
                   )}
                   <div className="flex items-center gap-2">
-                    <Clock size={13} className="text-[#A67C52] shrink-0" />
+                    <Clock size={13} className="text-gold shrink-0" />
                     <span>
                       {isPaid
                         ? '100% Payment Secured & Verified via Razorpay'
@@ -115,11 +138,17 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
                 </>
               ) : (
                 <div className="flex items-center gap-2">
-                  <Clock size={13} className="text-[#A67C52] shrink-0" />
-                  <span>No advance payment deducted · Pay cash or UPI upon delivery</span>
+                  <Clock size={13} className="text-gold shrink-0" />
+                  <span>Zero advance deducted · Pay cash or UPI upon doorstep delivery</span>
                 </div>
               )}
-              <div className="flex items-center gap-2">
+              {order?.total && (
+                <div className="flex items-center justify-between pt-1 font-medium text-heading">
+                  <span>Total Order Amount:</span>
+                  <span className="font-bold text-gold">{formatPrice(order.total)}</span>
+                </div>
+              )}
+              <div className="flex items-center gap-2 pt-1 border-t border-border/60">
                 <ShieldCheck size={13} className="text-emerald-600 shrink-0" />
                 <span>All pieces pass a 48-point quality &amp; embroidery inspection before dispatch</span>
               </div>
@@ -128,35 +157,35 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
 
           {/* Next Steps Flow */}
           <div className="text-left mb-8 space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#221617] pb-1 border-b border-[#E8D8C8]">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading pb-1 border-b border-border">
               What Happens Next
             </h2>
-            <ol className="space-y-3 text-xs text-[#5C554E]">
+            <ol className="space-y-3 text-xs text-text">
               <li className="flex items-start gap-3">
-                <span className="w-5 h-5 rounded-full bg-[#FAF5EE] border border-[#C49A5A] text-[#A67C52] font-semibold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-gold/10 border border-gold text-gold font-semibold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                   1
                 </span>
                 <div>
-                  <strong className="text-[#221617] block font-medium">Concierge WhatsApp / Call Verification</strong>
-                  <span>Our stylist will reach out at your provided phone number to re-verify sizing and blouse measurements.</span>
+                  <strong className="text-heading block font-medium">Concierge Sizing Verification</strong>
+                  <span>Our bridal concierge will reach out to confirm your exact sizing, blouse measurements, and dispatch window.</span>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-5 h-5 rounded-full bg-[#FAF5EE] border border-[#C49A5A] text-[#A67C52] font-semibold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-gold/10 border border-gold text-gold font-semibold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                   2
                 </span>
                 <div>
-                  <strong className="text-[#221617] block font-medium">Tamper-Proof Packaging &amp; Dispatch</strong>
-                  <span>Your ensemble is securely packed in an archival garment bag and handed over to insured express courier.</span>
+                  <strong className="text-heading block font-medium">Archival Packaging &amp; Insured Dispatch</strong>
+                  <span>Your ensemble is meticulously packaged in an archival garment protector and handed over to express courier.</span>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-5 h-5 rounded-full bg-[#FAF5EE] border border-[#C49A5A] text-[#A67C52] font-semibold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-gold/10 border border-gold text-gold font-semibold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                   3
                 </span>
                 <div>
-                  <strong className="text-[#221617] block font-medium">Doorstep Handover &amp; Payment</strong>
-                  <span>Inspect your parcel and make payment via Cash or UPI directly to the delivery personnel.</span>
+                  <strong className="text-heading block font-medium">Doorstep Delivery</strong>
+                  <span>Inspect your parcel upon handover. {order?.paymentMethod === 'cod' ? 'Complete payment via Cash or UPI to courier.' : 'Your parcel is 100% pre-paid.'}</span>
                 </div>
               </li>
             </ol>
@@ -177,14 +206,14 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Link
                 href={`/track-order?orderId=${encodeURIComponent(orderNumber)}`}
-                className="bg-[#221617] hover:bg-[#A67C52] text-white py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors flex items-center justify-center gap-1.5"
+                className="bg-heading hover:bg-gold text-surface py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>Track Order Live</span>
                 <ArrowRight size={13} />
               </Link>
               <Link
                 href={ROUTES.SHOP}
-                className="border border-[#E8D8C8] text-[#221617] hover:border-[#A67C52] hover:text-[#A67C52] py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors flex items-center justify-center"
+                className="border border-border text-heading hover:border-gold hover:text-gold py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors flex items-center justify-center"
               >
                 Continue Shopping
               </Link>
@@ -192,16 +221,16 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
           </div>
 
           {/* Concierge Help Strip */}
-          <div className="mt-8 pt-6 border-t border-[#E8D8C8] text-center text-xs text-[#8C7E72] space-y-1">
+          <div className="mt-8 pt-6 border-t border-border text-center text-xs text-text/70 space-y-1">
             <p>
               Need urgent sizing assistance or wedding date consultation?
             </p>
-            <p className="flex items-center justify-center gap-4 text-[#221617] font-medium pt-1">
-              <a href={`tel:${siteConfig.phone}`} className="hover:text-[#A67C52] flex items-center gap-1.5 transition-colors">
-                <Phone size={12} className="text-[#A67C52]" /> {siteConfig.phone}
+            <p className="flex items-center justify-center gap-4 text-heading font-medium pt-1">
+              <a href={`tel:${siteConfig.phone}`} className="hover:text-gold flex items-center gap-1.5 transition-colors">
+                <Phone size={12} className="text-gold" /> {siteConfig.phone}
               </a>
               <span>·</span>
-              <a href={`mailto:${siteConfig.email}`} className="hover:text-[#A67C52] transition-colors">
+              <a href={`mailto:${siteConfig.email}`} className="hover:text-gold transition-colors">
                 {siteConfig.email}
               </a>
             </p>

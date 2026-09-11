@@ -54,20 +54,20 @@ export function CustomerPaymentReconcileButton({ orderId, paymentStatus }: Props
   }
 
   return (
-    <div className="mt-3 pt-3 border-t border-[#E8D8C8]/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-      <div className="flex items-center gap-1.5 text-xs text-[#6E6A66]">
-        <ShieldAlert size={14} className="text-[#A67C52] shrink-0" />
-        <span>Money debited from your account but order shows pending?</span>
+    <div className="mt-3 pt-3 border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-sans">
+      <div className="flex items-center gap-1.5 text-xs text-text/80">
+        <ShieldAlert size={14} className="text-gold shrink-0" />
+        <span>Money debited from your bank but status shows pending?</span>
       </div>
       <button
         onClick={handleReconcile}
         disabled={loading}
-        className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#A67C52] border border-[#A67C52]/40 hover:bg-[#FAF7F2] transition-colors rounded-xs disabled:opacity-50 cursor-pointer"
+        className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-gold border border-gold/40 hover:bg-gold/10 transition-colors rounded-xs disabled:opacity-50 cursor-pointer"
       >
         {loading ? (
-          <RefreshCw size={12} className="animate-spin text-[#A67C52]" />
+          <RefreshCw size={12} className="animate-spin text-gold" />
         ) : (
-          <RefreshCw size={12} className="text-[#A67C52]" />
+          <RefreshCw size={12} className="text-gold" />
         )}
         <span>{loading ? 'Checking with Bank…' : 'Verify Bank Status'}</span>
       </button>

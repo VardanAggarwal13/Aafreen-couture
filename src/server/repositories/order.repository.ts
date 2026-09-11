@@ -172,27 +172,41 @@ export class OrderRepository {
       razorpaySignature?: string;
     }
   ): Promise<IOrder | null> {
+    const cleanId = id.replace(/^#/, '').trim();
     try {
       await connectDB();
-      return OrderModel.findByIdAndUpdate(id, { $set: data }, { new: true }).lean<IOrder>();
+      const query = mongoose.Types.ObjectId.isValid(cleanId)
+        ? { _id: cleanId }
+        : { orderNumber: cleanId };
+      const doc = await OrderModel.findOneAndUpdate(query, { $set: data }, { new: true }).lean<IOrder>();
+      if (doc) return doc;
     } catch {
-      const found = getBackupStore().find((o) => String(o._id) === id);
-      if (found) {
-        found.paymentStatus = data.paymentStatus;
-        if (data.razorpayPaymentId) found.razorpayPaymentId = data.razorpayPaymentId;
-        if (data.razorpaySignature) found.razorpaySignature = data.razorpaySignature;
-        return found;
-      }
-      return null;
+      // Fallback
     }
+    const found = getBackupStore().find(
+      (o) => String(o._id) === cleanId || o.orderNumber.toLowerCase() === cleanId.toLowerCase()
+    );
+    if (found) {
+      found.paymentStatus = data.paymentStatus;
+      if (data.razorpayPaymentId) found.razorpayPaymentId = data.razorpayPaymentId;
+      if (data.razorpaySignature) found.razorpaySignature = data.razorpaySignature;
+      return found;
+    }
+    return null;
   }
 
   async findByIdAndPatchRzpOrderId(id: string, razorpayOrderId: string): Promise<void> {
+    const cleanId = id.replace(/^#/, '').trim();
     try {
       await connectDB();
-      await OrderModel.findByIdAndUpdate(id, { $set: { razorpayOrderId } });
+      const query = mongoose.Types.ObjectId.isValid(cleanId)
+        ? { _id: cleanId }
+        : { orderNumber: cleanId };
+      await OrderModel.findOneAndUpdate(query, { $set: { razorpayOrderId } });
     } catch {
-      const found = getBackupStore().find((o) => String(o._id) === id);
+      const found = getBackupStore().find(
+        (o) => String(o._id) === cleanId || o.orderNumber.toLowerCase() === cleanId.toLowerCase()
+      );
       if (found) {
         found.razorpayOrderId = razorpayOrderId;
       }

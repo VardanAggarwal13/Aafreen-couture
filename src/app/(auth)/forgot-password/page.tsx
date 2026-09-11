@@ -27,42 +27,45 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-[#FAF7F2]">
-      <div className="w-full max-w-md bg-white border border-[#E8D8C8] p-8 sm:p-10 shadow-xs rounded-xs">
+    <div className="flex-1 flex items-center justify-center px-4 py-12 bg-background">
+      <div className="w-full max-w-md bg-surface border border-border p-8 sm:p-10 shadow-md rounded-xs">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link href={ROUTES.HOME} className="inline-block font-serif text-2xl tracking-[0.2em] text-[#221617] uppercase mb-3">
-            Aafreen
-          </Link>
-          <p className="text-[10.5px] uppercase tracking-[0.3em] text-[#A67C52] font-semibold">
-            Password Recovery
+          <h1 className="font-serif text-2xl tracking-wide text-heading mb-2">
+            Recover Access
+          </h1>
+          <p className="text-[10.5px] uppercase tracking-[0.25em] text-gold font-semibold">
+            Atelier Password Recovery
           </p>
         </div>
 
         {submitted ? (
           <div className="text-center py-4">
-            <div className="w-12 h-12 rounded-full bg-[#FAF7F2] text-[#A67C52] flex items-center justify-center mx-auto mb-4 border border-[#E8D8C8]">
+            <div className="w-12 h-12 rounded-full bg-background text-gold flex items-center justify-center mx-auto mb-4 border border-border">
               <CheckCircle2 size={24} />
             </div>
-            <h2 className="font-serif text-xl text-[#221617] mb-2">Check Your Email</h2>
-            <p className="text-xs text-[#6E6A66] leading-relaxed mb-6 font-sans">
-              We have sent password reset instructions to <strong className="text-[#221617]">{email}</strong>.
+            <h2 className="font-serif text-xl text-heading mb-2">Check Your Email</h2>
+            <p className="text-xs text-text leading-relaxed mb-6 font-sans">
+              We have sent password reset instructions to <strong className="text-heading">{email}</strong>.
             </p>
             <Link
               href={ROUTES.LOGIN}
-              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#A67C52] hover:text-[#221617] transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gold hover:text-heading transition-colors"
             >
               <ArrowLeft size={14} /> Back to Sign In
             </Link>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
-            <p className="text-xs text-[#6E6A66] text-center leading-relaxed font-sans mb-4">
-              Enter your registered email address and we will send you instructions to reset your password.
+            <p className="text-xs text-text text-center leading-relaxed font-sans mb-4">
+              Enter your registered email address and we will dispatch a secure link to reset your atelier password.
             </p>
 
             <div>
-              <label htmlFor="email" className="block text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
+              <label
+                htmlFor="email"
+                className="block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -73,24 +76,24 @@ export default function ForgotPasswordPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full px-3.5 py-2.5 pl-10 text-xs border border-[#E8D8C8] bg-[#FAF7F2]/50 text-[#221617] rounded-xs focus:outline-none focus:border-[#A67C52]"
+                  className="w-full px-3.5 py-2.5 pl-10 text-xs border border-border bg-background/50 text-heading rounded-xs focus:outline-none focus:border-gold placeholder:text-text/40 transition-colors"
                 />
-                <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6E6A66]" />
+                <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text/50" />
               </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-[#221617] text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-[#A67C52] transition-colors rounded-xs disabled:opacity-50"
+              className="w-full py-3 bg-heading text-surface text-xs font-semibold uppercase tracking-[0.2em] hover:bg-gold transition-colors duration-300 rounded-xs disabled:opacity-50 cursor-pointer shadow-xs"
             >
-              {loading ? 'Sending Instructions…' : 'Send Reset Link'}
+              {loading ? 'Sending Instructions…' : 'Send Recovery Link'}
             </button>
 
-            <div className="text-center pt-3 border-t border-[#E8D8C8]/60">
+            <div className="text-center pt-3 border-t border-border/80">
               <Link
                 href={ROUTES.LOGIN}
-                className="inline-flex items-center gap-1.5 text-xs text-[#6E6A66] hover:text-[#A67C52] transition-colors font-sans"
+                className="inline-flex items-center gap-1.5 text-xs text-text hover:text-gold transition-colors font-sans"
               >
                 <ArrowLeft size={13} /> Back to Sign In
               </Link>

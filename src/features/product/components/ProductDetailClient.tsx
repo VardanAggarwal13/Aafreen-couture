@@ -4,13 +4,23 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Heart, Share2, ShoppingBag, ChevronDown, ChevronUp, Star } from 'lucide-react';
+import {
+  Heart,
+  Share2,
+  ShoppingBag,
+  ChevronDown,
+  ChevronUp,
+  Star,
+  Truck,
+  ShieldCheck,
+  RotateCcw,
+  Scissors,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { formatPrice, getDiscountPercentage } from '@/utils/format';
 import { useCartStore } from '@/store/cart.store';
 import { useWishlistStore } from '@/store/wishlist.store';
-import { buttonVariants } from '@/components/ui/button';
 import { ProductCard } from '@/components/product/ProductCard';
 import { siteConfig } from '@/config/site.config';
 import type { IProduct } from '@/types';
@@ -24,7 +34,7 @@ export function ProductDetailClient({ product, related }: Props) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [accordionOpen, setAccordionOpen] = useState<string | null>('description');
+  const [accordionOpen, setAccordionOpen] = useState<string | null>('details');
 
   const addItem = useCartStore((s) => s.addItem);
   const toggle = useWishlistStore((s) => s.toggle);
@@ -79,7 +89,7 @@ export function ProductDetailClient({ product, related }: Props) {
       navigator.share({ title: product.name, url: window.location.href });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      toast.success('Link copied!');
+      toast.success('Link copied to clipboard!');
     }
   }
 
@@ -110,12 +120,12 @@ export function ProductDetailClient({ product, related }: Props) {
   return (
     <>
       {/* Breadcrumb */}
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 text-xs text-[#6E6A66] flex items-center gap-2">
-        <Link href="/" className="hover:text-brand-gold transition-colors">Home</Link>
-        <span>/</span>
-        <Link href="/shop" className="hover:text-brand-gold transition-colors">Shop</Link>
-        <span>/</span>
-        <span className="text-[#221617] font-medium">{product.name}</span>
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 text-xs text-text flex items-center gap-2">
+        <Link href="/" className="hover:text-gold transition-colors">Home</Link>
+        <span className="text-border">/</span>
+        <Link href="/shop" className="hover:text-gold transition-colors">Shop</Link>
+        <span className="text-border">/</span>
+        <span className="text-heading font-medium truncate max-w-[200px] sm:max-w-none">{product.name}</span>
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-12">
@@ -130,8 +140,8 @@ export function ProductDetailClient({ product, related }: Props) {
                     key={i}
                     onClick={() => setSelectedImage(i)}
                     className={cn(
-                      'w-14 h-14 sm:w-16 sm:h-16 shrink-0 aspect-square overflow-hidden rounded-sm border-2 transition-colors cursor-pointer',
-                      i === selectedImage ? 'border-[#A67C52]' : 'border-transparent'
+                      'w-14 h-14 sm:w-16 sm:h-16 shrink-0 aspect-square overflow-hidden rounded-xs border-2 transition-all cursor-pointer',
+                      i === selectedImage ? 'border-gold ring-1 ring-gold/40' : 'border-border hover:border-gold/50'
                     )}
                   >
                     <Image
@@ -146,7 +156,7 @@ export function ProductDetailClient({ product, related }: Props) {
               </div>
             )}
             {/* Main image */}
-            <div className="flex-1 relative aspect-[3/4] overflow-hidden rounded-sm bg-[#FAF7F2] border border-[#E8D8C8]">
+            <div className="flex-1 relative aspect-[3/4] overflow-hidden rounded-xs bg-background border border-border">
               {allImages[selectedImage] ? (
                 <Image
                   src={allImages[selectedImage]}
@@ -157,20 +167,20 @@ export function ProductDetailClient({ product, related }: Props) {
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-[#FAF7F2]" />
+                <div className="w-full h-full bg-background" />
               )}
               {discountPct && (
-                <span className="absolute top-3 left-3 bg-[#A67C52] text-white text-xs font-semibold px-2.5 py-1 rounded-xs uppercase tracking-wider">
+                <span className="absolute top-3 left-3 bg-gold text-surface text-[11px] font-semibold px-2.5 py-1 rounded-xs uppercase tracking-wider shadow-xs">
                   -{discountPct}%
                 </span>
               )}
               {/* Overlay Wishlist Icon */}
               <button
                 onClick={() => toggle(product._id as string)}
-                className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-xs rounded-full text-[#221617] hover:text-[#A67C52] transition-colors shadow-xs"
+                className="absolute top-3 right-3 p-2 bg-surface/90 backdrop-blur-xs rounded-full text-heading hover:text-gold transition-colors shadow-xs cursor-pointer"
                 aria-label="Wishlist"
               >
-                <Heart size={18} fill={isWishlisted ? '#A67C52' : 'none'} className={isWishlisted ? 'text-[#A67C52]' : ''} />
+                <Heart size={18} fill={isWishlisted ? 'currentColor' : 'none'} className={isWishlisted ? 'text-gold' : ''} />
               </button>
             </div>
           </div>
@@ -178,10 +188,10 @@ export function ProductDetailClient({ product, related }: Props) {
           {/* Product info */}
           <div className="flex flex-col gap-6">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#A67C52] mb-1.5">
-                {product.fabric || 'Luxury Ethnic Wear'}
+              <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-gold mb-1.5">
+                {product.fabric || 'Luxury Ethnic Couture'}
               </p>
-              <h1 className="text-3xl lg:text-4xl font-serif text-[#221617] mb-2">{product.name}</h1>
+              <h1 className="text-3xl lg:text-4xl font-serif text-heading mb-2">{product.name}</h1>
 
               {/* Rating */}
               <div className="flex items-center gap-2 mb-3">
@@ -190,29 +200,29 @@ export function ProductDetailClient({ product, related }: Props) {
                     <Star
                       key={i}
                       size={13}
-                      className={i < Math.round(product.averageRating || 5) ? 'text-[#A67C52] fill-[#A67C52]' : 'text-[#E8D8C8] fill-[#E8D8C8]'}
+                      className={i < Math.round(product.averageRating || 5) ? 'text-gold fill-gold' : 'text-border fill-border'}
                     />
                   ))}
                 </div>
-                <span className="text-xs text-[#6E6A66]">({product.reviewCount || 48} reviews)</span>
+                <span className="text-xs text-text">({product.reviewCount || 48} client reviews)</span>
               </div>
 
               {/* Description summary */}
-              <p className="text-sm text-[#6E6A66] leading-relaxed mb-4">
+              <p className="text-xs sm:text-sm text-text leading-relaxed mb-4">
                 {product.description}
               </p>
 
               {/* Price */}
-              <div className="flex items-baseline gap-3 pt-2 border-t border-[#E8D8C8]">
-                <span className="text-2xl font-serif font-bold text-[#221617]">
+              <div className="flex items-baseline gap-3 pt-2 border-t border-border">
+                <span className="text-2xl sm:text-3xl font-serif font-bold text-heading">
                   {formatPrice(price)}
                 </span>
                 {comparePrice && comparePrice > price && (
-                  <span className="text-sm text-[#6E6A66] line-through">
+                  <span className="text-sm text-text line-through">
                     {formatPrice(comparePrice)}
                   </span>
                 )}
-                <span className="text-xs text-[#6E6A66] font-normal">(Inclusive of all taxes)</span>
+                <span className="text-xs text-text font-normal">(Inclusive of all bespoke taxes)</span>
               </div>
             </div>
 
@@ -221,8 +231,8 @@ export function ProductDetailClient({ product, related }: Props) {
               <div className="space-y-4">
                 {activeVariant?.color && (
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-[#221617] mb-2">
-                      Color: <span className="font-normal text-[#6E6A66]">{activeVariant?.color}</span>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-heading mb-2">
+                      Color: <span className="font-normal text-text">{activeVariant?.color}</span>
                     </p>
                     <div className="flex gap-2.5">
                       {uniqueColors.length > 1 ? (
@@ -235,8 +245,8 @@ export function ProductDetailClient({ product, related }: Props) {
                               onClick={() => setSelectedVariantIdx(actualIdx !== -1 ? actualIdx : 0)}
                               title={v.color}
                               className={cn(
-                                'w-8 h-8 rounded-full border-2 transition-all relative',
-                                isSelected ? 'border-[#A67C52] scale-110 ring-2 ring-[#A67C52]/30' : 'border-transparent hover:border-[#A67C52]/50'
+                                'w-8 h-8 rounded-full border-2 transition-all relative cursor-pointer',
+                                isSelected ? 'border-gold scale-110 ring-2 ring-gold/30' : 'border-transparent hover:border-gold/50'
                               )}
                               style={{ backgroundColor: v.colorHex }}
                             />
@@ -245,7 +255,7 @@ export function ProductDetailClient({ product, related }: Props) {
                       ) : activeVariant?.colorHex ? (
                         <div
                           title={activeVariant.color}
-                          className="w-8 h-8 rounded-full border-2 border-[#A67C52] ring-2 ring-[#A67C52]/20"
+                          className="w-8 h-8 rounded-full border-2 border-gold ring-2 ring-gold/20"
                           style={{ backgroundColor: activeVariant.colorHex }}
                         />
                       ) : null}
@@ -256,18 +266,18 @@ export function ProductDetailClient({ product, related }: Props) {
                 {/* Size */}
                 {isFreeSize ? (
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-[#221617]">
-                      Size: <span className="font-normal text-[#6E6A66]">Free Size</span>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-heading">
+                      Size: <span className="font-normal text-text">Free Size / Bespoke Fit Available</span>
                     </p>
                   </div>
                 ) : (
                   product.variants[0]?.size && (
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-[#221617]">
-                          Size: <span className="font-normal text-[#6E6A66]">{activeVariant?.size}</span>
+                        <p className="text-xs font-semibold uppercase tracking-wider text-heading">
+                          Size: <span className="font-normal text-text">{activeVariant?.size}</span>
                         </p>
-                        <button className="text-xs text-[#A67C52] underline underline-offset-2 hover:text-[#221617] transition-colors">
+                        <button className="text-xs text-gold underline underline-offset-2 hover:text-heading transition-colors cursor-pointer">
                           Size Guide
                         </button>
                       </div>
@@ -278,12 +288,12 @@ export function ProductDetailClient({ product, related }: Props) {
                             onClick={() => setSelectedVariantIdx(i)}
                             disabled={!v.isActive || v.stock === 0}
                             className={cn(
-                              'min-w-[40px] px-3.5 py-2 text-xs font-semibold tracking-wider uppercase border transition-all',
+                              'min-w-[42px] px-3.5 py-2 text-xs font-semibold tracking-wider uppercase border transition-all rounded-xs cursor-pointer',
                               !v.isActive || v.stock === 0
-                                ? 'border-[#E8D8C8] text-[#6E6A66]/40 line-through cursor-not-allowed'
+                                ? 'border-border text-text/40 line-through cursor-not-allowed bg-background/50'
                                 : i === selectedVariantIdx
-                                ? 'border-[#221617] bg-[#221617] text-white'
-                                : 'border-[#E8D8C8] bg-white text-[#221617] hover:border-[#A67C52]'
+                                ? 'border-heading bg-heading text-surface'
+                                : 'border-border bg-surface text-heading hover:border-gold'
                             )}
                           >
                             {v.size}
@@ -298,21 +308,21 @@ export function ProductDetailClient({ product, related }: Props) {
 
             {/* Quantity */}
             <div className="space-y-3 pt-2">
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#221617]">Quantity</p>
-              <div className="flex items-center w-32 border border-[#E8D8C8] bg-white">
+              <p className="text-xs font-semibold uppercase tracking-wider text-heading">Quantity</p>
+              <div className="flex items-center w-32 border border-border bg-surface rounded-xs">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="px-3.5 py-2 text-[#221617] hover:text-[#A67C52] transition-colors font-medium text-base"
+                  className="px-3.5 py-2 text-heading hover:text-gold transition-colors font-medium text-base cursor-pointer"
                   aria-label="Decrease quantity"
                 >
                   −
                 </button>
-                <span className="flex-1 py-2 text-xs font-semibold text-[#221617] text-center">
+                <span className="flex-1 py-2 text-xs font-semibold text-heading text-center">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-                  className="px-3.5 py-2 text-[#221617] hover:text-[#A67C52] transition-colors font-medium text-base"
+                  className="px-3.5 py-2 text-heading hover:text-gold transition-colors font-medium text-base cursor-pointer"
                   aria-label="Increase quantity"
                 >
                   +
@@ -320,16 +330,12 @@ export function ProductDetailClient({ product, related }: Props) {
               </div>
             </div>
 
-            {/* Dual CTAs matching reference mockup: ADD TO CART (Dark Maroon) & BUY NOW (Gold Tan) */}
+            {/* Dual CTAs: ADD TO CART & BUY NOW */}
             <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
               <button
                 onClick={handleAddToCart}
                 disabled={!inStock}
-                className={cn(
-                  buttonVariants({ variant: 'couture', size: 'couture' }),
-                  'flex-1 gap-2 cursor-pointer',
-                  !inStock && 'opacity-40 cursor-not-allowed'
-                )}
+                className="flex-1 bg-heading text-surface hover:bg-gold py-3 px-6 text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 disabled:opacity-40 rounded-xs shadow-xs flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShoppingBag size={14} />
                 {inStock ? 'Add to Cart' : 'Out of Stock'}
@@ -338,30 +344,26 @@ export function ProductDetailClient({ product, related }: Props) {
               <button
                 onClick={handleBuyNow}
                 disabled={!inStock}
-                className={cn(
-                  buttonVariants({ variant: 'couture-gold', size: 'couture' }),
-                  'flex-1 gap-2 cursor-pointer',
-                  !inStock && 'opacity-40 cursor-not-allowed'
-                )}
+                className="flex-1 bg-gold text-white hover:bg-gold/90 py-3 px-6 text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 disabled:opacity-40 rounded-xs shadow-xs flex items-center justify-center gap-2 cursor-pointer"
               >
                 Buy Now
               </button>
             </div>
 
             {/* Wishlist & Share line links */}
-            <div className="flex items-center justify-between pt-1 border-t border-[#E8D8C8]/60">
+            <div className="flex items-center justify-between pt-1 border-t border-border/60">
               <button
                 onClick={() => toggle(product._id as string)}
-                className="flex items-center gap-1.5 text-xs tracking-wider uppercase font-semibold text-[#221617] hover:text-[#A67C52] transition-colors"
+                className="flex items-center gap-1.5 text-xs tracking-wider uppercase font-semibold text-heading hover:text-gold transition-colors cursor-pointer"
               >
-                <Heart size={14} fill={isWishlisted ? '#A67C52' : 'none'} className={isWishlisted ? 'text-[#A67C52]' : ''} />
+                <Heart size={14} fill={isWishlisted ? 'currentColor' : 'none'} className={isWishlisted ? 'text-gold' : ''} />
                 {isWishlisted ? 'Wishlisted' : 'Add to Wishlist'}
               </button>
 
               <div className="flex items-center gap-3">
                 <button
                   onClick={handleShare}
-                  className="flex items-center gap-1 text-xs tracking-wider uppercase font-semibold text-[#6E6A66] hover:text-[#221617] transition-colors"
+                  className="flex items-center gap-1 text-xs tracking-wider uppercase font-semibold text-text hover:text-heading transition-colors cursor-pointer"
                   aria-label="Share product"
                 >
                   <Share2 size={13} /> Share
@@ -371,58 +373,82 @@ export function ProductDetailClient({ product, related }: Props) {
                   href={`https://wa.me/${siteConfig.whatsapp}?text=Hi! I'm interested in ${encodeURIComponent(product.name)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-[#A67C52] font-semibold uppercase tracking-wider hover:underline"
+                  className="text-xs text-gold font-semibold uppercase tracking-wider hover:underline"
                 >
-                  WhatsApp Enquiry
+                  WhatsApp Consultation
                 </a>
               </div>
             </div>
 
-            {/* PDP Trust Badges Bar matching reference image */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3 border-y border-[#E8D8C8] bg-white/60 p-2 text-center">
-              <div className="space-y-0.5">
-                <span className="text-base">🚚</span>
-                <p className="text-[10px] font-semibold text-[#221617] uppercase">Free Shipping</p>
-                <p className="text-[9px] text-[#6E6A66]">On All Orders</p>
+            {/* PDP Trust Badges Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3.5 border-y border-border bg-surface/80 p-3 text-center rounded-xs shadow-2xs">
+              <div className="flex flex-col items-center gap-1">
+                <Truck size={16} className="text-gold" />
+                <p className="text-[10px] font-semibold text-heading uppercase tracking-wider">Free Shipping</p>
+                <p className="text-[9px] text-text">Pan-India Express</p>
               </div>
-              <div className="space-y-0.5">
-                <span className="text-base">🛡️</span>
-                <p className="text-[10px] font-semibold text-[#221617] uppercase">Secure Payment</p>
-                <p className="text-[9px] text-[#6E6A66]">100% Safe & Secure</p>
+              <div className="flex flex-col items-center gap-1">
+                <ShieldCheck size={16} className="text-gold" />
+                <p className="text-[10px] font-semibold text-heading uppercase tracking-wider">Secure Payment</p>
+                <p className="text-[9px] text-text">100% Encrypted</p>
               </div>
-              <div className="space-y-0.5">
-                <span className="text-base">🔄</span>
-                <p className="text-[10px] font-semibold text-[#221617] uppercase">Easy Returns</p>
-                <p className="text-[9px] text-[#6E6A66]">7 Days Return</p>
+              <div className="flex flex-col items-center gap-1">
+                <RotateCcw size={16} className="text-gold" />
+                <p className="text-[10px] font-semibold text-heading uppercase tracking-wider">Easy Returns</p>
+                <p className="text-[9px] text-text">7 Days Return</p>
               </div>
-              <div className="space-y-0.5">
-                <span className="text-base">✂️</span>
-                <p className="text-[10px] font-semibold text-[#221617] uppercase">Made To Order</p>
-                <p className="text-[9px] text-[#6E6A66]">Custom Tailored</p>
+              <div className="flex flex-col items-center gap-1">
+                <Scissors size={16} className="text-gold" />
+                <p className="text-[10px] font-semibold text-heading uppercase tracking-wider">Made To Order</p>
+                <p className="text-[9px] text-text">Custom Tailored</p>
               </div>
             </div>
 
-            {/* Accordions matching reference image */}
+            {/* Accordions */}
             {[
-              { key: 'details', label: 'PRODUCT DETAILS', content: product.description || 'A masterpiece of luxury craftsmanship featuring hand-woven zari embroidery and fine silk detailing.' },
-              { key: 'care', label: 'FABRIC & CARE', content: `Fabric: ${product.fabric || 'Pure Silk'}. Work: ${product.workType || 'Zari Embroidery'}. Dry clean only. Store in protective cotton bag.` },
-              { key: 'shipping', label: 'SHIPPING & DELIVERY', content: 'Free express shipping across India. Standard dispatch within 3-5 business days. International shipping available.' },
-              { key: 'returns', label: 'RETURN & EXCHANGE', content: 'Hassle-free 7-day return and exchange policy. Items must be unused and in original packaging.' },
+              {
+                key: 'details',
+                label: 'PRODUCT DETAILS',
+                content:
+                  product.description ||
+                  'A masterpiece of luxury craftsmanship featuring hand-woven zari embroidery, meticulous border finishings, and signature silk lining.',
+              },
+              {
+                key: 'care',
+                label: 'FABRIC & CARE',
+                content: `Fabric: ${product.fabric || 'Pure Silk & Chanderi'}. Work: ${product.workType || 'Hand-embroidery & Zari'}. Dry clean only. Store in an archival muslin garment bag away from direct sunlight.`,
+              },
+              {
+                key: 'shipping',
+                label: 'SHIPPING & DISPATCH',
+                content:
+                  'Complimentary insured express shipping across India. Dispatch within 3-5 business days for ready styles. Bespoke made-to-measure orders ship within 10-14 days.',
+              },
+              {
+                key: 'returns',
+                label: 'RETURN & EXCHANGE POLICY',
+                content:
+                  'Hassle-free 7-day exchange window on standard sizes. Items must be unworn, undamaged, and with original tags intact.',
+              },
             ].map(({ key, label, content }) => (
-              <div key={key} className="border-b border-[#E8D8C8] pb-2.5">
+              <div key={key} className="border-b border-border pb-2.5">
                 <button
                   onClick={() => setAccordionOpen(accordionOpen === key ? null : key)}
-                  className="flex items-center justify-between w-full text-left py-1"
+                  className="flex items-center justify-between w-full text-left py-1 cursor-pointer"
                 >
-                  <span className="text-xs font-semibold tracking-wider text-[#221617] uppercase">{label}</span>
-                  {accordionOpen === key ? <ChevronUp size={14} className="text-[#A67C52]" /> : <ChevronDown size={14} className="text-[#6E6A66]" />}
+                  <span className="text-xs font-semibold tracking-wider text-heading uppercase">{label}</span>
+                  {accordionOpen === key ? (
+                    <ChevronUp size={14} className="text-gold" />
+                  ) : (
+                    <ChevronDown size={14} className="text-text" />
+                  )}
                 </button>
                 {accordionOpen === key && (
                   <motion.p
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="text-xs text-[#6E6A66] mt-2 leading-relaxed"
+                    className="text-xs text-text mt-2 leading-relaxed"
                   >
                     {content}
                   </motion.p>
@@ -434,8 +460,10 @@ export function ProductDetailClient({ product, related }: Props) {
 
         {/* Related products */}
         {related.length > 0 && (
-          <section className="mt-10 sm:mt-12 pt-8 sm:pt-10 border-t border-[#E8D8C8]">
-            <h2 className="font-serif text-2xl text-[#221617] uppercase tracking-wide mb-5 sm:mb-6">You May Also Like</h2>
+          <section className="mt-10 sm:mt-12 pt-8 sm:pt-10 border-t border-border">
+            <h2 className="font-serif text-2xl text-heading uppercase tracking-wide mb-5 sm:mb-6">
+              You May Also Like
+            </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-6">
               {related.map((p) => (
                 <ProductCard key={p._id as string} product={p} />

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { productRepository } from '@/server/repositories/product.repository';
+import { emailService } from '@/server/services/email.service';
 import { NotFoundError, BusinessError } from '@/lib/api-errors';
 import { generateOrderNumber } from '@/lib/utils';
 import { siteConfig } from '@/config/site.config';
@@ -94,6 +95,56 @@ export class OrderService {
 
   async getUserOrders(userId: string, page = 1, userEmail?: string) {
     return orderRepository.findByUserId(userId, page, 10, userEmail);
+  }
+
+  async confirmCodOrder(orderId: string, userId?: string, userEmail?: string): Promise<IOrder> {
+    const order = await orderRepository.findById(orderId);
+    if (!order) throw new NotFoundError('Order');
+
+    if (userId) {
+      const matchesUser = order.user && String(order.user) === userId;
+      const matchesEmail =
+        Boolean(userEmail && order.shippingAddress?.email?.toLowerCase() === userEmail.toLowerCase());
+      if (!matchesUser && !matchesEmail) throw new NotFoundError('Order');
+    }
+
+    // Idempotency: If already confirmed with COD, return immediately
+    if (order.status === 'confirmed' && order.paymentMethod === 'cod') {
+      return order;
+    }
+
+    // Update status to confirmed, paymentMethod to cod, paymentStatus to pending
+    const updated = await orderRepository.updateStatus(
+      orderId,
+      'confirmed',
+      'Order confirmed via Cash on Delivery — zero advance'
+    );
+
+    if (!updated) throw new NotFoundError('Order');
+
+    await orderRepository.updatePayment(orderId, {
+      paymentStatus: 'pending',
+    });
+
+    // Real-time stock decrement for all purchased items
+    try {
+      for (const item of order.items) {
+        const pId = item.product ? item.product.toString() : '';
+        const vId = item.variant ? item.variant.toString() : undefined;
+        if (pId) {
+          await productRepository.decrementStock(pId, vId, item.quantity);
+        }
+      }
+    } catch (stockErr) {
+      console.error('[OrderService] Error updating product stock for COD order:', stockErr);
+    }
+
+    // Real-time email notification to customer & atelier
+    emailService.sendOrderConfirmation(updated).catch((emailErr) => {
+      console.error('[OrderService] Error dispatching COD confirmation email:', emailErr);
+    });
+
+    return updated;
   }
 }
 

@@ -29,7 +29,7 @@ export const ROUTES = {
   VERIFY_EMAIL: '/verify-email',
 
   // Account
-  DASHBOARD: '/dashboard',
+  DASHBOARD: '/orders',
   ORDERS: '/orders',
   ORDER: (id: string) => `/orders/${id}`,
   PROFILE: '/profile',

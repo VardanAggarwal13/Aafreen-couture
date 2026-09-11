@@ -10,11 +10,11 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/80",
         couture:
-          "bg-[#221617] text-[#FAF5EE] hover:bg-[#3D2628] uppercase tracking-[0.2em] font-semibold text-xs rounded-xs shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98]",
+          "bg-heading text-surface hover:bg-heading/90 uppercase tracking-[0.2em] font-semibold text-xs rounded-xs shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98]",
         "couture-gold":
-          "bg-[#C49A5A] text-[#FAF5EE] hover:bg-[#A67C52] uppercase tracking-[0.2em] font-semibold text-xs rounded-xs shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98]",
+          "bg-gold text-white hover:bg-gold-hover uppercase tracking-[0.2em] font-semibold text-xs rounded-xs shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98]",
         "couture-outline":
-          "border border-[#221617] bg-transparent hover:bg-[#FAF0E4] hover:border-[#C49A5A] text-[#221617] hover:text-[#A67C52] uppercase tracking-[0.2em] font-semibold text-xs rounded-xs transition-all duration-300 active:scale-[0.98]",
+          "border border-heading bg-transparent hover:bg-navbar hover:border-gold text-heading hover:text-gold uppercase tracking-[0.2em] font-semibold text-xs rounded-xs transition-all duration-300 active:scale-[0.98]",
         "couture-ghost":
           "bg-transparent hover:bg-[#E8D4BE]/30 text-[#221617] hover:text-[#A67C52] uppercase tracking-[0.2em] font-semibold text-xs transition-colors",
         outline:

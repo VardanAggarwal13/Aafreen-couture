@@ -20,27 +20,45 @@ export class PaymentService {
       throw new ValidationError('Order amount must be at least 100 paise (₹1.00).');
     }
 
-    const rzpOrder = await razorpay.orders.create({
-      amount: order.total,
-      currency: 'INR',
-      receipt: order.orderNumber,
-      notes: { orderId: orderId },
-    });
+    try {
+      const rzpOrder = await razorpay.orders.create({
+        amount: order.total,
+        currency: 'INR',
+        receipt: order.orderNumber.slice(0, 40),
+        notes: { orderId: orderId },
+      });
 
-    // Persist the Razorpay order ID
-    await orderRepository.updatePayment(orderId, {
-      paymentStatus: 'pending',
-      razorpayPaymentId: undefined,
-    });
+      // Persist the Razorpay order ID
+      await orderRepository.updatePayment(orderId, {
+        paymentStatus: 'pending',
+        razorpayPaymentId: undefined,
+      });
 
-    await orderRepository.findByIdAndPatchRzpOrderId(orderId, rzpOrder.id);
+      await orderRepository.findByIdAndPatchRzpOrderId(orderId, rzpOrder.id);
 
-    return {
-      razorpayOrderId: rzpOrder.id,
-      amount: order.total,
-      currency: 'INR',
-      keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-    };
+      return {
+        razorpayOrderId: rzpOrder.id,
+        amount: order.total,
+        currency: 'INR',
+        keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+      };
+    } catch (rzpErr: any) {
+      console.error('[PaymentService] Razorpay order creation error:', rzpErr);
+      if (
+        rzpErr?.statusCode === 401 ||
+        rzpErr?.error?.description?.toLowerCase().includes('authentication') ||
+        rzpErr?.message?.toLowerCase().includes('authentication')
+      ) {
+        throw new BusinessError(
+          'Razorpay authentication failed: Invalid Key ID or Key Secret in .env.local. Please update your Razorpay API keys or select Cash on Delivery (COD) for zero-advance instant order placement.'
+        );
+      }
+      throw new BusinessError(
+        rzpErr?.error?.description ||
+          rzpErr?.message ||
+          'Failed to initialize secure payment session. Please try Cash on Delivery (COD) or contact concierge.'
+      );
+    }
   }
 
   verifySignature(
@@ -170,6 +188,35 @@ export class PaymentService {
           status: 'paid',
           reconciled: true,
           message: `Payment ${capturedPayment.id} verified and captured successfully via Razorpay.`,
+          order: confirmedOrder,
+        };
+      }
+
+      // Check if payment was authorized (bank held funds, awaiting capture)
+      const authorizedPayment = payments.find((p: any) => p.status === 'authorized');
+      if (authorizedPayment) {
+        try {
+          await (razorpay.payments as any).capture(
+            authorizedPayment.id,
+            authorizedPayment.amount || order.total,
+            authorizedPayment.currency || 'INR'
+          );
+        } catch (capErr) {
+          console.warn('[PaymentService] Auto-capture note:', capErr);
+        }
+
+        const confirmedOrder = await this.confirmPayment(
+          orderId,
+          order.razorpayOrderId,
+          authorizedPayment.id,
+          'captured_from_authorized_state',
+          true
+        );
+
+        return {
+          status: 'paid',
+          reconciled: true,
+          message: `Payment ${authorizedPayment.id} was authorized by your bank and successfully captured.`,
           order: confirmedOrder,
         };
       }

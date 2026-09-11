@@ -9,31 +9,31 @@ export const metadata: Metadata = {
 
 export default function VerifyEmailPage() {
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-[#FAF7F2]">
-      <div className="w-full max-w-md bg-white border border-[#E8D8C8] p-8 sm:p-10 text-center shadow-xs rounded-xs">
-        <div className="w-14 h-14 rounded-full bg-[#FAF7F2] text-[#A67C52] flex items-center justify-center mx-auto mb-5 border border-[#E8D8C8]">
-          <MailCheck size={28} />
+    <div className="flex-1 flex items-center justify-center px-4 py-12 bg-background">
+      <div className="w-full max-w-md bg-surface border border-border p-8 sm:p-10 text-center shadow-md rounded-xs">
+        <div className="w-14 h-14 rounded-full bg-background text-gold flex items-center justify-center mx-auto mb-5 border border-border">
+          <MailCheck size={26} />
         </div>
 
-        <h1 className="font-serif text-2xl text-[#221617] uppercase tracking-wider mb-2">
+        <h1 className="font-serif text-2xl text-heading uppercase tracking-wider mb-2">
           Verify Your Email
         </h1>
 
-        <p className="text-xs text-[#6E6A66] leading-relaxed font-sans mb-6">
-          We have sent a verification link to your registered email address. Please click the link to activate your account and start your couture journey.
+        <p className="text-xs text-text leading-relaxed font-sans mb-6">
+          We have sent a verification link to your registered email address. Please open the link to activate your account and access your couture salon.
         </p>
 
         <div className="space-y-3">
           <Link
             href={ROUTES.LOGIN}
-            className="inline-flex items-center justify-center gap-2 w-full py-3 bg-[#221617] text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-[#A67C52] transition-colors rounded-xs"
+            className="inline-flex items-center justify-center gap-2 w-full py-3 bg-heading text-surface text-xs font-semibold uppercase tracking-[0.2em] hover:bg-gold transition-colors duration-300 rounded-xs shadow-xs"
           >
             Go to Sign In <ArrowRight size={14} />
           </Link>
 
           <Link
             href={ROUTES.CONTACT}
-            className="inline-block text-xs text-[#6E6A66] hover:text-[#A67C52] transition-colors font-sans"
+            className="inline-block text-xs text-text hover:text-gold transition-colors font-sans"
           >
             Didn&apos;t receive the email? Contact Concierge
           </Link>

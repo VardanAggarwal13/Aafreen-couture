@@ -11,7 +11,11 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
 
+    const idsParam = searchParams.get('ids');
+    const ids = idsParam ? idsParam.split(',').map((s) => s.trim()).filter(Boolean) : undefined;
+
     const filters: ProductFilters = {
+      ids,
       category: searchParams.get('category') ?? undefined,
       collectionRef: searchParams.get('collection') ?? undefined,
       occasion: searchParams.get('occasion') ?? undefined,

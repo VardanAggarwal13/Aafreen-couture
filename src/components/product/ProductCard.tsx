@@ -25,45 +25,48 @@ export function ProductCard({ product, priority = false, className }: ProductCar
       ? getDiscountPercentage(product.basePrice, product.comparePrice)
       : null;
 
+  const primaryImage = product.images?.[0] ?? '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp';
+  const secondaryImage = product.images?.[1] && product.images[1] !== primaryImage ? product.images[1] : null;
+
   return (
     <motion.article
       className={cn('group relative flex flex-col', className)}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
+      viewport={{ once: true }}
       transition={{ duration: 0.4 }}
     >
       {/* Image container */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-[#FAF7F2] border border-[#E8D8C8] rounded-xs shadow-2xs">
-        <Link href={ROUTES.PRODUCT(product.slug)} className="block w-full h-full">
+      <div className="relative aspect-[3/4] overflow-hidden bg-background border border-border rounded-xs shadow-2xs">
+        <Link href={ROUTES.PRODUCT(product.slug)} className="block w-full h-full relative">
           <Image
-            src={product.images[0] ?? '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
+            src={primaryImage}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
             priority={priority}
+            className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
           />
-          {product.images[1] && (
+          {secondaryImage && (
             <Image
-              src={product.images[1]}
+              src={secondaryImage}
               alt={`${product.name} — alternate view`}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              className="object-cover object-center opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none"
             />
           )}
         </Link>
 
         {/* Badges */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 pointer-events-none z-10">
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 items-start pointer-events-none">
           {discountPct && (
-            <span className="bg-[#A67C52] text-white text-[9.5px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-xs">
-              -{discountPct}%
+            <span className="bg-gold text-white text-[9.5px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-xs">
+              {discountPct}% Off
             </span>
           )}
           {product.isNewArrival && (
-            <span className="bg-[#221617] text-white text-[9.5px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-xs">
+            <span className="bg-heading text-surface text-[9.5px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-xs">
               New
             </span>
           )}
@@ -76,33 +79,33 @@ export function ProductCard({ product, priority = false, className }: ProductCar
             toggle(product._id);
           }}
           className={cn(
-            'absolute top-2.5 right-2.5 p-2 rounded-full bg-white/90 backdrop-blur-xs transition-all shadow-xs z-10',
-            isWishlisted ? 'text-[#A67C52]' : 'text-[#221617]/70 hover:text-[#A67C52]'
+            'absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full bg-surface/90 backdrop-blur-xs flex items-center justify-center transition-all duration-200 shadow-xs cursor-pointer',
+            isWishlisted ? 'text-gold' : 'text-heading/70 hover:text-gold'
           )}
           aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         >
-          <Heart size={15} fill={isWishlisted ? '#A67C52' : 'none'} />
+          <Heart size={15} fill={isWishlisted ? 'currentColor' : 'none'} />
         </button>
       </div>
 
       {/* Info matching reference image */}
       <div className="pt-3 flex flex-col gap-1 text-center sm:text-left">
-        <Link href={ROUTES.PRODUCT(product.slug)} className="hover:text-[#A67C52] transition-colors">
-          <h3 className="font-serif text-sm font-medium text-[#221617] line-clamp-1">
+        <Link href={ROUTES.PRODUCT(product.slug)} className="hover:text-gold transition-colors">
+          <h3 className="font-sans text-sm font-semibold text-heading line-clamp-1">
             {product.name}
           </h3>
         </Link>
 
         {product.fabric && (
-          <p className="text-[11px] text-[#6E6A66] uppercase tracking-wider">{product.fabric}</p>
+          <p className="text-[11px] text-text uppercase tracking-wider">{product.fabric}</p>
         )}
 
         <div className="flex items-baseline gap-2 mt-0.5 justify-center sm:justify-start">
-          <span className="text-sm font-serif font-semibold text-[#221617]">
+          <span className="text-sm font-sans font-bold text-heading">
             {formatPrice(product.basePrice)}
           </span>
           {product.comparePrice && product.comparePrice > product.basePrice && (
-            <span className="text-xs text-[#6E6A66] line-through">
+            <span className="text-xs text-text/80 line-through">
               {formatPrice(product.comparePrice)}
             </span>
           )}

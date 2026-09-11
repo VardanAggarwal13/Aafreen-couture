@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { LoginForm } from './LoginForm';
 import { siteConfig } from '@/config/site.config';
@@ -7,10 +6,11 @@ export const metadata: Metadata = {
   title: `Sign In — ${siteConfig.name}`,
 };
 
-export default function LoginPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-white" />}>
-      <LoginForm />
-    </Suspense>
-  );
+interface LoginPageProps {
+  searchParams?: Promise<{ redirect?: string }>;
+}
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const resolved = searchParams ? await searchParams : undefined;
+  return <LoginForm initialRedirect={resolved?.redirect} />;
 }

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const ACCOUNT_PREFIXES = ['/dashboard', '/orders', '/profile', '/addresses', '/returns', '/notifications'];
+const ACCOUNT_PREFIXES = ['/dashboard', '/orders', '/profile', '/addresses', '/returns', '/notifications', '/checkout'];
 const ADMIN_PREFIX = '/admin';
-const AUTH_ROUTES = ['/login', '/register'];
 
 // Better Auth stores the session cookie under one of these names depending on env
 function getSessionToken(request: NextRequest): string | undefined {
@@ -17,12 +16,12 @@ export function middleware(request: NextRequest) {
   const sessionToken = getSessionToken(request);
   const isAuthenticated = !!sessionToken;
 
-  // Redirect logged-in users away from auth pages
-  if (AUTH_ROUTES.includes(pathname) && isAuthenticated) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+  // Redirect any legacy /dashboard access to /orders
+  if (pathname === '/dashboard' || pathname === '/dashboard/') {
+    return NextResponse.redirect(new URL('/orders', request.url));
   }
 
-  // Protect customer account routes
+  // Protect customer account & checkout routes
   const isAccountRoute = ACCOUNT_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
   );

@@ -6,6 +6,7 @@ import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
 import { AdminOrderStatusUpdater } from '@/features/admin/components/AdminOrderStatusUpdater';
 import { AdminPaymentReconcileButton } from '@/features/admin/components/AdminPaymentReconcileButton';
+import { AdminPaymentStatusUpdater } from '@/features/admin/components/AdminPaymentStatusUpdater';
 
 export const metadata = { title: 'Order Details | Admin' };
 
@@ -305,6 +306,16 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                 hasRazorpayOrder={Boolean(order.razorpayOrderId || order.paymentMethod === 'razorpay')}
                 paymentStatus={order.paymentStatus}
               />
+
+              <div className="pt-2 border-t border-white/5">
+                <span className="text-white/40 text-[10px] uppercase block">
+                  Update Payment Status (e.g. COD Collected)
+                </span>
+                <AdminPaymentStatusUpdater
+                  orderId={order._id}
+                  currentPaymentStatus={order.paymentStatus}
+                />
+              </div>
             </div>
           </div>
         </div>

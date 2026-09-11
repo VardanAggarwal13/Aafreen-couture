@@ -208,8 +208,9 @@ export const footerLinks = {
     { label: 'Festive', href: '/shop?occasion=festive' },
   ],
   account: [
-    { label: 'My Account', href: '/dashboard' },
     { label: 'My Orders', href: '/orders' },
+    { label: 'Profile Details', href: '/profile' },
+    { label: 'Saved Addresses', href: '/addresses' },
     { label: 'Wishlist', href: '/wishlist' },
     { label: 'Track Order', href: '/track-order' },
   ],

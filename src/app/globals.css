@@ -6,17 +6,29 @@
 
 @theme {
   /* Brand luxury fonts — CSS vars injected by next/font/google on <html> */
-  --font-sans: var(--font-montserrat, 'Montserrat'), 'Montserrat', system-ui, -apple-system, sans-serif;
-  --font-serif: var(--font-cormorant, 'Cormorant Garamond'), 'Cormorant Garamond', 'Garamond', Georgia, serif;
+  --font-sans: var(--font-manrope, 'Manrope'), system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-playfair, 'Playfair Display'), Georgia, serif;
+  --font-heading: var(--font-playfair, 'Playfair Display'), Georgia, serif;
   --font-mono: ui-monospace, 'Cascadia Code', monospace;
 
-  /* Brand color palette — matching reference luxury theme */
-  --color-brand-black: #221617;
-  --color-brand-gold: #A67C52;
-  --color-brand-gold-light: #D9C3AA;
-  --color-brand-cream: #FAF7F2;
-  --color-brand-pearl: #FFFFFF;
-  --color-brand-stone: #6E6A66;
+  /* Theme tokens defined as utilities in Tailwind */
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-navbar: var(--navbar);
+  --color-footer: var(--footer);
+  --color-text: var(--text);
+  --color-heading: var(--heading);
+  --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
+  --color-border: var(--border);
+
+  /* Legacy brand color aliases for backward compatibility */
+  --color-brand-black: var(--heading);
+  --color-brand-gold: var(--gold);
+  --color-brand-gold-light: var(--navbar);
+  --color-brand-cream: var(--background);
+  --color-brand-pearl: var(--surface);
+  --color-brand-stone: var(--text);
 }
 
 /* Base styles */
@@ -31,39 +43,47 @@ html {
 }
 
 body {
-  background-color: #FAF7F2;
-  color: #221617;
+  background-color: var(--background);
+  color: var(--text);
   font-family: var(--font-sans);
+  font-weight: 400;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Headings use serif */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  line-height: 1.2;
-  font-weight: 400;
-  text-wrap: balance;
+@layer base {
+  /* Headings use Playfair Display */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--heading);
+    line-height: 1.25;
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-weight: 600;
+  }
 }
 
 /* Focus */
 :focus-visible {
-  outline: 2px solid #A67C52;
+  outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
 
 /* Selection */
 ::selection {
-  background-color: #A67C52;
+  background-color: var(--gold);
   color: white;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #D9C3AA; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #6E6A66; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-hover); }
 
 @theme inline {
   --font-heading: var(--font-serif);
@@ -99,6 +119,13 @@ h1, h2, h3, h4, h5, h6 {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-navbar: var(--navbar);
+  --color-footer: var(--footer);
+  --color-text: var(--text);
+  --color-heading: var(--heading);
+  --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -108,75 +135,106 @@ h1, h2, h3, h4, h5, h6 {
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Aafreen Couture brand token overrides for shadcn */
+/* ==========================================================================
+   Aafreen Couture Brand Theme Tokens (CSS Custom Properties)
+   ========================================================================== */
 :root {
-  --background: #FAF7F2;
-  --foreground: #221617;
-  --card: #FFFFFF;
-  --card-foreground: #221617;
-  --popover: #FFFFFF;
-  --popover-foreground: #221617;
-  /* Dark maroon as primary, Ochre Tan as secondary */
-  --primary: #221617;
+  /* Brand Luxury Palette */
+  --background: #F8F5F1;
+  --surface: #FFFFFF;
+  --navbar: #EAE2D7;
+  --footer: #EAE2D7;
+
+  --text: #8A6A55;
+  --heading: #2E221C;
+
+  --gold: #C9A86A;
+  --gold-hover: #B58E52;
+
+  --border: #DDD2C5;
+
+  /* Legacy brand variables for seamless compatibility */
+  --brand-black: #2E221C;
+  --brand-gold: #C9A86A;
+  --brand-gold-hover: #B58E52;
+  --brand-cream: #F8F5F1;
+  --brand-pearl: #FFFFFF;
+  --brand-stone: #8A6A55;
+  --brand-border: #DDD2C5;
+
+  /* Shadcn / UI tokens */
+  --foreground: var(--heading);
+  --card: var(--surface);
+  --card-foreground: var(--heading);
+  --popover: var(--surface);
+  --popover-foreground: var(--heading);
+  --primary: var(--heading);
   --primary-foreground: #FFFFFF;
-  --secondary: #A67C52;
+  --secondary: var(--gold);
   --secondary-foreground: #FFFFFF;
-  --muted: #F3EBE1;
-  --muted-foreground: #6E6A66;
-  --accent: #F3EBE1;
-  --accent-foreground: #221617;
+  --muted: var(--navbar);
+  --muted-foreground: var(--text);
+  --accent: var(--navbar);
+  --accent-foreground: var(--heading);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #E8D8C8;
-  --input: #E8D8C8;
-  --ring: #A67C52;
-  --chart-1: #A67C52;
-  --chart-2: #221617;
-  --chart-3: #F3EBE1;
-  --chart-4: #D9C3AA;
-  --chart-5: #6E6A66;
+  --input: var(--border);
+  --ring: var(--gold);
+  --chart-1: var(--gold);
+  --chart-2: var(--heading);
+  --chart-3: var(--navbar);
+  --chart-4: var(--border);
+  --chart-5: var(--text);
   --radius: 0.25rem;
-  --sidebar: #FAF7F2;
-  --sidebar-foreground: #221617;
-  --sidebar-primary: #221617;
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--heading);
+  --sidebar-primary: var(--heading);
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F3EBE1;
-  --sidebar-accent-foreground: #221617;
-  --sidebar-border: #E8D8C8;
-  --sidebar-ring: #A67C52;
+  --sidebar-accent: var(--navbar);
+  --sidebar-accent-foreground: var(--heading);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--gold);
 }
 
 .dark {
-  --background: #111111;
-  --foreground: #F7F5F2;
-  --card: #1A1A1A;
-  --card-foreground: #F7F5F2;
-  --popover: #1A1A1A;
-  --popover-foreground: #F7F5F2;
-  --primary: #C49A5A;
-  --primary-foreground: #111111;
-  --secondary: #2A2520;
-  --secondary-foreground: #EADDC8;
-  --muted: #2A2520;
-  --muted-foreground: #7A7A7A;
-  --accent: #2A2520;
-  --accent-foreground: #EADDC8;
+  --background: #1C1715;
+  --surface: #241E1B;
+  --navbar: #261F1B;
+  --footer: #261F1B;
+  --text: #C4B5A8;
+  --heading: #F8F5F1;
+  --gold: #C9A86A;
+  --gold-hover: #D8BD83;
+  --border: #3D332D;
+
+  --foreground: var(--heading);
+  --card: var(--surface);
+  --card-foreground: var(--heading);
+  --popover: var(--surface);
+  --popover-foreground: var(--heading);
+  --primary: var(--gold);
+  --primary-foreground: #1C1715;
+  --secondary: #261F1B;
+  --secondary-foreground: #F8F5F1;
+  --muted: #261F1B;
+  --muted-foreground: var(--text);
+  --accent: #261F1B;
+  --accent-foreground: #F8F5F1;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: #2A2520;
-  --input: #2A2520;
-  --ring: #C49A5A;
-  --chart-1: #C49A5A;
-  --chart-2: #7A7A7A;
-  --chart-3: #EADDC8;
-  --chart-4: #E8D4A8;
-  --chart-5: #F7F5F2;
-  --sidebar: #1A1A1A;
-  --sidebar-foreground: #F7F5F2;
-  --sidebar-primary: #C49A5A;
-  --sidebar-primary-foreground: #111111;
-  --sidebar-accent: #2A2520;
-  --sidebar-accent-foreground: #EADDC8;
-  --sidebar-border: #2A2520;
-  --sidebar-ring: #C49A5A;
+  --input: var(--border);
+  --ring: var(--gold);
+  --chart-1: var(--gold);
+  --chart-2: var(--text);
+  --chart-3: var(--navbar);
+  --chart-4: #4A3E37;
+  --chart-5: #F8F5F1;
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--heading);
+  --sidebar-primary: var(--gold);
+  --sidebar-primary-foreground: #1C1715;
+  --sidebar-accent: #261F1B;
+  --sidebar-accent-foreground: #F8F5F1;
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--gold);
 }
 
 @layer base {

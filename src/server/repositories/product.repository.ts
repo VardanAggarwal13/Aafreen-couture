@@ -9,6 +9,7 @@ import type { SortOrder } from 'mongoose';
 import { FALLBACK_PRODUCTS } from '@/data/products.data';
 
 export interface ProductFilters {
+  ids?: string[];
   category?: string;
   collectionRef?: string;
   occasion?: string;
@@ -27,6 +28,10 @@ export interface ProductFilters {
 }
 
 function matchFallbackFilters(p: IProduct, filters: ProductFilters): boolean {
+  if (filters.ids && filters.ids.length > 0) {
+    const idStr = String(p._id);
+    if (!filters.ids.includes(idStr) && !filters.ids.includes(p.slug)) return false;
+  }
   if (filters.isActive !== undefined && p.isActive !== filters.isActive) return false;
   if (filters.isFeatured !== undefined && p.isFeatured !== filters.isFeatured) return false;
   if (filters.isNewArrival !== undefined && p.isNewArrival !== filters.isNewArrival) return false;
@@ -292,6 +297,16 @@ export class ProductRepository {
       await connectDB();
 
       const query: Record<string, unknown> = { isActive: true };
+
+      if (filters.ids && filters.ids.length > 0) {
+        const validObjectIds = filters.ids
+          .filter((id) => mongoose.Types.ObjectId.isValid(id))
+          .map((id) => new mongoose.Types.ObjectId(id));
+        query.$or = [
+          { _id: { $in: validObjectIds } },
+          { slug: { $in: filters.ids } },
+        ];
+      }
 
       if (filters.category) {
         if (mongoose.Types.ObjectId.isValid(filters.category)) {

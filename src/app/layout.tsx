@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Montserrat } from 'next/font/google';
+import { Playfair_Display, Manrope } from 'next/font/google';
 import { Providers } from '@/providers/Providers';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -10,25 +10,25 @@ import { siteConfig } from '@/config/site.config';
 import { cn } from '@/lib/utils';
 import './globals.css';
 
-const cormorant = Cormorant_Garamond({
-  variable: '--font-cormorant',
+const playfair = Playfair_Display({
+  variable: '--font-playfair',
   subsets: ['latin'],
   display: 'swap',
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
 });
 
-const montserrat = Montserrat({
-  variable: '--font-montserrat',
+const manrope = Manrope({
+  variable: '--font-manrope',
   subsets: ['latin'],
   display: 'swap',
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['300', '400', '500', '600', '700', '800'],
 });
 
 export const metadata: Metadata = defaultMetadata;
 
 export const viewport: Viewport = {
-  themeColor: '#221617',
+  themeColor: '#EAE2D7',
   colorScheme: 'light',
   width: 'device-width',
   initialScale: 1,
@@ -80,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn(cormorant.variable, montserrat.variable)}>
+    <html lang="en" suppressHydrationWarning className={cn(playfair.variable, manrope.variable)}>
       <head>
         <script
           type="application/ld+json"

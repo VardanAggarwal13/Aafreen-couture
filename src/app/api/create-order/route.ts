@@ -1,66 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getRazorpay } from '@/lib/razorpay';
+import { razorpay } from '@/lib/razorpay';
+import { paymentService } from '@/server/services/payment.service';
+import { handleApiError } from '@/lib/api-errors';
+import { z } from 'zod';
+
+const schema = z.object({
+  orderId: z.string().optional(),
+  amount: z.number().optional(), // in paise
+  currency: z.string().default('INR'),
+  receipt: z.string().optional(),
+});
 
 export async function POST(request: NextRequest) {
   try {
-    const keyId = process.env.RAZORPAY_KEY_ID;
-    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    const body = await request.json();
+    const { orderId, amount, currency, receipt } = schema.parse(body);
 
-    if (!keyId || !keySecret) {
-      return NextResponse.json(
-        { success: false, error: 'Razorpay credentials are not configured on server' },
-        { status: 401 }
-      );
+    if (orderId) {
+      const result = await paymentService.createRazorpayOrder(orderId);
+      return NextResponse.json({
+        success: true,
+        order_id: result.razorpayOrderId,
+        razorpayOrderId: result.razorpayOrderId,
+        amount: result.amount,
+        currency: result.currency,
+        keyId: result.keyId,
+      });
     }
 
-    const body = await request.json().catch(() => ({}));
-    const { amount, currency = 'INR', receipt, notes } = body;
-
-    // Validate amount: required, number, >= 100 paise
-    const numAmount = Number(amount);
-    if (!amount || isNaN(numAmount) || numAmount < 100) {
+    if (!amount || amount < 100) {
       return NextResponse.json(
-        {
-          success: false,
-          error: 'Amount is required and must be at least 100 paise (₹1.00).',
-          received: amount,
-        },
+        { success: false, error: 'Amount must be at least 100 paise (₹1.00).' },
         { status: 400 }
       );
     }
 
-    const razorpay = getRazorpay();
     const rzpOrder = await razorpay.orders.create({
-      amount: Math.round(numAmount),
-      currency: (currency || 'INR').toUpperCase(),
-      receipt: receipt ? String(receipt).slice(0, 40) : `rcpt_${Date.now()}`,
-      notes: notes && typeof notes === 'object' ? notes : undefined,
+      amount: Math.round(amount),
+      currency: currency || 'INR',
+      receipt: receipt || `rcpt_${Date.now().toString().slice(-10)}`,
     });
 
     return NextResponse.json({
       success: true,
       order_id: rzpOrder.id,
+      razorpayOrderId: rzpOrder.id,
       amount: rzpOrder.amount,
       currency: rzpOrder.currency,
-      key_id: keyId,
+      keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
     });
-  } catch (error: any) {
-    console.error('Error in /api/create-order:', error);
-
-    // Handle authentication failures from Razorpay API
-    if (error?.statusCode === 401 || error?.error?.code === 'BAD_REQUEST_ERROR' && error?.error?.description?.includes('auth')) {
-      return NextResponse.json(
-        { success: false, error: 'Razorpay authentication failed' },
-        { status: 401 }
-      );
-    }
-
-    const statusCode = error?.statusCode >= 400 && error?.statusCode < 600 ? error.statusCode : 500;
-    const message = error?.error?.description || error?.message || 'Failed to create Razorpay order';
-
-    return NextResponse.json(
-      { success: false, error: message },
-      { status: statusCode }
-    );
+  } catch (error) {
+    return handleApiError(error);
   }
 }

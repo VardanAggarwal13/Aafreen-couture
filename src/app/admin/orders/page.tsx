@@ -45,7 +45,7 @@ export default async function AdminOrdersPage() {
           <table className="w-full text-xs">
             <thead>
               <tr className="border-b border-white/5">
-                {['Order #', 'Customer', 'Items', 'Total', 'Payment', 'Status', 'Date', 'Action'].map((h) => (
+                {['Order #', 'Customer', 'Items', 'Total', 'Method', 'Payment', 'Fulfillment', 'Date', 'Action'].map((h) => (
                   <th key={h} className="text-left px-4 py-3.5 text-[10px] font-semibold text-white/30 uppercase tracking-wider whitespace-nowrap">
                     {h}
                   </th>
@@ -55,7 +55,7 @@ export default async function AdminOrdersPage() {
             <tbody className="divide-y divide-white/5">
               {orders.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-12 text-center text-white/25">No orders yet</td>
+                  <td colSpan={9} className="px-4 py-12 text-center text-white/25">No orders yet</td>
                 </tr>
               ) : (
                 orders.map((order) => (
@@ -64,7 +64,26 @@ export default async function AdminOrdersPage() {
                     <td className="px-4 py-3.5 text-white/70 max-w-[140px] truncate">{order.shippingAddress.name}</td>
                     <td className="px-4 py-3.5 text-white/50">{order.items.length}</td>
                     <td className="px-4 py-3.5 font-medium text-white">{formatPrice(order.total)}</td>
-                    <td className="px-4 py-3.5 text-white/50 capitalize">{order.paymentMethod}</td>
+                    <td className="px-4 py-3.5 text-white/60">
+                      {order.paymentMethod === 'cod' ? (
+                        <span className="text-[11px] text-amber-300 font-medium">COD</span>
+                      ) : (
+                        <span className="text-[11px] text-sky-300 font-medium">Razorpay</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3.5">
+                      <span
+                        className={`inline-block text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider ${
+                          order.paymentStatus === 'paid'
+                            ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
+                            : order.paymentStatus === 'pending'
+                            ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
+                            : 'bg-rose-500/15 text-rose-400 border border-rose-500/20'
+                        }`}
+                      >
+                        {order.paymentStatus}
+                      </span>
+                    </td>
                     <td className="px-4 py-3.5">
                       <span className={`inline-block text-[10px] px-2 py-0.5 rounded-full font-medium capitalize ${STATUS_BADGE[order.status] ?? 'bg-gray-500/15 text-gray-400'}`}>
                         {order.status.replace('_', ' ')}
@@ -74,7 +93,7 @@ export default async function AdminOrdersPage() {
                     <td className="px-4 py-3.5">
                       <Link
                         href={ROUTES.ADMIN_ORDER(String(order._id))}
-                        className="text-brand-gold hover:underline opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="text-brand-gold hover:underline opacity-0 group-hover:opacity-100 transition-opacity font-medium"
                       >
                         Manage
                       </Link>
