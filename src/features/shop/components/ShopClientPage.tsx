@@ -425,7 +425,7 @@ export function ShopClientPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4 lg:gap-5">
               {Array.from({ length: 9 }, (_, i) => (
                 <div key={i} className="flex flex-col gap-3">
-                  <div className="aspect-[3/4] bg-[#FAF7F2] border border-[#E8D8C8] rounded-xs animate-pulse" />
+                  <div className="aspect-[4/5] bg-[#FAF7F2] border border-[#E8D8C8] rounded-xs animate-pulse" />
                   <div className="space-y-1.5">
                     <div className="h-3.5 bg-[#FAF7F2] rounded animate-pulse w-3/4" />
                     <div className="h-3 bg-[#FAF7F2] rounded animate-pulse w-1/3" />

@@ -11,7 +11,7 @@ function ProductCardSkeleton({ index }: { index: number }) {
   return (
     <div className="flex flex-col gap-3">
       <div
-        className="aspect-[3/4]"
+        className="aspect-[4/5]"
         style={{ background: `hsl(${PLACEHOLDER_HUES[index] ?? 32}, 25%, 88%)` }}
       />
       <div className="space-y-2">

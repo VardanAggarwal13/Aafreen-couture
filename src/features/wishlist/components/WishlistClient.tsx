@@ -293,7 +293,7 @@ export function WishlistClient() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {ids.map((id) => (
             <div key={id} className="space-y-3">
-              <div className="aspect-[3/4] bg-surface border border-border/70 animate-pulse rounded-xs" />
+              <div className="aspect-[4/5] bg-surface border border-border/70 animate-pulse rounded-xs" />
               <div className="h-4 bg-border/50 rounded-xs w-3/4 animate-pulse" />
               <div className="h-3 bg-border/40 rounded-xs w-1/2 animate-pulse" />
             </div>

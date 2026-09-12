@@ -5,12 +5,14 @@ import { ProductCard } from '@/components/product/ProductCard';
 import { productService } from '@/server/services/product.service';
 import type { IProduct } from '@/types';
 
+const PLACEHOLDER_HUES = [32, 35, 38, 42];
+
 function ProductCardSkeleton({ index }: { index: number }) {
   return (
     <div className="flex flex-col gap-3">
       <div
-        className="aspect-[3/4]"
-        style={{ background: `hsl(${35 + index * 8}, 25%, ${85 - index}%)` }}
+        className="aspect-[4/5]"
+        style={{ background: `hsl(${PLACEHOLDER_HUES[index] ?? 32}, 25%, 88%)` }}
       />
       <div className="space-y-2">
         <div className="h-3.5 bg-[#EADDC8] rounded-sm w-3/4" />

@@ -14,7 +14,7 @@ export default function RootLoading() {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 pt-6">
           {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="aspect-[3/4] bg-white border border-[#E8D8C8] rounded-xs relative overflow-hidden shadow-2xs">
+            <div key={i} className="aspect-[4/5] bg-white border border-[#E8D8C8] rounded-xs relative overflow-hidden shadow-2xs">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FAF5EE]/60 to-transparent animate-pulse" />
             </div>
           ))}

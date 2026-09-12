@@ -29,15 +29,11 @@ export function ProductCard({ product, priority = false, className }: ProductCar
   const secondaryImage = product.images?.[1] && product.images[1] !== primaryImage ? product.images[1] : null;
 
   return (
-    <motion.article
-      className={cn('group relative flex flex-col', className)}
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
+    <article
+      className={cn('group relative flex flex-col transition-all duration-300', className)}
     >
       {/* Image container */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-background border border-border rounded-xs shadow-2xs">
+      <div className="relative aspect-[4/5] overflow-hidden bg-[#FAF7F2] border border-border rounded-xs shadow-2xs">
         <Link href={ROUTES.PRODUCT(product.slug)} className="block w-full h-full relative">
           <Image
             src={primaryImage}
@@ -45,7 +41,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             priority={priority}
-            className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+            className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
           />
           {secondaryImage && (
             <Image
@@ -53,7 +49,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
               alt={`${product.name} — alternate view`}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="object-cover object-center opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none"
+              className="object-cover object-top opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none"
             />
           )}
         </Link>
@@ -111,6 +107,6 @@ export function ProductCard({ product, priority = false, className }: ProductCar
           )}
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }

@@ -43,7 +43,7 @@ export default function ShopLoading() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5 lg:gap-7">
           {Array.from({ length: 8 }, (_, i) => (
             <div key={i} className="flex flex-col gap-3">
-              <div className="aspect-[3/4] bg-white border border-[#E8D8C8] rounded-xs relative overflow-hidden shadow-2xs">
+              <div className="aspect-[4/5] bg-white border border-[#E8D8C8] rounded-xs relative overflow-hidden shadow-2xs">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FAF5EE]/70 to-transparent animate-pulse" />
               </div>
               <div className="space-y-1.5 px-0.5">

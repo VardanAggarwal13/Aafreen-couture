@@ -434,7 +434,7 @@ export function CoutureCatalogView({
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-6">
             {Array.from({ length: 8 }, (_, i) => (
               <div key={i} className="flex flex-col gap-3">
-                <div className="aspect-[3/4] bg-white border border-[#E8D8C8] rounded-xs animate-pulse" />
+                <div className="aspect-[4/5] bg-white border border-[#E8D8C8] rounded-xs animate-pulse" />
                 <div className="h-3.5 bg-[#E8D8C8]/70 rounded animate-pulse w-3/4" />
                 <div className="h-3 bg-[#E8D8C8]/40 rounded animate-pulse w-1/3" />
               </div>

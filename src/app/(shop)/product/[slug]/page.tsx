@@ -40,8 +40,24 @@ export default async function ProductPage({ params }: Props) {
       ? product.category
       : (product.category as IProduct['category'] & { _id: string })._id;
 
-    const rawRelated = await productService.getRelatedProducts(product._id, categoryId);
-    const related = JSON.parse(JSON.stringify(rawRelated)) as IProduct[];
+    let related: IProduct[] = [];
+    try {
+      const rawRelated = await productService.getRelatedProducts(product._id, categoryId);
+      related = JSON.parse(JSON.stringify(rawRelated)) as IProduct[];
+    } catch {
+      related = [];
+    }
+
+    if (related.length === 0) {
+      try {
+        const fallbackRelated = await productService.getFeaturedProducts(6);
+        related = JSON.parse(
+          JSON.stringify(fallbackRelated.filter((p) => String(p._id) !== String(product._id)).slice(0, 4))
+        ) as IProduct[];
+      } catch {
+        related = [];
+      }
+    }
 
     const productJsonLd = {
       '@context': 'https://schema.org',
