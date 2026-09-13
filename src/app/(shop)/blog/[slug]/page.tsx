@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Calendar, User } from 'lucide-react';
 import { BLOG_POSTS } from '@/data/blog.data';
+import { siteConfig } from '@/config/site.config';
+import { buildBreadcrumbJsonLd } from '@/utils/seo';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -17,6 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${post.title} | Aafreen Couture Journal`,
     description: post.excerpt,
+    alternates: { canonical: `${siteConfig.url}/blog/${slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -32,8 +35,39 @@ export default async function BlogPostPage({ params }: Props) {
 
   const related = BLOG_POSTS.filter((p) => p.slug !== slug).slice(0, 2);
 
+  const publishedIso = new Date(post.publishedAt).toISOString();
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { label: 'Home', href: '/' },
+    { label: 'The Journal', href: '/blog' },
+    { label: post.title },
+  ]);
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.image.startsWith('http') ? post.image : `${siteConfig.url}${post.image}`,
+    datePublished: publishedIso,
+    dateModified: publishedIso,
+    author: { '@type': 'Person', name: post.author },
+    publisher: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/images/og-image.jpg` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteConfig.url}/blog/${slug}` },
+  };
+
   return (
     <main className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Article Header */}
       <div className="bg-[#FAF7F2] border-b border-[#E8D8C8] py-14">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">

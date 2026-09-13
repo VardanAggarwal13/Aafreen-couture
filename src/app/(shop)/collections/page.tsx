@@ -2,10 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { collections } from '@/config/navigation.config';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: 'All Collections | Aafreen Couture',
   description: 'Explore our curated collections of bridal lehengas, suits, dresses, and accessories.',
+  alternates: { canonical: `${siteConfig.url}/collections` },
 };
 
 export const revalidate = 120;

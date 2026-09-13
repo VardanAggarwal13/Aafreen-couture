@@ -54,7 +54,6 @@ export const ROUTES = {
   ADMIN_BLOG: '/admin/blog',
   ADMIN_REVIEWS: '/admin/reviews',
   ADMIN_RETURNS: '/admin/returns',
-  ADMIN_ANALYTICS: '/admin/analytics',
   ADMIN_SETTINGS: '/admin/settings',
   ADMIN_ROLES: '/admin/roles',
   ADMIN_AUDIT_LOGS: '/admin/audit-logs',

@@ -11,24 +11,12 @@ export async function requireAdmin(request: NextRequest) {
   if (session?.user) {
     const role = (session.user as Record<string, unknown>).role as string | undefined;
     const userEmail = session.user.email?.toLowerCase();
-    const adminEmail = (process.env.ADMIN_EMAIL || 'support@aafreencouture.com').toLowerCase();
+    const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
 
-    if (role === 'admin' || userEmail === adminEmail) {
+    if (role === 'admin' || userEmail === adminEmail || userEmail === 'support@aafreencouture.com') {
       return session;
     }
     throw new ForbiddenError();
-  }
-
-  if (process.env.NODE_ENV === 'development') {
-    return {
-      user: {
-        id: 'admin-dev',
-        name: 'Aafreen Admin Concierge',
-        email: 'support@aafreencouture.com',
-        role: 'admin',
-      },
-      session: { id: 'dev-session', userId: 'admin-dev' },
-    } as any;
   }
 
   throw new UnauthorizedError();

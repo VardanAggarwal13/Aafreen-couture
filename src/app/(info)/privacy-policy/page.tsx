@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: 'Privacy Policy | Aafreen Couture',
   description:
     'Official Privacy Policy for Aafreen Couture. Learn how we collect, use, protect, and process your personal and payment data in compliance with Indian IT and digital data protection laws.',
+  alternates: { canonical: `${siteConfig.url}/privacy-policy` },
 };
 
 const TOC: TocItem[] = [

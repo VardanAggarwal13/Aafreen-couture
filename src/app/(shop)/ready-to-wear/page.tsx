@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { CategoryHubView } from '@/components/shop/CategoryHubView';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: 'Ready To Wear | Aafreen Couture',
   description: 'Shop ready-to-wear designer dresses, co-ords, sharara sets, and occasion lehengas ready for immediate shipping.',
+  alternates: { canonical: `${siteConfig.url}/ready-to-wear` },
 };
 
 export const revalidate = 120;

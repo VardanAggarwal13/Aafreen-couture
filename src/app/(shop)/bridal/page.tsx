@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { CategoryHubView } from '@/components/shop/CategoryHubView';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: 'The Royal Bridal Edit | Aafreen Couture',
   description: 'Handcrafted luxury royal bridal lehengas, bridal suits, bridesmaid lehengas, and reception gowns by Aafreen Couture.',
+  alternates: { canonical: `${siteConfig.url}/bridal` },
 };
 
 export const revalidate = 120;

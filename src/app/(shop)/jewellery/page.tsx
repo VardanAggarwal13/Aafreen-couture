@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: 'Jewellery | Royal Chokers & Necklaces | Aafreen Couture',
   description: 'Heritage kundan, polki, and pearl jewellery crafted to complement royal bridal and festive ensembles.',
+  alternates: { canonical: `${siteConfig.url}/jewellery` },
 };
 
 export const revalidate = 120;

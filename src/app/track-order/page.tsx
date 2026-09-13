@@ -8,6 +8,7 @@ import { ShieldCheck, Truck, Clock, Package, Phone, MessageCircle } from 'lucide
 
 export const metadata: Metadata = {
   title: 'Track Your Order | Aafreen Couture',
+  alternates: { canonical: `${siteConfig.url}/track-order` },
   description:
     'Track your luxury couture shipment in real-time. Enter your order reference number to view live courier transit milestones and estimated delivery date.',
 };

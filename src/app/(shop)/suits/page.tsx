@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { CategoryHubView } from '@/components/shop/CategoryHubView';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: 'Suits & Kurta Sets | Aafreen Couture',
   description: 'Discover handcrafted luxury suits, cotton kurta sets, unstitched partywear, and contemporary co-ords by Aafreen Couture.',
+  alternates: { canonical: `${siteConfig.url}/suits` },
 };
 
 export const revalidate = 120;

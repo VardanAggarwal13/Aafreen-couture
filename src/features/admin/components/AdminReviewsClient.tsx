@@ -64,11 +64,11 @@ export function AdminReviewsClient() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 lg:p-8 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-white">Product Reviews & Ratings</h1>
-          <p className="text-xs text-white/40 mt-0.5">Moderate customer feedback and rating approvals</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Product Reviews & Testimonials</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Moderate client feedback, craftsmanship ratings, and testimonial approvals</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -76,10 +76,10 @@ export function AdminReviewsClient() {
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-3 py-1.5 text-xs rounded-xs capitalize font-medium transition-colors ${
+              className={`px-3.5 py-1.5 text-xs rounded-lg capitalize font-medium transition-all ${
                 filter === tab
-                  ? 'bg-brand-gold text-white'
-                  : 'bg-[#1A1A1A] text-white/60 hover:text-white border border-white/5'
+                  ? 'bg-[#2E221C] text-[#F8F5F1] shadow-sm'
+                  : 'bg-white text-[#8A6A55] hover:text-[#2E221C] border border-[#DDD2C5]'
               }`}
             >
               {tab}
@@ -88,75 +88,75 @@ export function AdminReviewsClient() {
         </div>
       </div>
 
-      <div className="bg-[#1A1A1A] border border-white/5 rounded-sm overflow-hidden">
+      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.02]">
-                {['Product', 'Customer', 'Rating', 'Review Text', 'Date', 'Status', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-4 py-3.5 text-[10px] font-semibold text-white/30 uppercase tracking-wider">
+              <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
+                {['Product', 'Client', 'Rating', 'Review Experience', 'Date', 'Status', 'Actions'].map((h) => (
+                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#EAE2D7]">
               {filtered.map((review) => (
-                <tr key={review.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="px-4 py-3 font-medium text-white max-w-[180px] truncate">
+                <tr key={review.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
+                  <td className="px-5 py-4 font-serif font-medium text-[#2E221C] max-w-[200px] truncate text-sm">
                     {review.product}
                   </td>
-                  <td className="px-4 py-3 text-white/80">
+                  <td className="px-5 py-4 text-[#2E221C] font-medium">
                     {review.author}
                   </td>
-                  <td className="px-4 py-3 text-brand-gold flex items-center gap-0.5">
+                  <td className="px-5 py-4 text-[#C9A86A] flex items-center gap-0.5">
                     {Array.from({ length: review.rating }).map((_, i) => (
-                      <Star key={i} size={11} fill="currentColor" />
+                      <Star key={i} size={13} fill="currentColor" />
                     ))}
                   </td>
-                  <td className="px-4 py-3 text-white/70 max-w-[280px] truncate">
+                  <td className="px-5 py-4 text-[#8A6A55] max-w-[300px] truncate italic">
                     &ldquo;{review.comment}&rdquo;
                   </td>
-                  <td className="px-4 py-3 text-white/50">
+                  <td className="px-5 py-4 text-[#8A6A55]">
                     {review.date}
                   </td>
-                  <td className="px-4 py-3">
-                    <span className={`px-2 py-0.5 text-[10px] rounded-full uppercase font-medium ${
+                  <td className="px-5 py-4">
+                    <span className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold ${
                       review.status === 'approved'
-                        ? 'bg-emerald-500/10 text-emerald-400'
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                         : review.status === 'pending'
-                        ? 'bg-amber-500/10 text-amber-400'
-                        : 'bg-red-500/10 text-red-400'
+                        ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                        : 'bg-rose-50 text-rose-700 border border-rose-200'
                     }`}>
                       {review.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-5 py-4">
                     <div className="flex items-center gap-2">
                       {review.status === 'pending' && (
                         <>
                           <button
                             onClick={() => updateStatus(review.id, 'approved')}
-                            className="p-1 text-emerald-400 hover:bg-emerald-500/10 rounded-xs transition-colors"
-                            title="Approve"
+                            className="p-1 text-emerald-700 hover:bg-emerald-50 rounded transition-colors"
+                            title="Approve Review"
                           >
-                            <Check size={14} />
+                            <Check size={15} />
                           </button>
                           <button
                             onClick={() => updateStatus(review.id, 'rejected')}
-                            className="p-1 text-red-400 hover:bg-red-500/10 rounded-xs transition-colors"
-                            title="Reject"
+                            className="p-1 text-rose-700 hover:bg-rose-50 rounded transition-colors"
+                            title="Reject Review"
                           >
-                            <X size={14} />
+                            <X size={15} />
                           </button>
                         </>
                       )}
                       <button
                         onClick={() => handleDelete(review.id)}
-                        className="p-1 text-white/40 hover:text-red-400 rounded-xs transition-colors"
-                        title="Delete"
+                        className="p-1 text-[#8A6A55] hover:text-red-600 rounded transition-colors"
+                        title="Delete Review"
                       >
-                        <Trash2 size={13} />
+                        <Trash2 size={14} />
                       </button>
                     </div>
                   </td>
@@ -164,8 +164,8 @@ export function AdminReviewsClient() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-10 text-center text-white/30">
-                    No reviews in this category.
+                  <td colSpan={7} className="px-5 py-12 text-center text-[#8A6A55]">
+                    No client reviews found in this filter category.
                   </td>
                 </tr>
               )}

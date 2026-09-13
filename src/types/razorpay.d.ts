@@ -27,9 +27,19 @@ export interface RazorpayOptions {
   };
 }
 
+export interface RazorpayPaymentFailedResponse {
+  error?: {
+    code?: string;
+    description?: string;
+    reason?: string;
+    source?: string;
+    step?: string;
+  };
+}
+
 export interface RazorpayInstance {
   open(): void;
-  on(event: string, handler: (response: any) => void): void;
+  on<T = unknown>(event: string, handler: (response: T) => void): void;
   close?(): void;
 }
 

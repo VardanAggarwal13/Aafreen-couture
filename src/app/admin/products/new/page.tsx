@@ -7,8 +7,8 @@ export default function NewProductPage() {
   return (
     <div className="p-6 lg:p-8 space-y-6">
       <div>
-        <h1 className="text-xl font-semibold text-white">Add New Product</h1>
-        <p className="text-xs text-white/40 mt-0.5">Create a new couture ensemble with variants, pricing, and imagery</p>
+        <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Add New Product</h1>
+        <p className="text-sm text-[#8A6A55] mt-1 font-serif">Create a new couture ensemble with variants, bespoke tailoring, and imagery</p>
       </div>
       <ProductForm />
     </div>

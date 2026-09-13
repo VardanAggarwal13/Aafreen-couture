@@ -287,9 +287,10 @@ export class ProductRepository {
 
   async findMany(
     filters: ProductFilters,
-    pagination: PaginationParams
+    pagination: PaginationParams,
+    options?: { select?: string }
   ): Promise<{ items: IProduct[]; total: number }> {
-    const cacheKey = `findMany:${JSON.stringify(filters)}:${JSON.stringify(pagination)}`;
+    const cacheKey = `findMany:${JSON.stringify(filters)}:${JSON.stringify(pagination)}:${options?.select ?? ''}`;
     const cached = getFromCache<{ items: IProduct[]; total: number }>(cacheKey);
     if (cached) return cached;
 
@@ -374,13 +375,10 @@ export class ProductRepository {
       const { page = 1, limit = 24 } = pagination;
       const skip = (page - 1) * limit;
 
+      const findQuery = Product.find(query).sort(sort).skip(skip).limit(limit);
+      if (options?.select) findQuery.select(options.select);
       const [items, total] = await Promise.all([
-        Product.find(query)
-          .sort(sort)
-          .skip(skip)
-          .limit(limit)
-          .populate('category', 'name slug')
-          .lean<IProduct[]>(),
+        findQuery.populate('category', 'name slug').lean<IProduct[]>(),
         Product.countDocuments(query),
       ]);
 
@@ -419,18 +417,18 @@ export class ProductRepository {
     return result;
   }
 
-  async findFeatured(limit = 8): Promise<IProduct[]> {
-    const cacheKey = `featured:${limit}`;
+  async findFeatured(limit = 8, select?: string): Promise<IProduct[]> {
+    const cacheKey = `featured:${limit}:${select ?? ''}`;
     const cached = getFromCache<IProduct[]>(cacheKey);
     if (cached) return cached;
 
     try {
       await connectDB();
-      const docs = await Product.find({ isActive: true, isFeatured: true })
+      const findQuery = Product.find({ isActive: true, isFeatured: true })
         .sort({ createdAt: -1 })
-        .limit(limit)
-        .populate('category', 'name slug')
-        .lean<IProduct[]>();
+        .limit(limit);
+      if (select) findQuery.select(select);
+      const docs = await findQuery.populate('category', 'name slug').lean<IProduct[]>();
       if (docs.length > 0) {
         setToCache(cacheKey, docs);
         return docs;
@@ -445,18 +443,18 @@ export class ProductRepository {
     return result;
   }
 
-  async findNewArrivals(limit = 8): Promise<IProduct[]> {
-    const cacheKey = `newArrivals:${limit}`;
+  async findNewArrivals(limit = 8, select?: string): Promise<IProduct[]> {
+    const cacheKey = `newArrivals:${limit}:${select ?? ''}`;
     const cached = getFromCache<IProduct[]>(cacheKey);
     if (cached) return cached;
 
     try {
       await connectDB();
-      const docs = await Product.find({ isActive: true, isNewArrival: true })
+      const findQuery = Product.find({ isActive: true, isNewArrival: true })
         .sort({ createdAt: -1 })
-        .limit(limit)
-        .populate('category', 'name slug')
-        .lean<IProduct[]>();
+        .limit(limit);
+      if (select) findQuery.select(select);
+      const docs = await findQuery.populate('category', 'name slug').lean<IProduct[]>();
       if (docs.length > 0) {
         setToCache(cacheKey, docs);
         return docs;
@@ -471,18 +469,18 @@ export class ProductRepository {
     return result;
   }
 
-  async findBestSellers(limit = 8): Promise<IProduct[]> {
-    const cacheKey = `bestSellers:${limit}`;
+  async findBestSellers(limit = 8, select?: string): Promise<IProduct[]> {
+    const cacheKey = `bestSellers:${limit}:${select ?? ''}`;
     const cached = getFromCache<IProduct[]>(cacheKey);
     if (cached) return cached;
 
     try {
       await connectDB();
-      const docs = await Product.find({ isActive: true, isBestSeller: true })
+      const findQuery = Product.find({ isActive: true, isBestSeller: true })
         .sort({ soldCount: -1 })
-        .limit(limit)
-        .populate('category', 'name slug')
-        .lean<IProduct[]>();
+        .limit(limit);
+      if (select) findQuery.select(select);
+      const docs = await findQuery.populate('category', 'name slug').lean<IProduct[]>();
       if (docs.length > 0) {
         setToCache(cacheKey, docs);
         return docs;
@@ -497,22 +495,22 @@ export class ProductRepository {
     return result;
   }
 
-  async findRelated(productId: string, categoryId: string, limit = 4): Promise<IProduct[]> {
-    const cacheKey = `related:${productId}:${categoryId}:${limit}`;
+  async findRelated(productId: string, categoryId: string, limit = 4, select?: string): Promise<IProduct[]> {
+    const cacheKey = `related:${productId}:${categoryId}:${limit}:${select ?? ''}`;
     const cached = getFromCache<IProduct[]>(cacheKey);
     if (cached) return cached;
 
     try {
       await connectDB();
-      const docs = await Product.find({
+      const findQuery = Product.find({
         _id: { $ne: productId },
         category: categoryId,
         isActive: true,
       })
         .sort({ soldCount: -1 })
-        .limit(limit)
-        .populate('category', 'name slug')
-        .lean<IProduct[]>();
+        .limit(limit);
+      if (select) findQuery.select(select);
+      const docs = await findQuery.populate('category', 'name slug').lean<IProduct[]>();
       if (docs.length > 0) {
         setToCache(cacheKey, docs);
         return docs;

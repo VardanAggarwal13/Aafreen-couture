@@ -53,7 +53,7 @@ export function AdminPaymentStatusUpdater({ orderId, currentPaymentStatus }: Pro
       <select
         value={paymentStatus}
         onChange={(e) => setPaymentStatus(e.target.value)}
-        className="bg-[#1A1A1A] border border-white/10 rounded-xs px-2.5 py-1.5 text-xs text-white outline-none focus:border-brand-gold/50 flex-1"
+        className="bg-[#FAF7F2] border border-[#DDD2C5] rounded-lg px-2.5 py-2 text-xs text-[#2E221C] outline-none focus:border-[#C9A86A] flex-1 shadow-xs"
       >
         {PAYMENT_STATUS_OPTIONS.map((opt) => (
           <option key={opt.value} value={opt.value}>
@@ -64,9 +64,9 @@ export function AdminPaymentStatusUpdater({ orderId, currentPaymentStatus }: Pro
       <button
         onClick={handleUpdate}
         disabled={loading || paymentStatus === currentPaymentStatus}
-        className="bg-white/10 hover:bg-white/20 text-white text-[11px] font-medium px-3 py-1.5 transition-colors rounded-xs disabled:opacity-40 cursor-pointer flex items-center gap-1 shrink-0"
+        className="bg-[#2E221C] hover:bg-[#1A1410] text-[#F8F5F1] text-[11px] font-semibold px-3.5 py-2 transition-all rounded-lg shadow-sm disabled:opacity-40 cursor-pointer flex items-center gap-1.5 shrink-0"
       >
-        {loading ? <RefreshCw size={11} className="animate-spin" /> : <CheckCircle2 size={11} />}
+        {loading ? <RefreshCw size={11} className="animate-spin text-[#C9A86A]" /> : <CheckCircle2 size={11} className="text-[#C9A86A]" />}
         <span>Save</span>
       </button>
     </div>

@@ -14,6 +14,7 @@ import { siteConfig } from '@/config/site.config';
 import { ROUTES } from '@/constants/routes';
 import { api } from '@/utils/api';
 import { AddressSchema, type AddressInput } from '@/validators/order.validators';
+import type { RazorpayPaymentFailedResponse } from '@/types/razorpay';
 
 const STEPS = ['Address', 'Payment'] as const;
 type Step = (typeof STEPS)[number];
@@ -174,8 +175,8 @@ export function CheckoutClientPage() {
       setOrderNumber(res.data?.orderNumber ?? null);
       setPaymentError(null);
       setStep('Payment');
-    } catch (err: any) {
-      toast.error(err?.message || 'Could not create order. Please check your details and try again.');
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Could not create order. Please check your details and try again.');
     }
   }
 
@@ -271,7 +272,7 @@ export function CheckoutClientPage() {
 
       const rzp = new window.Razorpay(options);
 
-      rzp.on('payment.failed', (response: any) => {
+      rzp.on<RazorpayPaymentFailedResponse>('payment.failed', (response) => {
         const errorDesc =
           response?.error?.description ||
           response?.error?.reason ||
@@ -282,9 +283,10 @@ export function CheckoutClientPage() {
       });
 
       rzp.open();
-    } catch (err: any) {
-      setPaymentError(err?.message || 'Something went wrong processing your order. Please try again.');
-      toast.error(err?.message || 'Something went wrong. Please try again.');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Something went wrong processing your order. Please try again.';
+      setPaymentError(msg);
+      toast.error(msg);
       setIsPlacing(false);
     }
   }

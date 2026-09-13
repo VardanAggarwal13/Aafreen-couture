@@ -6,6 +6,9 @@ import { emailService } from '@/server/services/email.service';
 import { BusinessError, NotFoundError, ValidationError } from '@/lib/api-errors';
 import type { IOrder } from '@/models/Order';
 
+type RazorpayFetchPaymentsResult = Awaited<ReturnType<typeof razorpay.orders.fetchPayments>>;
+type RazorpayPayment = RazorpayFetchPaymentsResult['items'][number];
+
 export class PaymentService {
   async createRazorpayOrder(orderId: string): Promise<{
     razorpayOrderId: string;
@@ -42,20 +45,21 @@ export class PaymentService {
         currency: 'INR',
         keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
       };
-    } catch (rzpErr: any) {
+    } catch (rzpErr: unknown) {
       console.error('[PaymentService] Razorpay order creation error:', rzpErr);
+      const err = rzpErr as { statusCode?: number; error?: { description?: string }; message?: string };
       if (
-        rzpErr?.statusCode === 401 ||
-        rzpErr?.error?.description?.toLowerCase().includes('authentication') ||
-        rzpErr?.message?.toLowerCase().includes('authentication')
+        err?.statusCode === 401 ||
+        err?.error?.description?.toLowerCase().includes('authentication') ||
+        err?.message?.toLowerCase().includes('authentication')
       ) {
         throw new BusinessError(
           'Razorpay authentication failed: Invalid Key ID or Key Secret in .env.local. Please update your Razorpay API keys or select Cash on Delivery (COD) for zero-advance instant order placement.'
         );
       }
       throw new BusinessError(
-        rzpErr?.error?.description ||
-          rzpErr?.message ||
+        err?.error?.description ||
+          err?.message ||
           'Failed to initialize secure payment session. Please try Cash on Delivery (COD) or contact concierge.'
       );
     }
@@ -168,11 +172,11 @@ export class PaymentService {
 
     try {
       // Query Razorpay API directly
-      const paymentsResponse: any = await (razorpay.orders as any).fetchPayments(order.razorpayOrderId);
-      const payments = paymentsResponse?.items || [];
+      const paymentsResponse = await razorpay.orders.fetchPayments(order.razorpayOrderId);
+      const payments: RazorpayPayment[] = paymentsResponse?.items || [];
 
       // Look for any captured payment
-      const capturedPayment = payments.find((p: any) => p.status === 'captured');
+      const capturedPayment = payments.find((p) => p.status === 'captured');
 
       if (capturedPayment) {
         // Payment was captured on Razorpay! Auto-reconcile and confirm
@@ -193,10 +197,10 @@ export class PaymentService {
       }
 
       // Check if payment was authorized (bank held funds, awaiting capture)
-      const authorizedPayment = payments.find((p: any) => p.status === 'authorized');
+      const authorizedPayment = payments.find((p) => p.status === 'authorized');
       if (authorizedPayment) {
         try {
-          await (razorpay.payments as any).capture(
+          await razorpay.payments.capture(
             authorizedPayment.id,
             authorizedPayment.amount || order.total,
             authorizedPayment.currency || 'INR'
@@ -222,7 +226,7 @@ export class PaymentService {
       }
 
       // Check if there are failed attempts
-      const failedPayment = payments.find((p: any) => p.status === 'failed');
+      const failedPayment = payments.find((p) => p.status === 'failed');
       if (failedPayment && payments.length === 1) {
         await orderRepository.updatePayment(orderId, { paymentStatus: 'failed' });
         const updated = (await orderRepository.findById(orderId))!;
@@ -240,12 +244,12 @@ export class PaymentService {
         message: 'No completed payment found on Razorpay yet. Please try again or complete the payment.',
         order,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[PaymentService] Reconciliation error:', err);
       return {
         status: order.paymentStatus,
         reconciled: false,
-        message: `Failed to communicate with Razorpay: ${err?.message || 'Network error'}`,
+        message: `Failed to communicate with Razorpay: ${err instanceof Error ? err.message : 'Network error'}`,
         order,
       };
     }

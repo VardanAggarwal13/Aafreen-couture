@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Contact Us & Concierge | Aafreen Couture',
   description:
     'Get in touch with Aafreen Couture concierge for bridal appointments, custom measurements, order enquiries, and boutique consultations.',
+  alternates: { canonical: `${siteConfig.url}/contact` },
 };
 
 export default function ContactPage() {

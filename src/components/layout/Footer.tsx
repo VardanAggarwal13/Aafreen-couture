@@ -22,13 +22,17 @@ export function Footer() {
     pathname.startsWith('/verify-email/');
   const isAdminRoute = pathname?.startsWith('/admin');
 
-  const year = new Date().getFullYear();
-  const [email, setEmail] = useState('');
-  const [isSubscribed, setIsSubscribed] = useState(false);
-
   if (isAuthRoute || isAdminRoute) {
     return null;
   }
+
+  return <StorefrontFooter />;
+}
+
+function StorefrontFooter() {
+  const year = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   function handleSubscribe(e: React.FormEvent) {
     e.preventDefault();
@@ -225,6 +229,7 @@ export function Footer() {
             <Link href="/terms" className="hover:text-gold transition-colors">Terms of Service</Link>
             <Link href="/returns-policy" className="hover:text-gold transition-colors">Exchange &amp; Refund</Link>
             <Link href="/shipping-policy" className="hover:text-gold transition-colors">Shipping Policy</Link>
+            <Link href="/admin" className="hover:text-gold transition-colors text-text/50">Admin Portal</Link>
           </div>
 
           <div className="flex items-center gap-3">

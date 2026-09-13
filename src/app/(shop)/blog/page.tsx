@@ -3,10 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Clock } from 'lucide-react';
 import { BLOG_POSTS } from '@/data/blog.data';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: 'The Journal | Aafreen Couture',
   description: 'Editorial guides, bridal styling tips, and heritage craftsmanship stories by Aafreen Couture.',
+  alternates: { canonical: `${siteConfig.url}/blog` },
 };
 
 export default function BlogPage() {

@@ -1,11 +1,14 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 import type { Metadata } from 'next';
 import { collectionRepository } from '@/server/repositories/collection.repository';
 import { productService } from '@/server/services/product.service';
 import { ProductCard } from '@/components/product/ProductCard';
 import { siteConfig } from '@/config/site.config';
 import { FALLBACK_COLLECTIONS } from '@/data/products.data';
+import { buildBreadcrumbJsonLd } from '@/utils/seo';
 import type { IProduct } from '@/types';
 
 interface Props { params: Promise<{ slug: string }> }
@@ -80,8 +83,28 @@ export default async function CollectionPage({ params }: Props) {
 
   const isBridal = slug === 'bridal' || slug === 'bridal-lehengas-suits';
 
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { label: 'Home', href: '/' },
+    { label: 'Collections', href: '/collections' },
+    { label: collection.name },
+  ]);
+
   return (
     <div className="bg-[#FAF7F2] min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {/* Breadcrumb */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-[#8C7A6B]">
+          <Link href="/" className="hover:text-[#A67C52] transition-colors">Home</Link>
+          <ChevronRight size={12} className="text-[#C49A5A]" />
+          <Link href="/collections" className="hover:text-[#A67C52] transition-colors">Collections</Link>
+          <ChevronRight size={12} className="text-[#C49A5A]" />
+          <span className="text-[#221617] font-medium">{collection.name}</span>
+        </nav>
+      </div>
       {/* Hero Section */}
       {isBridal ? (
         <div className="relative overflow-hidden bg-gradient-to-br from-[#FDFBF7] via-[#FAF5EC] to-[#F5ECE1] border-b border-[#E8D4BE]">

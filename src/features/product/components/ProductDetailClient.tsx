@@ -25,6 +25,7 @@ import { useCartStore } from '@/store/cart.store';
 import { useWishlistStore } from '@/store/wishlist.store';
 import { ProductCard } from '@/components/product/ProductCard';
 import { siteConfig } from '@/config/site.config';
+import { buildBreadcrumbJsonLd } from '@/utils/seo';
 import type { IProduct } from '@/types';
 
 interface Props {
@@ -130,8 +131,22 @@ export function ProductDetailClient({ product, related }: Props) {
     ).values()
   );
 
+  const hasCategoryCrumb = typeof product.category === 'object' && !!product.category?.name;
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { label: 'Home', href: '/' },
+    { label: 'Shop', href: '/shop' },
+    ...(hasCategoryCrumb
+      ? [{ label: (product.category as { name: string }).name, href: `/shop?category=${(product.category as { slug: string }).slug}` }]
+      : []),
+    { label: product.name },
+  ]);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* Breadcrumb */}
       <nav className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-3 text-xs text-text flex items-center gap-2">
         <Link href="/" className="hover:text-gold transition-colors">Home</Link>
@@ -180,17 +195,27 @@ export function ProductDetailClient({ product, related }: Props) {
               </div>
             )}
 
-            {/* Main Stage Image */}
+            {/* Main Stage Image — all gallery images are preloaded and stacked so
+                switching photos is an instant opacity toggle instead of a fresh
+                network request + on-demand image transform. */}
             <div className="flex-1 w-full relative aspect-[4/5] max-h-[620px] lg:max-h-[660px] rounded-xs overflow-hidden bg-[#FAF7F2] border border-[#E8D8C8]/60 shadow-xs group">
-              {allImages[selectedImage] ? (
-                <Image
-                  src={allImages[selectedImage]}
-                  alt={product.name}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                  className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
-                />
+              {allImages.length > 0 ? (
+                allImages.map((img, i) => (
+                  <Image
+                    key={img}
+                    src={img}
+                    alt={i === 0 ? product.name : `${product.name} — photo ${i + 1}`}
+                    fill
+                    priority={i === 0}
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    className={cn(
+                      'object-cover object-top transition-opacity duration-300 ease-out',
+                      i === selectedImage
+                        ? 'opacity-100 group-hover:scale-105 transition-[opacity,transform] duration-300'
+                        : 'opacity-0 pointer-events-none'
+                    )}
+                  />
+                ))
               ) : (
                 <div className="w-full h-full bg-background" />
               )}

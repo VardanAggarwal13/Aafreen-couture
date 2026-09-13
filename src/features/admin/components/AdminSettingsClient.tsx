@@ -27,7 +27,6 @@ export function AdminSettingsClient() {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    // Simulate save
     await new Promise((r) => setTimeout(r, 600));
     setSaving(false);
     toast.success('Store configuration saved successfully');
@@ -41,30 +40,30 @@ export function AdminSettingsClient() {
   ] as const;
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 lg:p-8 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-white">Store Settings</h1>
-          <p className="text-xs text-white/40 mt-0.5">Manage brand credentials, checkout gateways, and shipping parameters</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Store Configurations & Gateways</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Manage atelier credentials, checkout payment gateways, and logistics parameters</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Navigation Tabs */}
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           {tabs.map((t) => {
             const Icon = t.icon;
             return (
               <button
                 key={t.id}
                 onClick={() => setActiveTab(t.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-medium rounded-xs transition-colors text-left ${
+                className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-xl transition-all text-left ${
                   activeTab === t.id
-                    ? 'bg-brand-gold text-white font-semibold'
-                    : 'bg-[#1A1A1A] text-white/60 hover:text-white border border-white/5'
+                    ? 'bg-[#2E221C] text-[#F8F5F1] shadow-sm'
+                    : 'bg-white text-[#8A6A55] hover:text-[#2E221C] border border-[#DDD2C5]'
                 }`}
               >
-                <Icon size={15} />
+                <Icon size={16} className={activeTab === t.id ? 'text-[#C9A86A]' : 'text-[#8A6A55]'} />
                 {t.label}
               </button>
             );
@@ -73,45 +72,45 @@ export function AdminSettingsClient() {
 
         {/* Tab Content */}
         <div className="md:col-span-3">
-          <form onSubmit={handleSave} className="bg-[#1A1A1A] border border-white/5 p-6 rounded-xs space-y-6">
+          <form onSubmit={handleSave} className="bg-white border border-[#DDD2C5] p-6 sm:p-8 rounded-xl shadow-sm space-y-6">
             {activeTab === 'general' && (
-              <div className="space-y-4">
-                <h2 className="text-sm font-semibold text-white pb-3 border-b border-white/5">Store Information</h2>
+              <div className="space-y-5">
+                <h2 className="text-base font-serif font-semibold text-[#2E221C] pb-3 border-b border-[#DDD2C5]">Store Identity</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                   <div>
-                    <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Store Name</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Store Brand Name</label>
                     <input
                       type="text"
                       value={settings.storeName}
                       onChange={(e) => setSettings({ ...settings, storeName: e.target.value })}
-                      className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none focus:border-brand-gold/50"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Default Currency</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Base Currency</label>
                     <input
                       type="text"
                       disabled
                       value={settings.currency}
-                      className="w-full bg-[#111] border border-white/5 px-3 py-2 text-white/40 outline-none cursor-not-allowed"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#8A6A55]/60 rounded-lg outline-none cursor-not-allowed font-medium"
                     />
                   </div>
                   <div>
-                    <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Support Email</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Support & Concierge Email</label>
                     <input
                       type="email"
                       value={settings.supportEmail}
                       onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })}
-                      className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none focus:border-brand-gold/50"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Support Phone</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Atelier Support Phone</label>
                     <input
                       type="text"
                       value={settings.supportPhone}
                       onChange={(e) => setSettings({ ...settings, supportPhone: e.target.value })}
-                      className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none focus:border-brand-gold/50"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
                     />
                   </div>
                 </div>
@@ -119,53 +118,53 @@ export function AdminSettingsClient() {
             )}
 
             {activeTab === 'payments' && (
-              <div className="space-y-4">
-                <h2 className="text-sm font-semibold text-white pb-3 border-b border-white/5">Payment Options</h2>
+              <div className="space-y-5">
+                <h2 className="text-base font-serif font-semibold text-[#2E221C] pb-3 border-b border-[#DDD2C5]">Payment Gateways</h2>
                 <div className="space-y-4 text-xs">
-                  <div className="flex items-center justify-between p-3 bg-[#111] border border-white/5">
+                  <div className="flex items-center justify-between p-4 bg-[#FAF7F2] border border-[#DDD2C5] rounded-xl">
                     <div>
-                      <p className="font-semibold text-white">Razorpay Online Gateway (Cards, UPI, Netbanking)</p>
-                      <p className="text-white/40 text-[11px]">Accept instant Indian & International payments</p>
+                      <p className="font-semibold text-[#2E221C] text-sm">Razorpay Online Gateway (Cards, UPI, Netbanking)</p>
+                      <p className="text-[#8A6A55] text-xs mt-0.5">Accept instant domestic & international card payments</p>
                     </div>
                     <input
                       type="checkbox"
                       checked={settings.enableRazorpay}
                       onChange={(e) => setSettings({ ...settings, enableRazorpay: e.target.checked })}
-                      className="accent-brand-gold w-4 h-4"
+                      className="accent-[#C9A86A] w-4 h-4 rounded border-[#DDD2C5]"
                     />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Razorpay Key ID</label>
+                      <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Razorpay Key ID</label>
                       <input
                         type="text"
                         value={settings.razorpayKeyId}
                         onChange={(e) => setSettings({ ...settings, razorpayKeyId: e.target.value })}
-                        className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white font-mono text-[11px] outline-none"
+                        className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] font-mono text-xs rounded-lg outline-none focus:border-[#C9A86A]"
                       />
                     </div>
                     <div>
-                      <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Razorpay Secret</label>
+                      <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Razorpay Secret</label>
                       <input
                         type="password"
                         value={settings.razorpayKeySecret}
                         onChange={(e) => setSettings({ ...settings, razorpayKeySecret: e.target.value })}
-                        className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white font-mono text-[11px] outline-none"
+                        className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] font-mono text-xs rounded-lg outline-none focus:border-[#C9A86A]"
                       />
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 bg-[#111] border border-white/5">
+                  <div className="flex items-center justify-between p-4 bg-[#FAF7F2] border border-[#DDD2C5] rounded-xl">
                     <div>
-                      <p className="font-semibold text-white">Cash on Delivery (COD)</p>
-                      <p className="text-white/40 text-[11px]">Allow COD for orders below ₹50,000</p>
+                      <p className="font-semibold text-[#2E221C] text-sm">Cash on Delivery (COD)</p>
+                      <p className="text-[#8A6A55] text-xs mt-0.5">Allow doorstep handover payment for domestic orders</p>
                     </div>
                     <input
                       type="checkbox"
                       checked={settings.enableCOD}
                       onChange={(e) => setSettings({ ...settings, enableCOD: e.target.checked })}
-                      className="accent-brand-gold w-4 h-4"
+                      className="accent-[#C9A86A] w-4 h-4 rounded border-[#DDD2C5]"
                     />
                   </div>
                 </div>
@@ -173,25 +172,25 @@ export function AdminSettingsClient() {
             )}
 
             {activeTab === 'shipping' && (
-              <div className="space-y-4">
-                <h2 className="text-sm font-semibold text-white pb-3 border-b border-white/5">Shipping Rules</h2>
+              <div className="space-y-5">
+                <h2 className="text-base font-serif font-semibold text-[#2E221C] pb-3 border-b border-[#DDD2C5]">Logistics & Shipping Rules</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                   <div>
-                    <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Free Shipping Threshold (₹)</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Free Shipping Threshold (₹)</label>
                     <input
                       type="number"
                       value={settings.freeShippingThreshold}
                       onChange={(e) => setSettings({ ...settings, freeShippingThreshold: e.target.value })}
-                      className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                     />
                   </div>
                   <div>
-                    <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Flat Shipping Rate (₹)</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Flat Standard Shipping Fee (₹)</label>
                     <input
                       type="number"
                       value={settings.flatShippingRate}
                       onChange={(e) => setSettings({ ...settings, flatShippingRate: e.target.value })}
-                      className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                     />
                   </div>
                 </div>
@@ -199,43 +198,43 @@ export function AdminSettingsClient() {
             )}
 
             {activeTab === 'whatsapp' && (
-              <div className="space-y-4">
-                <h2 className="text-sm font-semibold text-white pb-3 border-b border-white/5">WhatsApp Concierge Integration</h2>
+              <div className="space-y-5">
+                <h2 className="text-base font-serif font-semibold text-[#2E221C] pb-3 border-b border-[#DDD2C5]">WhatsApp Concierge Integration</h2>
                 <div className="space-y-4 text-xs">
                   <div>
-                    <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">WhatsApp Business Number</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">WhatsApp Official Line Number</label>
                     <input
                       type="text"
                       value={settings.whatsappNumber}
                       onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value })}
                       placeholder="+91 95179 01117"
-                      className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                     />
                   </div>
                   <div>
-                    <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Default Pre-filled Message</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Default Concierge Greeting Message</label>
                     <textarea
                       rows={3}
                       value={settings.whatsappDefaultMessage}
                       onChange={(e) => setSettings({ ...settings, whatsappDefaultMessage: e.target.value })}
-                      className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                     />
                   </div>
                 </div>
               </div>
             )}
 
-            <div className="flex justify-end pt-4 border-t border-white/5">
+            <div className="flex justify-end pt-4 border-t border-[#DDD2C5]">
               <button
                 type="submit"
                 disabled={saving}
-                className="flex items-center gap-2 bg-brand-gold text-white font-semibold uppercase tracking-wider px-6 py-2.5 hover:bg-brand-gold/90 text-xs rounded-xs transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-6 py-2.5 hover:bg-[#1A1410] text-xs rounded-lg transition-all shadow-sm disabled:opacity-50"
               >
                 {saving ? (
-                  'Saving...'
+                  'Saving Configuration…'
                 ) : (
                   <>
-                    <Save size={14} /> Save Configuration
+                    <Save size={14} className="text-[#C9A86A]" /> Save Store Configuration
                   </>
                 )}
               </button>

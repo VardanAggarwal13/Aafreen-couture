@@ -13,13 +13,13 @@ export const metadata = { title: 'Order Details | Admin' };
 interface Props { params: Promise<{ id: string }> }
 
 const STATUS_BADGE: Record<string, string> = {
-  pending: 'bg-yellow-500/15 text-yellow-400',
-  confirmed: 'bg-blue-500/15 text-blue-400',
-  processing: 'bg-blue-500/15 text-blue-400',
-  shipped: 'bg-purple-500/15 text-purple-400',
-  out_for_delivery: 'bg-indigo-500/15 text-indigo-400',
-  delivered: 'bg-green-500/15 text-green-400',
-  cancelled: 'bg-red-500/15 text-red-400',
+  pending: 'bg-yellow-50 text-yellow-800 border border-yellow-200',
+  confirmed: 'bg-blue-50 text-blue-800 border border-blue-200',
+  processing: 'bg-indigo-50 text-indigo-800 border border-indigo-200',
+  shipped: 'bg-purple-50 text-purple-800 border border-purple-200',
+  out_for_delivery: 'bg-sky-50 text-sky-800 border border-sky-200',
+  delivered: 'bg-emerald-50 text-emerald-800 border border-emerald-200',
+  cancelled: 'bg-rose-50 text-rose-800 border border-rose-200',
 };
 
 interface AdminOrderItemDisplay {
@@ -156,23 +156,23 @@ export default async function AdminOrderDetailPage({ params }: Props) {
   const address = order.shippingAddress;
 
   return (
-    <div className="space-y-6 max-w-6xl">
+    <div className="p-6 lg:p-8 space-y-6 max-w-6xl">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#DDD2C5]">
         <div>
           <Link
             href={ROUTES.ADMIN_ORDERS}
-            className="inline-flex items-center gap-1.5 text-xs text-white/50 hover:text-white transition-colors mb-2"
+            className="inline-flex items-center gap-1.5 text-xs text-[#8A6A55] hover:text-[#2E221C] transition-colors mb-2 font-medium"
           >
-            <ArrowLeft size={13} /> Back to Orders
+            <ArrowLeft size={13} /> Back to Client Orders
           </Link>
           <div className="flex items-center gap-3">
-            <h1 className="text-xl font-semibold text-white">Order #{order.orderNumber}</h1>
-            <span className={`px-2 py-0.5 text-[10px] rounded-full uppercase font-medium ${STATUS_BADGE[order.status] ?? 'bg-white/10 text-white'}`}>
-              {String(order.status).replace('_', ' ')}
+            <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Order #{order.orderNumber}</h1>
+            <span className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase font-medium tracking-wide ${STATUS_BADGE[order.status] ?? 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5]'}`}>
+              {String(order.status).replace(/_/g, ' ')}
             </span>
           </div>
-          <p className="text-xs text-white/40 mt-1">Placed on {formatDate(order.createdAt)}</p>
+          <p className="text-xs text-[#8A6A55] mt-1 font-serif">Placed on {formatDate(order.createdAt)}</p>
         </div>
 
         {/* Status update buttons */}
@@ -182,29 +182,29 @@ export default async function AdminOrderDetailPage({ params }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left 2 cols: Items & Pricing */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#1A1A1A] border border-white/5 rounded-sm p-5 space-y-4">
-            <h2 className="text-sm font-semibold text-white flex items-center gap-2">
-              <Package size={15} className="text-brand-gold" /> Order Items ({items.length})
+          <div className="bg-white border border-[#DDD2C5] rounded-xl p-6 shadow-sm space-y-5">
+            <h2 className="text-base font-serif font-semibold text-[#2E221C] flex items-center gap-2">
+              <Package size={16} className="text-[#C9A86A]" /> Handcrafted Items ({items.length})
             </h2>
 
-            <div className="divide-y divide-white/5">
+            <div className="divide-y divide-[#EAE2D7]">
               {items.map((item, idx) => {
                 const quantity = item.quantity ?? item.qty ?? 1;
                 const price = item.price ?? 0;
                 return (
                   <div key={idx} className="py-4 first:pt-0 last:pb-0 flex items-center gap-4">
-                    <div className="relative w-16 h-20 bg-[#222] rounded-xs overflow-hidden shrink-0">
+                    <div className="relative w-16 h-20 bg-[#FAF7F2] border border-[#DDD2C5] rounded-lg overflow-hidden shrink-0">
                       <Image src={item.image || '/images/products/noor-e-ishq.webp'} alt={item.name} fill className="object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-white text-xs truncate">{item.name}</p>
-                      <div className="flex items-center gap-3 text-[11px] text-white/40 mt-1">
-                        {item.size && <span>Size: <strong className="text-white/70">{item.size}</strong></span>}
-                        {item.color && <span>Color: <strong className="text-white/70">{item.color}</strong></span>}
+                      <p className="font-serif font-medium text-[#2E221C] text-sm truncate">{item.name}</p>
+                      <div className="flex items-center gap-3 text-xs text-[#8A6A55] mt-1">
+                        {item.size && <span>Size: <strong className="text-[#2E221C] font-medium">{item.size}</strong></span>}
+                        {item.color && <span>Color: <strong className="text-[#2E221C] font-medium">{item.color}</strong></span>}
                         <span>Qty: {quantity}</span>
                       </div>
                     </div>
-                    <p className="font-semibold text-white text-xs">
+                    <p className="font-semibold text-[#2E221C] text-sm">
                       {formatPrice(item.totalPrice ?? price * quantity)}
                     </p>
                   </div>
@@ -213,18 +213,18 @@ export default async function AdminOrderDetailPage({ params }: Props) {
             </div>
 
             {/* Price breakdown */}
-            <div className="pt-4 border-t border-white/5 space-y-2 text-xs">
-              <div className="flex justify-between text-white/50">
-                <span>Subtotal</span>
-                <span>{formatPrice(order.subtotal)}</span>
+            <div className="pt-4 border-t border-[#EAE2D7] space-y-2 text-xs">
+              <div className="flex justify-between text-[#8A6A55]">
+                <span>Catalogue Subtotal</span>
+                <span className="text-[#2E221C] font-medium">{formatPrice(order.subtotal)}</span>
               </div>
-              <div className="flex justify-between text-white/50">
-                <span>Shipping</span>
-                <span>{shippingCost === 0 ? 'Complimentary' : formatPrice(shippingCost)}</span>
+              <div className="flex justify-between text-[#8A6A55]">
+                <span>Artisan Logistics & Shipping</span>
+                <span className="text-[#2E221C] font-medium">{shippingCost === 0 ? 'Complimentary Insured Courier' : formatPrice(shippingCost)}</span>
               </div>
-              <div className="flex justify-between text-sm font-semibold text-white pt-2 border-t border-white/5">
-                <span>Total Amount</span>
-                <span className="text-brand-gold">{formatPrice(order.total)}</span>
+              <div className="flex justify-between text-base font-serif font-semibold text-[#2E221C] pt-3 border-t border-[#EAE2D7]">
+                <span>Grand Total</span>
+                <span className="text-[#C9A86A] text-lg">{formatPrice(order.total)}</span>
               </div>
             </div>
           </div>
@@ -233,25 +233,25 @@ export default async function AdminOrderDetailPage({ params }: Props) {
         {/* Right col: Customer & Shipping Address */}
         <div className="space-y-6">
           {/* Customer */}
-          <div className="bg-[#1A1A1A] border border-white/5 rounded-sm p-5 space-y-3">
-            <h2 className="text-sm font-semibold text-white flex items-center gap-2">
-              <User size={15} className="text-brand-gold" /> Customer Profile
+          <div className="bg-white border border-[#DDD2C5] rounded-xl p-6 shadow-sm space-y-3">
+            <h2 className="text-sm font-serif font-semibold text-[#2E221C] flex items-center gap-2">
+              <User size={15} className="text-[#C9A86A]" /> Customer Profile
             </h2>
-            <div className="text-xs space-y-1 text-white/70">
-              <p className="font-medium text-white">{address?.fullName || order.customer?.name || 'Valued Client'}</p>
-              <p className="text-white/50">{order.customer?.email || 'client@aafreen-couture.com'}</p>
-              {address?.phone && <p className="text-white/50">{address.phone}</p>}
+            <div className="text-xs space-y-1.5 text-[#8A6A55]">
+              <p className="font-medium text-[#2E221C] text-sm">{address?.fullName || order.customer?.name || 'Valued Client'}</p>
+              <p>{order.customer?.email || 'client@aafreen-couture.com'}</p>
+              {address?.phone && <p>{address.phone}</p>}
             </div>
           </div>
 
           {/* Shipping address */}
           {address && (
-            <div className="bg-[#1A1A1A] border border-white/5 rounded-sm p-5 space-y-3">
-              <h2 className="text-sm font-semibold text-white flex items-center gap-2">
-                <MapPin size={15} className="text-brand-gold" /> Shipping Address
+            <div className="bg-white border border-[#DDD2C5] rounded-xl p-6 shadow-sm space-y-3">
+              <h2 className="text-sm font-serif font-semibold text-[#2E221C] flex items-center gap-2">
+                <MapPin size={15} className="text-[#C9A86A]" /> Shipping Destination
               </h2>
-              <div className="text-xs space-y-1 text-white/70">
-                <p>{address.line1 || address.street}</p>
+              <div className="text-xs space-y-1 text-[#8A6A55]">
+                <p className="text-[#2E221C] font-medium">{address.line1 || address.street}</p>
                 <p>{address.city}, {address.state} - {address.pincode || address.postalCode}</p>
                 <p>{address.country}</p>
               </div>
@@ -259,24 +259,24 @@ export default async function AdminOrderDetailPage({ params }: Props) {
           )}
 
           {/* Payment */}
-          <div className="bg-[#1A1A1A] border border-white/5 rounded-sm p-5 space-y-3">
-            <h2 className="text-sm font-semibold text-white flex items-center gap-2">
-              <CreditCard size={15} className="text-brand-gold" /> Payment Information
+          <div className="bg-white border border-[#DDD2C5] rounded-xl p-6 shadow-sm space-y-3">
+            <h2 className="text-sm font-serif font-semibold text-[#2E221C] flex items-center gap-2">
+              <CreditCard size={15} className="text-[#C9A86A]" /> Payment Information
             </h2>
-            <div className="text-xs space-y-2 text-white/70">
+            <div className="text-xs space-y-2 text-[#8A6A55]">
               <div className="flex justify-between items-center">
-                <span className="text-white/40">Method:</span>
-                <span className="text-white font-medium capitalize">{order.paymentMethod}</span>
+                <span>Method:</span>
+                <span className="text-[#2E221C] font-semibold capitalize">{order.paymentMethod}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-white/40">Status:</span>
+                <span>Status:</span>
                 <span
-                  className={`px-2 py-0.5 text-[10px] rounded-full uppercase font-medium ${
+                  className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold ${
                     order.paymentStatus === 'paid'
-                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                       : order.paymentStatus === 'pending'
-                      ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
-                      : 'bg-rose-500/15 text-rose-400 border border-rose-500/20'
+                      ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                      : 'bg-rose-50 text-rose-700 border border-rose-200'
                   }`}
                 >
                   {order.paymentStatus}
@@ -284,18 +284,18 @@ export default async function AdminOrderDetailPage({ params }: Props) {
               </div>
 
               {order.razorpayOrderId && (
-                <div className="pt-2 border-t border-white/5 flex flex-col gap-0.5">
-                  <span className="text-white/40 text-[10px] uppercase">Razorpay Order ID</span>
-                  <span className="font-mono text-white/90 text-[11px] select-all bg-white/5 px-2 py-1 rounded-xs">
+                <div className="pt-2 border-t border-[#EAE2D7] flex flex-col gap-1">
+                  <span className="text-[#8A6A55] text-[10px] uppercase font-semibold">Razorpay Order ID</span>
+                  <span className="font-mono text-[#2E221C] text-[11px] select-all bg-[#FAF7F2] border border-[#DDD2C5] px-2.5 py-1.5 rounded-md">
                     {order.razorpayOrderId}
                   </span>
                 </div>
               )}
 
               {order.razorpayPaymentId && (
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-white/40 text-[10px] uppercase">Razorpay Payment ID</span>
-                  <span className="font-mono text-emerald-400/90 text-[11px] select-all bg-white/5 px-2 py-1 rounded-xs">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[#8A6A55] text-[10px] uppercase font-semibold">Razorpay Payment ID</span>
+                  <span className="font-mono text-emerald-700 text-[11px] select-all bg-emerald-50 border border-emerald-200 px-2.5 py-1.5 rounded-md font-medium">
                     {order.razorpayPaymentId}
                   </span>
                 </div>
@@ -307,8 +307,8 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                 paymentStatus={order.paymentStatus}
               />
 
-              <div className="pt-2 border-t border-white/5">
-                <span className="text-white/40 text-[10px] uppercase block">
+              <div className="pt-3 border-t border-[#EAE2D7]">
+                <span className="text-[#8A6A55] text-[10px] uppercase font-semibold block">
                   Update Payment Status (e.g. COD Collected)
                 </span>
                 <AdminPaymentStatusUpdater

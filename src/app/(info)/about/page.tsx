@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Our Story & Atelier | Aafreen Couture',
   description:
     'Discover the heritage, artistry, and vision behind Aafreen Couture — timeless Indian bridal wear and bespoke luxury handcrafted with royal elegance.',
+  alternates: { canonical: `${siteConfig.url}/about` },
 };
 
 export default function AboutPage() {

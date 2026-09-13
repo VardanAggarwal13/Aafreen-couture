@@ -35,17 +35,35 @@ function getUserModel(): mongoose.Model<UserDoc> {
 
 export class UserRepository {
   async findMany(
-    filter: { role?: string },
+    filter: { role?: string; search?: string } = {},
     options: { limit?: number } = {}
   ): Promise<IUser[]> {
     await connectDB();
     const UserModel = getUserModel();
     const query: Record<string, unknown> = {};
-    if (filter.role) query['role'] = filter.role;
+    if (filter.role && filter.role !== 'all') {
+      query['role'] = filter.role;
+    }
+    if (filter.search) {
+      const s = filter.search.trim();
+      query['$or'] = [
+        { name: { $regex: s, $options: 'i' } },
+        { email: { $regex: s, $options: 'i' } },
+        { phone: { $regex: s, $options: 'i' } },
+      ];
+    }
     return UserModel.find(query)
-      .limit(options.limit ?? 50)
+      .limit(options.limit ?? 100)
       .sort({ createdAt: -1 })
       .lean() as Promise<IUser[]>;
+  }
+
+  async count(filter: { role?: string } = {}): Promise<number> {
+    await connectDB();
+    const UserModel = getUserModel();
+    const query: Record<string, unknown> = {};
+    if (filter.role && filter.role !== 'all') query['role'] = filter.role;
+    return UserModel.countDocuments(query);
   }
 
   async findById(id: string): Promise<IUser | null> {
@@ -57,14 +75,22 @@ export class UserRepository {
   async findByEmail(email: string): Promise<IUser | null> {
     await connectDB();
     const UserModel = getUserModel();
-    return UserModel.findOne({ email }).lean() as Promise<IUser | null>;
+    return UserModel.findOne({ email: email.toLowerCase().trim() }).lean() as Promise<IUser | null>;
   }
 
   async updateRole(id: string, role: string): Promise<IUser | null> {
     await connectDB();
     const UserModel = getUserModel();
-    return UserModel.findByIdAndUpdate(id, { role }, { new: true }).lean() as Promise<IUser | null>;
+    return UserModel.findByIdAndUpdate(id, { role, updatedAt: new Date() }, { new: true }).lean() as Promise<IUser | null>;
+  }
+
+  async delete(id: string): Promise<boolean> {
+    await connectDB();
+    const UserModel = getUserModel();
+    const res = await UserModel.findByIdAndDelete(id);
+    return !!res;
   }
 }
 
 export const userRepository = new UserRepository();
+

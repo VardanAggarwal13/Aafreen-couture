@@ -9,6 +9,15 @@ const updateProfileSchema = z.object({
   phone: z.string().regex(/^[6-9]\d{9}$/, 'Enter a valid 10-digit mobile number').optional().or(z.literal('')),
 });
 
+interface UserDoc {
+  _id: ObjectId | string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  role?: string;
+  updatedAt?: Date;
+}
+
 let clientPromise: Promise<MongoClient> | null = null;
 function getMongoClient() {
   if (!clientPromise) {
@@ -27,11 +36,11 @@ export async function GET(request: NextRequest) {
     const db = client.db();
     
     // Find user by _id (string or ObjectId) or email
-    const query: Record<string, any> = ObjectId.isValid(session.user.id)
+    const query: Record<string, unknown> = ObjectId.isValid(session.user.id)
       ? { $or: [{ _id: new ObjectId(session.user.id) }, { _id: session.user.id }, { email: session.user.email }] }
       : { $or: [{ _id: session.user.id }, { email: session.user.email }] };
 
-    const userDoc = await db.collection<any>('user').findOne(query);
+    const userDoc = await db.collection<UserDoc>('user').findOne(query);
 
     return NextResponse.json({
       success: true,
@@ -59,7 +68,7 @@ export async function PATCH(request: NextRequest) {
     const client = await getMongoClient();
     const db = client.db();
 
-    const query: Record<string, any> = ObjectId.isValid(session.user.id)
+    const query: Record<string, unknown> = ObjectId.isValid(session.user.id)
       ? { $or: [{ _id: new ObjectId(session.user.id) }, { _id: session.user.id }, { email: session.user.email }] }
       : { $or: [{ _id: session.user.id }, { email: session.user.email }] };
 
@@ -69,7 +78,7 @@ export async function PATCH(request: NextRequest) {
     if (validated.name !== undefined) updateFields.name = validated.name;
     if (validated.phone !== undefined) updateFields.phone = validated.phone;
 
-    await db.collection<any>('user').updateOne(query, { $set: updateFields });
+    await db.collection<UserDoc>('user').updateOne(query, { $set: updateFields });
 
     return NextResponse.json({
       success: true,

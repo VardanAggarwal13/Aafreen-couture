@@ -61,7 +61,7 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
 
       if (!res.ok) throw new Error('Failed to save collection');
 
-      toast.success(isEdit ? 'Collection updated' : 'Collection created');
+      toast.success(isEdit ? 'Collection updated successfully' : 'Collection created successfully');
       router.push('/admin/collections');
       router.refresh();
     } catch (err: unknown) {
@@ -72,26 +72,26 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-      <div className="flex items-center justify-between pb-4 border-b border-white/5">
+    <form onSubmit={handleSubmit} className="max-w-3xl space-y-6">
+      <div className="flex items-center justify-between pb-4 border-b border-[#DDD2C5]">
         <Link
           href="/admin/collections"
-          className="inline-flex items-center gap-1.5 text-xs text-white/50 hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-[#8A6A55] hover:text-[#2E221C] transition-colors font-medium"
         >
-          <ArrowLeft size={13} /> Back to Collections
+          <ArrowLeft size={14} /> Back to Collections
         </Link>
         <button
           type="submit"
           disabled={saving}
-          className="flex items-center gap-2 bg-brand-gold text-white text-xs font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-brand-gold/90 transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-6 py-2.5 rounded-lg hover:bg-[#1A1410] shadow-sm transition-all disabled:opacity-50"
         >
-          <Save size={14} /> {saving ? 'Saving…' : 'Save Collection'}
+          <Save size={14} className="text-[#C9A86A]" /> {saving ? 'Saving…' : 'Save Collection'}
         </button>
       </div>
 
-      <div className="bg-[#1A1A1A] border border-white/5 p-6 space-y-4">
+      <div className="bg-white border border-[#DDD2C5] rounded-xl p-6 sm:p-8 shadow-sm space-y-5">
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/50 mb-1.5">
+          <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
             Collection Name *
           </label>
           <input
@@ -99,40 +99,40 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
             required
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="e.g. Bridal Lehengas & Suits"
-            className="w-full bg-[#111] border border-white/10 text-white px-3.5 py-2 text-xs outline-none focus:border-brand-gold/50"
+            placeholder="e.g. Royal Heritage Couture 2026"
+            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
           />
         </div>
 
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/50 mb-1.5">
-            Slug
+          <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+            Slug (URL Identifier)
           </label>
           <input
             type="text"
             value={formData.slug}
             onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-            placeholder="bridal-lehengas-suits (auto-generated if blank)"
-            className="w-full bg-[#111] border border-white/10 text-white px-3.5 py-2 text-xs outline-none focus:border-brand-gold/50"
+            placeholder="royal-heritage-2026 (auto-generated if left blank)"
+            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] font-mono text-xs transition-colors"
           />
         </div>
 
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/50 mb-1.5">
+          <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
             Description
           </label>
           <textarea
             rows={3}
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            placeholder="Curated statement pieces crafted for..."
-            className="w-full bg-[#111] border border-white/10 text-white px-3.5 py-2 text-xs outline-none focus:border-brand-gold/50"
+            placeholder="Curated editorial statement describing the theme, embroidery, and inspiration..."
+            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
           />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/50 mb-1.5">
+            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
               Tile Image Path / URL
             </label>
             <input
@@ -140,56 +140,56 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
               value={formData.image}
               onChange={(e) => setFormData({ ...formData, image: e.target.value })}
               placeholder="/images/products/noor-e-ishq.webp"
-              className="w-full bg-[#111] border border-white/10 text-white px-3.5 py-2 text-xs outline-none focus:border-brand-gold/50"
+              className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/50 mb-1.5">
-              Banner Image Path / URL
+            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+              Hero Banner Image Path / URL
             </label>
             <input
               type="text"
               value={formData.bannerImage}
               onChange={(e) => setFormData({ ...formData, bannerImage: e.target.value })}
               placeholder="/images/hero-banner.webp"
-              className="w-full bg-[#111] border border-white/10 text-white px-3.5 py-2 text-xs outline-none focus:border-brand-gold/50"
+              className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/50 mb-1.5">
+            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
               Display Sort Order
             </label>
             <input
               type="number"
               value={formData.sortOrder}
               onChange={(e) => setFormData({ ...formData, sortOrder: Number(e.target.value) })}
-              className="w-full bg-[#111] border border-white/10 text-white px-3.5 py-2 text-xs outline-none focus:border-brand-gold/50"
+              className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
             />
           </div>
 
-          <div className="flex items-center gap-6 pt-5">
-            <label className="flex items-center gap-2 text-xs text-white cursor-pointer">
+          <div className="flex items-center gap-6 sm:pt-6">
+            <label className="flex items-center gap-2.5 text-sm text-[#2E221C] font-medium cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={formData.isActive}
                 onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                className="accent-brand-gold"
+                className="accent-[#C9A86A] w-4 h-4 rounded border-[#DDD2C5]"
               />
               Active in Store
             </label>
 
-            <label className="flex items-center gap-2 text-xs text-white cursor-pointer">
+            <label className="flex items-center gap-2.5 text-sm text-[#2E221C] font-medium cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={formData.isFeatured}
                 onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
-                className="accent-brand-gold"
+                className="accent-[#C9A86A] w-4 h-4 rounded border-[#DDD2C5]"
               />
-              Featured
+              Featured Line
             </label>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
+import { siteConfig } from '@/config/site.config';
 
 export const revalidate = 120;
 
@@ -49,9 +50,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = OCCASIONS_SUB_INFO[subcategory];
   const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const description = info?.subtitle || `Discover handcrafted designer ensembles curated for ${title} by Aafreen Couture.`;
   return {
     title: `${title} | Occasions | Aafreen Couture`,
-    description: info?.subtitle || `Discover handcrafted designer ensembles curated for ${title} by Aafreen Couture.`,
+    description,
+    alternates: { canonical: `${siteConfig.url}/occasions/${subcategory}` },
+    openGraph: { title: `${title} | Occasions | Aafreen Couture`, description },
   };
 }
 

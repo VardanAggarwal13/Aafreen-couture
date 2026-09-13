@@ -4,6 +4,7 @@ import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: `Your Bag — ${siteConfig.name}`,
+  robots: { index: false, follow: false },
 };
 
 export default function CartPage() {

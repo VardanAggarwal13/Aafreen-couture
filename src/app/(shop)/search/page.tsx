@@ -1,9 +1,11 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { SearchPageClient } from '@/features/search/components/SearchPageClient';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: 'Search | Aafreen Couture',
+  alternates: { canonical: `${siteConfig.url}/search` },
 };
 
 export default function SearchPage() {

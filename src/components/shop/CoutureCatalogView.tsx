@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { SlidersHorizontal, ChevronRight, ChevronDown, X, RotateCcw } from 'lucide-react';
+import { ChevronRight, ChevronDown, X, RotateCcw } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import { api } from '@/utils/api';
 import type { PaginatedResponse } from '@/types/api.types';
 import { ProductCard } from '@/components/product/ProductCard';
 import type { IProduct } from '@/types';
+import { buildBreadcrumbJsonLd } from '@/utils/seo';
 
 export interface BreadcrumbItem {
   label: string;
@@ -64,7 +65,6 @@ export function CoutureCatalogView({
   const searchParams = useSearchParams();
 
   const [activeDropdown, setActiveDropdown] = useState<'price' | 'color' | 'size' | 'fabric' | null>(null);
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [sort, setSort] = useState(searchParams?.get('sort') || defaultSort);
   const [selectedColor, setSelectedColor] = useState(searchParams?.get('color') || '');
   const [selectedSize, setSelectedSize] = useState(searchParams?.get('size') || '');
@@ -148,8 +148,17 @@ export function CoutureCatalogView({
     setActiveDropdown(activeDropdown === name ? null : name);
   };
 
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { label: 'Home', href: '/' },
+    ...breadcrumbs.map((b, idx) => (idx < breadcrumbs.length - 1 ? b : { label: b.label })),
+  ]);
+
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* 1. Refined Minimal Editorial Header */}
       <div className="w-full bg-[#FAF5EE] border-b border-[#E8D4BE]">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-10 text-center">

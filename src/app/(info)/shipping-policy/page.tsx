@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: 'Shipping & Delivery Policy | Aafreen Couture',
   description:
     'Official Shipping & Delivery Policy for Aafreen Couture. Learn about domestic delivery timelines (5–7 days), international shipping to 50+ countries, free shipping thresholds, and real-time tracking.',
+  alternates: { canonical: `${siteConfig.url}/shipping-policy` },
 };
 
 const TOC: TocItem[] = [

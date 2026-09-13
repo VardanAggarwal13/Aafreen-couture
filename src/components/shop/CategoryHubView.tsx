@@ -9,6 +9,7 @@ import { api } from '@/utils/api';
 import { ProductCard } from '@/components/product/ProductCard';
 import type { IProduct } from '@/types';
 import type { PaginatedResponse } from '@/types/api.types';
+import { buildBreadcrumbJsonLd } from '@/utils/seo';
 
 export interface HubChapter {
   id: string;
@@ -156,8 +157,17 @@ export function CategoryHubView({
   chapters,
   showOccasionsGrid = false,
 }: CategoryHubProps) {
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { label: 'Home', href: '/' },
+    { label: title },
+  ]);
+
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* 0. Top Breadcrumb Bar (Distinct breathing separation from Navbar) */}
       <div className="w-full bg-[#FAF7F2] border-b border-[#E8D8C8]/70">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5">

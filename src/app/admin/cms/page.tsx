@@ -15,47 +15,47 @@ const CMS_PAGES = [
 
 export default function AdminCmsPage() {
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="p-6 lg:p-8 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-white">CMS Content Pages</h1>
-          <p className="text-xs text-white/40 mt-0.5">Manage static policies, about pages, and legal information</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Editorial & Policy CMS</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Manage static brand narratives, care policies, and legal documentation</p>
         </div>
-        <button className="flex items-center gap-2 bg-brand-gold text-white text-xs font-medium px-4 py-2.5 hover:bg-brand-gold/90 transition-colors rounded-xs">
-          <Plus size={14} /> Add CMS Page
+        <button className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm">
+          <Plus size={14} className="text-[#C9A86A]" /> Add CMS Page
         </button>
       </div>
 
-      <div className="bg-[#1A1A1A] border border-white/5 rounded-sm overflow-hidden">
+      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.02]">
+              <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Page Title', 'URL Route', 'Last Updated', 'Status', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-4 py-3.5 text-[10px] font-semibold text-white/30 uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#EAE2D7]">
               {CMS_PAGES.map((page) => (
-                <tr key={page.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="px-4 py-3 font-medium text-white flex items-center gap-2">
-                    <FileText size={14} className="text-brand-gold" /> {page.title}
+                <tr key={page.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
+                  <td className="px-5 py-4 font-serif font-medium text-[#2E221C] text-sm flex items-center gap-2.5">
+                    <FileText size={15} className="text-[#C9A86A]" /> {page.title}
                   </td>
-                  <td className="px-4 py-3 font-mono text-white/60 text-[11px]">{page.slug}</td>
-                  <td className="px-4 py-3 text-white/50">{page.updatedAt}</td>
-                  <td className="px-4 py-3">
-                    <span className="px-2 py-0.5 text-[10px] bg-emerald-500/10 text-emerald-400 rounded-full font-medium uppercase">
+                  <td className="px-5 py-4 font-mono text-[#8A6A55] text-xs">{page.slug}</td>
+                  <td className="px-5 py-4 text-[#8A6A55]">{page.updatedAt}</td>
+                  <td className="px-5 py-4">
+                    <span className="px-2.5 py-0.5 text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full font-medium uppercase tracking-wider">
                       {page.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 flex items-center gap-3">
-                    <Link href={page.slug} target="_blank" className="text-white/40 hover:text-white transition-colors flex items-center gap-1">
+                  <td className="px-5 py-4 flex items-center gap-4">
+                    <Link href={page.slug} target="_blank" className="text-[#8A6A55] hover:text-[#2E221C] transition-colors flex items-center gap-1 font-medium">
                       <ExternalLink size={12} /> View Live
                     </Link>
-                    <button className="text-brand-gold hover:underline text-[11px]">
+                    <button className="text-[#C9A86A] hover:text-[#B89350] hover:underline font-semibold text-[11px]">
                       Edit Content
                     </button>
                   </td>

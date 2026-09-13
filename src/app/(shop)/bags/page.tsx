@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { CategoryHubView } from '@/components/shop/CategoryHubView';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: 'The Bag Edit | Luxury Handbags & Potlis | Aafreen Couture',
   description: 'Handcrafted couture handbags, embroidered potlis, clutches, and totes designed to crown your festive look.',
+  alternates: { canonical: `${siteConfig.url}/bags` },
 };
 
 export const revalidate = 120;

@@ -11,8 +11,8 @@ export default async function AdminCollectionsPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-6">
-        <h1 className="text-xl font-serif text-white">Collections</h1>
-        <p className="text-sm text-white/50 mt-0.5">Manage curated product collections</p>
+        <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Collections</h1>
+        <p className="text-sm text-[#8A6A55] mt-1 font-serif">Manage curated product lines & lookbooks</p>
       </div>
       <AdminCollectionsClient collections={serialized} />
     </div>

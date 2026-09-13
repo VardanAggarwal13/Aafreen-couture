@@ -6,10 +6,12 @@ import { buttonVariants } from '@/components/ui/button';
 import { productRepository } from '@/server/repositories/product.repository';
 import { ProductCard } from '@/components/product/ProductCard';
 import type { IProduct } from '@/types';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: 'Shop By Occasion | Aafreen Couture',
   description: 'Handcrafted couture for every milestone celebration — from sacred morning Haldi rituals and midnight Jago celebrations to opulent reception galas.',
+  alternates: { canonical: `${siteConfig.url}/occasions` },
 };
 
 export const revalidate = 120;

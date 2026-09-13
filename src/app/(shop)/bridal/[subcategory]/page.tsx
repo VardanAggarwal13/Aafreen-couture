@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
+import { siteConfig } from '@/config/site.config';
 
 export const revalidate = 120;
 
@@ -66,9 +67,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = BRIDAL_SUB_TITLES[subcategory];
   const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const description = info?.subtitle || `Explore authentic luxury ${title} by Aafreen Couture.`;
   return {
     title: `${title} | Aafreen Couture Bridal`,
-    description: info?.subtitle || `Explore authentic luxury ${title} by Aafreen Couture.`,
+    description,
+    alternates: { canonical: `${siteConfig.url}/bridal/${subcategory}` },
+    openGraph: { title: `${title} | Aafreen Couture Bridal`, description },
   };
 }
 

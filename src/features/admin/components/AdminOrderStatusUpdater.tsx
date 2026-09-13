@@ -53,7 +53,7 @@ export function AdminOrderStatusUpdater({ orderId, currentStatus }: Props) {
       <select
         value={status}
         onChange={(e) => setStatus(e.target.value)}
-        className="bg-[#1A1A1A] border border-white/10 rounded-xs px-3 py-2 text-xs text-white outline-none focus:border-brand-gold/50"
+        className="bg-[#FAF7F2] border border-[#DDD2C5] rounded-lg px-3 py-2 text-xs text-[#2E221C] outline-none focus:border-[#C9A86A] shadow-xs"
       >
         {ORDER_STATUS_OPTIONS.map((opt) => (
           <option key={opt.value} value={opt.value}>
@@ -64,9 +64,9 @@ export function AdminOrderStatusUpdater({ orderId, currentStatus }: Props) {
       <button
         onClick={handleUpdate}
         disabled={loading || status === currentStatus}
-        className="bg-brand-gold text-white text-xs font-medium px-4 py-2 hover:bg-brand-gold/90 transition-colors rounded-xs disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+        className="bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold px-4 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
       >
-        {loading ? <RefreshCw size={13} className="animate-spin" /> : <CheckCircle2 size={13} />}
+        {loading ? <RefreshCw size={13} className="animate-spin text-[#C9A86A]" /> : <CheckCircle2 size={13} className="text-[#C9A86A]" />}
         <span>{loading ? 'Updating…' : 'Update Status'}</span>
       </button>
     </div>

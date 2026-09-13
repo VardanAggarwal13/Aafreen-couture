@@ -51,15 +51,15 @@ export function AdminPaymentReconcileButton({ orderId, hasRazorpayOrder, payment
     <button
       onClick={handleReconcile}
       disabled={loading}
-      className="mt-2 w-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium text-brand-gold border border-brand-gold/30 hover:bg-brand-gold/10 transition-colors rounded-xs disabled:opacity-50 cursor-pointer"
+      className="mt-2.5 w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-[#2E221C] bg-[#FAF7F2] border border-[#DDD2C5] hover:border-[#C9A86A] hover:bg-[#F4EFEA] transition-all rounded-lg disabled:opacity-50 cursor-pointer shadow-xs"
       title="Check Razorpay server for any captured payments for this order"
     >
       {loading ? (
-        <RefreshCw size={13} className="animate-spin text-brand-gold" />
+        <RefreshCw size={13} className="animate-spin text-[#C9A86A]" />
       ) : (
-        <ShieldCheck size={13} className="text-brand-gold" />
+        <ShieldCheck size={14} className="text-[#C9A86A]" />
       )}
-      <span>{loading ? 'Verifying with Razorpay…' : 'Sync Live Razorpay Status'}</span>
+      <span>{loading ? 'Verifying with Razorpay…' : 'Sync Live Razorpay Gateway Status'}</span>
     </button>
   );
 }

@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { X } from 'lucide-react';
 import type { IProduct } from '@/types';
 
 const schema = z.object({
@@ -164,6 +166,63 @@ export function ProductForm({ product }: Props) {
   });
 
   const selectedOccasions = watch('occasions') ?? [];
+  const imagesValue = watch('images') ?? '';
+  const imageList = imagesValue.split(',').map((url) => url.trim()).filter(Boolean);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  function addImageUrls(urls: string[]) {
+    const merged = [...imageList, ...urls];
+    setValue('images', merged.join(', '));
+  }
+
+  function removeImageAt(index: number) {
+    const next = imageList.filter((_, i) => i !== index);
+    setValue('images', next.join(', '));
+  }
+
+  async function handleFilesSelected(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    try {
+      const sigRes = await fetch('/api/admin/upload', { method: 'POST' });
+      const sigJson = await sigRes.json();
+      if (!sigRes.ok || !sigJson.success) {
+        throw new Error(sigJson.error ?? 'Failed to prepare image upload');
+      }
+      const { signature, timestamp, cloudName, apiKey, folder } = sigJson.data;
+
+      const uploadedUrls: string[] = [];
+      for (const file of Array.from(files)) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('api_key', apiKey);
+        formData.append('timestamp', String(timestamp));
+        formData.append('signature', signature);
+        formData.append('folder', folder);
+
+        const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: 'POST',
+          body: formData,
+        });
+        const uploadJson = await uploadRes.json();
+        if (!uploadRes.ok || !uploadJson.secure_url) {
+          throw new Error(uploadJson.error?.message ?? `Failed to upload ${file.name}`);
+        }
+        uploadedUrls.push(uploadJson.secure_url as string);
+      }
+
+      addImageUrls(uploadedUrls);
+      toast.success(`${uploadedUrls.length} image${uploadedUrls.length > 1 ? 's' : ''} uploaded`);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Image upload failed';
+      toast.error(msg);
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  }
 
   const toggleOccasion = (occ: string) => {
     if (selectedOccasions.includes(occ)) {
@@ -230,21 +289,21 @@ export function ProductForm({ product }: Props) {
     }
   }
 
-  const inputClass = 'w-full bg-[#111111] border border-white/10 text-white px-4 py-2.5 text-xs focus:outline-none focus:border-[#C49A5A]/60 transition-colors placeholder:text-white/25 rounded-xs';
-  const labelClass = 'block text-[10.5px] font-semibold uppercase tracking-wider text-white/50 mb-1.5';
-  const errorClass = 'text-xs text-red-400 mt-1';
+  const inputClass = 'w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-4 py-2.5 text-xs focus:outline-none focus:border-[#C9A86A] transition-colors placeholder:text-[#8A6A55]/50 rounded-xs';
+  const labelClass = 'block text-[10.5px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5';
+  const errorClass = 'text-xs text-red-600 mt-1';
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl space-y-6 font-sans">
       {error && (
-        <div className="p-4 bg-red-500/10 border border-red-500/30 text-xs text-red-400 rounded-xs">
+        <div className="p-4 bg-red-50 border border-red-200 text-xs text-red-700 rounded-xs">
           {error}
         </div>
       )}
 
       {/* Basic Information */}
-      <div className="bg-[#1A1A1A] border border-white/5 p-6 space-y-5 rounded-xs">
-        <h2 className="text-xs font-semibold text-white/70 uppercase tracking-[0.2em] pb-3 border-b border-white/5">
+      <div className="bg-white border border-[#DDD2C5]/80 p-6 space-y-5 rounded-xs shadow-xs">
+        <h2 className="text-xs font-serif font-semibold text-[#2E221C] uppercase tracking-[0.2em] pb-3 border-b border-[#EAE2D7]">
           Basic Information
         </h2>
 
@@ -312,12 +371,12 @@ export function ProductForm({ product }: Props) {
       </div>
 
       {/* Occasions (Dynamic navigation linking) */}
-      <div className="bg-[#1A1A1A] border border-white/5 p-6 space-y-4 rounded-xs">
+      <div className="bg-white border border-[#DDD2C5]/80 p-6 space-y-4 rounded-xs shadow-xs">
         <div>
-          <h2 className="text-xs font-semibold text-white/70 uppercase tracking-[0.2em]">
+          <h2 className="text-xs font-serif font-semibold text-[#2E221C] uppercase tracking-[0.2em]">
             Occasions (Shop By Occasion)
           </h2>
-          <p className="text-[11px] text-white/40 mt-1">
+          <p className="text-[11px] text-[#8A6A55] mt-1">
             Tagging an occasion automatically displays this ensemble on that occasion&apos;s dedicated page (e.g. /occasions/haldi).
           </p>
         </div>
@@ -330,10 +389,10 @@ export function ProductForm({ product }: Props) {
                 key={occ}
                 type="button"
                 onClick={() => toggleOccasion(occ)}
-                className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider rounded-xs border transition-colors ${
+                className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider rounded-xs border transition-colors cursor-pointer ${
                   isSelected
-                    ? 'border-[#C49A5A] bg-[#C49A5A]/20 text-[#C49A5A]'
-                    : 'border-white/10 text-white/50 hover:border-white/30 hover:text-white'
+                    ? 'border-[#C9A86A] bg-[#C9A86A]/20 text-[#9E7B3A] font-semibold'
+                    : 'border-[#DDD2C5] bg-[#FAF7F2] text-[#8A6A55] hover:border-[#C9A86A] hover:text-[#2E221C]'
                 }`}
               >
                 {occ} {isSelected && '✓'}
@@ -344,9 +403,9 @@ export function ProductForm({ product }: Props) {
       </div>
 
       {/* Pricing & Craftsmanship Details */}
-      <div className="bg-[#1A1A1A] border border-white/5 p-6 space-y-5 rounded-xs">
-        <h2 className="text-xs font-semibold text-white/70 uppercase tracking-[0.2em] pb-3 border-b border-white/5">
-          Pricing & Textiles
+      <div className="bg-white border border-[#DDD2C5]/80 p-6 space-y-5 rounded-xs shadow-xs">
+        <h2 className="text-xs font-serif font-semibold text-[#2E221C] uppercase tracking-[0.2em] pb-3 border-b border-[#EAE2D7]">
+          Pricing &amp; Textiles
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -365,7 +424,7 @@ export function ProductForm({ product }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label className={labelClass}>Fabric</label>
-            <input {...register('fabric')} className={inputClass} placeholder="Pure Silk Velvet, Organza" />
+            <input {...register('fabric')} className={inputClass} placeholder="Pure Raw Silk, Organza" />
           </div>
           <div>
             <label className={labelClass}>Work Type</label>
@@ -378,54 +437,97 @@ export function ProductForm({ product }: Props) {
         </div>
 
         <div>
-          <label className={labelClass}>Image URLs / Paths (comma separated) *</label>
-          <input {...register('images')} className={inputClass} placeholder="/images/products/noor-e-ishq.webp, /images/products/zarafshan.webp" />
-          <p className="text-[10px] text-white/30 mt-1">First image will be used as the primary showcase image.</p>
+          <label className={labelClass}>Product Images *</label>
+
+          {imageList.length > 0 && (
+            <div className="flex flex-wrap gap-3 mb-3">
+              {imageList.map((url, index) => (
+                <div key={`${url}-${index}`} className="relative w-20 h-20 rounded-xs overflow-hidden border border-[#DDD2C5] group">
+                  <Image src={url} alt={`Product image ${index + 1}`} fill sizes="80px" className="object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => removeImageAt(index)}
+                    className="absolute top-0.5 right-0.5 bg-black/60 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                    aria-label="Remove image"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                  {index === 0 && (
+                    <span className="absolute bottom-0 inset-x-0 bg-[#C9A86A] text-white text-[8px] uppercase tracking-wider text-center py-0.5">
+                      Primary
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="flex items-center gap-3 mb-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(e) => handleFilesSelected(e.target.files)}
+              disabled={uploading}
+              className="hidden"
+              id="product-image-upload"
+            />
+            <label
+              htmlFor="product-image-upload"
+              className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider px-4 py-2 border border-[#C9A86A] text-[#9E7B3A] rounded-xs cursor-pointer hover:bg-[#C9A86A]/10 transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+            >
+              {uploading ? 'Uploading…' : 'Upload Images'}
+            </label>
+          </div>
+
+          <input {...register('images')} className={inputClass} placeholder="/images/products/noorani-moonstone-lilac-silk-suit-1.webp, /images/products/noorani-moonstone-lilac-silk-suit-2.webp" />
+          <p className="text-[10px] text-[#8A6A55] mt-1">Upload directly to Cloudinary, or paste image URLs / static paths above (comma separated). First image is used as the primary showcase hero image.</p>
         </div>
 
         <div>
           <label className={labelClass}>Tags (comma separated)</label>
-          <input {...register('tags')} className={inputClass} placeholder="bridal, lehenga, silk, velvet, wedding, zardozi" />
+          <input {...register('tags')} className={inputClass} placeholder="suits, silk, zardozi, unstitched, wedding" />
         </div>
       </div>
 
       {/* Visibility Flags */}
-      <div className="bg-[#1A1A1A] border border-white/5 p-6 space-y-4 rounded-xs">
-        <h2 className="text-xs font-semibold text-white/70 uppercase tracking-[0.2em] pb-3 border-b border-white/5">
-          Visibility & Placement
+      <div className="bg-white border border-[#DDD2C5]/80 p-6 space-y-4 rounded-xs shadow-xs">
+        <h2 className="text-xs font-serif font-semibold text-[#2E221C] uppercase tracking-[0.2em] pb-3 border-b border-[#EAE2D7]">
+          Visibility &amp; Placement
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <label className="flex items-center gap-2.5 cursor-pointer">
-            <input {...register('isActive')} type="checkbox" className="accent-[#C49A5A] w-4 h-4" />
-            <span className="text-xs text-white/80">Active in Store</span>
+            <input {...register('isActive')} type="checkbox" className="accent-[#C9A86A] w-4 h-4" />
+            <span className="text-xs text-[#2E221C] font-medium">Active in Store</span>
           </label>
           <label className="flex items-center gap-2.5 cursor-pointer">
-            <input {...register('isFeatured')} type="checkbox" className="accent-[#C49A5A] w-4 h-4" />
-            <span className="text-xs text-white/80">Featured</span>
+            <input {...register('isFeatured')} type="checkbox" className="accent-[#C9A86A] w-4 h-4" />
+            <span className="text-xs text-[#2E221C] font-medium">Featured</span>
           </label>
           <label className="flex items-center gap-2.5 cursor-pointer">
-            <input {...register('isNewArrival')} type="checkbox" className="accent-[#C49A5A] w-4 h-4" />
-            <span className="text-xs text-white/80">New Arrival</span>
+            <input {...register('isNewArrival')} type="checkbox" className="accent-[#C9A86A] w-4 h-4" />
+            <span className="text-xs text-[#2E221C] font-medium">New Arrival</span>
           </label>
           <label className="flex items-center gap-2.5 cursor-pointer">
-            <input {...register('isBestSeller')} type="checkbox" className="accent-[#C49A5A] w-4 h-4" />
-            <span className="text-xs text-white/80">Best Seller</span>
+            <input {...register('isBestSeller')} type="checkbox" className="accent-[#C9A86A] w-4 h-4" />
+            <span className="text-xs text-[#2E221C] font-medium">Best Seller</span>
           </label>
         </div>
       </div>
 
       {/* SEO */}
-      <div className="bg-[#1A1A1A] border border-white/5 p-6 space-y-4 rounded-xs">
-        <h2 className="text-xs font-semibold text-white/70 uppercase tracking-[0.2em] pb-3 border-b border-white/5">
-          SEO & Social Metadata
+      <div className="bg-white border border-[#DDD2C5]/80 p-6 space-y-4 rounded-xs shadow-xs">
+        <h2 className="text-xs font-serif font-semibold text-[#2E221C] uppercase tracking-[0.2em] pb-3 border-b border-[#EAE2D7]">
+          SEO &amp; Social Metadata
         </h2>
         <div>
           <label className={labelClass}>Meta Title</label>
-          <input {...register('seoTitle')} className={inputClass} placeholder="Noor-e-Ishq Royal Velvet Bridal Lehenga | Aafreen Couture" />
+          <input {...register('seoTitle')} className={inputClass} placeholder="Noorani Moonstone Lilac Silk Suit | Aafreen Couture" />
         </div>
         <div>
           <label className={labelClass}>Meta Description</label>
-          <textarea {...register('seoDescription')} rows={2} className={inputClass} placeholder="Discover handcrafted royal crimson velvet bridal lehenga with antique gold zardozi…" />
+          <textarea {...register('seoDescription')} rows={2} className={inputClass} placeholder="Discover handcrafted pure silk unstitched suit with schiffli cutwork lace and zardozi by Aafreen Couture…" />
         </div>
       </div>
 
@@ -434,14 +536,14 @@ export function ProductForm({ product }: Props) {
         <button
           type="submit"
           disabled={saving}
-          className="bg-[#C49A5A] hover:bg-[#A67C52] text-white text-xs font-semibold tracking-[0.2em] uppercase px-8 py-3.5 transition-colors disabled:opacity-50 rounded-xs shadow-md"
+          className="bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold tracking-[0.2em] uppercase px-8 py-3.5 transition-colors disabled:opacity-50 rounded-xs shadow-xs cursor-pointer"
         >
-          {saving ? 'Saving Ensembles…' : isEdit ? 'Update Product' : 'Create Product'}
+          {saving ? 'Saving Ensembles…' : isEdit ? 'Update Ensemble' : 'Create Ensemble'}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
-          className="text-xs uppercase tracking-wider text-white/50 hover:text-white transition-colors"
+          className="text-xs uppercase tracking-wider text-[#8A6A55] hover:text-[#2E221C] transition-colors cursor-pointer"
         >
           Cancel
         </button>

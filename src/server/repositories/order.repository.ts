@@ -213,6 +213,23 @@ export class OrderRepository {
     }
   }
 
+  async getRevenueStats(): Promise<{ totalRevenue: number }> {
+    try {
+      await connectDB();
+      const [result] = await OrderModel.aggregate([
+        { $match: { paymentStatus: 'paid' } },
+        { $group: { _id: null, totalRevenue: { $sum: '$total' } } },
+      ]);
+      return { totalRevenue: result?.totalRevenue ?? 0 };
+    } catch {
+      const store = getBackupStore();
+      const totalRevenue = store
+        .filter((o) => o.paymentStatus === 'paid')
+        .reduce((sum, o) => sum + (o.total || 0), 0);
+      return { totalRevenue };
+    }
+  }
+
   async findAll(filters: {
     status?: OrderStatus;
     page?: number;

@@ -1,9 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  serverExternalPackages: ['mongodb', 'mongoose'],
   compress: true,
   poweredByHeader: false,
   images: {

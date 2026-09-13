@@ -6,6 +6,7 @@ import { siteConfig } from '@/config/site.config';
 export const metadata: Metadata = {
   title: `Shop All — ${siteConfig.name}`,
   description: 'Browse our full collection of premium bridal lenghas, suits, sharara and accessories.',
+  alternates: { canonical: `${siteConfig.url}/shop` },
 };
 
 export default function ShopPage() {

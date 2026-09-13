@@ -6,33 +6,34 @@ import { ROUTES } from '@/constants/routes';
 export const metadata = { title: 'Orders | Admin' };
 
 const STATUS_BADGE: Record<string, string> = {
-  pending: 'bg-yellow-500/15 text-yellow-400',
-  confirmed: 'bg-blue-500/15 text-blue-400',
-  processing: 'bg-blue-500/15 text-blue-400',
-  shipped: 'bg-purple-500/15 text-purple-400',
-  out_for_delivery: 'bg-indigo-500/15 text-indigo-400',
-  delivered: 'bg-green-500/15 text-green-400',
-  cancelled: 'bg-red-500/15 text-red-400',
-  return_requested: 'bg-orange-500/15 text-orange-400',
-  returned: 'bg-gray-500/15 text-gray-400',
-  refunded: 'bg-gray-500/15 text-gray-400',
+  pending: 'bg-yellow-50 text-yellow-800 border border-yellow-200',
+  confirmed: 'bg-blue-50 text-blue-800 border border-blue-200',
+  processing: 'bg-indigo-50 text-indigo-800 border border-indigo-200',
+  shipped: 'bg-purple-50 text-purple-800 border border-purple-200',
+  out_for_delivery: 'bg-sky-50 text-sky-800 border border-sky-200',
+  delivered: 'bg-emerald-50 text-emerald-800 border border-emerald-200',
+  cancelled: 'bg-rose-50 text-rose-800 border border-rose-200',
+  return_requested: 'bg-orange-50 text-orange-800 border border-orange-200',
+  returned: 'bg-neutral-100 text-neutral-700 border border-neutral-300',
+  refunded: 'bg-neutral-100 text-neutral-700 border border-neutral-300',
 };
 
 export default async function AdminOrdersPage() {
   const { items: orders, total } = await orderRepository.findAll({ limit: 50 });
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between">
+    <div className="p-6 lg:p-8 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-white">Orders</h1>
-          <p className="text-xs text-white/40 mt-0.5">{total} total orders</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Client Orders</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-serif">{total} registered haute couture orders</p>
         </div>
         <div className="flex items-center gap-2">
-          <select className="bg-[#1A1A1A] border border-white/8 rounded-sm px-3 py-2 text-xs text-white/50 outline-none">
-            <option value="">All Status</option>
-            <option value="pending">Pending</option>
+          <select className="bg-white border border-[#DDD2C5] rounded-lg px-3.5 py-2 text-xs text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] shadow-xs">
+            <option value="">All Fulfillment Statuses</option>
+            <option value="pending">Pending Verification</option>
             <option value="confirmed">Confirmed</option>
+            <option value="processing">In Tailoring</option>
             <option value="shipped">Shipped</option>
             <option value="delivered">Delivered</option>
             <option value="cancelled">Cancelled</option>
@@ -40,62 +41,62 @@ export default async function AdminOrdersPage() {
         </div>
       </div>
 
-      <div className="bg-[#1A1A1A] border border-white/5 rounded-sm overflow-hidden">
+      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/5">
+              <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Order #', 'Customer', 'Items', 'Total', 'Method', 'Payment', 'Fulfillment', 'Date', 'Action'].map((h) => (
-                  <th key={h} className="text-left px-4 py-3.5 text-[10px] font-semibold text-white/30 uppercase tracking-wider whitespace-nowrap">
+                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider whitespace-nowrap">
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#EAE2D7]">
               {orders.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center text-white/25">No orders yet</td>
+                  <td colSpan={9} className="px-5 py-12 text-center text-[#8A6A55]">No client orders placed yet.</td>
                 </tr>
               ) : (
                 orders.map((order) => (
-                  <tr key={String(order._id)} className="hover:bg-white/2 transition-colors group">
-                    <td className="px-4 py-3.5 font-medium text-white">#{order.orderNumber}</td>
-                    <td className="px-4 py-3.5 text-white/70 max-w-[140px] truncate">{order.shippingAddress.name}</td>
-                    <td className="px-4 py-3.5 text-white/50">{order.items.length}</td>
-                    <td className="px-4 py-3.5 font-medium text-white">{formatPrice(order.total)}</td>
-                    <td className="px-4 py-3.5 text-white/60">
+                  <tr key={String(order._id)} className="hover:bg-[#FAF7F2]/60 transition-colors group">
+                    <td className="px-5 py-4 font-mono font-semibold text-[#2E221C]">#{order.orderNumber}</td>
+                    <td className="px-5 py-4 text-[#2E221C] font-medium max-w-[150px] truncate">{order.shippingAddress.name}</td>
+                    <td className="px-5 py-4 text-[#8A6A55]">{order.items.length}</td>
+                    <td className="px-5 py-4 font-semibold text-[#2E221C]">{formatPrice(order.total)}</td>
+                    <td className="px-5 py-4">
                       {order.paymentMethod === 'cod' ? (
-                        <span className="text-[11px] text-amber-300 font-medium">COD</span>
+                        <span className="inline-block text-[10px] bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded font-semibold">COD</span>
                       ) : (
-                        <span className="text-[11px] text-sky-300 font-medium">Razorpay</span>
+                        <span className="inline-block text-[10px] bg-sky-50 text-sky-800 border border-sky-200 px-2 py-0.5 rounded font-semibold">Razorpay</span>
                       )}
                     </td>
-                    <td className="px-4 py-3.5">
+                    <td className="px-5 py-4">
                       <span
-                        className={`inline-block text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider ${
+                        className={`inline-block text-[10px] px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider ${
                           order.paymentStatus === 'paid'
-                            ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
+                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                             : order.paymentStatus === 'pending'
-                            ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
-                            : 'bg-rose-500/15 text-rose-400 border border-rose-500/20'
+                            ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                            : 'bg-rose-50 text-rose-700 border border-rose-200'
                         }`}
                       >
                         {order.paymentStatus}
                       </span>
                     </td>
-                    <td className="px-4 py-3.5">
-                      <span className={`inline-block text-[10px] px-2 py-0.5 rounded-full font-medium capitalize ${STATUS_BADGE[order.status] ?? 'bg-gray-500/15 text-gray-400'}`}>
-                        {order.status.replace('_', ' ')}
+                    <td className="px-5 py-4">
+                      <span className={`inline-block text-[10px] px-2.5 py-0.5 rounded-full font-medium capitalize ${STATUS_BADGE[order.status] ?? 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5]'}`}>
+                        {order.status.replace(/_/g, ' ')}
                       </span>
                     </td>
-                    <td className="px-4 py-3.5 text-white/40 whitespace-nowrap">{formatDate(order.createdAt)}</td>
-                    <td className="px-4 py-3.5">
+                    <td className="px-5 py-4 text-[#8A6A55] whitespace-nowrap">{formatDate(order.createdAt)}</td>
+                    <td className="px-5 py-4">
                       <Link
                         href={ROUTES.ADMIN_ORDER(String(order._id))}
-                        className="text-brand-gold hover:underline opacity-0 group-hover:opacity-100 transition-opacity font-medium"
+                        className="inline-flex items-center text-xs font-semibold text-[#C9A86A] hover:text-[#B89350] hover:underline"
                       >
-                        Manage
+                        Manage &rarr;
                       </Link>
                     </td>
                   </tr>

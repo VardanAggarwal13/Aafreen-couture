@@ -1,4 +1,4 @@
-import { User } from 'lucide-react';
+import { User, ShieldCheck } from 'lucide-react';
 
 export const metadata = { title: 'Audit Logs | Admin' };
 
@@ -39,40 +39,43 @@ const AUDIT_LOGS = [
 
 export default function AdminAuditLogsPage() {
   return (
-    <div className="space-y-6">
+    <div className="p-6 lg:p-8 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-white">System Audit Logs</h1>
-          <p className="text-xs text-white/40 mt-0.5">Immutable record of administrative actions, data edits, and security events</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Security & Audit Records</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Immutable register of administrative updates, role promotions, and security events</p>
         </div>
       </div>
 
-      <div className="bg-[#1A1A1A] border border-white/5 rounded-sm overflow-hidden">
+      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.02]">
-                {['Timestamp', 'User', 'Action', 'Details', 'IP Address'].map((h) => (
-                  <th key={h} className="text-left px-4 py-3.5 text-[10px] font-semibold text-white/30 uppercase tracking-wider">
+              <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
+                {['Timestamp', 'User', 'Action', 'Event Details', 'IP Address'].map((h) => (
+                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#EAE2D7]">
               {AUDIT_LOGS.map((log) => (
-                <tr key={log.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="px-4 py-3 font-mono text-white/50 text-[11px] whitespace-nowrap">{log.timestamp}</td>
-                  <td className="px-4 py-3 font-medium text-white/90 flex items-center gap-1.5 whitespace-nowrap">
-                    <User size={13} className="text-brand-gold" /> {log.user}
+                <tr key={log.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
+                  <td className="px-5 py-4 font-mono text-[#8A6A55] text-xs whitespace-nowrap">{log.timestamp}</td>
+                  <td className="px-5 py-4 font-medium text-[#2E221C] flex items-center gap-2 whitespace-nowrap">
+                    <div className="w-6 h-6 rounded-full bg-[#FAF7F2] border border-[#DDD2C5] flex items-center justify-center">
+                      <User size={12} className="text-[#C9A86A]" />
+                    </div>
+                    {log.user}
                   </td>
-                  <td className="px-4 py-3">
-                    <span className="px-2 py-0.5 text-[9.5px] font-mono uppercase bg-white/5 text-brand-gold border border-white/10 rounded-xs">
-                      {log.action}
+                  <td className="px-5 py-4">
+                    <span className="px-2.5 py-1 text-[10px] font-mono font-semibold uppercase bg-[#FAF7F2] text-[#2E221C] border border-[#DDD2C5] rounded-md inline-flex items-center gap-1">
+                      <ShieldCheck size={11} className="text-[#C9A86A]" /> {log.action}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-white/80 max-w-[320px] truncate">{log.details}</td>
-                  <td className="px-4 py-3 font-mono text-white/40 text-[11px]">{log.ip}</td>
+                  <td className="px-5 py-4 text-[#8A6A55] max-w-[340px] truncate font-medium">{log.details}</td>
+                  <td className="px-5 py-4 font-mono text-[#8A6A55] text-xs">{log.ip}</td>
                 </tr>
               ))}
             </tbody>

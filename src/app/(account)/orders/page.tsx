@@ -6,6 +6,7 @@ import { auth } from '@/lib/auth';
 import { orderService } from '@/server/services/order.service';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
+import type { IOrder, IOrderItem } from '@/models/Order';
 
 export const metadata = { title: 'My Orders | Aafreen Couture' };
 
@@ -28,7 +29,7 @@ export default async function OrdersPage() {
     redirect('/login?redirect=%2Forders');
   }
 
-  let orders: any[] = [];
+  let orders: IOrder[] = [];
   try {
     const res = await orderService.getUserOrders(session.user.id, 1, session.user.email);
     orders = res.items || [];
@@ -91,7 +92,7 @@ export default async function OrdersPage() {
                       {order.items?.length ?? 1} item{(order.items?.length ?? 1) !== 1 ? 's' : ''} · Placed {formatDate(order.createdAt)}
                     </p>
                     <div className="flex flex-wrap gap-2 mt-2">
-                      {order.items?.slice(0, 3).map((item: any, i: number) => (
+                      {order.items?.slice(0, 3).map((item: IOrderItem, i: number) => (
                         <span key={i} className="text-xs text-text truncate max-w-[160px] bg-background px-2 py-0.5 rounded-xs border border-border">
                           {item.name}
                         </span>

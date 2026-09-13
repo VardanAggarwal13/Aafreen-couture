@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: 'Exchange, Cancellation & Refund Policy | Aafreen Couture',
   description:
     'Official Exchange, Cancellation, and Refund Policy for Aafreen Couture. Learn about eligible exchanges within 7 days, unboxing video recommendations, custom bridal apparel, and our 100% refund on unaccepted parcels.',
+  alternates: { canonical: `${siteConfig.url}/returns-policy` },
 };
 
 const TOC: TocItem[] = [

@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { FaqAccordion, type FaqCategory } from '@/features/faq/components/FaqAccordion';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions (FAQs) | Aafreen Couture',
   description:
     'Find clear answers to common questions about orders, payments via Razorpay, custom bridal lehengas, domestic/international shipping, and size exchanges.',
+  alternates: { canonical: `${siteConfig.url}/faq` },
 };
 
 const FAQS: FaqCategory[] = [
@@ -88,8 +90,24 @@ const FAQS: FaqCategory[] = [
 ];
 
 export default function FAQPage() {
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQS.flatMap((cat) =>
+      cat.items.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
+      }))
+    ),
+  };
+
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
         badge="✦ Aafreen Client Helpdesk"

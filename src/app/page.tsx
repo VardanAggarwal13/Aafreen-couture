@@ -12,6 +12,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: `${siteConfig.name} — ${siteConfig.tagline}`,
   description: 'Discover premium bridal lehengas, designer suits, and luxury ethnic wear by Aafreen Couture. Timeless elegance crafted for your most celebrated moments.',
+  alternates: { canonical: siteConfig.url },
   openGraph: {
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: 'Premium bridal lehengas, designer suits, and luxury ethnic wear.',

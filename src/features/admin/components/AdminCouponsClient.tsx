@@ -128,7 +128,7 @@ export function AdminCouponsClient() {
             : c
         )
       );
-      toast.success(`Coupon ${formData.code.toUpperCase()} updated`);
+      toast.success(`Coupon ${formData.code.toUpperCase()} updated successfully`);
     } else {
       const newCoupon: CouponItem = {
         id: `c-${Date.now().toString().slice(-4)}`,
@@ -143,7 +143,7 @@ export function AdminCouponsClient() {
         status: formData.status,
       };
       setCoupons((prev) => [newCoupon, ...prev]);
-      toast.success(`Coupon ${formData.code.toUpperCase()} created`);
+      toast.success(`Coupon ${formData.code.toUpperCase()} created successfully`);
     }
     setIsModalOpen(false);
   }
@@ -164,77 +164,79 @@ export function AdminCouponsClient() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="p-6 lg:p-8 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-white">Coupons & Discounts</h1>
-          <p className="text-xs text-white/40 mt-0.5">Manage promo codes and customer reward campaigns</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Coupons & Loyalty Privileges</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Manage promotional gift vouchers and client reward campaigns</p>
         </div>
         <button
           onClick={openCreateModal}
-          className="flex items-center gap-2 bg-brand-gold text-white text-xs font-semibold uppercase tracking-wider px-4 py-2.5 hover:bg-brand-gold/90 transition-colors rounded-xs"
+          className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm"
         >
-          <Plus size={14} /> Create Coupon
+          <Plus size={14} className="text-[#C9A86A]" /> Create Coupon
         </button>
       </div>
 
-      <div className="bg-[#1A1A1A] border border-white/5 rounded-sm overflow-hidden">
+      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.02]">
-                {['Code', 'Discount', 'Min Order', 'Usage', 'Valid Until', 'Status', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-4 py-3.5 text-[10px] font-semibold text-white/30 uppercase tracking-wider">
+              <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
+                {['Code', 'Discount', 'Min Order', 'Redemptions', 'Valid Until', 'Status', 'Actions'].map((h) => (
+                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#EAE2D7]">
               {coupons.map((coupon) => (
-                <tr key={coupon.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="px-4 py-3 font-mono font-semibold text-brand-gold flex items-center gap-2">
-                    <Ticket size={14} /> {coupon.code}
+                <tr key={coupon.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
+                  <td className="px-5 py-4 font-mono font-semibold text-[#2E221C] text-sm">
+                    <span className="inline-flex items-center gap-2">
+                      <Ticket size={14} className="text-[#C9A86A]" /> {coupon.code}
+                    </span>
                   </td>
-                  <td className="px-4 py-3 text-white/80">
+                  <td className="px-5 py-4 font-medium text-[#2E221C]">
                     {coupon.type === 'percentage' ? `${coupon.value}% OFF` : `${formatPrice(coupon.value * 100)} OFF`}
                   </td>
-                  <td className="px-4 py-3 text-white/60">
+                  <td className="px-5 py-4 text-[#8A6A55]">
                     {formatPrice(coupon.minOrder)}
                   </td>
-                  <td className="px-4 py-3 text-white/60">
+                  <td className="px-5 py-4 text-[#8A6A55]">
                     {coupon.usedCount} / {coupon.usageLimit}
                   </td>
-                  <td className="px-4 py-3 text-white/60">
+                  <td className="px-5 py-4 text-[#8A6A55]">
                     {coupon.validUntil}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-5 py-4">
                     <button
                       onClick={() => toggleStatus(coupon.id)}
-                      className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase font-medium transition-colors ${
+                      className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold transition-colors ${
                         coupon.status === 'active'
-                          ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
                           : coupon.status === 'expired'
-                          ? 'bg-amber-500/10 text-amber-400'
-                          : 'bg-red-500/10 text-red-400 hover:bg-red-500/20'
+                          ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                          : 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5] hover:bg-[#EAE2D7]'
                       }`}
                     >
                       {coupon.status}
                     </button>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => openEditModal(coupon)}
-                        className="text-white/40 hover:text-brand-gold transition-colors"
-                        title="Edit"
+                        className="p-1 rounded text-[#8A6A55] hover:text-[#2E221C] transition-colors"
+                        title="Edit Coupon"
                       >
                         <Edit2 size={13} />
                       </button>
                       <button
                         onClick={() => handleDelete(coupon.id)}
-                        className="text-white/40 hover:text-red-400 transition-colors"
-                        title="Delete"
+                        className="p-1 rounded text-[#8A6A55] hover:text-red-600 transition-colors"
+                        title="Delete Coupon"
                       >
                         <Trash2 size={13} />
                       </button>
@@ -249,91 +251,91 @@ export function AdminCouponsClient() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-[#1A1A1A] border border-white/10 w-full max-w-md p-6 rounded-xs shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-white/5">
-              <h3 className="font-semibold text-white text-sm">
-                {editingId ? 'Edit Coupon' : 'Create New Coupon'}
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-[#DDD2C5] w-full max-w-md p-6 sm:p-7 rounded-2xl shadow-2xl space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-[#DDD2C5]">
+              <h3 className="font-serif font-semibold text-[#2E221C] text-base">
+                {editingId ? 'Edit Privilege Coupon' : 'Create New Privilege Coupon'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-white/40 hover:text-white">
+              <button onClick={() => setIsModalOpen(false)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md">
                 <X size={16} />
               </button>
             </div>
 
             <form onSubmit={handleSave} className="space-y-4 text-xs">
               <div>
-                <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Coupon Code *</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Coupon Code *</label>
                 <input
                   type="text"
                   required
                   value={formData.code}
                   onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                   placeholder="e.g. SUMMER2026"
-                  className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white font-mono uppercase outline-none focus:border-brand-gold/50"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] font-mono uppercase outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg transition-colors"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Discount Type</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Discount Type</label>
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value as 'percentage' | 'fixed' })}
-                    className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
                   >
                     <option value="percentage">Percentage (%)</option>
                     <option value="fixed">Fixed Amount (₹)</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Discount Value</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Discount Value</label>
                   <input
                     type="number"
                     required
                     value={formData.value}
                     onChange={(e) => setFormData({ ...formData, value: Number(e.target.value) })}
-                    className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none focus:border-brand-gold/50"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Min Order (₹)</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Min Order (₹)</label>
                   <input
                     type="number"
                     value={formData.minOrder}
                     onChange={(e) => setFormData({ ...formData, minOrder: Number(e.target.value) })}
-                    className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none focus:border-brand-gold/50"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg"
                   />
                 </div>
                 <div>
-                  <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Usage Limit</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Usage Limit</label>
                   <input
                     type="number"
                     value={formData.usageLimit}
                     onChange={(e) => setFormData({ ...formData, usageLimit: Number(e.target.value) })}
-                    className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none focus:border-brand-gold/50"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Valid Until</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Valid Until</label>
                   <input
                     type="date"
                     value={formData.validUntil}
                     onChange={(e) => setFormData({ ...formData, validUntil: e.target.value })}
-                    className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none focus:border-brand-gold/50"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
                   />
                 </div>
                 <div>
-                  <label className="block text-white/50 mb-1 font-semibold uppercase tracking-wider text-[10px]">Status</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Status</label>
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as 'active' | 'expired' | 'disabled' })}
-                    className="w-full bg-[#111] border border-white/10 px-3 py-2 text-white outline-none"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
                   >
                     <option value="active">Active</option>
                     <option value="disabled">Disabled</option>
@@ -342,19 +344,19 @@ export function AdminCouponsClient() {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-white/5">
+              <div className="flex justify-end gap-3 pt-4 border-t border-[#DDD2C5]">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-white/50 hover:text-white text-xs"
+                  className="px-4 py-2 text-[#8A6A55] hover:text-[#2E221C] text-xs font-medium transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center gap-1.5 bg-brand-gold text-white font-semibold uppercase tracking-wider px-5 py-2 hover:bg-brand-gold/90 text-xs rounded-xs"
+                  className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-[#1A1410] text-xs rounded-lg shadow-sm transition-all"
                 >
-                  <Check size={13} /> {editingId ? 'Save Changes' : 'Create Coupon'}
+                  <Check size={13} className="text-[#C9A86A]" /> {editingId ? 'Save Changes' : 'Create Coupon'}
                 </button>
               </div>
             </form>

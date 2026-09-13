@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: 'Terms & Conditions | Aafreen Couture',
   description:
     'Read the official Terms & Conditions governing orders, custom apparel, payments, intellectual property, and services at Aafreen Couture.',
+  alternates: { canonical: `${siteConfig.url}/terms` },
 };
 
 const TOC: TocItem[] = [

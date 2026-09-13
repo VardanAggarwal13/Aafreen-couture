@@ -17,7 +17,6 @@ import { useSession, authClient } from '@/lib/auth-client';
 import { api } from '@/utils/api';
 
 export function Navbar() {
-  const router = useRouter();
   const pathname = usePathname();
 
   // Authentication & admin routes use their own dedicated minimal layouts
@@ -31,6 +30,16 @@ export function Navbar() {
     pathname === '/verify-email' ||
     pathname.startsWith('/verify-email/');
   const isAdminRoute = pathname?.startsWith('/admin');
+
+  if (isAuthRoute || isAdminRoute) {
+    return null;
+  }
+
+  return <StorefrontNavbar />;
+}
+
+function StorefrontNavbar() {
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMega, setActiveMega] = useState<string | null>(null);
@@ -71,10 +80,6 @@ export function Navbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  if (isAuthRoute || isAdminRoute) {
-    return null;
-  }
 
   return (
     <>
