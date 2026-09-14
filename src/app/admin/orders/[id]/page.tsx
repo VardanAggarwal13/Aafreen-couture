@@ -156,9 +156,9 @@ export default async function AdminOrderDetailPage({ params }: Props) {
   const address = order.shippingAddress;
 
   return (
-    <div className="p-6 lg:p-8 space-y-6 max-w-6xl">
+    <div className="space-y-4 max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#DDD2C5]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#DDD2C5]">
         <div>
           <Link
             href={ROUTES.ADMIN_ORDERS}
@@ -167,22 +167,22 @@ export default async function AdminOrderDetailPage({ params }: Props) {
             <ArrowLeft size={13} /> Back to Client Orders
           </Link>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Order #{order.orderNumber}</h1>
+            <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Order #{order.orderNumber}</h1>
             <span className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase font-medium tracking-wide ${STATUS_BADGE[order.status] ?? 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5]'}`}>
               {String(order.status).replace(/_/g, ' ')}
             </span>
           </div>
-          <p className="text-xs text-[#8A6A55] mt-1 font-serif">Placed on {formatDate(order.createdAt)}</p>
+          <p className="text-xs text-[#8A6A55] mt-1 font-sans">Placed on {formatDate(order.createdAt)}</p>
         </div>
 
         {/* Status update buttons */}
         <AdminOrderStatusUpdater orderId={order._id} currentStatus={order.status} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Left 2 cols: Items & Pricing */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white border border-[#DDD2C5] rounded-xl p-6 shadow-sm space-y-5">
+        <div className="lg:col-span-2 space-y-4">
+          <div className="bg-white rounded-xl p-4 shadow-sm space-y-4">
             <h2 className="text-base font-serif font-semibold text-[#2E221C] flex items-center gap-2">
               <Package size={16} className="text-[#C9A86A]" /> Handcrafted Items ({items.length})
             </h2>
@@ -192,7 +192,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                 const quantity = item.quantity ?? item.qty ?? 1;
                 const price = item.price ?? 0;
                 return (
-                  <div key={idx} className="py-4 first:pt-0 last:pb-0 flex items-center gap-4">
+                  <div key={idx} className="py-3 first:pt-0 last:pb-0 flex items-center gap-3">
                     <div className="relative w-16 h-20 bg-[#FAF7F2] border border-[#DDD2C5] rounded-lg overflow-hidden shrink-0">
                       <Image src={item.image || '/images/products/noor-e-ishq.webp'} alt={item.name} fill className="object-cover" />
                     </div>
@@ -231,9 +231,9 @@ export default async function AdminOrderDetailPage({ params }: Props) {
         </div>
 
         {/* Right col: Customer & Shipping Address */}
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* Customer */}
-          <div className="bg-white border border-[#DDD2C5] rounded-xl p-6 shadow-sm space-y-3">
+          <div className="bg-white rounded-xl p-4 shadow-sm space-y-3">
             <h2 className="text-sm font-serif font-semibold text-[#2E221C] flex items-center gap-2">
               <User size={15} className="text-[#C9A86A]" /> Customer Profile
             </h2>
@@ -246,7 +246,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
 
           {/* Shipping address */}
           {address && (
-            <div className="bg-white border border-[#DDD2C5] rounded-xl p-6 shadow-sm space-y-3">
+            <div className="bg-white rounded-xl p-4 shadow-sm space-y-3">
               <h2 className="text-sm font-serif font-semibold text-[#2E221C] flex items-center gap-2">
                 <MapPin size={15} className="text-[#C9A86A]" /> Shipping Destination
               </h2>
@@ -259,7 +259,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
           )}
 
           {/* Payment */}
-          <div className="bg-white border border-[#DDD2C5] rounded-xl p-6 shadow-sm space-y-3">
+          <div className="bg-white rounded-xl p-4 shadow-sm space-y-3">
             <h2 className="text-sm font-serif font-semibold text-[#2E221C] flex items-center gap-2">
               <CreditCard size={15} className="text-[#C9A86A]" /> Payment Information
             </h2>

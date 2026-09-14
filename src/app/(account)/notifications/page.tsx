@@ -19,7 +19,7 @@ export default async function NotificationsPage() {
 
       <div className="space-y-3">
         {/* Empty state */}
-        <div className="bg-surface border border-border p-10 text-center rounded-xs shadow-2xs">
+        <div className="bg-surface p-10 text-center rounded-2xl shadow-sm">
           <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-4">
             <Bell size={22} className="text-gold" />
           </div>

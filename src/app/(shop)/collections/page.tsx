@@ -50,7 +50,7 @@ export default function CollectionsPage() {
         <p className="text-[10.5px] font-semibold uppercase tracking-[0.4em] text-[#A67C52] mb-3">
           Curated For You
         </p>
-        <h1 className="text-3xl sm:text-4xl font-serif text-[#221617] uppercase tracking-wider">All Collections</h1>
+        <h1 className="text-3xl sm:text-4xl font-serif text-[#221617] tracking-tight">All Collections</h1>
         <p className="mt-3 text-xs sm:text-sm text-[#6E6A66] max-w-md mx-auto font-sans">
           Discover our world of timeless bridal and ethnic fashion, handcrafted with love.
         </p>
@@ -67,7 +67,7 @@ export default function CollectionsPage() {
               <Link
                 key={col.href}
                 href={col.href}
-                className="group relative overflow-hidden aspect-[3/4] rounded-xs border border-[#E8D8C8] shadow-2xs bg-[#FAF7F2]"
+                className="group relative overflow-hidden aspect-[3/4] rounded-xl shadow-sm bg-[#FAF7F2]"
               >
                 {imgSrc ? (
                   <Image

@@ -14,10 +14,10 @@ export default async function EditCategoryPage({ params }: Props) {
   const serialized = JSON.parse(JSON.stringify(category));
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Edit Category</h1>
-        <p className="text-sm text-[#8A6A55] mt-1 font-serif">{category.name}</p>
+        <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Edit Category</h1>
+        <p className="text-sm text-[#8A6A55] mt-1 font-sans">{category.name}</p>
       </div>
       <CategoryForm category={serialized} />
     </div>

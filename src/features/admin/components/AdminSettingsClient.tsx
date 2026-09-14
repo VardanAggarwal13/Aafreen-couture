@@ -40,15 +40,15 @@ export function AdminSettingsClient() {
   ] as const;
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Store Configurations & Gateways</h1>
-          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Manage atelier credentials, checkout payment gateways, and logistics parameters</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Store Configurations & Gateways</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-sans">Manage atelier credentials, checkout payment gateways, and logistics parameters</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
         {/* Navigation Tabs */}
         <div className="space-y-1.5">
           {tabs.map((t) => {
@@ -57,7 +57,7 @@ export function AdminSettingsClient() {
               <button
                 key={t.id}
                 onClick={() => setActiveTab(t.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-xl transition-all text-left ${
+                className={`w-full flex items-center gap-3 px-3.5 py-2 text-xs font-semibold rounded-xl transition-all text-left ${
                   activeTab === t.id
                     ? 'bg-[#2E221C] text-[#F8F5F1] shadow-sm'
                     : 'bg-white text-[#8A6A55] hover:text-[#2E221C] border border-[#DDD2C5]'
@@ -72,18 +72,18 @@ export function AdminSettingsClient() {
 
         {/* Tab Content */}
         <div className="md:col-span-3">
-          <form onSubmit={handleSave} className="bg-white border border-[#DDD2C5] p-6 sm:p-8 rounded-xl shadow-sm space-y-6">
+          <form onSubmit={handleSave} className="bg-white p-4 sm:p-4 rounded-xl shadow-sm space-y-4">
             {activeTab === 'general' && (
-              <div className="space-y-5">
-                <h2 className="text-base font-serif font-semibold text-[#2E221C] pb-3 border-b border-[#DDD2C5]">Store Identity</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="space-y-4">
+                <h2 className="text-base font-sans font-semibold text-[#2E221C] pb-2 border-b border-[#DDD2C5]">Store Identity</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div>
                     <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Store Brand Name</label>
                     <input
                       type="text"
                       value={settings.storeName}
                       onChange={(e) => setSettings({ ...settings, storeName: e.target.value })}
-                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
                     />
                   </div>
                   <div>
@@ -92,7 +92,7 @@ export function AdminSettingsClient() {
                       type="text"
                       disabled
                       value={settings.currency}
-                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#8A6A55]/60 rounded-lg outline-none cursor-not-allowed font-medium"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#8A6A55]/60 rounded-lg outline-none cursor-not-allowed font-medium"
                     />
                   </div>
                   <div>
@@ -101,7 +101,7 @@ export function AdminSettingsClient() {
                       type="email"
                       value={settings.supportEmail}
                       onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })}
-                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
                     />
                   </div>
                   <div>
@@ -110,7 +110,7 @@ export function AdminSettingsClient() {
                       type="text"
                       value={settings.supportPhone}
                       onChange={(e) => setSettings({ ...settings, supportPhone: e.target.value })}
-                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
                     />
                   </div>
                 </div>
@@ -118,8 +118,8 @@ export function AdminSettingsClient() {
             )}
 
             {activeTab === 'payments' && (
-              <div className="space-y-5">
-                <h2 className="text-base font-serif font-semibold text-[#2E221C] pb-3 border-b border-[#DDD2C5]">Payment Gateways</h2>
+              <div className="space-y-4">
+                <h2 className="text-base font-sans font-semibold text-[#2E221C] pb-2 border-b border-[#DDD2C5]">Payment Gateways</h2>
                 <div className="space-y-4 text-xs">
                   <div className="flex items-center justify-between p-4 bg-[#FAF7F2] border border-[#DDD2C5] rounded-xl">
                     <div>
@@ -134,14 +134,14 @@ export function AdminSettingsClient() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Razorpay Key ID</label>
                       <input
                         type="text"
                         value={settings.razorpayKeyId}
                         onChange={(e) => setSettings({ ...settings, razorpayKeyId: e.target.value })}
-                        className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] font-mono text-xs rounded-lg outline-none focus:border-[#C9A86A]"
+                        className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] font-mono text-xs rounded-lg outline-none focus:border-[#C9A86A]"
                       />
                     </div>
                     <div>
@@ -150,7 +150,7 @@ export function AdminSettingsClient() {
                         type="password"
                         value={settings.razorpayKeySecret}
                         onChange={(e) => setSettings({ ...settings, razorpayKeySecret: e.target.value })}
-                        className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] font-mono text-xs rounded-lg outline-none focus:border-[#C9A86A]"
+                        className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] font-mono text-xs rounded-lg outline-none focus:border-[#C9A86A]"
                       />
                     </div>
                   </div>
@@ -172,16 +172,16 @@ export function AdminSettingsClient() {
             )}
 
             {activeTab === 'shipping' && (
-              <div className="space-y-5">
-                <h2 className="text-base font-serif font-semibold text-[#2E221C] pb-3 border-b border-[#DDD2C5]">Logistics & Shipping Rules</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="space-y-4">
+                <h2 className="text-base font-sans font-semibold text-[#2E221C] pb-2 border-b border-[#DDD2C5]">Logistics & Shipping Rules</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div>
                     <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Free Shipping Threshold (₹)</label>
                     <input
                       type="number"
                       value={settings.freeShippingThreshold}
                       onChange={(e) => setSettings({ ...settings, freeShippingThreshold: e.target.value })}
-                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                     />
                   </div>
                   <div>
@@ -190,7 +190,7 @@ export function AdminSettingsClient() {
                       type="number"
                       value={settings.flatShippingRate}
                       onChange={(e) => setSettings({ ...settings, flatShippingRate: e.target.value })}
-                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                     />
                   </div>
                 </div>
@@ -198,8 +198,8 @@ export function AdminSettingsClient() {
             )}
 
             {activeTab === 'whatsapp' && (
-              <div className="space-y-5">
-                <h2 className="text-base font-serif font-semibold text-[#2E221C] pb-3 border-b border-[#DDD2C5]">WhatsApp Concierge Integration</h2>
+              <div className="space-y-4">
+                <h2 className="text-base font-sans font-semibold text-[#2E221C] pb-2 border-b border-[#DDD2C5]">WhatsApp Concierge Integration</h2>
                 <div className="space-y-4 text-xs">
                   <div>
                     <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">WhatsApp Official Line Number</label>
@@ -208,7 +208,7 @@ export function AdminSettingsClient() {
                       value={settings.whatsappNumber}
                       onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value })}
                       placeholder="+91 95179 01117"
-                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                     />
                   </div>
                   <div>
@@ -217,7 +217,7 @@ export function AdminSettingsClient() {
                       rows={3}
                       value={settings.whatsappDefaultMessage}
                       onChange={(e) => setSettings({ ...settings, whatsappDefaultMessage: e.target.value })}
-                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
+                      className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                     />
                   </div>
                 </div>
@@ -228,7 +228,7 @@ export function AdminSettingsClient() {
               <button
                 type="submit"
                 disabled={saving}
-                className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-6 py-2.5 hover:bg-[#1A1410] text-xs rounded-lg transition-all shadow-sm disabled:opacity-50"
+                className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-6 py-2 hover:bg-[#1A1410] text-xs rounded-lg transition-all shadow-sm disabled:opacity-50"
               >
                 {saving ? (
                   'Saving Configuration…'

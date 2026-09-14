@@ -64,11 +64,11 @@ export function AdminReviewsClient() {
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Product Reviews & Testimonials</h1>
-          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Moderate client feedback, craftsmanship ratings, and testimonial approvals</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Product Reviews & Testimonials</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-sans">Moderate client feedback, craftsmanship ratings, and testimonial approvals</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -88,13 +88,13 @@ export function AdminReviewsClient() {
         </div>
       </div>
 
-      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Product', 'Client', 'Rating', 'Review Experience', 'Date', 'Status', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -103,24 +103,24 @@ export function AdminReviewsClient() {
             <tbody className="divide-y divide-[#EAE2D7]">
               {filtered.map((review) => (
                 <tr key={review.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                  <td className="px-5 py-4 font-serif font-medium text-[#2E221C] max-w-[200px] truncate text-sm">
+                  <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] max-w-[200px] truncate text-sm">
                     {review.product}
                   </td>
-                  <td className="px-5 py-4 text-[#2E221C] font-medium">
+                  <td className="px-5 py-2.5 text-[#2E221C] font-medium">
                     {review.author}
                   </td>
-                  <td className="px-5 py-4 text-[#C9A86A] flex items-center gap-0.5">
+                  <td className="px-5 py-2.5 text-[#C9A86A] flex items-center gap-0.5">
                     {Array.from({ length: review.rating }).map((_, i) => (
                       <Star key={i} size={13} fill="currentColor" />
                     ))}
                   </td>
-                  <td className="px-5 py-4 text-[#8A6A55] max-w-[300px] truncate italic">
+                  <td className="px-5 py-2.5 text-[#8A6A55] max-w-[300px] truncate italic">
                     &ldquo;{review.comment}&rdquo;
                   </td>
-                  <td className="px-5 py-4 text-[#8A6A55]">
+                  <td className="px-5 py-2.5 text-[#8A6A55]">
                     {review.date}
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5">
                     <span className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold ${
                       review.status === 'approved'
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
@@ -131,7 +131,7 @@ export function AdminReviewsClient() {
                       {review.status}
                     </span>
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5">
                     <div className="flex items-center gap-2">
                       {review.status === 'pending' && (
                         <>

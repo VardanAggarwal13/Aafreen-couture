@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { FaqAccordion, type FaqCategory } from '@/features/faq/components/FaqAccordion';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { siteConfig } from '@/config/site.config';
+import { cmsRepository } from '@/server/repositories/cms.repository';
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions (FAQs) | Aafreen Couture',
@@ -89,7 +90,8 @@ const FAQS: FaqCategory[] = [
   },
 ];
 
-export default function FAQPage() {
+export default async function FAQPage() {
+  const cms = await cmsRepository.findBySlug('faq');
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -110,11 +112,14 @@ export default function FAQPage() {
       />
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
-        badge="✦ Aafreen Client Helpdesk"
-        title="Frequently Asked Questions"
-        italicTitle="Atelier Guidance"
-        subtitle="Everything you need to know regarding bespoke bridal sizing, payment security, express air transit, and our fitting guarantee."
-        metaInfo="Dedicated Styling Concierge · Direct WhatsApp Assistance · 24-48h Response Guarantee"
+        badge={cms?.heroBadge ?? 'Aafreen Client Helpdesk'}
+        title={cms?.heroTitle ?? 'Frequently Asked Questions'}
+        italicTitle={cms?.heroItalicTitle ?? 'Atelier Guidance'}
+        subtitle={
+          cms?.heroSubtitle ??
+          'Everything you need to know regarding bespoke bridal sizing, payment security, express air transit, and our fitting guarantee.'
+        }
+        metaInfo={cms?.heroMetaInfo ?? 'Dedicated Styling Concierge · Direct WhatsApp Assistance · 24-48h Response Guarantee'}
       />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">

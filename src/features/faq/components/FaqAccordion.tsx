@@ -45,7 +45,7 @@ export function FaqAccordion({ faqs }: { faqs: FaqCategory[] }) {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search questions (e.g., customisation, bridal measurements, shipping, refund)..."
-          className="w-full bg-white border border-[#E8D8C8] text-[#221617] placeholder:text-[#8C7E72]/60 pl-11 pr-10 py-3.5 sm:py-4 text-xs sm:text-sm rounded-xs focus:outline-none focus:border-[#C49A5A] focus:ring-1 focus:ring-[#C49A5A]/30 transition-all shadow-[0_2px_12px_rgba(34,22,23,0.03)]"
+          className="w-full bg-white border border-[#E8D8C8] text-[#221617] placeholder:text-[#8C7E72]/60 pl-11 pr-10 py-3.5 sm:py-4 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#C49A5A] focus:ring-1 focus:ring-[#C49A5A]/30 transition-all shadow-[0_2px_12px_rgba(34,22,23,0.03)]"
         />
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#A67C52]" size={17} />
         {searchQuery && (
@@ -89,9 +89,9 @@ export function FaqAccordion({ faqs }: { faqs: FaqCategory[] }) {
       {/* Accordion List */}
       <div className="space-y-8">
         {filteredFaqs.length === 0 ? (
-          <div className="bg-white border border-[#E8D8C8] p-10 text-center rounded-xs space-y-3 shadow-2xs">
+          <div className="bg-white p-10 text-center rounded-2xl space-y-3 shadow-sm">
             <HelpCircle size={32} className="text-[#C49A5A] mx-auto opacity-70" />
-            <h3 className="font-serif text-lg text-[#221617] uppercase tracking-wide">No Questions Matching &ldquo;{searchQuery}&rdquo;</h3>
+            <h3 className="font-sans font-semibold text-lg text-[#221617]">No Questions Matching &ldquo;{searchQuery}&rdquo;</h3>
             <p className="text-xs sm:text-[13px] text-[#6E6A66] max-w-sm mx-auto leading-relaxed">
               Our concierge team is available to assist you personally with sizing, custom fabrics, or delivery timelines.
             </p>
@@ -108,9 +108,8 @@ export function FaqAccordion({ faqs }: { faqs: FaqCategory[] }) {
           filteredFaqs.map((cat) => (
             <div key={cat.category} className="space-y-3.5">
               <div className="flex items-center justify-between pb-1.5 border-b border-[#E8D8C8]">
-                <h2 className="text-xs sm:text-sm font-serif uppercase tracking-[0.2em] text-[#A67C52] flex items-center gap-2">
-                  <span>✦</span>
-                  <span>{cat.category}</span>
+                <h2 className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.15em] text-[#A67C52]">
+                  {cat.category}
                 </h2>
                 <span className="text-[11px] font-mono text-[#8C7E72]">{cat.items.length} answers</span>
               </div>
@@ -122,7 +121,7 @@ export function FaqAccordion({ faqs }: { faqs: FaqCategory[] }) {
                   return (
                     <div
                       key={id}
-                      className={`bg-white border transition-all duration-200 rounded-xs overflow-hidden shadow-2xs ${
+                      className={`bg-white border transition-all duration-200 rounded-lg overflow-hidden shadow-sm ${
                         isOpen ? 'border-[#C49A5A] ring-1 ring-[#C49A5A]/20' : 'border-[#E8D8C8] hover:border-[#C49A5A]/50'
                       }`}
                     >
@@ -131,7 +130,7 @@ export function FaqAccordion({ faqs }: { faqs: FaqCategory[] }) {
                         className="w-full flex items-center justify-between px-5 sm:px-6 py-4 text-left text-xs sm:text-[13.5px] font-medium text-[#221617] hover:text-[#A67C52] transition-colors gap-4"
                         aria-expanded={isOpen}
                       >
-                        <span className="font-serif font-semibold tracking-wide pr-2">{item.q}</span>
+                        <span className="font-sans font-semibold pr-2">{item.q}</span>
                         <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 ${isOpen ? 'bg-[#221617] text-[#C49A5A] rotate-180' : 'bg-[#FAF7F2] text-[#A67C52]'}`}>
                           <ChevronDown size={14} />
                         </div>
@@ -151,11 +150,11 @@ export function FaqAccordion({ faqs }: { faqs: FaqCategory[] }) {
       </div>
 
       {/* Still Have Questions Box */}
-      <div className="bg-[#221617] text-white p-7 sm:p-10 rounded-xs border border-[#C49A5A]/30 text-center space-y-4 shadow-md">
+      <div className="bg-[#221617] text-white p-7 sm:p-10 rounded-2xl text-center space-y-4 shadow-md">
         <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#C49A5A] block">
-          ✦ Dedicated Atelier Support
+          Dedicated Atelier Support
         </span>
-        <h3 className="font-serif text-xl sm:text-2xl uppercase tracking-wider text-white">
+        <h3 className="font-sans font-semibold text-xl sm:text-2xl text-white">
           Still Have Questions About Sizing or Orders?
         </h3>
         <p className="text-xs sm:text-[13px] text-white/70 max-w-lg mx-auto leading-relaxed">
@@ -167,7 +166,7 @@ export function FaqAccordion({ faqs }: { faqs: FaqCategory[] }) {
             href={`https://wa.me/${siteConfig.whatsapp}?text=Hello%20Aafreen%20Couture%2C%20I%20have%20a%20question%20regarding%20an%20order.`}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto bg-[#C49A5A] text-[#1A1011] hover:bg-[#FAF7F2] text-[11px] font-semibold uppercase tracking-[0.16em] px-6 py-3 transition-all rounded-xs shadow-xs flex items-center justify-center gap-2"
+            className="w-full sm:w-auto bg-[#C49A5A] text-[#1A1011] hover:bg-[#FAF7F2] text-[11px] font-semibold uppercase tracking-[0.16em] px-6 py-3 transition-all rounded-lg shadow-xs flex items-center justify-center gap-2"
           >
             <MessageCircle size={15} />
             <span>Chat on WhatsApp</span>
@@ -175,7 +174,7 @@ export function FaqAccordion({ faqs }: { faqs: FaqCategory[] }) {
 
           <a
             href={`tel:${siteConfig.phone}`}
-            className="w-full sm:w-auto bg-white/10 text-white hover:bg-white/20 border border-white/20 text-[11px] font-semibold uppercase tracking-[0.16em] px-6 py-3 transition-colors flex items-center justify-center gap-2 rounded-xs"
+            className="w-full sm:w-auto bg-white/10 text-white hover:bg-white/20 border border-white/20 text-[11px] font-semibold uppercase tracking-[0.16em] px-6 py-3 transition-colors flex items-center justify-center gap-2 rounded-lg"
           >
             <Phone size={14} className="text-[#C49A5A]" />
             <span>Call: {siteConfig.phone}</span>
@@ -183,7 +182,7 @@ export function FaqAccordion({ faqs }: { faqs: FaqCategory[] }) {
 
           <Link
             href="/contact"
-            className="w-full sm:w-auto bg-transparent text-white/80 hover:text-white border border-white/20 text-[11px] font-semibold uppercase tracking-[0.16em] px-6 py-3 transition-colors flex items-center justify-center gap-2 rounded-xs"
+            className="w-full sm:w-auto bg-transparent text-white/80 hover:text-white border border-white/20 text-[11px] font-semibold uppercase tracking-[0.16em] px-6 py-3 transition-colors flex items-center justify-center gap-2 rounded-lg"
           >
             <Mail size={14} className="text-[#C49A5A]" />
             <span>Write to Us</span>

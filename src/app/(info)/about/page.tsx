@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Sparkles, Heart, Scissors, ShieldCheck, ArrowRight, CheckCircle2, MessageCircle } from 'lucide-react';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { siteConfig } from '@/config/site.config';
+import { cmsRepository } from '@/server/repositories/cms.repository';
 
 export const metadata: Metadata = {
   title: 'Our Story & Atelier | Aafreen Couture',
@@ -11,25 +12,29 @@ export const metadata: Metadata = {
   alternates: { canonical: `${siteConfig.url}/about` },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const cms = await cmsRepository.findBySlug('about');
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
-        badge="✦ Aafreen Couture By Pearl"
-        title="Our Story &amp; Atelier"
-        italicTitle="Heirloom Craftsmanship"
-        subtitle="Where every thread tells a regal story. Preserving centuries of authentic Indian karigari, rare zardozi embroidery, and modern silhouette tailoring for life's most cherished milestones."
-        metaInfo="Bespoke Bridal Atelier · Amritsar, Punjab · Shipping Worldwide to 50+ Countries"
+        badge={cms?.heroBadge ?? 'Aafreen Couture By Pearl'}
+        title={cms?.heroTitle ?? 'Our Story & Atelier'}
+        italicTitle={cms?.heroItalicTitle ?? 'Heirloom Craftsmanship'}
+        subtitle={
+          cms?.heroSubtitle ??
+          "Where every thread tells a regal story. Preserving centuries of authentic Indian karigari, rare zardozi embroidery, and modern silhouette tailoring for life's most cherished milestones."
+        }
+        metaInfo={cms?.heroMetaInfo ?? 'Bespoke Bridal Atelier · Amritsar, Punjab · Shipping Worldwide to 50+ Countries'}
       />
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-16 space-y-16 sm:space-y-24">
         {/* Brand Narrative Quote */}
         <section className="text-center max-w-3xl mx-auto space-y-6 font-sans text-xs sm:text-[14px] text-[#5C554E] leading-[2.2]">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#A67C52] block">
-            ✦ The Couturier&apos;s Creed
+          <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#A67C52] block">
+            The Couturier&apos;s Creed
           </span>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#221617] uppercase tracking-wide leading-relaxed">
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#221617] tracking-tight leading-relaxed">
             &ldquo;We don&apos;t just craft garments; we curate heirlooms destined to be treasured across generations.&rdquo;
           </h2>
           <p className="pt-2">
@@ -41,26 +46,26 @@ export default function AboutPage() {
         </section>
 
         {/* Atelier Key Metrics Strip */}
-        <section className="bg-white border border-[#E8D8C8] p-6 sm:p-10 rounded-xs shadow-[0_4px_20px_rgba(34,22,23,0.03)]">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center divide-y sm:divide-y-0 sm:divide-x divide-[#E8D8C8]">
-            <div className="pt-4 sm:pt-0">
-              <span className="font-serif text-3xl sm:text-4xl text-[#221617] font-semibold block">200+</span>
-              <span className="text-[10.5px] uppercase tracking-[0.2em] font-semibold text-[#A67C52] mt-1 block">Artisan Hours</span>
+        <section className="bg-white p-6 sm:p-10 rounded-2xl shadow-sm">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-8 text-center">
+            <div>
+              <span className="font-sans text-3xl sm:text-4xl text-[#221617] font-bold block tabular-nums">200+</span>
+              <span className="text-[10.5px] uppercase tracking-[0.15em] font-semibold text-[#A67C52] mt-1.5 block">Artisan Hours</span>
               <p className="text-[11px] text-[#7D756C] mt-1 max-w-[180px] mx-auto">Hand embroidery &amp; detailing on every bridal creation</p>
             </div>
-            <div className="pt-4 sm:pt-0">
-              <span className="font-serif text-3xl sm:text-4xl text-[#221617] font-semibold block">100%</span>
-              <span className="text-[10.5px] uppercase tracking-[0.2em] font-semibold text-[#A67C52] mt-1 block">Pure Silks &amp; Velvets</span>
+            <div>
+              <span className="font-sans text-3xl sm:text-4xl text-[#221617] font-bold block tabular-nums">100%</span>
+              <span className="text-[10.5px] uppercase tracking-[0.15em] font-semibold text-[#A67C52] mt-1.5 block">Pure Silks &amp; Velvets</span>
               <p className="text-[11px] text-[#7D756C] mt-1 max-w-[180px] mx-auto">Ethically sourced mulberry silks, tissue &amp; sheer organza</p>
             </div>
-            <div className="pt-4 sm:pt-0">
-              <span className="font-serif text-3xl sm:text-4xl text-[#221617] font-semibold block">50+</span>
-              <span className="text-[10.5px] uppercase tracking-[0.2em] font-semibold text-[#A67C52] mt-1 block">Global Countries</span>
+            <div>
+              <span className="font-sans text-3xl sm:text-4xl text-[#221617] font-bold block tabular-nums">50+</span>
+              <span className="text-[10.5px] uppercase tracking-[0.15em] font-semibold text-[#A67C52] mt-1.5 block">Global Countries</span>
               <p className="text-[11px] text-[#7D756C] mt-1 max-w-[180px] mx-auto">Insured express air transit worldwide via DHL &amp; FedEx</p>
             </div>
-            <div className="pt-4 sm:pt-0">
-              <span className="font-serif text-3xl sm:text-4xl text-[#221617] font-semibold block">10-Day</span>
-              <span className="text-[10.5px] uppercase tracking-[0.2em] font-semibold text-[#A67C52] mt-1 block">Fit Guarantee</span>
+            <div>
+              <span className="font-sans text-3xl sm:text-4xl text-[#221617] font-bold block tabular-nums">10-Day</span>
+              <span className="text-[10.5px] uppercase tracking-[0.15em] font-semibold text-[#A67C52] mt-1.5 block">Fit Guarantee</span>
               <p className="text-[11px] text-[#7D756C] mt-1 max-w-[180px] mx-auto">Complimentary bespoke alterations on all bridal pieces</p>
             </div>
           </div>
@@ -69,10 +74,10 @@ export default function AboutPage() {
         {/* 4 Pillars of Excellence */}
         <section className="space-y-8">
           <div className="text-center max-w-xl mx-auto">
-            <span className="text-[10.5px] font-semibold uppercase tracking-[0.3em] text-[#A67C52] mb-1 block">
-              ✦ Atelier Philosophy
+            <span className="text-[10.5px] font-semibold uppercase tracking-[0.25em] text-[#A67C52] mb-1 block">
+              Atelier Philosophy
             </span>
-            <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] uppercase tracking-wide">
+            <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] tracking-tight">
               The Four Pillars of Our Craft
             </h2>
             <p className="text-xs sm:text-[13px] text-[#6E6A66] mt-2 font-sans">
@@ -107,13 +112,13 @@ export default function AboutPage() {
               return (
                 <div
                   key={pillar.title}
-                  className="bg-white border border-[#E8D8C8] p-6 sm:p-7 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)] flex flex-col justify-between text-center transition-all duration-300 hover:border-[#C49A5A] hover:-translate-y-1"
+                  className="bg-white p-6 sm:p-7 rounded-2xl shadow-sm flex flex-col justify-between text-center transition-all duration-300 hover:shadow-md hover:-translate-y-1"
                 >
                   <div>
-                    <div className="w-12 h-12 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/30 flex items-center justify-center text-[#C49A5A] mx-auto mb-4">
+                    <div className="w-12 h-12 rounded-full bg-[#FAF7F2] flex items-center justify-center text-[#C49A5A] mx-auto mb-4">
                       <Icon size={22} />
                     </div>
-                    <h3 className="font-serif text-sm uppercase tracking-wide text-[#221617] mb-2 font-semibold">
+                    <h3 className="font-sans text-sm text-[#221617] mb-2 font-semibold">
                       {pillar.title}
                     </h3>
                     <p className="text-xs text-[#5C554E] leading-relaxed font-sans">
@@ -127,12 +132,12 @@ export default function AboutPage() {
         </section>
 
         {/* The Bespoke Bridal Journey */}
-        <section className="bg-white border border-[#E8D8C8] p-8 sm:p-12 rounded-xs shadow-[0_4px_20px_rgba(34,22,23,0.03)] space-y-8">
+        <section className="bg-white p-8 sm:p-12 rounded-2xl shadow-sm space-y-8">
           <div className="text-center max-w-xl mx-auto">
-            <span className="text-[10.5px] font-semibold uppercase tracking-[0.3em] text-[#A67C52] mb-1 block">
-              ✦ Creation Stages
+            <span className="text-[10.5px] font-semibold uppercase tracking-[0.25em] text-[#A67C52] mb-1 block">
+              Creation Stages
             </span>
-            <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] uppercase tracking-wide">
+            <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] tracking-tight">
               The Bespoke Bridal Journey
             </h2>
             <p className="text-xs text-[#7D756C] mt-2 font-sans">
@@ -163,12 +168,12 @@ export default function AboutPage() {
                 text: '48-point quality inspection, trial adjustments, and signature weather-sealed insured dispatch to your doorstep.',
               },
             ].map((st) => (
-              <div key={st.step} className="bg-[#FAF7F2] p-5 sm:p-6 rounded-xs border border-[#E8D8C8] space-y-2.5 text-center font-sans flex flex-col justify-between">
+              <div key={st.step} className="bg-[#FAF7F2] p-5 sm:p-6 rounded-xl space-y-2.5 text-center font-sans flex flex-col justify-between">
                 <div>
-                  <span className="w-10 h-10 rounded-full bg-[#221617] text-[#C49A5A] font-serif font-bold text-sm flex items-center justify-center mx-auto mb-3 shadow-xs">
+                  <span className="w-9 h-9 rounded-full bg-[#221617] text-[#C49A5A] font-sans font-bold text-xs flex items-center justify-center mx-auto mb-3">
                     {st.step}
                   </span>
-                  <h4 className="font-serif text-sm uppercase tracking-wider text-[#221617] font-semibold">{st.title}</h4>
+                  <h4 className="font-sans text-sm text-[#221617] font-semibold">{st.title}</h4>
                   <p className="text-xs text-[#5C554E] leading-relaxed mt-1">{st.text}</p>
                 </div>
               </div>
@@ -177,11 +182,11 @@ export default function AboutPage() {
         </section>
 
         {/* CTA Invitation Section */}
-        <section className="bg-[#221617] text-white border border-[#C49A5A]/40 p-8 sm:p-14 text-center rounded-xs space-y-6 shadow-md">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#C49A5A] block">
-            ✦ Your Wedding Milestone
+        <section className="bg-[#221617] text-white p-8 sm:p-14 text-center rounded-2xl space-y-6 shadow-lg">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#C49A5A] block">
+            Your Wedding Milestone
           </span>
-          <h2 className="text-2xl sm:text-4xl font-serif uppercase tracking-wide text-white">
+          <h2 className="text-2xl sm:text-4xl font-serif tracking-tight text-white">
             Begin Your Bespoke Bridal Journey
           </h2>
           <p className="text-xs sm:text-sm text-white/75 max-w-xl mx-auto leading-relaxed font-sans">
@@ -190,7 +195,7 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2 font-sans">
             <Link
               href="/bridal"
-              className="w-full sm:w-auto bg-[#C49A5A] text-[#1A1011] hover:bg-[#FAF7F2] text-[11px] font-semibold tracking-[0.2em] uppercase px-8 py-3.5 transition-all rounded-xs shadow-xs"
+              className="w-full sm:w-auto bg-[#C49A5A] text-[#1A1011] hover:bg-[#FAF7F2] text-[11px] font-semibold tracking-[0.2em] uppercase px-8 py-3.5 transition-all rounded-lg shadow-sm"
             >
               Explore Bridal Edit →
             </Link>
@@ -198,7 +203,7 @@ export default function AboutPage() {
               href={`https://wa.me/${siteConfig.whatsapp}?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20consult%20for%20my%20bridal%20outfit.`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto bg-white/10 hover:bg-white/20 border border-white/20 text-[11px] font-semibold tracking-[0.2em] uppercase px-8 py-3.5 transition-colors rounded-xs flex items-center justify-center gap-2"
+              className="w-full sm:w-auto bg-white/10 hover:bg-white/20 border border-white/20 text-[11px] font-semibold tracking-[0.2em] uppercase px-8 py-3.5 transition-colors rounded-lg flex items-center justify-center gap-2"
             >
               <MessageCircle size={15} />
               <span>WhatsApp Stylist</span>

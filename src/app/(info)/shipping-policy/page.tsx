@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site.config';
+import { cmsRepository } from '@/server/repositories/cms.repository';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { Truck, Globe, PackageCheck, Clock, Mail, Phone, ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from 'lucide-react';
@@ -23,23 +24,27 @@ const TOC: TocItem[] = [
   { id: 'sec-shipping-support', number: '08', title: 'Logistics Concierge Desk' },
 ];
 
-export default function ShippingPolicyPage() {
+export default async function ShippingPolicyPage() {
+  const cms = await cmsRepository.findBySlug('shipping-policy');
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
-        badge="✦ Aafreen Atelier Transit Protocols"
-        title="Shipping &amp; Delivery"
-        italicTitle="Global Logistics &amp; Care"
-        subtitle="Delivering handcrafted Indian bridal couture with 100% transit insurance, white-glove packaging, and live milestone updates across India and 50+ countries."
-        metaInfo="Effective Season 2026 · Compliant with Indian E-Commerce Consumer Protection Rules"
+        badge={cms?.heroBadge ?? 'Aafreen Atelier Transit Protocols'}
+        title={cms?.heroTitle ?? 'Shipping & Delivery'}
+        italicTitle={cms?.heroItalicTitle ?? 'Global Logistics & Care'}
+        subtitle={
+          cms?.heroSubtitle ??
+          'Delivering handcrafted Indian bridal couture with 100% transit insurance, white-glove packaging, and live milestone updates across India and 50+ countries.'
+        }
+        metaInfo={cms?.heroMetaInfo ?? 'Effective Season 2026 · Compliant with Indian E-Commerce Consumer Protection Rules'}
       />
 
       {/* Main Container */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-16">
         {/* Visual 3-Card Summary Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
-          <div className="bg-white border border-[#E8D8C8] p-6 sm:p-7 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)] flex flex-col justify-between transition-all hover:border-[#C49A5A]/60">
+          <div className="bg-white p-6 sm:p-7 rounded-xl shadow-sm flex flex-col justify-between transition-all hover:shadow-md">
             <div>
               <div className="w-11 h-11 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/40 flex items-center justify-center text-[#C49A5A] mb-4">
                 <Truck size={20} />
@@ -47,10 +52,10 @@ export default function ShippingPolicyPage() {
               <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#A67C52] block mb-1">
                 Pan-India Express
               </span>
-              <h3 className="font-serif text-lg uppercase tracking-wide text-[#221617] mb-2">
+              <h3 className="font-sans font-bold text-lg text-[#221617] mb-2">
                 Domestic Delivery
               </h3>
-              <p className="text-xs sm:text-[13px] text-[#5C554E] leading-relaxed font-sans">
+              <p className="text-sm sm:text-base text-[#5C554E] leading-relaxed font-sans">
                 <strong>5–7 Business Days</strong> across all serviceable Indian pincodes via Blue Dart, Delhivery, and express air networks.
               </p>
             </div>
@@ -60,7 +65,7 @@ export default function ShippingPolicyPage() {
             </div>
           </div>
 
-          <div className="bg-white border border-[#E8D8C8] p-6 sm:p-7 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)] flex flex-col justify-between transition-all hover:border-[#C49A5A]/60">
+          <div className="bg-white p-6 sm:p-7 rounded-xl shadow-sm flex flex-col justify-between transition-all hover:shadow-md">
             <div>
               <div className="w-11 h-11 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/40 flex items-center justify-center text-[#C49A5A] mb-4">
                 <Globe size={20} />
@@ -68,10 +73,10 @@ export default function ShippingPolicyPage() {
               <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#A67C52] block mb-1">
                 50+ Global Destinations
               </span>
-              <h3 className="font-serif text-lg uppercase tracking-wide text-[#221617] mb-2">
+              <h3 className="font-sans font-bold text-lg text-[#221617] mb-2">
                 Worldwide Shipping
               </h3>
-              <p className="text-xs sm:text-[13px] text-[#5C554E] leading-relaxed font-sans">
+              <p className="text-sm sm:text-base text-[#5C554E] leading-relaxed font-sans">
                 <strong>10–15 Business Days</strong> international transit via DHL Express &amp; FedEx Priority across USA, UK, Canada, UAE, and Europe.
               </p>
             </div>
@@ -81,7 +86,7 @@ export default function ShippingPolicyPage() {
             </div>
           </div>
 
-          <div className="bg-white border border-[#C49A5A]/50 p-6 sm:p-7 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.04)] flex flex-col justify-between bg-gradient-to-b from-white via-[#FAF7F2]/40 to-white transition-all hover:border-[#C49A5A]">
+          <div className="bg-white p-6 sm:p-7 rounded-xl shadow-md flex flex-col justify-between bg-gradient-to-b from-white via-[#FAF7F2]/40 to-white transition-all hover:shadow-lg">
             <div>
               <div className="w-11 h-11 rounded-full bg-[#221617] border border-[#C49A5A] flex items-center justify-center text-[#C49A5A] mb-4">
                 <PackageCheck size={20} />
@@ -89,10 +94,10 @@ export default function ShippingPolicyPage() {
               <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#C49A5A] block mb-1">
                 Order Value Threshold
               </span>
-              <h3 className="font-serif text-lg uppercase tracking-wide text-[#221617] mb-2">
+              <h3 className="font-sans font-bold text-lg text-[#221617] mb-2">
                 Complimentary Shipping
               </h3>
-              <p className="text-xs sm:text-[13px] text-[#5C554E] leading-relaxed font-sans">
+              <p className="text-sm sm:text-base text-[#5C554E] leading-relaxed font-sans">
                 Free standard insured shipping on all domestic orders above <strong>₹5,000</strong>. Flat ₹149 for orders below ₹5,000.
               </p>
             </div>
@@ -106,14 +111,14 @@ export default function ShippingPolicyPage() {
         {/* 2-Column Responsive Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Main Article Content */}
-          <article className="lg:col-span-8 space-y-8 font-sans text-xs sm:text-[13px] text-[#5C554E] leading-relaxed">
+          <article className="lg:col-span-8 space-y-8 font-sans text-sm sm:text-base text-[#5C554E] leading-relaxed">
             {/* Section 1: Visual Transit Pipeline */}
-            <section id="sec-pipeline" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+            <section id="sec-pipeline" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-36">
               <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
                 <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">01</span>
                 <div>
                   <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Transit Journey</span>
-                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                  <h2 className="text-base sm:text-lg font-sans font-bold text-[#221617]">
                     Atelier Preparation &amp; Transit Pipeline
                   </h2>
                 </div>
@@ -126,10 +131,10 @@ export default function ShippingPolicyPage() {
                   { step: '03', title: 'Keepsake Pack', desc: 'Encased in breathable heirloom muslin with moisture barrier' },
                   { step: '04', title: 'Insured Delivery', desc: 'Dispatched via express air network with OTP handover' },
                 ].map((s) => (
-                  <div key={s.step} className="bg-[#FAF7F2] p-4 rounded-xs border border-[#E8D8C8] flex flex-col justify-between">
+                  <div key={s.step} className="bg-[#FAF7F2] p-4 rounded-lg border border-[#E8D8C8] flex flex-col justify-between">
                     <div>
                       <span className="font-mono text-xs font-bold text-[#A67C52] mb-1 block">{s.step}</span>
-                      <h3 className="font-serif text-xs uppercase tracking-wider text-[#221617] mb-1">{s.title}</h3>
+                      <h3 className="font-sans font-semibold text-xs text-[#221617] mb-1">{s.title}</h3>
                       <p className="text-[11px] text-[#6E6A66] leading-relaxed">{s.desc}</p>
                     </div>
                   </div>
@@ -138,12 +143,12 @@ export default function ShippingPolicyPage() {
             </section>
 
             {/* Section 2 */}
-            <section id="sec-dispatch" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+            <section id="sec-dispatch" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-36">
               <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
                 <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">02</span>
                 <div>
                   <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Crafting Windows</span>
-                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                  <h2 className="text-base sm:text-lg font-sans font-bold text-[#221617]">
                     Processing Timelines by Garment Type
                   </h2>
                 </div>
@@ -152,16 +157,16 @@ export default function ShippingPolicyPage() {
                 Every creation at Aafreen Couture is individually prepared to order. Depending on whether your ensemble is a curated unstitched suit, ready-to-ship silhouette, or custom bespoke bridal lehenga, dispatch timelines vary:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-[#FAF7F2] p-5 border border-[#E8D8C8] rounded-xs">
-                  <span className="font-serif text-[#221617] uppercase tracking-wide block mb-1.5 text-xs font-semibold">
+                <div className="bg-[#FAF7F2] p-5 border border-[#E8D8C8] rounded-lg">
+                  <span className="font-sans text-[#221617] block mb-1.5 text-xs font-semibold">
                     Ready-to-Wear &amp; Unstitched Suits
                   </span>
                   <p className="text-xs text-[#5C554E] leading-relaxed">
                     Undergoes final press, verification, and signature packaging. Handed over to air couriers within <strong>1–2 business days</strong> of confirmed payment.
                   </p>
                 </div>
-                <div className="bg-[#FAF7F2] p-5 border border-[#E8D8C8] rounded-xs">
-                  <span className="font-serif text-[#221617] uppercase tracking-wide block mb-1.5 text-xs font-semibold">
+                <div className="bg-[#FAF7F2] p-5 border border-[#E8D8C8] rounded-lg">
+                  <span className="font-sans text-[#221617] block mb-1.5 text-xs font-semibold">
                     Bespoke Bridal &amp; Custom Sized
                   </span>
                   <p className="text-xs text-[#5C554E] leading-relaxed">
@@ -172,12 +177,12 @@ export default function ShippingPolicyPage() {
             </section>
 
             {/* Section 3 */}
-            <section id="sec-domestic" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+            <section id="sec-domestic" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-36">
               <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
                 <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">03</span>
                 <div>
                   <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">India Delivery</span>
-                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                  <h2 className="text-base sm:text-lg font-sans font-bold text-[#221617]">
                     Domestic Shipping Rules &amp; Timelines
                   </h2>
                 </div>
@@ -211,12 +216,12 @@ export default function ShippingPolicyPage() {
             </section>
 
             {/* Section 4 */}
-            <section id="sec-international" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+            <section id="sec-international" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-36">
               <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
                 <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">04</span>
                 <div>
                   <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Global Shipments</span>
-                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                  <h2 className="text-base sm:text-lg font-sans font-bold text-[#221617]">
                     International Shipping &amp; Customs Duties
                   </h2>
                 </div>
@@ -244,12 +249,12 @@ export default function ShippingPolicyPage() {
             </section>
 
             {/* Section 5 */}
-            <section id="sec-tracking" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+            <section id="sec-tracking" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-36">
               <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
                 <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">05</span>
                 <div>
                   <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Live Tracking</span>
-                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                  <h2 className="text-base sm:text-lg font-sans font-bold text-[#221617]">
                     Real-Time Order Tracking &amp; AWB
                   </h2>
                 </div>
@@ -257,14 +262,14 @@ export default function ShippingPolicyPage() {
               <p className="mb-4">
                 The moment your package is verified and collected by our air logistics partner, an automated SMS and WhatsApp update with your live tracking AWB link is generated:
               </p>
-              <div className="p-5 bg-[#FAF7F2] border border-[#E8D8C8] rounded-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="p-5 bg-[#FAF7F2] border border-[#E8D8C8] rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                   <p className="font-semibold text-[#221617] text-xs">Have an active order number?</p>
                   <p className="text-[11.5px] text-[#6E6A66] mt-0.5">Track live milestones on our dedicated portal with zero hassle.</p>
                 </div>
                 <Link
                   href="/track-order"
-                  className="inline-flex items-center gap-2 bg-[#221617] text-[#C49A5A] hover:bg-[#3D2628] hover:text-[#FAF7F2] text-[11px] font-semibold tracking-[0.2em] uppercase px-5 py-2.5 transition-all rounded-xs shrink-0 shadow-xs"
+                  className="inline-flex items-center gap-2 bg-[#221617] text-[#C49A5A] hover:bg-[#3D2628] hover:text-[#FAF7F2] text-[11px] font-semibold tracking-[0.2em] uppercase px-5 py-2.5 transition-all rounded-lg shrink-0 shadow-xs"
                 >
                   <span>Track Order Live</span>
                   <ArrowRight size={13} />
@@ -273,12 +278,12 @@ export default function ShippingPolicyPage() {
             </section>
 
             {/* Section 6 */}
-            <section id="sec-damaged-shipments" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-2xs scroll-mt-36">
+            <section id="sec-damaged-shipments" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-36">
               <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#E8D8C8]">
                 <span className="w-7 h-7 rounded-full bg-[#221617] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">06</span>
                 <div>
                   <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Protection</span>
-                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                  <h2 className="text-base sm:text-lg font-sans font-bold text-[#221617]">
                     Damaged, Tampered, or Lost Consignments
                   </h2>
                 </div>
@@ -303,12 +308,12 @@ export default function ShippingPolicyPage() {
             </section>
 
             {/* Section 7 */}
-            <section id="sec-refused-delivery" className="bg-gradient-to-b from-[#FAF7F2] to-white border-2 border-[#C49A5A]/50 p-6 sm:p-8 rounded-xs shadow-xs scroll-mt-36">
+            <section id="sec-refused-delivery" className="bg-gradient-to-b from-[#FAF7F2] to-white p-6 sm:p-8 rounded-2xl shadow-md scroll-mt-36">
               <div className="flex items-center gap-3 mb-3 pb-3 border-b border-[#E8D8C8]">
                 <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">07</span>
                 <div>
                   <span className="text-[10px] uppercase tracking-[0.25em] text-[#A67C52] font-semibold block">Doorstep Guarantee</span>
-                  <h2 className="text-base sm:text-lg font-serif text-[#221617] uppercase tracking-wide">
+                  <h2 className="text-base sm:text-lg font-sans font-bold text-[#221617]">
                     Doorstep Refusal 100% Refund Guarantee
                   </h2>
                 </div>
@@ -322,12 +327,12 @@ export default function ShippingPolicyPage() {
             </section>
 
             {/* Section 8: Concierge Support */}
-            <section id="sec-shipping-support" className="bg-[#221617] text-white border border-[#C49A5A]/40 p-6 sm:p-8 rounded-xs shadow-md scroll-mt-36">
+            <section id="sec-shipping-support" className="bg-[#221617] text-white p-6 sm:p-8 rounded-2xl shadow-md scroll-mt-36">
               <div className="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
                 <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">08</span>
                 <div>
                   <span className="text-[10px] uppercase tracking-[0.25em] text-[#C49A5A] font-semibold block">Direct Concierge</span>
-                  <h2 className="text-base sm:text-lg font-serif text-white uppercase tracking-wide">
+                  <h2 className="text-base sm:text-lg font-sans font-bold text-white">
                     Priority Dispatch &amp; Logistics Desk
                   </h2>
                 </div>
@@ -337,7 +342,7 @@ export default function ShippingPolicyPage() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
-                <div className="bg-white/5 p-4 rounded-xs border border-white/10">
+                <div className="bg-white/5 p-4 rounded-lg border border-white/10">
                   <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
                     <Mail size={13} /> Support Email
                   </p>
@@ -346,7 +351,7 @@ export default function ShippingPolicyPage() {
                   </a>
                 </div>
 
-                <div className="bg-white/5 p-4 rounded-xs border border-white/10">
+                <div className="bg-white/5 p-4 rounded-lg border border-white/10">
                   <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
                     <Phone size={13} /> Phone &amp; WhatsApp Desk
                   </p>
@@ -360,7 +365,7 @@ export default function ShippingPolicyPage() {
                 <p>Aafreen Couture By Pearl · Amritsar, Punjab — 143001</p>
                 <Link
                   href="/contact"
-                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-[#FAF7F2] text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-all rounded-xs shrink-0 shadow-xs"
+                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-[#FAF7F2] text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-all rounded-lg shrink-0 shadow-xs"
                 >
                   Contact Desk →
                 </Link>

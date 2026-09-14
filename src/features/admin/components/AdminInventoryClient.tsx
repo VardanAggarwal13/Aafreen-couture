@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { Plus, Minus, Save, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatPrice } from '@/utils/format';
+import { AdminPagination } from '@/features/admin/components/AdminPagination';
+
+const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
 export interface InventoryItem {
   id: string;
@@ -20,6 +23,8 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
   const [items, setItems] = useState<InventoryItem[]>(initialItems);
   const [filter, setFilter] = useState<'all' | 'low' | 'out'>('all');
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
 
   function changeStock(id: string, delta: number) {
     setItems((prev) =>
@@ -50,12 +55,30 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
     return true;
   });
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const paged = filtered.slice((page - 1) * pageSize, page * pageSize);
+
+  function handlePageSizeChange(size: number) {
+    setPageSize(size);
+    setPage(1);
+  }
+
+  function handleSearchChange(value: string) {
+    setSearch(value);
+    setPage(1);
+  }
+
+  function handleFilterChange(value: 'all' | 'low' | 'out') {
+    setFilter(value);
+    setPage(1);
+  }
+
   return (
-    <div className="p-6 lg:p-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Inventory & Stock Manager</h1>
-          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Live stock control across all couture sizes and garments</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Inventory & Stock Manager</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-sans">Live stock control across all couture sizes and garments</p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -65,13 +88,13 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
               type="text"
               placeholder="Search SKU or product..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               className="bg-white border border-[#DDD2C5] pl-9 pr-3.5 py-2 text-xs text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors w-48 sm:w-64"
             />
           </div>
           <button
             onClick={handleSaveAll}
-            className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm"
+            className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm"
           >
             <Save size={13} className="text-[#C9A86A]" /> Save Stock
           </button>
@@ -82,8 +105,8 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
         {(['all', 'low', 'out'] as const).map((tab) => (
           <button
             key={tab}
-            onClick={() => setFilter(tab)}
-            className={`px-4 py-2 text-xs rounded-lg font-medium tracking-wide transition-all ${
+            onClick={() => handleFilterChange(tab)}
+            className={`px-3.5 py-2 text-xs rounded-lg font-medium tracking-wide transition-all ${
               filter === tab
                 ? 'bg-[#2E221C] text-[#F8F5F1] shadow-sm'
                 : 'bg-white text-[#8A6A55] hover:text-[#2E221C] border border-[#DDD2C5]'
@@ -94,41 +117,41 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
         ))}
       </div>
 
-      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Product Name', 'SKU', 'Variant', 'Price', 'Stock Level', 'Adjust Stock', 'Status'].map((h) => (
-                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-[#EAE2D7]">
-              {filtered.map((item) => (
+              {paged.map((item) => (
                 <tr key={item.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                  <td className="px-5 py-4 font-serif font-medium text-[#2E221C] text-sm max-w-[240px] truncate">
+                  <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] text-sm max-w-[240px] truncate">
                     {item.name}
                   </td>
-                  <td className="px-5 py-4 font-mono text-[#8A6A55] text-xs">
+                  <td className="px-5 py-2.5 font-mono text-[#8A6A55] text-xs">
                     {item.sku}
                   </td>
-                  <td className="px-5 py-4 text-[#8A6A55]">
+                  <td className="px-5 py-2.5 text-[#8A6A55]">
                     {item.size || 'Free Size'} {item.color ? `· ${item.color}` : ''}
                   </td>
-                  <td className="px-5 py-4 text-[#2E221C] font-semibold">
+                  <td className="px-5 py-2.5 text-[#2E221C] font-semibold">
                     {formatPrice(item.price)}
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5">
                     <span className={`font-semibold ${
                       item.stock === 0 ? 'text-red-600' : item.stock <= 5 ? 'text-amber-600' : 'text-emerald-700'
                     }`}>
                       {item.stock} units
                     </span>
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5">
                     <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => changeStock(item.id, -1)}
@@ -153,7 +176,7 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
                       </button>
                     </div>
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5">
                     <span className={`inline-flex items-center px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-medium ${
                       item.stock === 0
                         ? 'bg-red-50 text-red-700 border border-red-200'
@@ -176,6 +199,14 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
             </tbody>
           </table>
         </div>
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+          pageSize={pageSize}
+          pageSizeOptions={PAGE_SIZE_OPTIONS}
+          onPageSizeChange={handlePageSizeChange}
+        />
       </div>
     </div>
   );

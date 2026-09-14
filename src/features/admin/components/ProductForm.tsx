@@ -289,25 +289,25 @@ export function ProductForm({ product }: Props) {
     }
   }
 
-  const inputClass = 'w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-4 py-2.5 text-xs focus:outline-none focus:border-[#C9A86A] transition-colors placeholder:text-[#8A6A55]/50 rounded-xs';
+  const inputClass = 'w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 text-xs focus:outline-none focus:border-[#C9A86A] transition-colors placeholder:text-[#8A6A55]/50 rounded-lg';
   const labelClass = 'block text-[10.5px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5';
   const errorClass = 'text-xs text-red-600 mt-1';
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl space-y-6 font-sans">
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto space-y-4 font-sans">
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 text-xs text-red-700 rounded-xs">
+        <div className="p-4 bg-red-50 border border-red-200 text-xs text-red-700 rounded-lg">
           {error}
         </div>
       )}
 
       {/* Basic Information */}
-      <div className="bg-white border border-[#DDD2C5]/80 p-6 space-y-5 rounded-xs shadow-xs">
-        <h2 className="text-xs font-serif font-semibold text-[#2E221C] uppercase tracking-[0.2em] pb-3 border-b border-[#EAE2D7]">
+      <div className="bg-white p-4 space-y-4 rounded-xl shadow-sm">
+        <h2 className="text-xs font-sans font-bold text-[#2E221C] uppercase tracking-[0.15em] pb-2 border-b border-[#EAE2D7]">
           Basic Information
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelClass}>Product Name *</label>
             <input {...register('name')} className={inputClass} placeholder="e.g. Noor-e-Ishq Royal Bridal Lehenga" />
@@ -320,7 +320,7 @@ export function ProductForm({ product }: Props) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelClass}>Category & Subcategory *</label>
             <select {...register('category')} className={inputClass}>
@@ -371,9 +371,9 @@ export function ProductForm({ product }: Props) {
       </div>
 
       {/* Occasions (Dynamic navigation linking) */}
-      <div className="bg-white border border-[#DDD2C5]/80 p-6 space-y-4 rounded-xs shadow-xs">
+      <div className="bg-white p-4 space-y-4 rounded-xl shadow-sm">
         <div>
-          <h2 className="text-xs font-serif font-semibold text-[#2E221C] uppercase tracking-[0.2em]">
+          <h2 className="text-xs font-sans font-bold text-[#2E221C] uppercase tracking-[0.15em]">
             Occasions (Shop By Occasion)
           </h2>
           <p className="text-[11px] text-[#8A6A55] mt-1">
@@ -389,7 +389,7 @@ export function ProductForm({ product }: Props) {
                 key={occ}
                 type="button"
                 onClick={() => toggleOccasion(occ)}
-                className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider rounded-xs border transition-colors cursor-pointer ${
+                className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider rounded-lg border transition-colors cursor-pointer ${
                   isSelected
                     ? 'border-[#C9A86A] bg-[#C9A86A]/20 text-[#9E7B3A] font-semibold'
                     : 'border-[#DDD2C5] bg-[#FAF7F2] text-[#8A6A55] hover:border-[#C9A86A] hover:text-[#2E221C]'
@@ -403,12 +403,12 @@ export function ProductForm({ product }: Props) {
       </div>
 
       {/* Pricing & Craftsmanship Details */}
-      <div className="bg-white border border-[#DDD2C5]/80 p-6 space-y-5 rounded-xs shadow-xs">
-        <h2 className="text-xs font-serif font-semibold text-[#2E221C] uppercase tracking-[0.2em] pb-3 border-b border-[#EAE2D7]">
+      <div className="bg-white p-4 space-y-4 rounded-xl shadow-sm">
+        <h2 className="text-xs font-sans font-bold text-[#2E221C] uppercase tracking-[0.15em] pb-2 border-b border-[#EAE2D7]">
           Pricing &amp; Textiles
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelClass}>Price in ₹ (INR) *</label>
             <input {...register('basePrice', { valueAsNumber: true })} type="number" step="1" className={inputClass} placeholder="89999" />
@@ -421,7 +421,7 @@ export function ProductForm({ product }: Props) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <label className={labelClass}>Fabric</label>
             <input {...register('fabric')} className={inputClass} placeholder="Pure Raw Silk, Organza" />
@@ -440,9 +440,9 @@ export function ProductForm({ product }: Props) {
           <label className={labelClass}>Product Images *</label>
 
           {imageList.length > 0 && (
-            <div className="flex flex-wrap gap-3 mb-3">
+            <div className="flex flex-wrap gap-3 mb-2">
               {imageList.map((url, index) => (
-                <div key={`${url}-${index}`} className="relative w-20 h-20 rounded-xs overflow-hidden border border-[#DDD2C5] group">
+                <div key={`${url}-${index}`} className="relative w-20 h-20 rounded-lg overflow-hidden border border-[#DDD2C5] group">
                   <Image src={url} alt={`Product image ${index + 1}`} fill sizes="80px" className="object-cover" />
                   <button
                     type="button"
@@ -475,7 +475,7 @@ export function ProductForm({ product }: Props) {
             />
             <label
               htmlFor="product-image-upload"
-              className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider px-4 py-2 border border-[#C9A86A] text-[#9E7B3A] rounded-xs cursor-pointer hover:bg-[#C9A86A]/10 transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+              className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider px-3.5 py-2 border border-[#C9A86A] text-[#9E7B3A] rounded-lg cursor-pointer hover:bg-[#C9A86A]/10 transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
             >
               {uploading ? 'Uploading…' : 'Upload Images'}
             </label>
@@ -492,11 +492,11 @@ export function ProductForm({ product }: Props) {
       </div>
 
       {/* Visibility Flags */}
-      <div className="bg-white border border-[#DDD2C5]/80 p-6 space-y-4 rounded-xs shadow-xs">
-        <h2 className="text-xs font-serif font-semibold text-[#2E221C] uppercase tracking-[0.2em] pb-3 border-b border-[#EAE2D7]">
+      <div className="bg-white p-4 space-y-4 rounded-xl shadow-sm">
+        <h2 className="text-xs font-sans font-bold text-[#2E221C] uppercase tracking-[0.15em] pb-2 border-b border-[#EAE2D7]">
           Visibility &amp; Placement
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <label className="flex items-center gap-2.5 cursor-pointer">
             <input {...register('isActive')} type="checkbox" className="accent-[#C9A86A] w-4 h-4" />
             <span className="text-xs text-[#2E221C] font-medium">Active in Store</span>
@@ -517,8 +517,8 @@ export function ProductForm({ product }: Props) {
       </div>
 
       {/* SEO */}
-      <div className="bg-white border border-[#DDD2C5]/80 p-6 space-y-4 rounded-xs shadow-xs">
-        <h2 className="text-xs font-serif font-semibold text-[#2E221C] uppercase tracking-[0.2em] pb-3 border-b border-[#EAE2D7]">
+      <div className="bg-white p-4 space-y-4 rounded-xl shadow-sm">
+        <h2 className="text-xs font-sans font-bold text-[#2E221C] uppercase tracking-[0.15em] pb-2 border-b border-[#EAE2D7]">
           SEO &amp; Social Metadata
         </h2>
         <div>
@@ -532,11 +532,11 @@ export function ProductForm({ product }: Props) {
       </div>
 
       {/* Submit Button */}
-      <div className="flex items-center gap-4 pt-2">
+      <div className="flex items-center gap-3 pt-2">
         <button
           type="submit"
           disabled={saving}
-          className="bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold tracking-[0.2em] uppercase px-8 py-3.5 transition-colors disabled:opacity-50 rounded-xs shadow-xs cursor-pointer"
+          className="bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold tracking-[0.2em] uppercase px-8 py-2.5 transition-colors disabled:opacity-50 rounded-lg shadow-xs cursor-pointer"
         >
           {saving ? 'Saving Ensembles…' : isEdit ? 'Update Ensemble' : 'Create Ensemble'}
         </button>

@@ -241,12 +241,12 @@ export function TrackOrderClient() {
   return (
     <div className="space-y-6 font-sans">
       {/* Tracking Form Card */}
-      <div className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)] space-y-6">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm space-y-6">
         <div className="border-b border-[#E8D8C8] pb-4">
           <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#A67C52] block mb-1">
             Order Lookup
           </span>
-          <h2 className="font-serif text-xl sm:text-2xl text-[#221617] uppercase tracking-wide">
+          <h2 className="font-sans font-semibold text-xl sm:text-2xl text-[#221617]">
             Enter Shipment Details
           </h2>
           <p className="text-xs sm:text-[13px] text-[#5C554E] mt-1.5 leading-relaxed">
@@ -263,7 +263,7 @@ export function TrackOrderClient() {
               <input
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
-                className="w-full bg-[#FAF7F2]/50 border border-[#E8D8C8] pl-4 pr-10 py-3 text-xs sm:text-sm rounded-xs text-[#221617] placeholder:text-[#8C7E72]/60 focus:outline-none focus:border-[#C49A5A] focus:bg-white transition-all shadow-2xs"
+                className="w-full bg-[#FAF7F2]/50 border border-[#E8D8C8] pl-4 pr-10 py-3 text-xs sm:text-sm rounded-lg text-[#221617] placeholder:text-[#8C7E72]/60 focus:outline-none focus:border-[#C49A5A] focus:bg-white transition-all shadow-2xs"
                 placeholder="e.g. AC-10294"
                 required
               />
@@ -279,7 +279,7 @@ export function TrackOrderClient() {
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-[#FAF7F2]/50 border border-[#E8D8C8] px-4 py-3 text-xs sm:text-sm rounded-xs text-[#221617] placeholder:text-[#8C7E72]/60 focus:outline-none focus:border-[#C49A5A] focus:bg-white transition-all shadow-2xs"
+              className="w-full bg-[#FAF7F2]/50 border border-[#E8D8C8] px-4 py-3 text-xs sm:text-sm rounded-lg text-[#221617] placeholder:text-[#8C7E72]/60 focus:outline-none focus:border-[#C49A5A] focus:bg-white transition-all shadow-2xs"
               placeholder="+91 95179 01117 or support@aafreencouture.com"
             />
           </div>
@@ -288,7 +288,7 @@ export function TrackOrderClient() {
             <button
               type="submit"
               disabled={status === 'loading' || !orderNumber.trim()}
-              className="flex-1 flex items-center justify-center gap-2 bg-[#221617] text-[#C49A5A] hover:bg-[#3D2628] hover:text-[#FAF7F2] text-[11px] font-semibold tracking-[0.22em] uppercase py-3.5 sm:py-4 transition-all duration-200 rounded-xs shadow-md disabled:opacity-60 select-none cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-2 bg-[#221617] text-[#C49A5A] hover:bg-[#3D2628] hover:text-[#FAF7F2] text-[11px] font-semibold tracking-[0.22em] uppercase py-3.5 sm:py-4 transition-all duration-200 rounded-lg shadow-md disabled:opacity-60 select-none cursor-pointer"
             >
               <Search size={14} />
               <span>{status === 'loading' ? 'Locating Couture Shipment…' : 'Track Shipment Status'}</span>
@@ -297,7 +297,7 @@ export function TrackOrderClient() {
             <button
               type="button"
               onClick={handleLoadDemo}
-              className="px-4 py-3.5 border border-[#E8D8C8] bg-[#FAF7F2] hover:bg-[#F3ECE0] text-[#5C554E] hover:text-[#221617] text-[10.5px] uppercase tracking-wider font-semibold rounded-xs transition-colors cursor-pointer"
+              className="px-4 py-3.5 border border-[#E8D8C8] bg-[#FAF7F2] hover:bg-[#F3ECE0] text-[#5C554E] hover:text-[#221617] text-[10.5px] uppercase tracking-wider font-semibold rounded-lg transition-colors cursor-pointer"
             >
               View Sample Timeline
             </button>
@@ -307,7 +307,7 @@ export function TrackOrderClient() {
 
       {/* Not Found State */}
       {status === 'not-found' && (
-        <div className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-[0_4px_20px_rgba(34,22,23,0.05)] space-y-5 animate-fadeIn">
+        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-md space-y-5 animate-fadeIn">
           <div className="flex items-start gap-4">
             <div className="w-10 h-10 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 shrink-0">
               <AlertCircle size={20} />
@@ -316,7 +316,7 @@ export function TrackOrderClient() {
               <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#A67C52] block">
                 Atelier Lookup Status
               </span>
-              <h3 className="font-serif text-lg text-[#221617] uppercase tracking-wide">
+              <h3 className="font-sans font-semibold text-lg text-[#221617]">
                 No Record Found for #{orderNumber}
               </h3>
               <p className="text-xs text-[#6E6A66] leading-relaxed">
@@ -326,7 +326,7 @@ export function TrackOrderClient() {
             </div>
           </div>
 
-          <div className="bg-[#FAF7F2] p-4 rounded-xs border border-[#E8D8C8] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+          <div className="bg-[#FAF7F2] p-4 rounded-xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
             <div>
               <p className="font-semibold text-[#221617]">Need assistance locating your booking?</p>
               <p className="text-[#6E6A66] text-[11px] mt-0.5">
@@ -340,14 +340,14 @@ export function TrackOrderClient() {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#221617] text-[#C49A5A] hover:bg-[#3D2628] rounded-xs text-[10.5px] uppercase font-semibold tracking-wider transition-colors"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#221617] text-[#C49A5A] hover:bg-[#3D2628] rounded-lg text-[10.5px] uppercase font-semibold tracking-wider transition-colors"
               >
                 <MessageCircle size={13} />
                 <span>WhatsApp Concierge</span>
               </a>
               <a
                 href={`tel:${siteConfig.phone}`}
-                className="p-2 border border-[#E8D8C8] bg-white hover:bg-[#FAF7F2] rounded-xs text-[#221617] transition-colors"
+                className="p-2 border border-[#E8D8C8] bg-white hover:bg-[#FAF7F2] rounded-lg text-[#221617] transition-colors"
                 title="Call Support"
               >
                 <Phone size={14} />
@@ -359,7 +359,7 @@ export function TrackOrderClient() {
 
       {/* Live Result Stepper Card */}
       {status === 'found' && trackingData && (
-        <div className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-[0_4px_20px_rgba(34,22,23,0.05)] space-y-6 animate-fadeIn">
+        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-md space-y-6 animate-fadeIn">
           {/* Status Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#E8D8C8]">
             <div>
@@ -373,7 +373,7 @@ export function TrackOrderClient() {
                   </span>
                 )}
               </div>
-              <h3 className="font-serif text-2xl text-[#221617] uppercase tracking-wide">
+              <h3 className="font-sans font-bold text-2xl text-[#221617] uppercase tracking-wide">
                 {trackingData.orderId}
               </h3>
             </div>
@@ -388,7 +388,7 @@ export function TrackOrderClient() {
 
           {/* Quick Metrics Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-            <div className="bg-[#FAF7F2] p-4 rounded-xs border border-[#E8D8C8] flex flex-col justify-between">
+            <div className="bg-[#FAF7F2] p-4 rounded-xl shadow-sm flex flex-col justify-between">
               <div>
                 <span className="text-[11px] text-[#7D756C] uppercase tracking-wider font-semibold block mb-1">
                   Airway Bill (AWB) &amp; Carrier:
@@ -411,7 +411,7 @@ export function TrackOrderClient() {
               </div>
             </div>
 
-            <div className="bg-[#FAF7F2] p-4 rounded-xs border border-[#E8D8C8] flex flex-col justify-between">
+            <div className="bg-[#FAF7F2] p-4 rounded-xl shadow-sm flex flex-col justify-between">
               <div>
                 <span className="text-[11px] text-[#7D756C] uppercase tracking-wider font-semibold block mb-1">
                   Destination &amp; Delivery Window:
@@ -429,7 +429,7 @@ export function TrackOrderClient() {
 
           {/* Ordered Ensembles Preview if available */}
           {trackingData.items && trackingData.items.length > 0 && (
-            <div className="bg-[#FAF7F2] border border-[#E8D8C8] p-4 rounded-xs space-y-3">
+            <div className="bg-[#FAF7F2] rounded-xl shadow-sm p-4 space-y-3">
               <span className="text-[10.5px] font-semibold uppercase tracking-[0.2em] text-[#A67C52] block">
                 Ensemble Details ({trackingData.items.length} {trackingData.items.length === 1 ? 'Piece' : 'Pieces'})
               </span>
@@ -438,7 +438,7 @@ export function TrackOrderClient() {
                   <div key={idx} className="pt-2.5 pb-2.5 first:pt-0 last:pb-0 flex items-center justify-between gap-3 text-xs">
                     <div className="flex items-center gap-3">
                       {item.image ? (
-                        <div className="w-12 h-14 relative rounded-xs overflow-hidden border border-[#E8D8C8] shrink-0">
+                        <div className="w-12 h-14 relative rounded-lg overflow-hidden border border-[#E8D8C8] shrink-0">
                           <Image src={item.image} alt={item.name} fill className="object-cover" />
                         </div>
                       ) : (
@@ -468,9 +468,8 @@ export function TrackOrderClient() {
 
           {/* Milestone Stepper */}
           <div className="space-y-4 pt-2">
-            <h4 className="font-serif text-xs uppercase tracking-[0.2em] text-[#A67C52] flex items-center gap-2">
-              <span>✦</span>
-              <span>Milestone Progression</span>
+            <h4 className="font-sans font-bold text-xs uppercase tracking-[0.15em] text-[#A67C52]">
+              Milestone Progression
             </h4>
 
             <div className="relative pl-7 space-y-6 before:absolute before:left-3 before:top-2 before:bottom-2 before:w-[2px] before:bg-[#E8D8C8]">
@@ -511,7 +510,7 @@ export function TrackOrderClient() {
           </div>
 
           {/* Alteration Notice & Direct Concierge */}
-          <div className="bg-[#FAF7F2] border border-[#E8D8C8] p-4 rounded-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+          <div className="bg-[#FAF7F2] rounded-xl shadow-sm p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2 text-[#221617]">
               <ShieldCheck size={16} className="text-[#A67C52] shrink-0" />
               <span>Complimentary fit alterations available within 10 days of delivery.</span>
@@ -531,9 +530,9 @@ export function TrackOrderClient() {
       )}
 
       {/* Immediate Assistance Banner */}
-      <div className="bg-[#221617] text-white p-6 rounded-xs border border-[#C49A5A]/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+      <div className="bg-[#221617] text-white p-6 rounded-2xl shadow-md flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
         <div>
-          <p className="font-serif text-sm uppercase tracking-wider text-[#C49A5A] mb-1">
+          <p className="font-sans font-semibold text-sm uppercase tracking-wider text-[#C49A5A] mb-1">
             Need Immediate Dispatch Coordination?
           </p>
           <p className="text-white/70 text-[11px] leading-relaxed">
@@ -546,7 +545,7 @@ export function TrackOrderClient() {
           )}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-[#C49A5A] text-[#1A1011] hover:bg-[#FAF7F2] text-[10.5px] font-semibold uppercase tracking-[0.16em] px-5 py-2.5 rounded-xs transition-all shadow-xs flex items-center gap-1.5 shrink-0"
+          className="bg-[#C49A5A] text-[#1A1011] hover:bg-[#FAF7F2] text-[10.5px] font-semibold uppercase tracking-[0.16em] px-5 py-2.5 rounded-lg transition-all shadow-xs flex items-center gap-1.5 shrink-0"
         >
           <MessageCircle size={13} />
           <span>WhatsApp Concierge</span>

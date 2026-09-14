@@ -117,7 +117,7 @@ export function OrderPaymentReconcilePoller({
 
   if (status === 'paid') {
     return (
-      <div className="bg-emerald-50 border border-emerald-200 rounded-xs p-4 mb-6 text-left flex items-center justify-between gap-3">
+      <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6 text-left flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0">
             <CheckCircle2 size={16} />
@@ -140,7 +140,7 @@ export function OrderPaymentReconcilePoller({
 
   if (paymentMethod === 'razorpay') {
     return (
-      <div className="bg-amber-50/80 border border-amber-200 rounded-xs p-4 mb-6 text-left space-y-3">
+      <div className="bg-amber-50/80 border border-amber-200 rounded-lg p-4 mb-6 text-left space-y-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             {isPolling ? (

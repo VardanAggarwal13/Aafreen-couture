@@ -120,12 +120,6 @@ export default async function OccasionsPage() {
                 <span className="italic font-light text-[#A67C52]">Occasions</span>
               </h1>
 
-              <div className="flex items-center gap-2.5 my-2.5">
-                <div className="h-px w-10 bg-gradient-to-r from-[#C49A5A] to-transparent" />
-                <span className="text-[#C49A5A] text-xs">✦</span>
-                <div className="h-px w-10 bg-gradient-to-l from-[#C49A5A] to-transparent" />
-              </div>
-
               <p className="text-xs sm:text-[13px] text-[#5C554E] font-sans leading-relaxed mb-4 max-w-lg">
                 Find the perfect handcrafted couture look for every celebration — from intimate morning Haldi rituals and midnight Jago dances to dramatic royal wedding pheras and reception galas.
               </p>
@@ -169,7 +163,7 @@ export default async function OccasionsPage() {
             {/* Right Column: Balanced, Stable Haute Couture Showcase (4:3 Aspect Ratio) */}
             <div className="lg:col-span-6 xl:col-span-6 flex justify-center items-center">
               <div className="w-full max-w-[560px] mx-auto">
-                <div className="relative p-2.5 sm:p-3 bg-white/95 border border-[#E8D4BE] shadow-[0_16px_50px_rgba(34,22,23,0.08)] rounded-xs">
+                <div className="relative p-2.5 sm:p-3 bg-white/95 shadow-[0_16px_50px_rgba(34,22,23,0.08)] rounded-2xl">
                   {/* Inner Frame with 4:3 Stable Ratio (Matches exact 1200x896 dimensions, zero height overflow) */}
                   <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xs border border-[#C49A5A]/35 bg-[#FAF5EE]">
                     <Image
@@ -226,7 +220,7 @@ export default async function OccasionsPage() {
               Atelier Archive
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#221617] uppercase tracking-wide mb-2">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#221617] tracking-tight mb-2">
             The Seven Celebrations
           </h2>
           <p className="text-xs sm:text-sm text-[#6E6A66] leading-relaxed">
@@ -247,7 +241,7 @@ export default async function OccasionsPage() {
                 key={occ.href}
                 href={occ.href}
                 prefetch={true}
-                className="group relative overflow-hidden aspect-[3/4] rounded-xs border border-[#E8D8C8] shadow-2xs bg-[#1A0E0C] hover:border-[#C49A5A] transition-all duration-300"
+                className="group relative overflow-hidden aspect-[3/4] rounded-xl shadow-sm bg-[#1A0E0C] hover:shadow-md transition-all duration-300"
               >
                 <Image
                   src={occ.image}
@@ -264,7 +258,7 @@ export default async function OccasionsPage() {
                   <span className="text-[9.5px] uppercase font-semibold tracking-[0.2em] text-[#C49A5A] block mb-1">
                     {occ.tagline}
                   </span>
-                  <h3 className="text-white font-serif text-lg leading-tight uppercase tracking-wider mb-1.5">
+                  <h3 className="text-white font-sans font-semibold text-lg leading-tight mb-1.5">
                     {occ.label}
                   </h3>
                   <p className="text-white/75 text-[11px] font-sans leading-snug line-clamp-2 mb-3">
@@ -293,7 +287,7 @@ export default async function OccasionsPage() {
                 key={occ.href}
                 href={occ.href}
                 prefetch={true}
-                className="group relative overflow-hidden aspect-[4/3] sm:aspect-[16/11] rounded-xs border border-[#E8D8C8] shadow-2xs bg-[#1A0E0C] hover:border-[#C49A5A] transition-all duration-300"
+                className="group relative overflow-hidden aspect-[4/3] sm:aspect-[16/11] rounded-xl shadow-sm bg-[#1A0E0C] hover:shadow-md transition-all duration-300"
               >
                 <Image
                   src={occ.image}
@@ -310,7 +304,7 @@ export default async function OccasionsPage() {
                   <span className="text-[10px] uppercase font-semibold tracking-[0.22em] text-[#C49A5A] block mb-1">
                     {occ.tagline}
                   </span>
-                  <h3 className="text-white font-serif text-xl leading-tight uppercase tracking-wider mb-1.5">
+                  <h3 className="text-white font-sans font-semibold text-xl leading-tight mb-1.5">
                     {occ.label}
                   </h3>
                   <p className="text-white/80 text-xs font-sans leading-relaxed line-clamp-2 mb-3 max-w-md">
@@ -336,7 +330,7 @@ export default async function OccasionsPage() {
                 <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-[#C49A5A] block mb-1">
                   Spotlight 01 · Midnight Punjabi Revelry
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] uppercase tracking-wide">
+                <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] tracking-tight">
                   Jago Night Edit
                 </h2>
                 <p className="text-xs text-[#5C554E] mt-0.5">
@@ -371,7 +365,7 @@ export default async function OccasionsPage() {
                 <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-[#C49A5A] block mb-1">
                   Spotlight 02 · Sun-Drenched Joy
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] uppercase tracking-wide">
+                <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] tracking-tight">
                   The Haldi Ceremony
                 </h2>
                 <p className="text-xs text-[#5C554E] mt-0.5">
@@ -406,7 +400,7 @@ export default async function OccasionsPage() {
                 <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-[#C49A5A] block mb-1">
                   Spotlight 03 · Sacred Pheras & Heritage
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] uppercase tracking-wide">
+                <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] tracking-tight">
                   The Wedding Day
                 </h2>
                 <p className="text-xs text-[#5C554E] mt-0.5">
@@ -435,7 +429,7 @@ export default async function OccasionsPage() {
       {/* 7. Haute Couture Concierge Banner */}
       <section className="py-12 sm:py-16 bg-[#FAF7F2]">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative p-6 sm:p-10 lg:p-12 bg-white border border-[#E8D4BE] shadow-[0_10px_35px_rgba(34,22,23,0.06)] rounded-xs text-center">
+          <div className="relative p-6 sm:p-10 lg:p-12 bg-white shadow-[0_10px_35px_rgba(34,22,23,0.06)] rounded-2xl text-center">
             <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#FAF5EE] border border-[#C49A5A]/50 text-[#C49A5A] mb-3.5 mx-auto">
               <Sparkles size={18} />
             </div>

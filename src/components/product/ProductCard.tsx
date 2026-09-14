@@ -33,7 +33,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
       className={cn('group relative flex flex-col transition-all duration-300', className)}
     >
       {/* Image container */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-[#FAF7F2] border border-border rounded-xs shadow-2xs">
+      <div className="relative aspect-[4/5] overflow-hidden bg-[#FAF7F2] rounded-xl shadow-sm">
         <Link href={ROUTES.PRODUCT(product.slug)} className="block w-full h-full relative">
           <Image
             src={primaryImage}
@@ -57,12 +57,12 @@ export function ProductCard({ product, priority = false, className }: ProductCar
         {/* Badges */}
         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 items-start pointer-events-none">
           {discountPct && (
-            <span className="bg-gold text-white text-[9.5px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-xs">
+            <span className="bg-gold text-white text-[9.5px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-md">
               {discountPct}% Off
             </span>
           )}
           {product.isNewArrival && (
-            <span className="bg-heading text-surface text-[9.5px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-xs">
+            <span className="bg-heading text-surface text-[9.5px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-md">
               New
             </span>
           )}

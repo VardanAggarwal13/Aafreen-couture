@@ -3,6 +3,7 @@ import { ContactForm } from '@/features/contact/components/ContactForm';
 import { siteConfig } from '@/config/site.config';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { Mail, Phone, MessageCircle, Clock, MapPin, Sparkles, Calendar, ShieldCheck } from 'lucide-react';
+import { cmsRepository } from '@/server/repositories/cms.repository';
 
 export const metadata: Metadata = {
   title: 'Contact Us & Concierge | Aafreen Couture',
@@ -11,28 +12,32 @@ export const metadata: Metadata = {
   alternates: { canonical: `${siteConfig.url}/contact` },
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const cms = await cmsRepository.findBySlug('contact');
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
-        badge="✦ Aafreen Boutique Concierge"
-        title="Contact &amp; Concierge"
-        italicTitle="Personal Styling &amp; Trials"
-        subtitle="Whether you seek custom bridal alterations, virtual sizing guidance, or wedding trousseau consultations, our master stylists are dedicated to assisting you."
-        metaInfo="Amritsar Atelier Studio · Pan-India &amp; Worldwide Virtual Appointments"
+        badge={cms?.heroBadge ?? 'Aafreen Boutique Concierge'}
+        title={cms?.heroTitle ?? 'Contact & Concierge'}
+        italicTitle={cms?.heroItalicTitle ?? 'Personal Styling & Trials'}
+        subtitle={
+          cms?.heroSubtitle ??
+          'Whether you seek custom bridal alterations, virtual sizing guidance, or wedding trousseau consultations, our master stylists are dedicated to assisting you.'
+        }
+        metaInfo={cms?.heroMetaInfo ?? 'Amritsar Atelier Studio · Pan-India & Worldwide Virtual Appointments'}
       />
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Left Column: Direct Atelier Coordinates */}
           <div className="lg:col-span-5 space-y-6 font-sans">
-            <div className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)] space-y-6">
+            <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm space-y-6">
               <div className="border-b border-[#E8D8C8] pb-4">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#A67C52] block mb-1">
                   Connect Directly
                 </span>
-                <h2 className="font-serif text-xl sm:text-2xl text-[#221617] uppercase tracking-wide">
+                <h2 className="font-serif text-xl sm:text-2xl text-[#221617] tracking-tight">
                   Atelier Concierge
                 </h2>
               </div>
@@ -125,7 +130,7 @@ export default function ContactPage() {
             </div>
 
             {/* Turnaround Commitment Card */}
-            <div className="bg-[#221617] text-white p-5 sm:p-6 rounded-xs border border-[#C49A5A]/40 text-xs space-y-2.5 shadow-xs">
+            <div className="bg-[#221617] text-white p-5 sm:p-6 rounded-2xl text-xs space-y-2.5 shadow-md">
               <div className="flex items-center gap-2 text-[#C49A5A] font-semibold text-xs uppercase tracking-wider">
                 <Sparkles size={14} />
                 <span>Concierge Response Commitment</span>
@@ -138,12 +143,12 @@ export default function ContactPage() {
 
           {/* Right Column: Contact & Appointment Form */}
           <div className="lg:col-span-7">
-            <div className="bg-white border border-[#E8D8C8] p-6 sm:p-10 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)]">
+            <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-sm">
               <div className="border-b border-[#E8D8C8] pb-4 mb-6">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#A67C52] block mb-1">
                   Send An Enquiry
                 </span>
-                <h2 className="text-xl sm:text-2xl font-serif text-[#221617] uppercase tracking-wide">
+                <h2 className="text-xl sm:text-2xl font-serif text-[#221617] tracking-tight">
                   Write to Our Atelier
                 </h2>
                 <p className="text-xs sm:text-[13px] text-[#5C554E] mt-1 leading-relaxed">

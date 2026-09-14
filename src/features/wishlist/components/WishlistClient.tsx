@@ -107,7 +107,7 @@ export function WishlistClient() {
     return (
       <div className="space-y-16 pb-16">
         {/* Luxury Empty Hero Banner */}
-        <div className="relative overflow-hidden bg-surface border border-border/80 rounded-xs py-16 sm:py-20 px-6 text-center shadow-xs">
+        <div className="relative overflow-hidden bg-surface rounded-2xl py-16 sm:py-20 px-6 text-center shadow-md">
           <div className="max-w-xl mx-auto space-y-5">
             <div className="w-16 h-16 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center mx-auto text-gold shadow-xs">
               <Heart size={26} strokeWidth={1.5} />
@@ -137,7 +137,7 @@ export function WishlistClient() {
                 <Link
                   key={pill.label}
                   href={pill.href}
-                  className="px-3.5 py-1.5 text-[11px] uppercase tracking-wider font-medium border border-border text-heading bg-background/50 hover:bg-gold hover:text-white hover:border-gold transition-all rounded-xs"
+                  className="px-3.5 py-1.5 text-[11px] uppercase tracking-wider font-medium border border-border text-heading bg-background/50 hover:bg-gold hover:text-white hover:border-gold transition-all rounded-lg"
                 >
                   {pill.label} →
                 </Link>
@@ -147,7 +147,7 @@ export function WishlistClient() {
             <div className="pt-3">
               <Link
                 href={ROUTES.SHOP}
-                className="inline-flex items-center gap-2 bg-heading text-surface text-xs font-semibold uppercase tracking-[0.18em] px-8 py-3.5 rounded-xs hover:bg-gold transition-colors shadow-xs"
+                className="inline-flex items-center gap-2 bg-heading text-surface text-xs font-semibold uppercase tracking-[0.18em] px-8 py-3.5 rounded-lg hover:bg-gold transition-colors shadow-xs"
               >
                 Discover All Collections <ArrowRight size={14} />
               </Link>
@@ -196,8 +196,8 @@ export function WishlistClient() {
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4">
           <div>
-            <div className="flex items-center gap-2 text-gold text-[10.5px] font-semibold tracking-[0.22em] uppercase mb-1">
-              <span>✦</span> Atelier Curation
+            <div className="text-gold text-[10.5px] font-semibold tracking-[0.15em] uppercase mb-1">
+              Atelier Curation
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-heading">
               Your Saved Masterpieces
@@ -212,7 +212,7 @@ export function WishlistClient() {
             {/* Share Button */}
             <button
               onClick={handleShareWishlist}
-              className="inline-flex items-center gap-1.5 px-4 py-2 border border-border bg-surface text-heading hover:border-gold hover:text-gold text-xs font-medium uppercase tracking-wider rounded-xs transition-colors cursor-pointer shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-4 py-2 border border-border bg-surface text-heading hover:border-gold hover:text-gold text-xs font-medium uppercase tracking-wider rounded-lg transition-colors cursor-pointer shadow-2xs"
               title="Share Wishlist Link"
             >
               {isCopied ? <Check size={14} className="text-emerald-600" /> : <Share2 size={14} />}
@@ -222,7 +222,7 @@ export function WishlistClient() {
             {/* Move All to Bag */}
             <button
               onClick={handleMoveAllToBag}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-heading text-surface hover:bg-gold text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors cursor-pointer shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-heading text-surface hover:bg-gold text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors cursor-pointer shadow-2xs"
             >
               <ShoppingBag size={14} />
               <span>Move All to Bag</span>
@@ -231,7 +231,7 @@ export function WishlistClient() {
             {/* Clear Wishlist */}
             <button
               onClick={() => setShowClearConfirm(true)}
-              className="p-2 border border-border bg-surface text-text hover:text-red-600 hover:border-red-300 text-xs rounded-xs transition-colors cursor-pointer shadow-2xs"
+              className="p-2 border border-border bg-surface text-text hover:text-red-600 hover:border-red-300 text-xs rounded-lg transition-colors cursor-pointer shadow-2xs"
               title="Clear Wishlist"
               aria-label="Clear all items from wishlist"
             >
@@ -259,7 +259,7 @@ export function WishlistClient() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-surface border border-border max-w-sm w-full p-6 rounded-xs shadow-lg space-y-4"
+              className="bg-surface rounded-2xl max-w-sm w-full p-6 shadow-lg space-y-4"
             >
               <h3 className="font-serif text-lg text-heading">Clear your curation?</h3>
               <p className="text-xs text-text leading-relaxed">
@@ -268,7 +268,7 @@ export function WishlistClient() {
               <div className="flex items-center justify-end gap-2 pt-2">
                 <button
                   onClick={() => setShowClearConfirm(false)}
-                  className="px-4 py-2 text-xs font-medium text-heading hover:bg-background border border-border rounded-xs transition-colors cursor-pointer"
+                  className="px-4 py-2 text-xs font-medium text-heading hover:bg-background border border-border rounded-lg transition-colors cursor-pointer"
                 >
                   Keep Saved
                 </button>
@@ -278,7 +278,7 @@ export function WishlistClient() {
                     setShowClearConfirm(false);
                     toast.info('Wishlist cleared');
                   }}
-                  className="px-4 py-2 text-xs font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xs transition-colors cursor-pointer"
+                  className="px-4 py-2 text-xs font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors cursor-pointer"
                 >
                   Yes, Clear All
                 </button>
@@ -293,9 +293,9 @@ export function WishlistClient() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {ids.map((id) => (
             <div key={id} className="space-y-3">
-              <div className="aspect-[4/5] bg-surface border border-border/70 animate-pulse rounded-xs" />
-              <div className="h-4 bg-border/50 rounded-xs w-3/4 animate-pulse" />
-              <div className="h-3 bg-border/40 rounded-xs w-1/2 animate-pulse" />
+              <div className="aspect-[4/5] bg-surface border border-border/70 animate-pulse rounded-lg" />
+              <div className="h-4 bg-border/50 rounded-lg w-3/4 animate-pulse" />
+              <div className="h-3 bg-border/40 rounded-lg w-1/2 animate-pulse" />
             </div>
           ))}
         </div>
@@ -310,7 +310,7 @@ export function WishlistClient() {
               <div className="mt-3 pt-2.5 border-t border-border/60 flex flex-col gap-2">
                 <button
                   onClick={() => handleMoveToBag(product)}
-                  className="w-full py-2.5 bg-heading hover:bg-gold text-surface text-[10.5px] font-semibold tracking-[0.14em] uppercase transition-colors flex items-center justify-center gap-1.5 rounded-xs cursor-pointer shadow-2xs"
+                  className="w-full py-2.5 bg-heading hover:bg-gold text-surface text-[10.5px] font-semibold tracking-[0.14em] uppercase transition-colors flex items-center justify-center gap-1.5 rounded-lg cursor-pointer shadow-2xs"
                 >
                   <ShoppingBag size={13} />
                   <span>Move to Bag</span>
@@ -333,7 +333,7 @@ export function WishlistClient() {
       )}
 
       {/* Bridal Concierge Assistance Banner */}
-      <div className="bg-surface border border-border/80 rounded-xs p-6 sm:p-8 lg:p-10 shadow-2xs mt-14">
+      <div className="bg-surface rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm mt-14">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center lg:text-left">
             <div className="flex items-center justify-center lg:justify-start gap-2 text-gold text-xs font-semibold tracking-widest uppercase">
@@ -352,7 +352,7 @@ export function WishlistClient() {
           <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
             <Link
               href={ROUTES.CONTACT}
-              className="px-5 py-3 bg-heading hover:bg-gold text-surface text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors flex items-center gap-2 shadow-xs"
+              className="px-5 py-3 bg-heading hover:bg-gold text-surface text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 shadow-xs"
             >
               <Phone size={14} />
               <span>Book Consultation</span>
@@ -362,7 +362,7 @@ export function WishlistClient() {
               href="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture,%20I%20need%20assistance%20with%20my%20wishlist%20trousseau."
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-3 border border-border bg-background hover:border-gold hover:text-gold text-heading text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors flex items-center gap-2"
+              className="px-5 py-3 border border-border bg-background hover:border-gold hover:text-gold text-heading text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2"
             >
               <MessageCircle size={14} className="text-emerald-700" />
               <span>WhatsApp Atelier</span>

@@ -96,10 +96,10 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
       )}
     >
       {/* Brand Header */}
-      <div className="px-5 h-16 flex items-center justify-between border-b border-[#DDD2C5] shrink-0 bg-[#EAE2D7]/50">
+      <div className="px-3.5 h-14 flex items-center justify-between border-b border-[#DDD2C5] shrink-0 bg-[#EAE2D7]/50">
         <div>
           <Link href="/admin" className="block" onClick={onClose}>
-            <p className="font-serif text-base tracking-[0.18em] text-[#2E221C] uppercase font-semibold">
+            <p className="font-sans text-base tracking-tight text-[#2E221C] font-semibold">
               Aafreen
             </p>
             <p className="text-[8.5px] tracking-[0.35em] text-[#C9A86A] uppercase font-semibold mt-0.5">
@@ -129,10 +129,10 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 overflow-y-auto py-4 space-y-5 px-3">
+      <nav className="flex-1 overflow-y-auto py-2.5 space-y-4 px-2.5">
         {NAV_GROUPS.map(({ label, items }) => (
           <div key={label}>
-            <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#8A6A55] px-2 mb-1.5 font-sans">
+            <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#8A6A55] px-2 mb-1 font-sans">
               {label}
             </p>
             <div className="space-y-0.5">
@@ -146,7 +146,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
                     href={href}
                     onClick={onClose}
                     className={cn(
-                      'flex items-center gap-2.5 px-2.5 py-2 rounded-xs text-[12.5px] font-medium transition-all group font-sans',
+                      'flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[12.5px] font-medium transition-all group font-sans',
                       active
                         ? 'bg-[#C9A86A]/20 text-[#9E7B3A] font-semibold shadow-xs border-l-2 border-[#C9A86A]'
                         : 'text-[#2E221C]/80 hover:text-[#2E221C] hover:bg-white/70'
@@ -168,7 +168,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
       </nav>
 
       {/* Bottom Status Strip */}
-      <div className="px-5 py-3.5 border-t border-[#DDD2C5] shrink-0 bg-[#EAE2D7]/40">
+      <div className="px-3.5 py-2 border-t border-[#DDD2C5] shrink-0 bg-[#EAE2D7]/40">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />

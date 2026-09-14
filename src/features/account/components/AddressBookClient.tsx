@@ -172,7 +172,7 @@ export function AddressBookClient() {
         </div>
         <button
           onClick={openAddModal}
-          className="inline-flex items-center gap-2 bg-[#221617] text-white px-5 py-2.5 text-xs font-semibold uppercase tracking-wider hover:bg-[#A67C52] transition-colors rounded-xs shadow-xs"
+          className="inline-flex items-center gap-2 bg-[#221617] text-white px-5 py-2.5 text-xs font-semibold uppercase tracking-wider hover:bg-[#A67C52] transition-colors rounded-lg shadow-xs"
         >
           <Plus size={15} /> Add New Address
         </button>
@@ -183,7 +183,7 @@ export function AddressBookClient() {
           Loading your addresses…
         </div>
       ) : addresses.length === 0 ? (
-        <div className="bg-white border border-[#E8D8C8] p-10 text-center rounded-xs shadow-xs">
+        <div className="bg-white p-10 text-center rounded-2xl shadow-sm">
           <div className="w-12 h-12 rounded-full bg-[#FAF7F2] border border-[#E8D8C8] text-[#A67C52] flex items-center justify-center mx-auto mb-4">
             <MapPin size={22} />
           </div>
@@ -193,7 +193,7 @@ export function AddressBookClient() {
           </p>
           <button
             onClick={openAddModal}
-            className="inline-flex items-center gap-2 bg-[#A67C52] text-white text-xs font-semibold tracking-wider uppercase px-6 py-2.5 hover:bg-[#221617] transition-colors rounded-xs"
+            className="inline-flex items-center gap-2 bg-[#A67C52] text-white text-xs font-semibold tracking-wider uppercase px-6 py-2.5 hover:bg-[#221617] transition-colors rounded-lg"
           >
             <Plus size={14} /> Add Address
           </button>
@@ -203,7 +203,7 @@ export function AddressBookClient() {
           {addresses.map((addr) => (
             <div
               key={addr._id}
-              className={`bg-white border rounded-xs p-5 relative transition-all shadow-xs ${
+              className={`bg-white border rounded-lg p-5 relative transition-all shadow-sm ${
                 addr.isDefault
                   ? 'border-[#A67C52] ring-1 ring-[#A67C52]/20'
                   : 'border-[#E8D8C8] hover:border-[#A67C52]/50'
@@ -211,11 +211,11 @@ export function AddressBookClient() {
             >
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-serif text-sm font-semibold text-[#221617]">
+                  <h3 className="font-sans text-sm font-semibold text-[#221617]">
                     {addr.name}
                   </h3>
                   {addr.isDefault && (
-                    <span className="inline-flex items-center gap-1 text-[9.5px] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#FAF7F2] text-[#A67C52] border border-[#E8D8C8] rounded-xs">
+                    <span className="inline-flex items-center gap-1 text-[9.5px] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#FAF7F2] text-[#A67C52] border border-[#E8D8C8] rounded-lg">
                       <CheckCircle2 size={10} /> Default
                     </span>
                   )}
@@ -265,7 +265,7 @@ export function AddressBookClient() {
       {/* Address Form Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white border border-[#E8D8C8] rounded-xs w-full max-w-lg shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-2xl w-full max-w-lg shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="p-5 border-b border-[#E8D8C8] flex items-center justify-between bg-[#FAF7F2]">
               <h2 className="font-serif text-lg text-[#221617]">
                 {editingId ? 'Edit Delivery Address' : 'Add New Delivery Address'}
@@ -290,7 +290,7 @@ export function AddressBookClient() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="e.g. Priya Sharma"
-                    className="w-full px-3 py-2 border border-[#E8D8C8] rounded-xs focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
+                    className="w-full px-3 py-2 border border-[#E8D8C8] rounded-lg focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
                   />
                 </div>
 
@@ -304,7 +304,7 @@ export function AddressBookClient() {
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="10-digit mobile"
-                    className="w-full px-3 py-2 border border-[#E8D8C8] rounded-xs focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
+                    className="w-full px-3 py-2 border border-[#E8D8C8] rounded-lg focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
                   />
                 </div>
               </div>
@@ -319,7 +319,7 @@ export function AddressBookClient() {
                   value={formData.line1}
                   onChange={(e) => setFormData({ ...formData, line1: e.target.value })}
                   placeholder="House / Flat No., Road, Landmark"
-                  className="w-full px-3 py-2 border border-[#E8D8C8] rounded-xs focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
+                  className="w-full px-3 py-2 border border-[#E8D8C8] rounded-lg focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
                 />
               </div>
 
@@ -332,7 +332,7 @@ export function AddressBookClient() {
                   value={formData.line2}
                   onChange={(e) => setFormData({ ...formData, line2: e.target.value })}
                   placeholder="Colony, Sector, or Landmark"
-                  className="w-full px-3 py-2 border border-[#E8D8C8] rounded-xs focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
+                  className="w-full px-3 py-2 border border-[#E8D8C8] rounded-lg focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
                 />
               </div>
 
@@ -347,7 +347,7 @@ export function AddressBookClient() {
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     placeholder="City"
-                    className="w-full px-3 py-2 border border-[#E8D8C8] rounded-xs focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
+                    className="w-full px-3 py-2 border border-[#E8D8C8] rounded-lg focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
                   />
                 </div>
 
@@ -358,7 +358,7 @@ export function AddressBookClient() {
                   <select
                     value={formData.state}
                     onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                    className="w-full px-2.5 py-2 border border-[#E8D8C8] rounded-xs focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
+                    className="w-full px-2.5 py-2 border border-[#E8D8C8] rounded-lg focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
                   >
                     {INDIAN_STATES.map((st) => (
                       <option key={st} value={st}>{st}</option>
@@ -377,7 +377,7 @@ export function AddressBookClient() {
                     value={formData.pincode}
                     onChange={(e) => setFormData({ ...formData, pincode: e.target.value.replace(/\D/g, '') })}
                     placeholder="e.g. 110001"
-                    className="w-full px-3 py-2 border border-[#E8D8C8] rounded-xs focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
+                    className="w-full px-3 py-2 border border-[#E8D8C8] rounded-lg focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
                   />
                 </div>
               </div>
@@ -388,7 +388,7 @@ export function AddressBookClient() {
                   id="isDefault"
                   checked={formData.isDefault}
                   onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
-                  className="rounded-xs border-[#E8D8C8] text-[#A67C52] focus:ring-[#A67C52]"
+                  className="rounded-lg border-[#E8D8C8] text-[#A67C52] focus:ring-[#A67C52]"
                 />
                 <label htmlFor="isDefault" className="text-xs text-[#221617] cursor-pointer">
                   Make this my default shipping address
@@ -399,14 +399,14 @@ export function AddressBookClient() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 border border-[#E8D8C8] text-[#6E6A66] hover:text-[#221617] rounded-xs transition-colors"
+                  className="px-4 py-2 border border-[#E8D8C8] text-[#6E6A66] hover:text-[#221617] rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-6 py-2 bg-[#221617] text-white font-semibold uppercase tracking-wider hover:bg-[#A67C52] rounded-xs transition-colors disabled:opacity-50"
+                  className="px-6 py-2 bg-[#221617] text-white font-semibold uppercase tracking-wider hover:bg-[#A67C52] rounded-lg transition-colors disabled:opacity-50"
                 >
                   {submitting ? 'Saving…' : editingId ? 'Update Address' : 'Save Address'}
                 </button>

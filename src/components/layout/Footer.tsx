@@ -59,7 +59,7 @@ function StorefrontFooter() {
           <p className="text-[10.5px] font-semibold uppercase tracking-[0.3em] text-gold mb-1.5">
             The Atelier Newsletter
           </p>
-          <h2 className="font-serif text-2xl sm:text-3xl text-heading uppercase tracking-wide mb-2">
+          <h2 className="font-serif text-2xl sm:text-3xl text-heading tracking-tight mb-2">
             Join The World of Aafreen Couture
           </h2>
           <p className="text-xs sm:text-sm text-text max-w-md mx-auto mb-6 leading-relaxed font-sans">
@@ -75,11 +75,11 @@ function StorefrontFooter() {
                 placeholder="Enter your email address"
                 aria-label="Email address"
                 required
-                className="flex-1 bg-surface border border-border px-4 py-2.5 text-xs text-heading placeholder:text-text/60 rounded-xs focus:outline-none focus:border-gold transition-colors"
+                className="flex-1 bg-surface border border-border px-4 py-2.5 text-xs text-heading placeholder:text-text/60 rounded-lg focus:outline-none focus:border-gold transition-colors"
               />
               <button
                 type="submit"
-                className="bg-heading hover:bg-gold text-surface text-[11px] font-semibold uppercase tracking-[0.2em] px-6 py-2.5 rounded-xs transition-colors flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
+                className="bg-heading hover:bg-gold text-surface text-[11px] font-semibold uppercase tracking-[0.2em] px-6 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
               >
                 <span>Subscribe</span>
                 <ArrowRight size={13} />
@@ -229,7 +229,6 @@ function StorefrontFooter() {
             <Link href="/terms" className="hover:text-gold transition-colors">Terms of Service</Link>
             <Link href="/returns-policy" className="hover:text-gold transition-colors">Exchange &amp; Refund</Link>
             <Link href="/shipping-policy" className="hover:text-gold transition-colors">Shipping Policy</Link>
-            <Link href="/admin" className="hover:text-gold transition-colors text-text/50">Admin Portal</Link>
           </div>
 
           <div className="flex items-center gap-3">

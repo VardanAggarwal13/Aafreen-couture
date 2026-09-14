@@ -57,7 +57,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
     <div className="min-h-[80vh] bg-background py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-2xl mx-auto">
         {/* Main Confirmation Card */}
-        <div className="bg-surface border border-border rounded-xs p-6 sm:p-10 shadow-2xs text-center relative overflow-hidden">
+        <div className="bg-surface rounded-2xl p-6 sm:p-10 shadow-md text-center relative overflow-hidden">
           {/* Subtle top gold accent bar */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/50 via-gold to-gold/50" />
 
@@ -69,7 +69,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
           <span className="inline-block text-[10.5px] uppercase font-bold tracking-[0.35em] text-gold mb-2">
             Aafreen Atelier Confirmation
           </span>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-heading uppercase tracking-wide mb-3">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-heading tracking-tight mb-3">
             {isRazorpay && !isPaid ? 'Payment In Verification' : 'Thank You · Order Placed!'}
           </h1>
           <p className="text-xs sm:text-sm text-text max-w-md mx-auto leading-relaxed mb-6">
@@ -88,13 +88,13 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
           )}
 
           {/* Order Reference & Payment Status Badge */}
-          <div className="bg-background border border-border p-4 sm:p-5 rounded-xs mb-8 text-left space-y-3">
+          <div className="bg-background border border-border p-4 sm:p-5 rounded-lg mb-8 text-left space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
               <div>
                 <span className="text-[10px] uppercase font-semibold text-text/70 tracking-wider block">
                   Order Reference
                 </span>
-                <span className="text-base sm:text-lg font-serif font-bold text-heading tracking-wider">
+                <span className="text-base sm:text-lg font-sans font-bold text-heading tracking-wider">
                   #{orderNumber}
                 </span>
               </div>
@@ -197,7 +197,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
               href={`https://wa.me/${siteConfig.whatsapp}?text=${whatsappMsg}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full bg-[#1B7F49] hover:bg-[#15673B] text-white py-3.5 px-6 text-xs sm:text-sm font-semibold uppercase tracking-wider rounded-xs transition-colors flex items-center justify-center gap-2 shadow-sm"
+              className="w-full bg-[#1B7F49] hover:bg-[#15673B] text-white py-3.5 px-6 text-xs sm:text-sm font-semibold uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
               <MessageCircle size={16} />
               <span>Confirm Instantly on WhatsApp (+91 95179 01117)</span>
@@ -206,14 +206,14 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Link
                 href={`/track-order?orderId=${encodeURIComponent(orderNumber)}`}
-                className="bg-heading hover:bg-gold text-surface py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors flex items-center justify-center gap-1.5"
+                className="bg-heading hover:bg-gold text-surface py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>Track Order Live</span>
                 <ArrowRight size={13} />
               </Link>
               <Link
                 href={ROUTES.SHOP}
-                className="border border-border text-heading hover:border-gold hover:text-gold py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors flex items-center justify-center"
+                className="border border-border text-heading hover:border-gold hover:text-gold py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center"
               >
                 Continue Shopping
               </Link>

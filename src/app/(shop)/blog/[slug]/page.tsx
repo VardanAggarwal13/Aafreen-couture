@@ -95,7 +95,7 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
-        <div className="relative aspect-[16/9] overflow-hidden rounded-xs border border-[#E8D8C8] mb-12 shadow-2xs">
+        <div className="relative aspect-[16/9] overflow-hidden rounded-2xl mb-12 shadow-sm">
           <Image
             src={post.image}
             alt={post.title}
@@ -119,8 +119,8 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         {/* CTA Banner */}
-        <div className="max-w-2xl mx-auto mt-14 p-8 bg-[#FAF7F2] border border-[#E8D8C8] text-center rounded-xs">
-          <h3 className="font-serif text-xl text-[#221617] mb-2 uppercase tracking-wide">
+        <div className="max-w-2xl mx-auto mt-14 p-8 bg-[#FAF7F2] text-center rounded-2xl shadow-sm">
+          <h3 className="font-sans font-semibold text-xl text-[#221617] mb-2">
             Book a Personal Bridal Consultation
           </h3>
           <p className="text-xs text-[#6E6A66] mb-5 font-sans">
@@ -128,7 +128,7 @@ export default async function BlogPostPage({ params }: Props) {
           </p>
           <Link
             href="/contact"
-            className="inline-block bg-[#221617] text-white text-[10.5px] font-semibold tracking-[0.25em] uppercase px-8 py-3 hover:bg-[#A67C52] transition-colors rounded-xs"
+            className="inline-block bg-[#221617] text-white text-[10.5px] font-semibold tracking-[0.25em] uppercase px-8 py-3 hover:bg-[#A67C52] transition-colors rounded-lg"
           >
             Schedule Atelier Visit
           </Link>
@@ -137,7 +137,7 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Related Posts */}
         {related.length > 0 && (
           <div className="mt-16 pt-12 border-t border-[#E8D8C8]">
-            <h3 className="font-serif text-xl text-[#221617] mb-8 uppercase tracking-wider text-center">
+            <h3 className="font-sans font-semibold text-xl text-[#221617] mb-8 text-center">
               More From The Journal
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -145,9 +145,9 @@ export default async function BlogPostPage({ params }: Props) {
                 <Link
                   key={r.slug}
                   href={`/blog/${r.slug}`}
-                  className="group flex gap-4 p-4 bg-[#FAF7F2] border border-[#E8D8C8] rounded-xs hover:border-[#A67C52] transition-colors"
+                  className="group flex gap-4 p-4 bg-[#FAF7F2] rounded-xl shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <div className="relative w-24 h-24 shrink-0 rounded-xs overflow-hidden">
+                  <div className="relative w-24 h-24 shrink-0 rounded-lg overflow-hidden">
                     <Image src={r.image} alt={r.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex flex-col justify-center">

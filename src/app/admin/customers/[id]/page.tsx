@@ -15,14 +15,14 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
 
   if (!user) {
     return (
-      <div className="p-6 lg:p-8 space-y-6 max-w-4xl">
+      <div className="space-y-4 max-w-4xl mx-auto">
         <Link href="/admin/customers" className="inline-flex items-center gap-1.5 text-xs text-[#8A6A55] hover:text-[#2E221C] transition-colors font-medium">
           <ArrowLeft size={13} /> Back to Customer Directory
         </Link>
-        <div className="bg-white border border-[#DDD2C5] p-6 rounded-xl shadow-sm">
+        <div className="bg-white p-4 rounded-xl shadow-sm">
           <h1 className="text-xl font-serif text-[#2E221C]">Customer Record</h1>
           <p className="text-xs text-[#8A6A55] mt-1 font-mono">ID: {id}</p>
-          <div className="mt-4 p-4 bg-[#FAF7F2] border border-[#DDD2C5] text-xs text-[#8A6A55] rounded-lg">
+          <div className="mt-3 p-4 bg-[#FAF7F2] border border-[#DDD2C5] text-xs text-[#8A6A55] rounded-lg">
             Registered customer account active in store directory.
           </div>
         </div>
@@ -33,14 +33,14 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
   const { items: orders } = await orderRepository.findByUserId(id, 1, 20);
 
   return (
-    <div className="p-6 lg:p-8 space-y-6 max-w-5xl">
+    <div className="space-y-4 max-w-5xl mx-auto">
       <Link href="/admin/customers" className="inline-flex items-center gap-1.5 text-xs text-[#8A6A55] hover:text-[#2E221C] transition-colors font-medium">
         <ArrowLeft size={13} /> Back to Customer Directory
       </Link>
 
-      <div className="bg-white border border-[#DDD2C5] p-6 sm:p-8 rounded-xl shadow-sm space-y-6">
+      <div className="bg-white p-4 sm:p-5 rounded-xl shadow-sm space-y-4">
         <div className="flex items-start justify-between pb-5 border-b border-[#DDD2C5]">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="w-14 h-14 rounded-full bg-[#FAF7F2] text-[#2E221C] border border-[#DDD2C5] flex items-center justify-center font-serif font-bold text-xl shadow-xs">
               {user.name?.[0]?.toUpperCase() || 'C'}
             </div>
@@ -57,7 +57,7 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <div className="p-4 bg-[#FAF7F2] border border-[#DDD2C5] rounded-xl space-y-1">
             <div className="flex items-center gap-1.5 text-[#8A6A55]">
               <Mail size={14} /> Email Address
@@ -87,7 +87,7 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
           </h2>
 
           {orders.length === 0 ? (
-            <p className="text-xs text-[#8A6A55] p-6 bg-[#FAF7F2] border border-[#DDD2C5] rounded-xl text-center">
+            <p className="text-xs text-[#8A6A55] p-4 bg-[#FAF7F2] border border-[#DDD2C5] rounded-xl text-center">
               No bespoke orders placed yet.
             </p>
           ) : (
@@ -95,25 +95,25 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
               <table className="w-full text-xs">
                 <thead>
                   <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5] text-[#8A6A55] text-[10px] uppercase tracking-wider font-semibold">
-                    <th className="text-left px-5 py-3">Order #</th>
-                    <th className="text-left px-5 py-3">Date</th>
-                    <th className="text-left px-5 py-3">Total Amount</th>
-                    <th className="text-left px-5 py-3">Fulfillment Status</th>
-                    <th className="text-right px-5 py-3">Action</th>
+                    <th className="text-left px-5 py-2.5">Order #</th>
+                    <th className="text-left px-5 py-2.5">Date</th>
+                    <th className="text-left px-5 py-2.5">Total Amount</th>
+                    <th className="text-left px-5 py-2.5">Fulfillment Status</th>
+                    <th className="text-right px-5 py-2.5">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#EAE2D7]">
                   {orders.map((order) => (
                     <tr key={String(order._id)} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                      <td className="px-5 py-3.5 font-mono font-semibold text-[#2E221C]">#{order.orderNumber}</td>
-                      <td className="px-5 py-3.5 text-[#8A6A55]">{new Date(order.createdAt).toLocaleDateString('en-IN')}</td>
-                      <td className="px-5 py-3.5 text-[#2E221C] font-semibold">{formatPrice(order.total)}</td>
-                      <td className="px-5 py-3.5">
+                      <td className="px-5 py-2.5 font-mono font-semibold text-[#2E221C]">#{order.orderNumber}</td>
+                      <td className="px-5 py-2.5 text-[#8A6A55]">{new Date(order.createdAt).toLocaleDateString('en-IN')}</td>
+                      <td className="px-5 py-2.5 text-[#2E221C] font-semibold">{formatPrice(order.total)}</td>
+                      <td className="px-5 py-2.5">
                         <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                           {order.status}
                         </span>
                       </td>
-                      <td className="px-5 py-3.5 text-right">
+                      <td className="px-5 py-2.5 text-right">
                         <Link href={`/admin/orders/${order._id}`} className="text-[#C9A86A] hover:text-[#B89350] hover:underline font-semibold">
                           View Order
                         </Link>

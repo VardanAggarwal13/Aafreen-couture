@@ -44,8 +44,9 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.22, duration: 0.7 }}
-              className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal leading-[1.08] uppercase tracking-[0.08em] sm:tracking-[0.1em] mb-5 sm:mb-6 lg:mb-7 drop-shadow-md"
+              className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal leading-[1.08] tracking-tight mb-5 sm:mb-6 lg:mb-7 drop-shadow-md"
             >
+              <span className="sr-only">Aafreen Couture Bridal Lehengas &amp; Designer Suits — </span>
               The Bridal<br />Edit
             </motion.h1>
 

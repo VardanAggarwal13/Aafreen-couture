@@ -10,7 +10,7 @@ interface InfoHeroBannerProps {
 }
 
 export function InfoHeroBanner({
-  badge = '✦ Aafreen Atelier Client Care',
+  badge = 'Aafreen Atelier Client Care',
   title,
   italicTitle,
   subtitle,
@@ -50,10 +50,10 @@ export function InfoHeroBanner({
         )}
 
         {/* Main Title with Editorial Serif & Italic */}
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-[#221617] tracking-tight uppercase leading-tight">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-[#221617] tracking-tight leading-tight">
           {title}{' '}
           {italicTitle && (
-            <span className="font-serif italic capitalize lowercase font-normal text-[#A67C52] block sm:inline">
+            <span className="font-serif italic font-normal text-[#A67C52] block sm:inline">
               &amp; {italicTitle}
             </span>
           )}

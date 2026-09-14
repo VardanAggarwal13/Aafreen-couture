@@ -88,7 +88,7 @@ function ChapterShelf({
                 Couture Archive
               </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#221617] uppercase tracking-wide">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#221617] tracking-tight">
               {chapter.title}
             </h2>
             <p className="text-xs sm:text-sm text-[#5C554E] mt-1 font-sans max-w-2xl leading-relaxed">
@@ -111,14 +111,14 @@ function ChapterShelf({
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-6">
             {Array.from({ length: 4 }, (_, i) => (
               <div key={i} className="flex flex-col gap-3">
-                <div className="aspect-[3/4] bg-white/70 border border-[#E8D8C8] rounded-xs animate-pulse" />
+                <div className="aspect-[3/4] bg-white/70 border border-[#E8D8C8] rounded-lg animate-pulse" />
                 <div className="h-3 bg-[#E8D8C8]/60 rounded animate-pulse w-3/4" />
                 <div className="h-3 bg-[#E8D8C8]/40 rounded animate-pulse w-1/3" />
               </div>
             ))}
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-14 bg-white/80 border border-[#E8D8C8] rounded-xs p-8 max-w-lg mx-auto shadow-2xs">
+          <div className="text-center py-14 bg-white/80 rounded-2xl p-8 max-w-lg mx-auto shadow-sm">
             <p className="text-sm text-[#5C554E] font-serif italic">
               New heirloom ensembles arriving shortly for {chapter.title}.
             </p>
@@ -199,12 +199,6 @@ export function CategoryHubView({
                 )}
               </h1>
 
-              {/* Gold Diamond Accent Divider */}
-              <div className="flex items-center gap-2.5 my-2">
-                <div className="h-px w-8 bg-gradient-to-r from-[#C49A5A] to-transparent" />
-                <span className="text-[#C49A5A] text-xs">✦</span>
-                <div className="h-px w-8 bg-gradient-to-l from-[#C49A5A] to-transparent" />
-              </div>
 
               {/* Narrative Subtitle */}
               <p className="text-xs sm:text-[12.5px] text-[#5C554E] font-sans leading-relaxed mb-3.5 max-w-lg">
@@ -249,7 +243,7 @@ export function CategoryHubView({
 
             {/* Right Side: Museum-Grade Framed Picture Showcase (Zero Navbar Merging) */}
             <div className="lg:col-span-6 xl:col-span-7">
-              <div className="relative p-2.5 sm:p-3.5 bg-white/95 border border-[#E8D4BE] shadow-[0_12px_40px_rgba(34,22,23,0.08)] rounded-xs">
+              <div className="relative p-2.5 sm:p-3.5 bg-white/95 shadow-[0_12px_40px_rgba(34,22,23,0.08)] rounded-2xl">
                 <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/11] overflow-hidden rounded-2xs border border-[#C49A5A]/35 bg-[#FAF5EE]">
                   <Image
                     src={heroImage}
@@ -331,18 +325,13 @@ export function CategoryHubView({
           <section id="bridal-occasions" className="py-10 sm:py-12 lg:py-14 bg-[#1F1210] text-[#FAF5EE] scroll-mt-28">
             <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
               <div className="text-center max-w-xl mx-auto mb-6 sm:mb-8">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-[#C49A5A]">
-                  ✦ The Milestone Gallery ✦
+                <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#C49A5A]">
+                  The Milestone Gallery
                 </span>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#FAF5EE] uppercase tracking-wide mt-1.5">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#FAF5EE] tracking-tight mt-1.5">
                   Shop By Bridal Occasion
                 </h2>
-                <div className="flex items-center justify-center gap-2.5 my-2.5">
-                  <div className="h-px w-8 bg-gradient-to-r from-[#C49A5A] to-transparent" />
-                  <span className="text-[#C49A5A] text-xs">✦</span>
-                  <div className="h-px w-8 bg-gradient-to-l from-[#C49A5A] to-transparent" />
-                </div>
-                <p className="text-xs sm:text-sm text-[#FAF5EE]/70 font-sans">
+                <p className="text-xs sm:text-sm text-[#FAF5EE]/70 font-sans mt-2">
                   From golden Haldi celebrations to magnificent midnight reception ballgowns.
                 </p>
               </div>
@@ -353,7 +342,7 @@ export function CategoryHubView({
                     key={occ.href}
                     href={occ.href}
                     prefetch={true}
-                    className="group relative overflow-hidden aspect-[3/4] rounded-xs border border-[#C49A5A]/30 shadow-md bg-[#140B0A]"
+                    className="group relative overflow-hidden aspect-[3/4] rounded-xl shadow-md bg-[#140B0A]"
                   >
                     <Image
                       src={occ.image}
@@ -364,7 +353,7 @@ export function CategoryHubView({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#140B0A]/95 via-[#140B0A]/30 to-transparent" />
                     <div className="absolute bottom-0 inset-x-0 p-3 sm:p-3.5 text-center">
-                      <h3 className="text-white font-serif text-sm uppercase tracking-wider group-hover:text-[#E8D4BE] transition-colors">
+                      <h3 className="text-white font-sans font-semibold text-sm group-hover:text-[#E8D4BE] transition-colors">
                         {occ.label}
                       </h3>
                       <p className="text-[9px] text-[#C49A5A] uppercase tracking-widest mt-0.5 font-semibold">
@@ -385,7 +374,7 @@ export function CategoryHubView({
         <section className="py-10 sm:py-12 lg:py-14 bg-[#140B0A] text-white border-t border-[#C49A5A]/20">
           <div className="max-w-3xl mx-auto px-6 text-center space-y-4">
             <div className="inline-flex items-center gap-1.5 border border-[#C49A5A]/40 px-3.5 py-1 rounded-full text-[9.5px] uppercase tracking-[0.25em] text-[#C49A5A] font-semibold">
-              ✦ Made-To-Measure Experience
+              Made-To-Measure Experience
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif tracking-tight text-[#FAF5EE]">
               Bespoke Couture Consultation

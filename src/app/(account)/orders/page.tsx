@@ -6,9 +6,16 @@ import { auth } from '@/lib/auth';
 import { orderService } from '@/server/services/order.service';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
+import { Pagination } from '@/components/common/Pagination';
 import type { IOrder, IOrderItem } from '@/models/Order';
 
 export const metadata = { title: 'My Orders | Aafreen Couture' };
+
+const PAGE_SIZE = 10;
+
+interface Props {
+  searchParams: Promise<{ page?: string }>;
+}
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'bg-amber-50 text-amber-800 border border-amber-200',
@@ -23,16 +30,21 @@ const STATUS_COLORS: Record<string, string> = {
   refunded: 'bg-stone-100 text-stone-700 border border-stone-200',
 };
 
-export default async function OrdersPage() {
+export default async function OrdersPage({ searchParams }: Props) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
     redirect('/login?redirect=%2Forders');
   }
 
+  const params = await searchParams;
+  const page = Math.max(1, Number(params.page) || 1);
+
   let orders: IOrder[] = [];
+  let totalPages = 1;
   try {
-    const res = await orderService.getUserOrders(session.user.id, 1, session.user.email);
+    const res = await orderService.getUserOrders(session.user.id, page, session.user.email);
     orders = res.items || [];
+    totalPages = Math.max(1, Math.ceil((res.total ?? 0) / PAGE_SIZE));
   } catch (err) {
     console.error('Failed to load user orders:', err);
   }
@@ -42,13 +54,13 @@ export default async function OrdersPage() {
       <h1 className="text-2xl sm:text-3xl font-serif text-heading">My Orders</h1>
 
       {orders.length === 0 ? (
-        <div className="text-center py-16 bg-surface border border-border rounded-xs shadow-2xs">
+        <div className="text-center py-16 bg-surface rounded-2xl shadow-sm">
           <Package size={44} className="text-text/60 mx-auto mb-3" />
           <p className="text-base text-heading font-semibold mb-1">No orders yet</p>
           <p className="text-xs text-text mb-4">Your placed orders and delivery trackers will appear here</p>
           <Link
             href={ROUTES.SHOP}
-            className="inline-block bg-heading text-surface text-xs font-semibold uppercase tracking-wider px-6 py-2.5 rounded-xs hover:bg-gold transition-colors"
+            className="inline-block bg-heading text-surface text-xs font-semibold uppercase tracking-wider px-6 py-2.5 rounded-lg hover:bg-gold transition-colors"
           >
             Explore Collections
           </Link>
@@ -61,7 +73,7 @@ export default async function OrdersPage() {
               <Link
                 key={String(order._id)}
                 href={ROUTES.ORDER(String(order._id))}
-                className="block bg-surface border border-border rounded-xs p-5 hover:border-gold transition-colors group shadow-2xs"
+                className="block bg-surface rounded-xl p-5 hover:shadow-md transition-all group shadow-sm"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex-1 min-w-0">
@@ -93,7 +105,7 @@ export default async function OrdersPage() {
                     </p>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {order.items?.slice(0, 3).map((item: IOrderItem, i: number) => (
-                        <span key={i} className="text-xs text-text truncate max-w-[160px] bg-background px-2 py-0.5 rounded-xs border border-border">
+                        <span key={i} className="text-xs text-text truncate max-w-[160px] bg-background px-2 py-0.5 rounded-lg border border-border">
                           {item.name}
                         </span>
                       ))}
@@ -112,6 +124,7 @@ export default async function OrdersPage() {
               </Link>
             );
           })}
+          <Pagination page={page} totalPages={totalPages} hrefForPage={(p) => `${ROUTES.ORDERS}?page=${p}`} />
         </div>
       )}
     </div>

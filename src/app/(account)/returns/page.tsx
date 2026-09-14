@@ -19,7 +19,7 @@ export default async function ReturnsPage() {
       </div>
 
       {/* Empty state */}
-      <div className="bg-surface border border-border p-10 text-center rounded-xs shadow-2xs">
+      <div className="bg-surface p-10 text-center rounded-2xl shadow-sm">
         <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-4">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gold">
             <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
@@ -32,14 +32,14 @@ export default async function ReturnsPage() {
         </p>
         <Link
           href={ROUTES.ORDERS}
-          className="inline-block text-xs font-semibold uppercase tracking-wider text-surface bg-heading hover:bg-gold px-5 py-2.5 rounded-xs transition-colors"
+          className="inline-block text-xs font-semibold uppercase tracking-wider text-surface bg-heading hover:bg-gold px-5 py-2.5 rounded-lg transition-colors"
         >
           View My Orders
         </Link>
       </div>
 
       {/* Return policy note */}
-      <div className="p-4 bg-background border border-border text-xs sm:text-sm text-text leading-relaxed rounded-xs">
+      <div className="p-4 bg-background border border-border text-xs sm:text-sm text-text leading-relaxed rounded-lg">
         <strong className="text-heading font-medium">Couture Policy:</strong> Standard handcrafted items may be returned within 7 days of delivery. Custom-made bespoke bridal lehengas and stitched garments are non-refundable.{' '}
         <Link href="/shipping-policy" className="text-gold hover:underline font-medium">
           Read full policy →

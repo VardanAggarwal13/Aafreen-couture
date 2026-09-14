@@ -122,23 +122,23 @@ export function AdminBannersClient() {
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Visual Storytelling & Banners</h1>
-          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Manage hero billboards, lookbook banners, and curated spotlights</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Visual Storytelling & Banners</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-sans">Manage hero billboards, lookbook banners, and curated spotlights</p>
         </div>
         <button
           onClick={openCreateModal}
-          className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm"
+          className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm"
         >
           <Plus size={14} className="text-[#C9A86A]" /> Add New Banner
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {banners.map((banner) => (
-          <div key={banner.id} className="bg-white border border-[#DDD2C5] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+          <div key={banner.id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
             <div className="relative aspect-[16/9] w-full bg-[#FAF7F2] border-b border-[#DDD2C5]">
               <Image src={banner.image} alt={banner.title} fill className="object-cover" />
               <button
@@ -151,10 +151,10 @@ export function AdminBannersClient() {
               </button>
             </div>
 
-            <div className="p-5 flex-1 flex flex-col justify-between">
+            <div className="p-4 flex-1 flex flex-col justify-between">
               <div>
                 <span className="text-[10px] text-[#C9A86A] uppercase tracking-wider font-semibold">{banner.placement}</span>
-                <h3 className="font-serif font-semibold text-[#2E221C] text-base mt-1">{banner.title}</h3>
+                <h3 className="font-sans font-semibold text-[#2E221C] text-base mt-1">{banner.title}</h3>
                 <p className="text-xs text-[#8A6A55] truncate mt-1 font-mono">Link: {banner.link}</p>
               </div>
 
@@ -185,9 +185,9 @@ export function AdminBannersClient() {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-[#DDD2C5] w-full max-w-md p-6 sm:p-7 rounded-2xl shadow-2xl space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-[#DDD2C5]">
-              <h3 className="font-serif font-semibold text-[#2E221C] text-base">
+          <div className="bg-white w-full max-w-md p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
+              <h3 className="font-sans font-semibold text-[#2E221C] text-base">
                 {editingId ? 'Edit Visual Banner' : 'Add New Visual Banner'}
               </h3>
               <button onClick={() => setIsModalOpen(false)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md">
@@ -204,7 +204,7 @@ export function AdminBannersClient() {
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="e.g. Royal Bridal Edit 2026"
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
                 />
               </div>
 
@@ -213,7 +213,7 @@ export function AdminBannersClient() {
                 <select
                   value={formData.placement}
                   onChange={(e) => setFormData({ ...formData, placement: e.target.value })}
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
                 >
                   <option value="Homepage Hero">Homepage Hero</option>
                   <option value="Collections Feature">Collections Feature</option>
@@ -230,7 +230,7 @@ export function AdminBannersClient() {
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                   placeholder="/images/hero-banner.webp"
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[11px]"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[11px]"
                 />
               </div>
 
@@ -242,7 +242,7 @@ export function AdminBannersClient() {
                   value={formData.link}
                   onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                   placeholder="/collections/bridal-lehengas-suits"
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[11px]"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[11px]"
                 />
               </div>
 
@@ -250,13 +250,13 @@ export function AdminBannersClient() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-[#8A6A55] hover:text-[#2E221C] text-xs font-medium transition-colors"
+                  className="px-3.5 py-2 text-[#8A6A55] hover:text-[#2E221C] text-xs font-medium transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-[#1A1410] text-xs rounded-lg shadow-sm transition-all"
+                  className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] text-xs rounded-lg shadow-sm transition-all"
                 >
                   <Check size={13} className="text-[#C9A86A]" /> {editingId ? 'Save Changes' : 'Add Banner'}
                 </button>

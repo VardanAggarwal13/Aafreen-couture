@@ -21,7 +21,7 @@ export default function TrackOrderPage() {
 
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
-        badge="✦ Aafreen Logistics &amp; Dispatch Concierge"
+        badge="Aafreen Logistics &amp; Dispatch Concierge"
         title="Track Your Order"
         italicTitle="Real-Time Milestones"
         subtitle="Monitor your bespoke bridal and ethnic couture order from master artisan hand-embroidery to fully insured white-glove doorstep delivery."
@@ -35,7 +35,7 @@ export default function TrackOrderPage() {
           <div className="lg:col-span-8">
             <Suspense
               fallback={
-                <div className="bg-white border border-[#E8D8C8] p-12 rounded-xs text-center text-sm font-sans text-[#A67C52] shadow-[0_4px_16px_rgba(34,22,23,0.03)]">
+                <div className="bg-white p-12 rounded-2xl text-center text-sm font-sans text-[#A67C52] shadow-sm">
                   Loading luxury shipment tracker…
                 </div>
               }
@@ -47,12 +47,12 @@ export default function TrackOrderPage() {
           {/* Right Column: Atelier Transit Guarantees & Concierge Support */}
           <div className="lg:col-span-4 space-y-6">
             {/* Transit Guarantees Card */}
-            <div className="bg-white border border-[#E8D8C8] p-6 rounded-xs shadow-[0_4px_16px_rgba(34,22,23,0.03)] space-y-5">
+            <div className="bg-white rounded-2xl shadow-sm p-6 space-y-5">
               <div className="border-b border-[#E8D8C8] pb-3">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#A67C52] block mb-1">
                   Atelier Guarantee
                 </span>
-                <h3 className="font-serif text-lg text-[#221617] uppercase tracking-wide">
+                <h3 className="font-sans font-bold text-lg text-[#221617]">
                   Transit Standards
                 </h3>
               </div>
@@ -117,11 +117,11 @@ export default function TrackOrderPage() {
             </div>
 
             {/* Support Concierge Card */}
-            <div className="bg-[#221617] text-white p-6 rounded-xs border border-[#C49A5A]/30 space-y-4">
+            <div className="bg-[#221617] text-white p-6 rounded-2xl space-y-4 shadow-md">
               <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#C49A5A] block">
                 Direct Helpdesk
               </span>
-              <h3 className="font-serif text-lg uppercase tracking-wider text-white">
+              <h3 className="font-sans font-bold text-lg text-white">
                 Boutique Logistics Desk
               </h3>
               <p className="text-white/70 text-xs leading-relaxed font-sans">
@@ -131,7 +131,7 @@ export default function TrackOrderPage() {
               <div className="space-y-2.5 pt-2 font-sans text-xs">
                 <a
                   href={`tel:${siteConfig.phone}`}
-                  className="flex items-center gap-2.5 p-2.5 bg-white/5 hover:bg-white/10 rounded-xs border border-white/10 transition-colors text-white"
+                  className="flex items-center gap-2.5 p-2.5 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-colors text-white"
                 >
                   <Phone size={14} className="text-[#C49A5A]" />
                   <span>Call: {siteConfig.phone}</span>
@@ -141,7 +141,7 @@ export default function TrackOrderPage() {
                   href={`https://wa.me/${siteConfig.whatsapp}?text=Hello%20Aafreen%20Couture%2C%20I%20need%20assistance%20tracking%20my%20order.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-2.5 bg-[#C49A5A] hover:bg-[#FAF7F2] text-[#1A1011] font-semibold uppercase tracking-wider text-[11px] rounded-xs transition-all shadow-xs"
+                  className="flex items-center justify-center gap-2 w-full py-2.5 bg-[#C49A5A] hover:bg-[#FAF7F2] text-[#1A1011] font-semibold uppercase tracking-wider text-[11px] rounded-lg transition-all shadow-xs"
                 >
                   <MessageCircle size={14} />
                   <span>WhatsApp Dispatch Team</span>

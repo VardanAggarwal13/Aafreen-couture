@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:turbo": "next dev --turbopack",
+    "dev": "next dev --turbopack",
+    "dev:webpack": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "type-check": "tsc --noEmit",
-    "seed": "npx tsx scripts/seed.ts"
+    "seed": "npx tsx scripts/seed.ts",
+    "seed:cms": "npx tsx scripts/seed-cms.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

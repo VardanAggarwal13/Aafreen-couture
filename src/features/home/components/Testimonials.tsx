@@ -35,7 +35,7 @@ export function Testimonials() {
           <p className="text-[10px] sm:text-[10.5px] uppercase font-bold tracking-[0.3em] text-[#C49A5A] mb-1.5">
             Client Testimonials
           </p>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#221617] uppercase tracking-wide">
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#221617] tracking-tight">
             What Our Brides Say
           </h2>
           <p className="text-xs text-[#6E6A66] mt-1 font-sans">
@@ -47,7 +47,7 @@ export function Testimonials() {
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={t.name}
-              className="bg-white rounded-xs p-5 sm:p-6 flex flex-col gap-3.5 border border-[#E8D8C8] shadow-2xs"
+              className="bg-white rounded-xl p-5 sm:p-6 flex flex-col gap-3.5 shadow-sm"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

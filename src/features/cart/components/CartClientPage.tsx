@@ -124,7 +124,7 @@ export function CartClientPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center font-sans space-y-12">
-        <div className="bg-surface border border-border/80 rounded-xs p-10 sm:p-14 max-w-xl mx-auto shadow-xs space-y-5">
+        <div className="bg-surface rounded-2xl p-10 sm:p-14 max-w-xl mx-auto shadow-md space-y-5">
           <div className="w-16 h-16 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center mx-auto text-gold shadow-xs">
             <ShoppingBag size={28} strokeWidth={1.5} />
           </div>
@@ -138,7 +138,7 @@ export function CartClientPage() {
           <div className="pt-2">
             <Link
               href={ROUTES.SHOP}
-              className="inline-flex items-center gap-2 bg-heading text-surface text-xs font-semibold uppercase tracking-[0.18em] px-8 py-3.5 rounded-xs hover:bg-gold transition-colors shadow-xs"
+              className="inline-flex items-center gap-2 bg-heading text-surface text-xs font-semibold uppercase tracking-[0.18em] px-8 py-3.5 rounded-lg hover:bg-gold transition-colors shadow-xs"
             >
               Explore Collections <ArrowRight size={14} />
             </Link>
@@ -153,8 +153,8 @@ export function CartClientPage() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
             {recommendedProducts.map((p) => (
-              <div key={p._id} className="bg-surface border border-border/80 rounded-xs p-3 flex flex-col justify-between group shadow-2xs">
-                <Link href={ROUTES.PRODUCT(p.slug)} className="block aspect-[3/4] relative overflow-hidden bg-background rounded-xs mb-3">
+              <div key={p._id} className="bg-surface rounded-xl p-3 flex flex-col justify-between group shadow-sm">
+                <Link href={ROUTES.PRODUCT(p.slug)} className="block aspect-[3/4] relative overflow-hidden bg-background rounded-lg mb-3">
                   <Image
                     src={p.images[0] ?? '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
                     alt={p.name}
@@ -180,7 +180,7 @@ export function CartClientPage() {
                 </div>
                 <button
                   onClick={() => handleQuickAdd(p)}
-                  className="mt-3 w-full py-2 bg-heading hover:bg-gold text-surface text-[10px] font-semibold tracking-wider uppercase transition-colors rounded-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="mt-3 w-full py-2 bg-heading hover:bg-gold text-surface text-[10px] font-semibold tracking-wider uppercase transition-colors rounded-lg flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Plus size={12} />
                   <span>Add to Bag</span>
@@ -221,12 +221,12 @@ export function CartClientPage() {
             return (
               <div
                 key={`${item.productId}-${item.variantId ?? ''}`}
-                className="bg-surface border border-border/80 rounded-xs p-4 sm:p-5 shadow-2xs flex flex-col sm:flex-row gap-4"
+                className="bg-surface rounded-xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row gap-4"
               >
                 {/* Product Image */}
                 <Link
                   href={ROUTES.PRODUCT(item.slug)}
-                  className="w-24 sm:w-28 aspect-[3/4] shrink-0 relative overflow-hidden bg-background border border-border rounded-xs group"
+                  className="w-24 sm:w-28 aspect-[3/4] shrink-0 relative overflow-hidden bg-background border border-border rounded-lg group"
                 >
                   <Image
                     src={item.image || product?.images[0] || '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
@@ -292,7 +292,7 @@ export function CartClientPage() {
 
                   {/* Quantity Controller & Price */}
                   <div className="flex items-center justify-between pt-2 border-t border-border/60">
-                    <div className="flex items-center border border-border bg-background rounded-xs overflow-hidden">
+                    <div className="flex items-center border border-border bg-background rounded-lg overflow-hidden">
                       <button
                         onClick={() => updateQuantity(item.productId, item.variantId, item.quantity - 1)}
                         className="px-2.5 py-1 text-heading hover:bg-surface hover:text-gold transition-colors cursor-pointer"
@@ -324,7 +324,7 @@ export function CartClientPage() {
 
         {/* Right Column: Clean, Minimalist Luxury Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-surface border border-border rounded-xs p-6 shadow-2xs sticky top-24 space-y-5">
+          <div className="bg-surface rounded-2xl p-6 shadow-md sticky top-24 space-y-5">
             <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading pb-3 border-b border-border">
               Cart Totals
             </h2>
@@ -375,11 +375,11 @@ export function CartClientPage() {
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
                     placeholder="Enter code"
-                    className="flex-1 px-3 py-1.5 text-xs uppercase tracking-wider border border-border rounded-xs bg-background text-heading focus:outline-none focus:border-gold"
+                    className="flex-1 px-3 py-1.5 text-xs uppercase tracking-wider border border-border rounded-lg bg-background text-heading focus:outline-none focus:border-gold"
                   />
                   <button
                     type="submit"
-                    className="px-3 py-1.5 bg-heading hover:bg-gold text-surface text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors cursor-pointer"
+                    className="px-3 py-1.5 bg-heading hover:bg-gold text-surface text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
                   >
                     Apply
                   </button>
@@ -391,7 +391,7 @@ export function CartClientPage() {
             <button
               type="button"
               onClick={handleProceedToCheckout}
-              className="w-full bg-heading hover:bg-gold text-surface py-4 text-xs font-semibold uppercase tracking-[0.2em] rounded-xs shadow-sm hover:shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+              className="w-full bg-heading hover:bg-gold text-surface py-4 text-xs font-semibold uppercase tracking-[0.2em] rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
             >
               <span>Proceed to Checkout</span>
               <ArrowRight size={14} />
@@ -441,11 +441,11 @@ export function CartClientPage() {
               return (
                 <div
                   key={p._id}
-                  className="bg-surface border border-border/80 rounded-xs p-3.5 flex flex-col justify-between group shadow-2xs hover:border-gold/60 transition-all"
+                  className="bg-surface rounded-xl p-3.5 flex flex-col justify-between group shadow-sm hover:shadow-md transition-all"
                 >
                   <Link
                     href={ROUTES.PRODUCT(p.slug)}
-                    className="block aspect-[3/4] relative overflow-hidden bg-background rounded-xs mb-3"
+                    className="block aspect-[3/4] relative overflow-hidden bg-background rounded-lg mb-3"
                   >
                     <Image
                       src={p.images[0] ?? '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
@@ -484,7 +484,7 @@ export function CartClientPage() {
 
                   <button
                     onClick={() => handleQuickAdd(p)}
-                    className="mt-3 w-full py-2.5 bg-heading hover:bg-gold text-surface text-[10.5px] font-semibold tracking-wider uppercase transition-colors rounded-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    className="mt-3 w-full py-2.5 bg-heading hover:bg-gold text-surface text-[10.5px] font-semibold tracking-wider uppercase transition-colors rounded-lg flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
                   >
                     <Plus size={13} />
                     <span>Quick Add to Bag</span>

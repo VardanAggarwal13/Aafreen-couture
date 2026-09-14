@@ -64,7 +64,7 @@ export function AdminOrderStatusUpdater({ orderId, currentStatus }: Props) {
       <button
         onClick={handleUpdate}
         disabled={loading || status === currentStatus}
-        className="bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold px-4 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+        className="bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold px-3.5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
       >
         {loading ? <RefreshCw size={13} className="animate-spin text-[#C9A86A]" /> : <CheckCircle2 size={13} className="text-[#C9A86A]" />}
         <span>{loading ? 'Updating…' : 'Update Status'}</span>

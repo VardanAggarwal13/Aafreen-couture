@@ -16,7 +16,7 @@ export function CustomerPaymentReconcileButton({ orderId, paymentStatus }: Props
 
   if (paymentStatus === 'paid') {
     return (
-      <div className="inline-flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xs border border-emerald-200">
+      <div className="inline-flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
         <CheckCircle2 size={13} />
         <span>Payment Verified & Confirmed</span>
       </div>
@@ -62,7 +62,7 @@ export function CustomerPaymentReconcileButton({ orderId, paymentStatus }: Props
       <button
         onClick={handleReconcile}
         disabled={loading}
-        className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-gold border border-gold/40 hover:bg-gold/10 transition-colors rounded-xs disabled:opacity-50 cursor-pointer"
+        className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-gold border border-gold/40 hover:bg-gold/10 transition-colors rounded-lg disabled:opacity-50 cursor-pointer"
       >
         {loading ? (
           <RefreshCw size={12} className="animate-spin text-gold" />

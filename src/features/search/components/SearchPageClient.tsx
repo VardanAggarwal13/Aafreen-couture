@@ -7,8 +7,11 @@ import { Search, X } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
 import type { IProduct } from '@/types';
-import type { ApiResponse } from '@/types/api.types';
+import type { PaginatedResponse } from '@/types/api.types';
 import { ProductCard } from '@/components/product/ProductCard';
+import { Pagination } from '@/components/common/Pagination';
+
+const PAGE_SIZE_OPTIONS = [12, 24, 48, 96];
 
 export function SearchPageClient() {
   const searchParams = useSearchParams();
@@ -16,19 +19,32 @@ export function SearchPageClient() {
   const initial = searchParams.get('q') ?? '';
   const [query, setQuery] = useState(initial);
   const [debouncedQuery, setDebouncedQuery] = useState(initial);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(24);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQuery(query), 350);
     return () => clearTimeout(t);
   }, [query]);
 
-  const { data, isFetching } = useQuery<ApiResponse<IProduct[]>>({
-    queryKey: ['search', debouncedQuery],
-    queryFn: () => api.get<IProduct[]>(`/api/search?q=${encodeURIComponent(debouncedQuery)}`),
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedQuery]);
+
+  const { data, isFetching } = useQuery<PaginatedResponse<IProduct>>({
+    queryKey: ['search', debouncedQuery, page, pageSize],
+    queryFn: () => api.getPaginated<IProduct>(`/api/products?q=${encodeURIComponent(debouncedQuery)}&limit=${pageSize}&page=${page}`),
     enabled: debouncedQuery.trim().length >= 2,
   });
 
   const results = data?.data ?? [];
+  const totalPages = data?.pagination?.totalPages ?? 1;
+  const totalResults = data?.pagination?.total ?? results.length;
+
+  function handlePageSizeChange(size: number) {
+    setPageSize(size);
+    setPage(1);
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -66,18 +82,38 @@ export function SearchPageClient() {
           <p className="text-sm text-brand-stone mb-6">
             {isFetching
               ? 'Searching…'
-              : results.length > 0
-              ? `${results.length} result${results.length !== 1 ? 's' : ''} for "${debouncedQuery}"`
+              : totalResults > 0
+              ? `${totalResults} result${totalResults !== 1 ? 's' : ''} for "${debouncedQuery}"`
               : `No results for "${debouncedQuery}"`}
           </p>
 
-          {results.length > 0 && (
+          {isFetching ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              {results.map((product: IProduct) => (
-                <ProductCard key={product._id as string} product={product} />
+              {Array.from({ length: 8 }, (_, i) => (
+                <div key={i} className="flex flex-col gap-3">
+                  <div className="aspect-[4/5] bg-brand-cream/40 rounded-lg animate-pulse" />
+                  <div className="h-3.5 bg-brand-cream/60 rounded animate-pulse w-3/4" />
+                  <div className="h-3 bg-brand-cream/40 rounded animate-pulse w-1/3" />
+                </div>
               ))}
             </div>
-          )}
+          ) : results.length > 0 ? (
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                {results.map((product: IProduct) => (
+                  <ProductCard key={product._id as string} product={product} />
+                ))}
+              </div>
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+                pageSize={pageSize}
+                pageSizeOptions={PAGE_SIZE_OPTIONS}
+                onPageSizeChange={handlePageSizeChange}
+              />
+            </>
+          ) : null}
 
           {!isFetching && results.length === 0 && (
             <div className="py-16 text-center">

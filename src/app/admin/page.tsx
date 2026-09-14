@@ -67,22 +67,22 @@ export default async function AdminDashboardPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Page Title & Greeting */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#DDD2C5]/70 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1">
         <div>
-          <h1 className="text-2xl font-serif font-medium text-[#2E221C] tracking-tight">
-            Atelier Executive Dashboard
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">
+            Dashboard
           </h1>
           <p className="text-xs text-[#8A6A55] mt-1 font-sans">
-            Welcome back, <span className="font-semibold text-[#2E221C]">Administrator</span>. Here is the operational overview of your couture house.
+            Welcome back, <span className="font-semibold text-[#2E221C]">Administrator</span> — here&apos;s your store overview.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Link
             href="/admin/products/new"
-            className="inline-flex items-center gap-1.5 bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold uppercase tracking-wider px-3.5 py-2 rounded-xs transition-colors shadow-xs"
+            className="inline-flex items-center gap-1.5 bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition-colors shadow-sm"
           >
             + Add New Ensemble
           </Link>
@@ -90,33 +90,33 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Stats Cards Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {STATS.map(({ label, value, badge, icon: Icon, iconColor, iconBg }) => (
           <div
             key={label}
-            className="bg-white border border-[#DDD2C5]/80 rounded-xs p-5 shadow-xs hover:border-[#C9A86A]/50 transition-colors"
+            className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow"
           >
-            <div className="flex items-start justify-between mb-3">
-              <div className={`w-10 h-10 ${iconBg} rounded-xs flex items-center justify-center`}>
+            <div className="flex items-start justify-between mb-2">
+              <div className={`w-10 h-10 ${iconBg} rounded-lg flex items-center justify-center`}>
                 <Icon size={18} className={iconColor} />
               </div>
-              <span className="text-[10.5px] font-semibold text-[#9E7B3A] bg-[#C9A86A]/10 border border-[#C9A86A]/30 px-2 py-0.5 rounded-full uppercase tracking-wider">
+              <span className="text-[10.5px] font-semibold text-[#9E7B3A] bg-[#C9A86A]/10 px-2 py-0.5 rounded-full uppercase tracking-wider">
                 {badge}
               </span>
             </div>
-            <p className="text-2xl font-serif font-bold text-[#2E221C] mb-1">{value}</p>
+            <p className="text-2xl font-sans font-bold text-[#2E221C] mb-1 tabular-nums">{value}</p>
             <p className="text-xs text-[#8A6A55] font-sans font-medium">{label}</p>
           </div>
         ))}
       </div>
 
       {/* Main Content Grid: Recent Orders & Quick Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Recent Orders Table */}
-        <div className="lg:col-span-8 bg-white border border-[#DDD2C5]/80 rounded-xs shadow-xs p-5">
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#EAE2D7]">
+        <div className="lg:col-span-8 bg-white rounded-xl shadow-sm p-4">
+          <div className="flex items-center justify-between mb-3 pb-2">
             <div>
-              <h2 className="text-sm font-serif font-semibold text-[#2E221C]">Recent Boutique Orders</h2>
+              <h2 className="text-sm font-sans font-semibold text-[#2E221C]">Recent Orders</h2>
               <p className="text-[11px] text-[#8A6A55]">Latest client purchases and bespoke reservations</p>
             </div>
             <Link
@@ -131,28 +131,28 @@ export default async function AdminDashboardPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-sans">
               <thead>
-                <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5] text-[#8A6A55] uppercase tracking-wider text-[10px] font-semibold">
-                  <th className="px-3.5 py-2.5">Order</th>
-                  <th className="px-3.5 py-2.5">Client</th>
-                  <th className="px-3.5 py-2.5">Total Amount</th>
-                  <th className="px-3.5 py-2.5">Fulfillment Status</th>
+                <tr className="bg-[#FAF7F2] border-b border-[#EAE2D7] text-[#8A6A55] uppercase tracking-wider text-[10px] font-semibold">
+                  <th className="px-3.5 py-2">Order</th>
+                  <th className="px-3.5 py-2">Client</th>
+                  <th className="px-3.5 py-2">Total Amount</th>
+                  <th className="px-3.5 py-2">Fulfillment Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#EAE2D7]">
                 {recentOrders.map((order) => (
                   <tr key={String(order._id)} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                    <td className="px-3.5 py-3 font-semibold text-[#2E221C]">
+                    <td className="px-3.5 py-2.5 font-semibold text-[#2E221C]">
                       <Link href={`/admin/orders/${order._id}`} className="hover:text-[#C9A86A] transition-colors">
                         #{order.orderNumber}
                       </Link>
                     </td>
-                    <td className="px-3.5 py-3 text-[#2E221C] truncate max-w-[140px]">
+                    <td className="px-3.5 py-2.5 text-[#2E221C] truncate max-w-[140px]">
                       {order.shippingAddress?.name || 'Valued Client'}
                     </td>
-                    <td className="px-3.5 py-3 font-medium text-[#2E221C]">
+                    <td className="px-3.5 py-2.5 font-medium text-[#2E221C]">
                       {formatPrice(order.total)}
                     </td>
-                    <td className="px-3.5 py-3">
+                    <td className="px-3.5 py-2.5">
                       <span
                         className={`inline-block text-[10px] px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider border ${
                           STATUS_BADGE[order.status] ?? 'bg-gray-100 text-gray-700 border-gray-200'
@@ -176,13 +176,13 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Quick Atelier Actions & Admin Directory */}
-        <div className="lg:col-span-4 space-y-5">
+        <div className="lg:col-span-4 space-y-4">
           {/* Quick Actions Card */}
-          <div className="bg-white border border-[#DDD2C5]/80 rounded-xs shadow-xs p-5">
-            <h2 className="text-sm font-serif font-semibold text-[#2E221C] mb-1">Quick Atelier Controls</h2>
-            <p className="text-[11px] text-[#8A6A55] mb-4">Direct shortcuts to critical storefront controls</p>
+          <div className="bg-white rounded-xl shadow-sm p-4">
+            <h2 className="text-sm font-sans font-semibold text-[#2E221C] mb-1">Quick Actions</h2>
+            <p className="text-[11px] text-[#8A6A55] mb-3">Direct shortcuts to critical storefront controls</p>
 
-            <div className="space-y-1.5 font-sans">
+            <div className="space-y-1 font-sans">
               {[
                 { label: 'Add New Ensemble', href: '/admin/products/new' },
                 { label: 'Manage Products & Suits', href: '/admin/products' },
@@ -195,7 +195,7 @@ export default async function AdminDashboardPage() {
                 <Link
                   key={href}
                   href={href}
-                  className="flex items-center justify-between px-3 py-2.5 rounded-xs text-xs font-medium text-[#2E221C] bg-[#FAF7F2] hover:bg-[#C9A86A]/15 hover:text-[#9E7B3A] transition-all border border-[#DDD2C5]/60 group"
+                  className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-[#2E221C] hover:bg-[#FAF7F2] hover:text-[#9E7B3A] transition-all group"
                 >
                   <span>{label}</span>
                   <ArrowRight size={12} className="text-[#8A6A55] group-hover:text-[#9E7B3A] transition-transform group-hover:translate-x-0.5" />
@@ -205,7 +205,7 @@ export default async function AdminDashboardPage() {
           </div>
 
           {/* Administrators Security Badge */}
-          <div className="bg-gradient-to-br from-[#FAF7F2] to-[#EAE2D7]/60 border border-[#C9A86A]/40 rounded-xs p-4 text-xs font-sans">
+          <div className="bg-[#FAF7F2] rounded-xl p-4 text-xs font-sans">
             <div className="flex items-center gap-2 text-[#9E7B3A] font-semibold text-xs mb-1">
               <ShieldCheck size={16} />
               <span>Client Confidential Access</span>

@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
-import { Eye, EyeOff, ShieldCheck, ArrowRight, ShoppingBag, Sparkles, Check } from 'lucide-react';
+import { Eye, EyeOff, ShieldCheck, ArrowRight, ShoppingBag, Check } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import { siteConfig } from '@/config/site.config';
 import { ROUTES } from '@/constants/routes';
@@ -128,32 +127,31 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
 
   return (
     <div className="flex-1 flex items-center justify-center px-4 py-8 sm:py-12">
-      <div className="w-full max-w-5xl bg-surface border border-border shadow-lg rounded-xs overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[640px]">
-        {/* Left Side: High-Fashion Editorial Imagery (Desktop) */}
+      <div className="w-full max-w-5xl bg-surface border border-border shadow-lg rounded-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[640px]">
+        {/* Left Side: Brand Panel (Desktop) */}
         <div className="relative lg:col-span-5 hidden lg:flex flex-col justify-between p-8 xl:p-10 text-white overflow-hidden bg-heading">
-          {/* Background Couture Photo */}
-          <Image
-            src="/images/products/meherbaan-rani-pink-bridal-lehenga-1011.webp"
-            alt="Aafreen Couture Haute Bridal"
-            fill
-            sizes="45vw"
-            priority
-            className="object-cover object-top filter brightness-90"
+          {/* Subtle geometric texture */}
+          <div
+            className="absolute inset-0 opacity-[0.05] pointer-events-none"
+            style={{
+              backgroundImage:
+                'radial-gradient(#FAF5ED 1px, transparent 1px)',
+              backgroundSize: '28px 28px',
+            }}
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
 
-          {/* Luxury Gradient Vignette Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
-
-          {/* Top Atelier Badge */}
+          {/* Brand Lockup */}
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-black/40 backdrop-blur-md border border-gold/40 rounded-xs text-[10px] uppercase tracking-[0.25em] text-[#E0C088]">
-              <Sparkles size={11} className="text-gold" />
-              <span>Atelier Membership</span>
-            </div>
+            <p className="font-serif text-3xl xl:text-4xl text-[#FAF5ED] tracking-tight">Aafreen</p>
+            <p className="text-[10px] tracking-[0.4em] text-gold uppercase font-semibold mt-1.5">
+              Couture &middot; Since 2010
+            </p>
           </div>
 
           {/* Middle Editorial Typography & Privileges */}
           <div className="relative z-10 space-y-4 my-auto py-6">
+            <div className="w-9 h-px bg-gold/60" />
             <h2 className="font-serif text-2xl xl:text-3xl font-medium leading-tight text-[#FAF5ED]">
               Begin Your Bespoke Couture Journey
             </h2>
@@ -163,27 +161,21 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
 
             <div className="pt-2 space-y-2.5">
               <div className="flex items-center gap-2.5 text-xs text-stone-200">
-                <span className="w-4 h-4 rounded-full bg-gold/20 border border-gold/50 flex items-center justify-center shrink-0">
-                  <Check size={10} className="text-gold" />
-                </span>
+                <Check size={13} className="text-gold shrink-0" />
                 <span>Archive Sizing & Custom Blouse Measurements</span>
               </div>
               <div className="flex items-center gap-2.5 text-xs text-stone-200">
-                <span className="w-4 h-4 rounded-full bg-gold/20 border border-gold/50 flex items-center justify-center shrink-0">
-                  <Check size={10} className="text-gold" />
-                </span>
+                <Check size={13} className="text-gold shrink-0" />
                 <span>Multiple Saved Delivery Addresses & Expedited Checkout</span>
               </div>
               <div className="flex items-center gap-2.5 text-xs text-stone-200">
-                <span className="w-4 h-4 rounded-full bg-gold/20 border border-gold/50 flex items-center justify-center shrink-0">
-                  <Check size={10} className="text-gold" />
-                </span>
+                <Check size={13} className="text-gold shrink-0" />
                 <span>Early Invitations to New Collection Unveilings</span>
               </div>
             </div>
           </div>
 
-          {/* Bottom Royal Seal */}
+          {/* Bottom Quote */}
           <div className="relative z-10 pt-4 border-t border-white/15">
             <p className="font-serif italic text-xs text-[#E0C088]">
               &ldquo;Crafted with devotion for your most memorable occasions.&rdquo;
@@ -216,7 +208,7 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
 
             {/* Checkout Notification */}
             {isCheckoutRedirect && (
-              <div className="mb-6 p-3.5 bg-background border border-gold/50 rounded-xs flex items-center gap-3">
+              <div className="mb-6 p-3.5 bg-background border border-gold/50 rounded-lg flex items-center gap-3">
                 <ShoppingBag size={18} className="text-gold shrink-0" />
                 <div className="text-left">
                   <p className="text-xs font-semibold text-heading">Complete Your Couture Order</p>
@@ -242,7 +234,7 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
                   type="text"
                   autoComplete="name"
                   {...register('name')}
-                  className="w-full border border-border px-3.5 py-2.5 text-xs text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-xs"
+                  className="w-full border border-border px-3.5 py-2.5 text-sm text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg"
                   placeholder="e.g. Priya Sharma"
                 />
                 {errors.name && <p className="text-[11px] text-red-600 mt-1">{errors.name.message}</p>}
@@ -261,7 +253,7 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
                   type="email"
                   autoComplete="email"
                   {...register('email')}
-                  className="w-full border border-border px-3.5 py-2.5 text-xs text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-xs"
+                  className="w-full border border-border px-3.5 py-2.5 text-sm text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg"
                   placeholder="you@example.com"
                 />
                 {errors.email && <p className="text-[11px] text-red-600 mt-1">{errors.email.message}</p>}
@@ -285,7 +277,7 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
                     autoComplete="tel"
                     maxLength={10}
                     {...register('phone')}
-                    className="w-full border border-border pl-14 pr-3.5 py-2.5 text-xs text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-xs"
+                    className="w-full border border-border pl-14 pr-3.5 py-2.5 text-xs text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg"
                     placeholder="9876543210"
                   />
                 </div>
@@ -306,7 +298,7 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     {...register('password')}
-                    className="w-full border border-border px-3.5 py-2.5 pr-10 text-xs text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-xs"
+                    className="w-full border border-border px-3.5 py-2.5 pr-10 text-sm text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg"
                     placeholder="At least 6 characters"
                   />
                   <button
@@ -335,7 +327,7 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
                     type={showConfirmPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     {...register('confirmPassword')}
-                    className="w-full border border-border px-3.5 py-2.5 pr-10 text-xs text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-xs"
+                    className="w-full border border-border px-3.5 py-2.5 pr-10 text-sm text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg"
                     placeholder="Re-enter your password"
                   />
                   <button
@@ -356,7 +348,7 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-heading text-surface py-3.5 text-xs font-semibold uppercase tracking-[0.2em] hover:bg-gold transition-colors duration-300 disabled:opacity-50 rounded-xs shadow-xs flex items-center justify-center gap-2 group cursor-pointer"
+                  className="w-full bg-heading text-surface py-3.5 text-xs font-semibold uppercase tracking-[0.2em] hover:bg-gold transition-colors duration-300 disabled:opacity-50 rounded-lg shadow-xs flex items-center justify-center gap-2 group cursor-pointer"
                 >
                   {isLoading ? (
                     <span>Creating Atelier Account…</span>
@@ -384,7 +376,7 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
             <button
               type="button"
               onClick={signInWithGoogle}
-              className="w-full border border-border py-2.5 text-xs text-heading hover:border-gold hover:bg-background/50 transition-colors flex items-center justify-center gap-2 rounded-xs font-medium cursor-pointer"
+              className="w-full border border-border py-2.5 text-xs text-heading hover:border-gold hover:bg-background/50 transition-colors flex items-center justify-center gap-2 rounded-lg font-medium cursor-pointer"
             >
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />

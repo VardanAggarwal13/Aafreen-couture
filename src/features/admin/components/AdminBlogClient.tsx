@@ -108,27 +108,27 @@ export function AdminBlogClient() {
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Journal & Editorial Stories</h1>
-          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Manage couture fashion stories, bespoke styling guides, and heritage essays</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Journal & Editorial Stories</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-sans">Manage couture fashion stories, bespoke styling guides, and heritage essays</p>
         </div>
         <button
           onClick={openCreateModal}
-          className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm"
+          className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm"
         >
           <Plus size={14} className="text-[#C9A86A]" /> Write Article
         </button>
       </div>
 
-      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Article', 'Category', 'Author', 'Read Time', 'Date', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -137,25 +137,25 @@ export function AdminBlogClient() {
             <tbody className="divide-y divide-[#EAE2D7]">
               {posts.map((post) => (
                 <tr key={post.slug} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                  <td className="px-5 py-4 font-serif font-medium text-[#2E221C] text-sm flex items-center gap-3">
+                  <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] text-sm flex items-center gap-3">
                     <div className="w-12 h-12 relative bg-[#FAF7F2] shrink-0 rounded-lg overflow-hidden border border-[#DDD2C5]">
                       <Image src={post.image} alt={post.title} fill className="object-cover" />
                     </div>
                     <span className="truncate max-w-[280px]">{post.title}</span>
                   </td>
-                  <td className="px-5 py-4 text-[#C9A86A] font-semibold">
+                  <td className="px-5 py-2.5 text-[#C9A86A] font-semibold">
                     {post.category}
                   </td>
-                  <td className="px-5 py-4 text-[#2E221C] font-medium">
+                  <td className="px-5 py-2.5 text-[#2E221C] font-medium">
                     {post.author}
                   </td>
-                  <td className="px-5 py-4 text-[#8A6A55]">
+                  <td className="px-5 py-2.5 text-[#8A6A55]">
                     {post.readTime}
                   </td>
-                  <td className="px-5 py-4 text-[#8A6A55]">
+                  <td className="px-5 py-2.5 text-[#8A6A55]">
                     {post.publishedAt}
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5">
                     <div className="flex items-center gap-3">
                       <a
                         href={`/blog/${post.slug}`}
@@ -192,9 +192,9 @@ export function AdminBlogClient() {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-[#DDD2C5] w-full max-w-2xl p-6 sm:p-7 rounded-2xl shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-[#DDD2C5]">
-              <h3 className="font-serif font-semibold text-[#2E221C] text-base">
+          <div className="bg-white w-full max-w-2xl p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
+              <h3 className="font-sans font-semibold text-[#2E221C] text-base">
                 {editingSlug ? 'Edit Editorial Story' : 'Write New Editorial Story'}
               </h3>
               <button onClick={() => setIsModalOpen(false)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md">
@@ -211,7 +211,7 @@ export function AdminBlogClient() {
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="e.g. The Art of Zardozi: Handcrafted Elegance"
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
                 />
               </div>
 
@@ -223,7 +223,7 @@ export function AdminBlogClient() {
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     placeholder="Bridal Heritage"
-                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                   />
                 </div>
                 <div>
@@ -233,7 +233,7 @@ export function AdminBlogClient() {
                     value={formData.readTime}
                     onChange={(e) => setFormData({ ...formData, readTime: e.target.value })}
                     placeholder="4 min read"
-                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                   />
                 </div>
               </div>
@@ -245,7 +245,7 @@ export function AdminBlogClient() {
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                   placeholder="/images/hero-banner.webp"
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] font-mono text-[11px]"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] font-mono text-[11px]"
                 />
               </div>
 
@@ -256,7 +256,7 @@ export function AdminBlogClient() {
                   value={formData.excerpt}
                   onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
                   placeholder="Short introductory summary for the article card..."
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                 />
               </div>
 
@@ -267,7 +267,7 @@ export function AdminBlogClient() {
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   placeholder="Write the full editorial story here..."
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                 />
               </div>
 
@@ -275,13 +275,13 @@ export function AdminBlogClient() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-[#8A6A55] hover:text-[#2E221C] text-xs font-medium transition-colors"
+                  className="px-3.5 py-2 text-[#8A6A55] hover:text-[#2E221C] text-xs font-medium transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-[#1A1410] text-xs rounded-lg shadow-sm transition-all"
+                  className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] text-xs rounded-lg shadow-sm transition-all"
                 >
                   <Check size={13} className="text-[#C9A86A]" /> {editingSlug ? 'Save Changes' : 'Publish Article'}
                 </button>

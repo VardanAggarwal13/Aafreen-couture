@@ -165,7 +165,7 @@ export default async function OrderDetailPage({ params }: Props) {
           >
             <ArrowLeft size={13} /> Back to My Orders
           </Link>
-          <h1 className="font-serif text-2xl text-heading uppercase tracking-wide">
+          <h1 className="font-serif text-2xl text-heading tracking-tight">
             Order #{order.orderNumber}
           </h1>
           <p className="text-xs text-text mt-1">
@@ -178,7 +178,7 @@ export default async function OrderDetailPage({ params }: Props) {
 
         <div className="flex items-center gap-3">
           <span
-            className={`px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-xs border ${
+            className={`px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-lg border ${
               STATUS_BADGES[order.status] ?? 'bg-surface text-heading'
             }`}
           >
@@ -188,7 +188,7 @@ export default async function OrderDetailPage({ params }: Props) {
       </div>
 
       {/* Order Tracker */}
-      <div className="bg-surface border border-border p-6 rounded-xs shadow-2xs">
+      <div className="bg-surface p-6 rounded-xl shadow-sm">
         <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading mb-6">
           Delivery Status Tracker
         </h2>
@@ -228,7 +228,7 @@ export default async function OrderDetailPage({ params }: Props) {
       </div>
 
       {/* Items list */}
-      <div className="bg-surface border border-border rounded-xs overflow-hidden shadow-2xs">
+      <div className="bg-surface rounded-xl overflow-hidden shadow-sm">
         <div className="p-5 border-b border-border">
           <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading">
             Ensembles in this Order ({items.length})
@@ -241,7 +241,7 @@ export default async function OrderDetailPage({ params }: Props) {
             const price = item.price ?? 0;
             return (
               <div key={idx} className="p-5 flex items-center gap-4 sm:gap-6">
-                <div className="relative w-20 h-24 shrink-0 rounded-xs overflow-hidden bg-background border border-border">
+                <div className="relative w-20 h-24 shrink-0 rounded-lg overflow-hidden bg-background border border-border">
                   <Image
                     src={item.image || '/images/products/noor-e-ishq.webp'}
                     alt={item.name}
@@ -300,7 +300,7 @@ export default async function OrderDetailPage({ params }: Props) {
       {/* Payment & Shipping Details */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Payment Information */}
-        <div className="bg-surface border border-border p-6 rounded-xs shadow-2xs flex flex-col justify-between">
+        <div className="bg-surface p-6 rounded-xl shadow-sm flex flex-col justify-between">
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading mb-3 flex items-center gap-2">
               <CreditCard size={15} className="text-gold" /> Payment Information
@@ -337,7 +337,7 @@ export default async function OrderDetailPage({ params }: Props) {
               {order.razorpayPaymentId && (
                 <div className="flex justify-between items-center pt-2 border-t border-border/60">
                   <span className="text-text">Transaction Reference:</span>
-                  <span className="font-mono text-heading text-[11px] font-medium bg-background px-2 py-0.5 rounded-xs border border-border">
+                  <span className="font-mono text-heading text-[11px] font-medium bg-background px-2 py-0.5 rounded-lg border border-border">
                     {order.razorpayPaymentId}
                   </span>
                 </div>
@@ -355,7 +355,7 @@ export default async function OrderDetailPage({ params }: Props) {
 
         {/* Shipping Address */}
         {address && (
-          <div className="bg-surface border border-border p-6 rounded-xs shadow-2xs">
+          <div className="bg-surface p-6 rounded-xl shadow-sm">
             <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading mb-3 flex items-center gap-2">
               <MapPin size={15} className="text-gold" /> Shipping Address
             </h2>

@@ -28,10 +28,10 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="flex-1 flex items-center justify-center px-4 py-12 bg-background">
-      <div className="w-full max-w-md bg-surface border border-border p-8 sm:p-10 shadow-md rounded-xs">
+      <div className="w-full max-w-md bg-surface border border-border p-8 sm:p-10 shadow-md rounded-2xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="font-serif text-2xl tracking-wide text-heading mb-2">
+          <h1 className="font-serif text-2xl tracking-tight text-heading mb-2">
             Recover Access
           </h1>
           <p className="text-[10.5px] uppercase tracking-[0.25em] text-gold font-semibold">
@@ -76,7 +76,7 @@ export default function ForgotPasswordPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full px-3.5 py-2.5 pl-10 text-xs border border-border bg-background/50 text-heading rounded-xs focus:outline-none focus:border-gold placeholder:text-text/40 transition-colors"
+                  className="w-full px-3.5 py-2.5 pl-10 text-sm border border-border bg-background/50 text-heading rounded-lg focus:outline-none focus:border-gold placeholder:text-text/40 transition-colors"
                 />
                 <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text/50" />
               </div>
@@ -85,7 +85,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-heading text-surface text-xs font-semibold uppercase tracking-[0.2em] hover:bg-gold transition-colors duration-300 rounded-xs disabled:opacity-50 cursor-pointer shadow-xs"
+              className="w-full py-3 bg-heading text-surface text-xs font-semibold uppercase tracking-[0.2em] hover:bg-gold transition-colors duration-300 rounded-lg disabled:opacity-50 cursor-pointer shadow-xs"
             >
               {loading ? 'Sending Instructions…' : 'Send Recovery Link'}
             </button>

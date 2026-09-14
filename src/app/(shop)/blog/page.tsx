@@ -21,7 +21,7 @@ export default function BlogPage() {
         <p className="text-[10.5px] font-semibold uppercase tracking-[0.4em] text-[#A67C52] mb-3">
           The Bridal Journal
         </p>
-        <h1 className="text-3xl sm:text-4xl font-serif text-[#221617] uppercase tracking-wider">
+        <h1 className="text-3xl sm:text-4xl font-serif text-[#221617] tracking-tight">
           Stories of Grace & Heritage
         </h1>
         <p className="mt-3 text-xs sm:text-sm text-[#6E6A66] max-w-md mx-auto font-sans">
@@ -34,7 +34,7 @@ export default function BlogPage() {
         {featured && (
           <Link
             href={`/blog/${featured.slug}`}
-            className="group grid grid-cols-1 lg:grid-cols-12 gap-8 bg-white border border-[#E8D8C8] rounded-xs overflow-hidden shadow-2xs mb-14 hover:border-[#A67C52] transition-colors"
+            className="group grid grid-cols-1 lg:grid-cols-12 gap-8 bg-white rounded-xl overflow-hidden shadow-sm mb-14 hover:shadow-md transition-shadow"
           >
             <div className="lg:col-span-7 relative aspect-[16/10] lg:aspect-auto overflow-hidden bg-[#FAF7F2]">
               <Image
@@ -70,7 +70,7 @@ export default function BlogPage() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group flex flex-col bg-white border border-[#E8D8C8] rounded-xs overflow-hidden shadow-2xs hover:border-[#A67C52] transition-colors"
+              className="group flex flex-col bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-[#FAF7F2]">
                 <Image

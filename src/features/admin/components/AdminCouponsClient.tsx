@@ -164,27 +164,27 @@ export function AdminCouponsClient() {
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Coupons & Loyalty Privileges</h1>
-          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Manage promotional gift vouchers and client reward campaigns</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Coupons & Loyalty Privileges</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-sans">Manage promotional gift vouchers and client reward campaigns</p>
         </div>
         <button
           onClick={openCreateModal}
-          className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm"
+          className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm"
         >
           <Plus size={14} className="text-[#C9A86A]" /> Create Coupon
         </button>
       </div>
 
-      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Code', 'Discount', 'Min Order', 'Redemptions', 'Valid Until', 'Status', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -193,24 +193,24 @@ export function AdminCouponsClient() {
             <tbody className="divide-y divide-[#EAE2D7]">
               {coupons.map((coupon) => (
                 <tr key={coupon.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                  <td className="px-5 py-4 font-mono font-semibold text-[#2E221C] text-sm">
+                  <td className="px-5 py-2.5 font-mono font-semibold text-[#2E221C] text-sm">
                     <span className="inline-flex items-center gap-2">
                       <Ticket size={14} className="text-[#C9A86A]" /> {coupon.code}
                     </span>
                   </td>
-                  <td className="px-5 py-4 font-medium text-[#2E221C]">
+                  <td className="px-5 py-2.5 font-medium text-[#2E221C]">
                     {coupon.type === 'percentage' ? `${coupon.value}% OFF` : `${formatPrice(coupon.value * 100)} OFF`}
                   </td>
-                  <td className="px-5 py-4 text-[#8A6A55]">
+                  <td className="px-5 py-2.5 text-[#8A6A55]">
                     {formatPrice(coupon.minOrder)}
                   </td>
-                  <td className="px-5 py-4 text-[#8A6A55]">
+                  <td className="px-5 py-2.5 text-[#8A6A55]">
                     {coupon.usedCount} / {coupon.usageLimit}
                   </td>
-                  <td className="px-5 py-4 text-[#8A6A55]">
+                  <td className="px-5 py-2.5 text-[#8A6A55]">
                     {coupon.validUntil}
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5">
                     <button
                       onClick={() => toggleStatus(coupon.id)}
                       className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold transition-colors ${
@@ -224,7 +224,7 @@ export function AdminCouponsClient() {
                       {coupon.status}
                     </button>
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5">
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => openEditModal(coupon)}
@@ -252,9 +252,9 @@ export function AdminCouponsClient() {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-[#DDD2C5] w-full max-w-md p-6 sm:p-7 rounded-2xl shadow-2xl space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-[#DDD2C5]">
-              <h3 className="font-serif font-semibold text-[#2E221C] text-base">
+          <div className="bg-white w-full max-w-md p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
+              <h3 className="font-sans font-semibold text-[#2E221C] text-base">
                 {editingId ? 'Edit Privilege Coupon' : 'Create New Privilege Coupon'}
               </h3>
               <button onClick={() => setIsModalOpen(false)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md">
@@ -271,7 +271,7 @@ export function AdminCouponsClient() {
                   value={formData.code}
                   onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                   placeholder="e.g. SUMMER2026"
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] font-mono uppercase outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg transition-colors"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] font-mono uppercase outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg transition-colors"
                 />
               </div>
 
@@ -281,7 +281,7 @@ export function AdminCouponsClient() {
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value as 'percentage' | 'fixed' })}
-                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
                   >
                     <option value="percentage">Percentage (%)</option>
                     <option value="fixed">Fixed Amount (₹)</option>
@@ -294,7 +294,7 @@ export function AdminCouponsClient() {
                     required
                     value={formData.value}
                     onChange={(e) => setFormData({ ...formData, value: Number(e.target.value) })}
-                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg"
                   />
                 </div>
               </div>
@@ -306,7 +306,7 @@ export function AdminCouponsClient() {
                     type="number"
                     value={formData.minOrder}
                     onChange={(e) => setFormData({ ...formData, minOrder: Number(e.target.value) })}
-                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg"
                   />
                 </div>
                 <div>
@@ -315,7 +315,7 @@ export function AdminCouponsClient() {
                     type="number"
                     value={formData.usageLimit}
                     onChange={(e) => setFormData({ ...formData, usageLimit: Number(e.target.value) })}
-                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] rounded-lg"
                   />
                 </div>
               </div>
@@ -327,7 +327,7 @@ export function AdminCouponsClient() {
                     type="date"
                     value={formData.validUntil}
                     onChange={(e) => setFormData({ ...formData, validUntil: e.target.value })}
-                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
                   />
                 </div>
                 <div>
@@ -335,7 +335,7 @@ export function AdminCouponsClient() {
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as 'active' | 'expired' | 'disabled' })}
-                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2.5 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg"
                   >
                     <option value="active">Active</option>
                     <option value="disabled">Disabled</option>
@@ -348,13 +348,13 @@ export function AdminCouponsClient() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-[#8A6A55] hover:text-[#2E221C] text-xs font-medium transition-colors"
+                  className="px-3.5 py-2 text-[#8A6A55] hover:text-[#2E221C] text-xs font-medium transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-[#1A1410] text-xs rounded-lg shadow-sm transition-all"
+                  className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] text-xs rounded-lg shadow-sm transition-all"
                 >
                   <Check size={13} className="text-[#C9A86A]" /> {editingId ? 'Save Changes' : 'Create Coupon'}
                 </button>

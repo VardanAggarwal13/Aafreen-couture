@@ -34,7 +34,7 @@ export function AccountSidebar({ user }: AccountSidebarProps) {
   }
 
   return (
-    <div className="bg-surface border border-border rounded-xs p-5 space-y-1 shadow-2xs font-sans">
+    <div className="bg-surface rounded-xl p-5 space-y-1 shadow-sm font-sans">
       {/* User info */}
       <div className="pb-4 mb-4 border-b border-border">
         <p className="text-sm font-semibold text-heading truncate">{user.name || 'Valued Client'}</p>
@@ -48,7 +48,7 @@ export function AccountSidebar({ user }: AccountSidebarProps) {
             key={href}
             href={href}
             className={cn(
-              'flex items-center gap-3 px-3 py-2.5 rounded-xs text-xs uppercase tracking-wider transition-colors',
+              'flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs uppercase tracking-wider transition-colors',
               isActive
                 ? 'bg-gold text-white font-semibold shadow-xs'
                 : 'text-text hover:text-heading hover:bg-background'
@@ -63,7 +63,7 @@ export function AccountSidebar({ user }: AccountSidebarProps) {
       <div className="pt-4 mt-4 border-t border-border">
         <button
           onClick={handleSignOut}
-          className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xs text-xs uppercase tracking-wider text-text hover:text-red-600 hover:bg-red-50/50 transition-colors cursor-pointer"
+          className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-xs uppercase tracking-wider text-text hover:text-red-600 hover:bg-red-50/50 transition-colors cursor-pointer"
         >
           <LogOut size={15} />
           Sign Out

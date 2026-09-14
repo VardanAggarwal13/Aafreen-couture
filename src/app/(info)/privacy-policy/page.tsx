@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site.config';
+import { cmsRepository } from '@/server/repositories/cms.repository';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { Shield, Lock, Mail, Phone, Clock } from 'lucide-react';
@@ -23,16 +24,20 @@ const TOC: TocItem[] = [
   { id: 'sec-grievance', number: '08', title: 'Grievance Officer & Contact' },
 ];
 
-export default function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage() {
+  const cms = await cmsRepository.findBySlug('privacy-policy');
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
-        badge="✦ Data Protection &amp; Security"
-        title="Privacy Policy"
-        italicTitle="Client Confidentiality"
-        subtitle="At Aafreen Couture, we value your trust. Learn how we collect, safeguard, and responsibly process your personal information with banking-grade security."
-        metaInfo="Effective Season 2026 · Compliant with the Information Technology Act, 2000 &amp; Digital Personal Data Protection Norms, India"
+        badge={cms?.heroBadge ?? 'Data Protection & Security'}
+        title={cms?.heroTitle ?? 'Privacy Policy'}
+        italicTitle={cms?.heroItalicTitle ?? 'Client Confidentiality'}
+        subtitle={
+          cms?.heroSubtitle ??
+          'At Aafreen Couture, we value your trust. Learn how we collect, safeguard, and responsibly process your personal information with banking-grade security.'
+        }
+        metaInfo={cms?.heroMetaInfo ?? 'Effective Season 2026 · Compliant with the Information Technology Act, 2000 & Digital Personal Data Protection Norms, India'}
       />
 
       {/* Main Container with 2-Column Responsive Layout */}
@@ -40,16 +45,16 @@ export default function PrivacyPolicyPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
           {/* Main Article Content */}
-          <article className="lg:col-span-8 space-y-8 font-sans text-xs sm:text-sm text-[#5C554E] leading-relaxed">
+          <article className="lg:col-span-8 space-y-8 font-sans text-sm sm:text-base text-[#5C554E] leading-relaxed">
             
             {/* Section 1: Privacy Commitment */}
-            <section id="sec-privacy-commitment" className="bg-white border-l-4 border-l-[#C49A5A] border-y border-r border-[#E8D8C8] p-6 sm:p-7 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-privacy-commitment" className="bg-white border-l-4 border-l-[#C49A5A] p-6 sm:p-7 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/30 flex items-center justify-center text-[#C49A5A] shrink-0">
                   <Shield size={20} />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                  <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                     01. Our Privacy Commitment
                   </h2>
                   <p>
@@ -60,10 +65,10 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 2: Info Collected */}
-            <section id="sec-info-collected" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-info-collected" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">02</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Information We Collect
                 </h2>
               </div>
@@ -79,10 +84,10 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 3: Usage */}
-            <section id="sec-usage" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-usage" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">03</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   How We Use Your Information
                 </h2>
               </div>
@@ -97,14 +102,14 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 4: Payment Security (Razorpay) */}
-            <section id="sec-payment-security" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-payment-security" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">04</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Payment Security Standards (Razorpay Integration)
                 </h2>
               </div>
-              <div className="bg-[#FAF7F2] p-4 border border-[#C49A5A]/30 rounded-xs mb-4 flex items-start gap-3.5">
+              <div className="bg-[#FAF7F2] p-4 border border-[#C49A5A]/30 rounded-lg mb-4 flex items-start gap-3.5">
                 <Lock className="text-[#C49A5A] shrink-0 mt-0.5" size={20} />
                 <div>
                   <p className="font-semibold text-[#1A1011] text-xs uppercase tracking-wider mb-1">
@@ -121,10 +126,10 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 5: Sharing */}
-            <section id="sec-sharing" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-sharing" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">05</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Sharing with Trusted Third Parties
                 </h2>
               </div>
@@ -140,10 +145,10 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 6: Cookies */}
-            <section id="sec-cookies" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-cookies" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">06</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Cookies &amp; Tracking Technologies
                 </h2>
               </div>
@@ -153,10 +158,10 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 7: Retention & Rights */}
-            <section id="sec-retention-rights" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-retention-rights" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">07</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Data Retention &amp; Your Legal Rights
                 </h2>
               </div>
@@ -173,10 +178,10 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 8: Grievance Officer */}
-            <section id="sec-grievance" className="bg-[#221617] text-white border border-[#C49A5A]/40 p-6 sm:p-8 rounded-sm shadow-sm scroll-mt-24">
+            <section id="sec-grievance" className="bg-[#221617] text-white p-6 sm:p-8 rounded-2xl shadow-md scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">08</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#C49A5A] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#C49A5A]">
                   Grievance Officer &amp; Privacy Desk
                 </h2>
               </div>
@@ -185,7 +190,7 @@ export default function PrivacyPolicyPage() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
-                <div className="bg-[#2C1A1C] p-4 rounded-xs border border-[#C49A5A]/20">
+                <div className="bg-[#2C1A1C] p-4 rounded-lg border border-[#C49A5A]/20">
                   <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
                     <Mail size={13} /> Privacy Officer Email
                   </p>
@@ -194,7 +199,7 @@ export default function PrivacyPolicyPage() {
                   </a>
                 </div>
 
-                <div className="bg-[#2C1A1C] p-4 rounded-xs border border-[#C49A5A]/20">
+                <div className="bg-[#2C1A1C] p-4 rounded-lg border border-[#C49A5A]/20">
                   <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
                     <Phone size={13} /> Grievance Helpline
                   </p>
@@ -208,7 +213,7 @@ export default function PrivacyPolicyPage() {
                 <p>Aafreen Couture By Pearl · SCO No. 43, 1st Floor, B-Block Market, New Amritsar, Amritsar, Punjab — 143001</p>
                 <Link
                   href="/contact"
-                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-white text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-colors rounded-xs"
+                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-white text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-colors rounded-lg"
                 >
                   Contact Desk →
                 </Link>

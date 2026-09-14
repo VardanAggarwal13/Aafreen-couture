@@ -51,21 +51,21 @@ export function AdminReturnsClient() {
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Exchanges & Return Requests</h1>
-          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Manage client exchange requests, atelier fit alterations, and refund disbursements</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Exchanges & Return Requests</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-sans">Manage client exchange requests, atelier fit alterations, and refund disbursements</p>
         </div>
       </div>
 
-      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Request ID', 'Order #', 'Customer', 'Product', 'Refund Value', 'Reason', 'Status', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -74,13 +74,13 @@ export function AdminReturnsClient() {
             <tbody className="divide-y divide-[#EAE2D7]">
               {returns.map((ret) => (
                 <tr key={ret.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                  <td className="px-5 py-4 font-mono font-semibold text-[#2E221C]">{ret.id}</td>
-                  <td className="px-5 py-4 font-mono font-medium text-[#8A6A55]">{ret.orderNumber}</td>
-                  <td className="px-5 py-4 font-medium text-[#2E221C]">{ret.customer}</td>
-                  <td className="px-5 py-4 font-serif text-[#2E221C] max-w-[200px] truncate">{ret.product}</td>
-                  <td className="px-5 py-4 font-semibold text-[#2E221C]">{formatPrice(ret.amount)}</td>
-                  <td className="px-5 py-4 text-[#8A6A55] max-w-[220px] truncate">{ret.reason}</td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5 font-mono font-semibold text-[#2E221C]">{ret.id}</td>
+                  <td className="px-5 py-2.5 font-mono font-medium text-[#8A6A55]">{ret.orderNumber}</td>
+                  <td className="px-5 py-2.5 font-medium text-[#2E221C]">{ret.customer}</td>
+                  <td className="px-5 py-2.5 font-sans text-[#2E221C] max-w-[200px] truncate">{ret.product}</td>
+                  <td className="px-5 py-2.5 font-semibold text-[#2E221C]">{formatPrice(ret.amount)}</td>
+                  <td className="px-5 py-2.5 text-[#8A6A55] max-w-[220px] truncate">{ret.reason}</td>
+                  <td className="px-5 py-2.5">
                     <span className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold ${
                       ret.status === 'approved'
                         ? 'bg-blue-50 text-blue-800 border border-blue-200'
@@ -93,7 +93,7 @@ export function AdminReturnsClient() {
                       {ret.status.replace(/_/g, ' ')}
                     </span>
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5">
                     <div className="flex items-center gap-2">
                       {ret.status === 'under_review' && (
                         <>
@@ -141,9 +141,9 @@ export function AdminReturnsClient() {
       {/* Details Modal */}
       {selectedReturn && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-[#DDD2C5] w-full max-w-md p-6 sm:p-7 rounded-2xl shadow-2xl space-y-4 text-xs">
-            <div className="flex items-center justify-between pb-3 border-b border-[#DDD2C5]">
-              <h3 className="font-serif font-semibold text-[#2E221C] text-base">Return Dossier {selectedReturn.id}</h3>
+          <div className="bg-white w-full max-w-md p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 text-xs">
+            <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
+              <h3 className="font-sans font-semibold text-[#2E221C] text-base">Return Dossier {selectedReturn.id}</h3>
               <button onClick={() => setSelectedReturn(null)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md">
                 <X size={16} />
               </button>

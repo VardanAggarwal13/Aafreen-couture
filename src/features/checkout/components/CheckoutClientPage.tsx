@@ -337,7 +337,7 @@ export function CheckoutClientPage() {
           {step === 'Address' && (
             <form onSubmit={handleSubmit(handleAddressNext)} className="space-y-6">
               {/* Verified Account Indicator */}
-              <div className="p-4 bg-surface border border-border rounded-xs flex items-center justify-between shadow-2xs">
+              <div className="p-4 bg-surface rounded-lg flex items-center justify-between shadow-sm">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-gold/10 text-gold border border-gold/30 flex items-center justify-center font-serif text-xs font-bold">
                     {session.user.name?.charAt(0) || 'U'}
@@ -375,7 +375,7 @@ export function CheckoutClientPage() {
                         key={addr._id}
                         type="button"
                         onClick={() => applyAddress(addr)}
-                        className={`p-3.5 text-left border rounded-xs transition-all cursor-pointer ${
+                        className={`p-3.5 text-left border rounded-lg transition-all cursor-pointer ${
                           selectedAddressId === addr._id
                             ? 'border-gold bg-gold/5 ring-1 ring-gold/30 shadow-xs'
                             : 'border-border bg-surface hover:border-gold/50'
@@ -384,7 +384,7 @@ export function CheckoutClientPage() {
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-xs font-semibold text-heading">{addr.name}</span>
                           {addr.isDefault && (
-                            <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 bg-surface text-gold border border-gold/30 font-bold rounded-xs">
+                            <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 bg-surface text-gold border border-gold/30 font-bold rounded-lg">
                               Default
                             </span>
                           )}
@@ -404,7 +404,7 @@ export function CheckoutClientPage() {
                         setValue('city', '');
                         setValue('pincode', '');
                       }}
-                      className={`p-3 text-center border border-dashed rounded-xs transition-colors flex items-center justify-center gap-1.5 text-xs cursor-pointer ${
+                      className={`p-3 text-center border border-dashed rounded-lg transition-colors flex items-center justify-center gap-1.5 text-xs cursor-pointer ${
                         selectedAddressId === 'new'
                           ? 'border-gold text-gold bg-gold/5'
                           : 'border-border text-text hover:border-gold hover:text-gold'
@@ -417,7 +417,7 @@ export function CheckoutClientPage() {
               )}
 
               {/* Delivery Details Form */}
-              <div className="bg-surface border border-border p-6 rounded-xs space-y-4 shadow-2xs">
+              <div className="bg-surface rounded-xl p-6 space-y-4 shadow-sm">
                 <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-heading pb-2 border-b border-border">
                   {selectedAddressId !== 'new' ? 'Delivery Details' : 'Shipping Address'}
                 </h2>
@@ -429,7 +429,7 @@ export function CheckoutClientPage() {
                     </label>
                     <input
                       {...register('name')}
-                      className="w-full border border-border px-3.5 py-2.5 text-xs text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-xs"
+                      className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                       placeholder="Receiver's full name"
                     />
                     {errors.name && <p className="text-[11px] text-rose-600 mt-1">{errors.name.message}</p>}
@@ -441,7 +441,7 @@ export function CheckoutClientPage() {
                     <input
                       {...register('phone')}
                       type="tel"
-                      className="w-full border border-border px-3.5 py-2.5 text-xs text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-xs"
+                      className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                       placeholder="10-digit mobile number"
                     />
                     {errors.phone && <p className="text-[11px] text-rose-600 mt-1">{errors.phone.message}</p>}
@@ -455,7 +455,7 @@ export function CheckoutClientPage() {
                   <input
                     {...register('email')}
                     type="email"
-                    className="w-full border border-border px-3.5 py-2.5 text-xs text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-xs"
+                    className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                     placeholder="name@example.com"
                   />
                   {errors.email && <p className="text-[11px] text-rose-600 mt-1">{errors.email.message}</p>}
@@ -467,7 +467,7 @@ export function CheckoutClientPage() {
                   </label>
                   <input
                     {...register('line1')}
-                    className="w-full border border-border px-3.5 py-2.5 text-xs text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-xs"
+                    className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                     placeholder="House/Flat no., Street, Area"
                   />
                   {errors.line1 && <p className="text-[11px] text-rose-600 mt-1">{errors.line1.message}</p>}
@@ -479,7 +479,7 @@ export function CheckoutClientPage() {
                   </label>
                   <input
                     {...register('line2')}
-                    className="w-full border border-border px-3.5 py-2.5 text-xs text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-xs"
+                    className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                     placeholder="Landmark, Apartment, Colony"
                   />
                 </div>
@@ -491,7 +491,7 @@ export function CheckoutClientPage() {
                     </label>
                     <input
                       {...register('city')}
-                      className="w-full border border-border px-3.5 py-2.5 text-xs text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-xs"
+                      className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                       placeholder="City"
                     />
                     {errors.city && <p className="text-[11px] text-rose-600 mt-1">{errors.city.message}</p>}
@@ -502,7 +502,7 @@ export function CheckoutClientPage() {
                     </label>
                     <select
                       {...register('state')}
-                      className="w-full border border-border px-3.5 py-2.5 text-xs text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-xs"
+                      className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                     >
                       <option value="">Select state</option>
                       {INDIAN_STATES.map((s) => (
@@ -517,7 +517,7 @@ export function CheckoutClientPage() {
                     </label>
                     <input
                       {...register('pincode')}
-                      className="w-full border border-border px-3.5 py-2.5 text-xs text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-xs"
+                      className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                       placeholder="6-digit pincode"
                       maxLength={6}
                     />
@@ -533,7 +533,7 @@ export function CheckoutClientPage() {
                       id="saveToAccount"
                       checked={saveToAccount}
                       onChange={(e) => setSaveToAccount(e.target.checked)}
-                      className="rounded-xs border-border text-gold focus:ring-gold"
+                      className="rounded-lg border-border text-gold focus:ring-gold"
                     />
                     <label htmlFor="saveToAccount" className="text-xs text-text cursor-pointer">
                       Save this address to my account for faster future checkout
@@ -543,7 +543,7 @@ export function CheckoutClientPage() {
               </div>
 
               {/* Payment Method Selection */}
-              <div className="bg-surface border border-border p-6 rounded-xs space-y-4 shadow-2xs">
+              <div className="bg-surface rounded-xl p-6 space-y-4 shadow-sm">
                 <div className="flex items-center justify-between pb-2 border-b border-border">
                   <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading">
                     Select Payment Preference
@@ -556,7 +556,7 @@ export function CheckoutClientPage() {
                 <div className="space-y-3">
                   {/* COD Option */}
                   <label
-                    className={`flex items-start gap-3.5 p-4 border rounded-xs cursor-pointer transition-all ${
+                    className={`flex items-start gap-3.5 p-4 border rounded-lg cursor-pointer transition-all ${
                       paymentMethod === 'cod'
                         ? 'border-gold bg-gold/5 ring-1 ring-gold/30 shadow-xs'
                         : 'border-border bg-background hover:border-gold/40'
@@ -588,7 +588,7 @@ export function CheckoutClientPage() {
 
                   {/* Razorpay Online Option */}
                   <label
-                    className={`flex items-start gap-3.5 p-4 border rounded-xs cursor-pointer transition-all ${
+                    className={`flex items-start gap-3.5 p-4 border rounded-lg cursor-pointer transition-all ${
                       paymentMethod === 'razorpay'
                         ? 'border-gold bg-gold/5 ring-1 ring-gold/30 shadow-xs'
                         : 'border-border bg-background hover:border-gold/40'
@@ -622,7 +622,7 @@ export function CheckoutClientPage() {
 
               <button
                 type="submit"
-                className="w-full bg-heading hover:bg-gold text-surface py-4 text-xs font-semibold uppercase tracking-[0.2em] rounded-xs shadow-sm hover:shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full bg-heading hover:bg-gold text-surface py-4 text-xs font-semibold uppercase tracking-[0.2em] rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <span>Continue to Order Review</span>
               </button>
@@ -632,7 +632,7 @@ export function CheckoutClientPage() {
           {step === 'Payment' && (
             <div className="space-y-6">
               {paymentError && (
-                <div className="p-4 bg-rose-50 border border-rose-200 rounded-xs text-xs text-rose-800 space-y-1">
+                <div className="p-4 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-800 space-y-1">
                   <p className="font-semibold uppercase tracking-wider">Payment Interrupted</p>
                   <p>{paymentError}</p>
                   <p className="text-[11px] text-rose-600 pt-1">
@@ -641,13 +641,13 @@ export function CheckoutClientPage() {
                 </div>
               )}
 
-              <div className="bg-surface border border-border p-6 rounded-xs space-y-4 shadow-2xs">
+              <div className="bg-surface rounded-xl p-6 space-y-4 shadow-sm">
                 <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-heading pb-2 border-b border-border">
                   Confirm & Reserve Order
                 </h2>
 
                 {paymentMethod === 'cod' ? (
-                  <div className="p-5 bg-background border border-gold/40 rounded-xs space-y-3">
+                  <div className="p-5 bg-background border border-gold/40 rounded-lg space-y-3">
                     <div className="flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                       <p className="text-xs font-semibold text-heading uppercase tracking-wider">
@@ -666,7 +666,7 @@ export function CheckoutClientPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="p-5 bg-background border border-gold/40 rounded-xs space-y-3">
+                  <div className="p-5 bg-background border border-gold/40 rounded-lg space-y-3">
                     <div className="flex items-center gap-2">
                       <CreditCard size={15} className="text-gold" />
                       <p className="text-xs font-semibold text-heading uppercase tracking-wider">
@@ -705,7 +705,7 @@ export function CheckoutClientPage() {
                   <button
                     type="button"
                     onClick={() => setStep('Address')}
-                    className="flex-1 border border-border text-heading py-3.5 text-xs font-semibold uppercase tracking-wider hover:border-gold transition-colors rounded-xs cursor-pointer"
+                    className="flex-1 border border-border text-heading py-3.5 text-xs font-semibold uppercase tracking-wider hover:border-gold transition-colors rounded-lg cursor-pointer"
                   >
                     Edit Delivery Details
                   </button>
@@ -713,7 +713,7 @@ export function CheckoutClientPage() {
                     type="button"
                     onClick={handlePlaceOrder}
                     disabled={isPlacing}
-                    className="flex-1 bg-heading hover:bg-gold text-surface py-3.5 text-xs font-semibold uppercase tracking-[0.2em] rounded-xs shadow-sm hover:shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+                    className="flex-1 bg-heading hover:bg-gold text-surface py-3.5 text-xs font-semibold uppercase tracking-[0.2em] rounded-lg shadow-sm hover:shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isPlacing ? (
                       <>
@@ -734,7 +734,7 @@ export function CheckoutClientPage() {
 
         {/* Right column: Sticky Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-surface border border-border rounded-xs p-6 shadow-2xs sticky top-24 space-y-4">
+          <div className="bg-surface rounded-2xl p-6 shadow-md sticky top-24 space-y-4">
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading pb-3 border-b border-border">
               Order Summary ({items.length} {items.length === 1 ? 'item' : 'items'})
             </h3>
@@ -771,7 +771,7 @@ export function CheckoutClientPage() {
               </div>
             </div>
 
-            <div className="p-3 bg-background border border-border rounded-xs space-y-1 text-[11px] text-text/80">
+            <div className="p-3 bg-background border border-border rounded-lg space-y-1 text-[11px] text-text/80">
               <div className="flex items-center gap-1.5 text-gold font-semibold">
                 <Lock size={12} />
                 <span>Atelier Guarantee</span>

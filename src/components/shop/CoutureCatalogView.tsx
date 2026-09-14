@@ -177,15 +177,9 @@ export function CoutureCatalogView({
             ))}
           </nav>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-serif text-[#221617] uppercase tracking-wider">
+          <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-serif text-[#221617] tracking-tight">
             {title}
           </h1>
-
-          <div className="flex items-center justify-center gap-2.5 my-2">
-            <div className="h-px w-8 bg-gradient-to-r from-[#C49A5A] to-transparent" />
-            <span className="text-[#C49A5A] text-xs">✦</span>
-            <div className="h-px w-8 bg-gradient-to-l from-[#C49A5A] to-transparent" />
-          </div>
 
           <p className="text-xs sm:text-[13px] text-[#6E6A66] max-w-xl mx-auto font-sans leading-relaxed">
             {subtitle || `Handcrafted couture designed for timeless elegance · ${total} designs available`}
@@ -217,7 +211,7 @@ export function CoutureCatalogView({
               </button>
 
               {activeDropdown === 'price' && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-[#E8D4BE] shadow-xl rounded-xs p-3 z-40">
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
                   <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Select Price Range
                   </p>
@@ -257,7 +251,7 @@ export function CoutureCatalogView({
               </button>
 
               {activeDropdown === 'color' && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-[#E8D4BE] shadow-xl rounded-xs p-3 z-40">
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
                   <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Color Palette
                   </p>
@@ -298,7 +292,7 @@ export function CoutureCatalogView({
               </button>
 
               {activeDropdown === 'size' && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-[#E8D4BE] shadow-xl rounded-xs p-3 z-40">
+                <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
                   <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Select Size
                   </p>
@@ -336,7 +330,7 @@ export function CoutureCatalogView({
               </button>
 
               {activeDropdown === 'fabric' && (
-                <div className="absolute top-full left-0 mt-2 w-52 bg-white border border-[#E8D4BE] shadow-xl rounded-xs p-3 z-40">
+                <div className="absolute top-full left-0 mt-2 w-52 bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
                   <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Fabric Selection
                   </p>
@@ -393,7 +387,7 @@ export function CoutureCatalogView({
                   setSort(e.target.value);
                   setPage(1);
                 }}
-                className="text-xs border border-[#E8D8C8] px-3 py-1.5 bg-white text-[#221617] uppercase tracking-wider rounded-xs focus:outline-none focus:border-[#A67C52] cursor-pointer"
+                className="text-xs border border-[#E8D8C8] px-3 py-1.5 bg-white text-[#221617] uppercase tracking-wider rounded-lg focus:outline-none focus:border-[#A67C52] cursor-pointer"
               >
                 {SORT_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -443,14 +437,14 @@ export function CoutureCatalogView({
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-6">
             {Array.from({ length: 8 }, (_, i) => (
               <div key={i} className="flex flex-col gap-3">
-                <div className="aspect-[4/5] bg-white border border-[#E8D8C8] rounded-xs animate-pulse" />
+                <div className="aspect-[4/5] bg-white rounded-xl shadow-sm animate-pulse" />
                 <div className="h-3.5 bg-[#E8D8C8]/70 rounded animate-pulse w-3/4" />
                 <div className="h-3 bg-[#E8D8C8]/40 rounded animate-pulse w-1/3" />
               </div>
             ))}
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-12 sm:py-16 bg-white border border-[#E8D8C8] rounded-xs p-8 max-w-lg mx-auto shadow-2xs">
+          <div className="text-center py-12 sm:py-16 bg-white rounded-2xl p-8 max-w-lg mx-auto shadow-sm">
             <h2 className="text-xl font-serif text-[#221617] mb-2">No Ensembles Match The Selected Criteria</h2>
             <p className="text-xs sm:text-sm text-[#6E6A66] font-sans mb-5">
               Try adjusting or clearing your filters to explore our full handcrafted collection.

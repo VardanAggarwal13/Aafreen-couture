@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site.config';
+import { cmsRepository } from '@/server/repositories/cms.repository';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { Scale, Mail, Phone, Clock } from 'lucide-react';
@@ -31,16 +32,20 @@ const TOC: TocItem[] = [
   { id: 'sec-contact', number: '16', title: 'Contact & Grievances' },
 ];
 
-export default function TermsPage() {
+export default async function TermsPage() {
+  const cms = await cmsRepository.findBySlug('terms');
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
-        badge="✦ Legal &amp; Compliance Hub"
-        title="Terms &amp; Conditions"
-        italicTitle="Atelier Service Principles"
-        subtitle="These Terms &amp; Conditions govern your use of our boutique website, bespoke made-to-order bridal couture, and international orders."
-        metaInfo="Effective Season 2026 · Compliant with the Information Technology Act &amp; Consumer Protection Rules, India"
+        badge={cms?.heroBadge ?? 'Legal & Compliance Hub'}
+        title={cms?.heroTitle ?? 'Terms & Conditions'}
+        italicTitle={cms?.heroItalicTitle ?? 'Atelier Service Principles'}
+        subtitle={
+          cms?.heroSubtitle ??
+          'These Terms & Conditions govern your use of our boutique website, bespoke made-to-order bridal couture, and international orders.'
+        }
+        metaInfo={cms?.heroMetaInfo ?? 'Effective Season 2026 · Compliant with the Information Technology Act & Consumer Protection Rules, India'}
       />
 
       {/* Main Container with 2-Column Responsive Layout */}
@@ -48,16 +53,16 @@ export default function TermsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
           {/* Main Article Content */}
-          <article className="lg:col-span-8 space-y-8 font-sans text-xs sm:text-sm text-[#5C554E] leading-relaxed">
+          <article className="lg:col-span-8 space-y-8 font-sans text-sm sm:text-base text-[#5C554E] leading-relaxed">
             
             {/* Agreement Notice Box */}
-            <div className="bg-white border-l-4 border-l-[#C49A5A] border-y border-r border-[#E8D8C8] p-6 sm:p-7 rounded-sm shadow-xs">
+            <div className="bg-white border-l-4 border-l-[#C49A5A] p-6 sm:p-7 rounded-2xl shadow-sm">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/30 flex items-center justify-center text-[#C49A5A] shrink-0">
                   <Scale size={20} />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                  <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                     User Agreement &amp; Acceptance
                   </h2>
                   <p>
@@ -68,10 +73,10 @@ export default function TermsPage() {
             </div>
 
             {/* Section 1 */}
-            <section id="sec-about" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-about" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">01</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   About Aafreen Couture
                 </h2>
               </div>
@@ -84,10 +89,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 2 */}
-            <section id="sec-product-info" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-product-info" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">02</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Product Information &amp; Artisanal Variations
                 </h2>
               </div>
@@ -106,10 +111,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 3 */}
-            <section id="sec-availability" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-availability" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">03</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Product Availability &amp; Order Acceptance
                 </h2>
               </div>
@@ -128,10 +133,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 4 */}
-            <section id="sec-pricing" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-pricing" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">04</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Pricing &amp; Applicable Taxes (INR)
                 </h2>
               </div>
@@ -144,10 +149,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 5 */}
-            <section id="sec-orders" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-orders" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">05</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Placing an Order &amp; Accuracy of Information
                 </h2>
               </div>
@@ -160,10 +165,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 6 */}
-            <section id="sec-payments" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-payments" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">06</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Payment Processing &amp; Gateway Security (Razorpay)
                 </h2>
               </div>
@@ -171,11 +176,11 @@ export default function TermsPage() {
                 Orders must be prepaid at checkout (or confirmed via authorized advance/COD terms where available). We partner with RBI-regulated payment aggregator <strong>Razorpay</strong> to process transactions securely:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                <div className="bg-[#FAF7F2] p-4 border border-[#E8D8C8] rounded-xs">
+                <div className="bg-[#FAF7F2] p-4 border border-[#E8D8C8] rounded-lg">
                   <span className="font-semibold text-[#1A1011] block mb-1">Supported Modes</span>
                   <p className="text-xs text-[#5C554E]">Credit/Debit Cards (Visa, Mastercard, RuPay, Amex), UPI (GPay, PhonePe, Paytm), Netbanking, and Wallets.</p>
                 </div>
-                <div className="bg-[#FAF7F2] p-4 border border-[#E8D8C8] rounded-xs">
+                <div className="bg-[#FAF7F2] p-4 border border-[#E8D8C8] rounded-lg">
                   <span className="font-semibold text-[#1A1011] block mb-1">PCI-DSS 256-Bit SSL</span>
                   <p className="text-xs text-[#5C554E]">Zero card storage on our servers. All sensitive credentials are tokenized and encrypted by the gateway.</p>
                 </div>
@@ -186,10 +191,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 7 */}
-            <section id="sec-custom" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-custom" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">07</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Custom, Bridal &amp; Made-to-Order Pieces
                 </h2>
               </div>
@@ -205,10 +210,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 8 */}
-            <section id="sec-measurements" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-measurements" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">08</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Measurements, Sizing &amp; Fitting Adjustments
                 </h2>
               </div>
@@ -221,10 +226,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 9 */}
-            <section id="sec-cancellation" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-cancellation" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">09</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Order Cancellation Guidelines
                 </h2>
               </div>
@@ -237,10 +242,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 10 */}
-            <section id="sec-returns" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-returns" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">10</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Returns &amp; Exchange Policy Summary
                 </h2>
               </div>
@@ -256,10 +261,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 11 */}
-            <section id="sec-damaged" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-damaged" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">11</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Damaged, Defective or Incorrect Items
                 </h2>
               </div>
@@ -272,10 +277,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 12 */}
-            <section id="sec-shipping" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-shipping" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">12</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Shipping, Transit &amp; Customer Obligations
                 </h2>
               </div>
@@ -291,10 +296,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 13 */}
-            <section id="sec-ip" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-ip" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">13</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Intellectual Property &amp; Brand Rights
                 </h2>
               </div>
@@ -307,10 +312,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 14 */}
-            <section id="sec-liability" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-liability" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">14</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Limitation of Liability &amp; Force Majeure
                 </h2>
               </div>
@@ -323,10 +328,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 15 */}
-            <section id="sec-law" className="bg-white border border-[#E8D8C8] p-6 sm:p-8 rounded-sm shadow-xs scroll-mt-24">
+            <section id="sec-law" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">15</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#1A1011] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
                   Governing Law &amp; Dispute Jurisdiction
                 </h2>
               </div>
@@ -339,10 +344,10 @@ export default function TermsPage() {
             </section>
 
             {/* Section 16: Contact Card */}
-            <section id="sec-contact" className="bg-[#221617] text-white border border-[#C49A5A]/40 p-6 sm:p-8 rounded-sm shadow-sm scroll-mt-24">
+            <section id="sec-contact" className="bg-[#221617] text-white p-6 sm:p-8 rounded-2xl shadow-md scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">16</span>
-                <h2 className="text-base sm:text-lg font-serif text-[#C49A5A] uppercase tracking-wide">
+                <h2 className="text-base sm:text-lg font-sans font-bold text-[#C49A5A]">
                   Contact &amp; Customer Grievances
                 </h2>
               </div>
@@ -351,7 +356,7 @@ export default function TermsPage() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
-                <div className="bg-[#2C1A1C] p-4 rounded-xs border border-[#C49A5A]/20">
+                <div className="bg-[#2C1A1C] p-4 rounded-lg border border-[#C49A5A]/20">
                   <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
                     <Mail size={13} /> Official Email
                   </p>
@@ -360,7 +365,7 @@ export default function TermsPage() {
                   </a>
                 </div>
 
-                <div className="bg-[#2C1A1C] p-4 rounded-xs border border-[#C49A5A]/20">
+                <div className="bg-[#2C1A1C] p-4 rounded-lg border border-[#C49A5A]/20">
                   <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
                     <Phone size={13} /> Concierge &amp; WhatsApp
                   </p>
@@ -374,7 +379,7 @@ export default function TermsPage() {
                 <p>Aafreen Couture By Pearl · SCO No. 43, 1st Floor, B-Block Market, New Amritsar, Amritsar, Punjab — 143001</p>
                 <Link
                   href="/contact"
-                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-white text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-colors rounded-xs"
+                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-white text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-colors rounded-lg"
                 >
                   Open Contact Desk →
                 </Link>

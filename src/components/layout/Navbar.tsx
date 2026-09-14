@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, Search, ShoppingBag, Heart, User, ChevronDown, MapPin } from 'lucide-react';
+import { Menu, X, Search, ShoppingBag, Heart, User, ChevronDown, MapPin, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { navLinks } from '@/config/navigation.config';
@@ -15,6 +15,7 @@ import { useCartStore } from '@/store/cart.store';
 import { useWishlistStore } from '@/store/wishlist.store';
 import { useSession, authClient } from '@/lib/auth-client';
 import { api } from '@/utils/api';
+import { SearchOverlay } from '@/components/common/SearchOverlay';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -45,6 +46,7 @@ function StorefrontNavbar() {
   const [activeMega, setActiveMega] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const { data: session } = useSession();
   const cartItemCount = useCartStore((s) => s.getTotalItems());
@@ -134,9 +136,14 @@ function StorefrontNavbar() {
 
             {/* Right section: Action Icons */}
             <div className="flex items-center justify-end gap-0.5 sm:gap-1 min-w-0">
-              <Link href={ROUTES.SEARCH} aria-label="Search" className="p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors">
+              <button
+                type="button"
+                onClick={() => setSearchOpen(true)}
+                aria-label="Search"
+                className="p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors cursor-pointer"
+              >
                 <Search size={18} />
-              </Link>
+              </button>
               
               {/* Account / Sign In Dropdown */}
               <div
@@ -172,7 +179,7 @@ function StorefrontNavbar() {
                 {/* Dropdown Menu */}
                 {accountMenuOpen && (
                   <div className="absolute right-0 top-full pt-1.5 z-50 w-60 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="bg-surface border border-border shadow-lg rounded-xs py-2 text-xs font-sans">
+                    <div className="bg-surface border border-border shadow-lg rounded-lg py-2 text-xs font-sans">
                       {session?.user ? (
                         <>
                           <div className="px-4 py-2.5 border-b border-border/60">
@@ -203,6 +210,16 @@ function StorefrontNavbar() {
                           >
                             Profile Details
                           </Link>
+                          {(session.user as { role?: string }).role === 'admin' && (
+                            <Link
+                              href={ROUTES.ADMIN}
+                              onClick={() => setAccountMenuOpen(false)}
+                              className="flex items-center gap-1.5 px-4 py-2 text-gold font-medium hover:bg-background transition-colors border-t border-border/60 mt-1 pt-2.5"
+                            >
+                              <ShieldCheck size={13} />
+                              Admin Dashboard
+                            </Link>
+                          )}
                           <div className="border-t border-border/60 mt-1 pt-1">
                             <button
                               type="button"
@@ -228,7 +245,7 @@ function StorefrontNavbar() {
                               href={ROUTES.LOGIN}
                               prefetch={true}
                               onClick={() => setAccountMenuOpen(false)}
-                              className="block text-center py-2 bg-heading text-surface font-semibold uppercase tracking-wider text-[11px] rounded-xs hover:bg-gold transition-colors"
+                              className="block text-center py-2 bg-heading text-surface font-semibold uppercase tracking-wider text-[11px] rounded-lg hover:bg-gold transition-colors"
                             >
                               Sign In
                             </Link>
@@ -236,7 +253,7 @@ function StorefrontNavbar() {
                               href={ROUTES.REGISTER}
                               prefetch={true}
                               onClick={() => setAccountMenuOpen(false)}
-                              className="block text-center py-1.5 border border-border text-heading font-medium text-[11px] rounded-xs hover:border-gold hover:text-gold transition-colors"
+                              className="block text-center py-1.5 border border-border text-heading font-medium text-[11px] rounded-lg hover:border-gold hover:text-gold transition-colors"
                             >
                               Create Account
                             </Link>
@@ -267,6 +284,8 @@ function StorefrontNavbar() {
           </div>
         </div>
       </header>
+
+      <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* Mobile drawer */}
       <AnimatePresence>
@@ -376,6 +395,15 @@ function StorefrontNavbar() {
                     >
                       <MapPin size={14} /> Saved Addresses
                     </Link>
+                    {(session.user as { role?: string }).role === 'admin' && (
+                      <Link
+                        href={ROUTES.ADMIN}
+                        className="flex items-center gap-2 text-xs text-gold hover:text-heading transition-colors font-semibold"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        <ShieldCheck size={14} /> Admin Dashboard
+                      </Link>
+                    )}
                     <button
                       onClick={async () => {
                         await authClient.signOut();
@@ -391,7 +419,7 @@ function StorefrontNavbar() {
                     <Link
                       href={ROUTES.LOGIN}
                       prefetch={true}
-                      className="block text-center py-2 bg-heading text-surface text-xs font-semibold uppercase tracking-wider hover:bg-gold transition-colors rounded-xs"
+                      className="block text-center py-2 bg-heading text-surface text-xs font-semibold uppercase tracking-wider hover:bg-gold transition-colors rounded-lg"
                       onClick={() => setMobileOpen(false)}
                     >
                       Sign In
@@ -399,7 +427,7 @@ function StorefrontNavbar() {
                     <Link
                       href={ROUTES.REGISTER}
                       prefetch={true}
-                      className="block text-center py-2 border border-border text-heading text-xs font-medium hover:border-gold hover:text-gold transition-colors rounded-xs"
+                      className="block text-center py-2 border border-border text-heading text-xs font-medium hover:border-gold hover:text-gold transition-colors rounded-lg"
                       onClick={() => setMobileOpen(false)}
                     >
                       Create Account

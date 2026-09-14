@@ -1,9 +1,20 @@
+// Guards against a misconfigured NEXT_PUBLIC_APP_URL (e.g. accidentally set to
+// http:// in production) leaking into canonical links, Open Graph tags, and
+// JSON-LD, which browsers and search engines flag as mixed content on an
+// HTTPS site. Only localhost is allowed to stay on http://.
+function resolveSiteUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_APP_URL;
+  if (!raw) return 'https://aafreencouture.com';
+  if (raw.startsWith('http://localhost') || raw.startsWith('http://127.0.0.1')) return raw;
+  return raw.replace(/^http:\/\//, 'https://');
+}
+
 export const siteConfig = {
   name: 'Aafreen Couture',
   tagline: 'Timeless Elegance, Crafted for You',
   description:
-    'Premium bridal and ethnic couture — handcrafted lenghas, suits, dresses, sharara, and accessories for the modern Indian bride.',
-  url: process.env.NEXT_PUBLIC_APP_URL ?? 'https://aafreencouture.com',
+    'Shop premium bridal lehengas, designer suits, ethnic dresses, sharara sets, and bridal accessories at Aafreen Couture — handcrafted luxury Indian wedding wear for the modern bride.',
+  url: resolveSiteUrl(),
   ogImage: '/images/og-image.jpg',
   email: 'support@aafreencouture.com',
   phone: '+91 95179 01117',

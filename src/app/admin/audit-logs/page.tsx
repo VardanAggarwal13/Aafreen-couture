@@ -39,21 +39,21 @@ const AUDIT_LOGS = [
 
 export default function AdminAuditLogsPage() {
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Security & Audit Records</h1>
-          <p className="text-sm text-[#8A6A55] mt-1 font-serif">Immutable register of administrative updates, role promotions, and security events</p>
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Security & Audit Records</h1>
+          <p className="text-sm text-[#8A6A55] mt-1 font-sans">Immutable register of administrative updates, role promotions, and security events</p>
         </div>
       </div>
 
-      <div className="bg-white border border-[#DDD2C5] rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Timestamp', 'User', 'Action', 'Event Details', 'IP Address'].map((h) => (
-                  <th key={h} className="text-left px-5 py-3.5 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -62,20 +62,20 @@ export default function AdminAuditLogsPage() {
             <tbody className="divide-y divide-[#EAE2D7]">
               {AUDIT_LOGS.map((log) => (
                 <tr key={log.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                  <td className="px-5 py-4 font-mono text-[#8A6A55] text-xs whitespace-nowrap">{log.timestamp}</td>
-                  <td className="px-5 py-4 font-medium text-[#2E221C] flex items-center gap-2 whitespace-nowrap">
+                  <td className="px-5 py-2.5 font-mono text-[#8A6A55] text-xs whitespace-nowrap">{log.timestamp}</td>
+                  <td className="px-5 py-2.5 font-medium text-[#2E221C] flex items-center gap-2 whitespace-nowrap">
                     <div className="w-6 h-6 rounded-full bg-[#FAF7F2] border border-[#DDD2C5] flex items-center justify-center">
                       <User size={12} className="text-[#C9A86A]" />
                     </div>
                     {log.user}
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-2.5">
                     <span className="px-2.5 py-1 text-[10px] font-mono font-semibold uppercase bg-[#FAF7F2] text-[#2E221C] border border-[#DDD2C5] rounded-md inline-flex items-center gap-1">
                       <ShieldCheck size={11} className="text-[#C9A86A]" /> {log.action}
                     </span>
                   </td>
-                  <td className="px-5 py-4 text-[#8A6A55] max-w-[340px] truncate font-medium">{log.details}</td>
-                  <td className="px-5 py-4 font-mono text-[#8A6A55] text-xs">{log.ip}</td>
+                  <td className="px-5 py-2.5 text-[#8A6A55] max-w-[340px] truncate font-medium">{log.details}</td>
+                  <td className="px-5 py-2.5 font-mono text-[#8A6A55] text-xs">{log.ip}</td>
                 </tr>
               ))}
             </tbody>

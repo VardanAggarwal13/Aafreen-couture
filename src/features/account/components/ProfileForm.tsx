@@ -66,11 +66,11 @@ export function ProfileForm({ user }: ProfileFormProps) {
   }
 
   const fieldCls =
-    'w-full border border-border px-3.5 py-2.5 text-xs text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-xs';
+    'w-full border border-border px-3.5 py-2.5 text-sm text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg';
   const labelCls = 'block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5';
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="bg-surface border border-border rounded-xs p-6 sm:p-7 space-y-6 shadow-2xs">
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-surface rounded-xl p-6 sm:p-7 space-y-6 shadow-sm">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label className={labelCls}>Full Name *</label>
@@ -115,7 +115,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
         <button
           type="submit"
           disabled={saving || !isDirty}
-          className="bg-heading text-surface px-6 py-2.5 text-xs font-semibold uppercase tracking-wider hover:bg-gold transition-colors duration-200 disabled:opacity-40 rounded-xs cursor-pointer flex items-center gap-1.5"
+          className="bg-heading text-surface px-6 py-2.5 text-xs font-semibold uppercase tracking-wider hover:bg-gold transition-colors duration-200 disabled:opacity-40 rounded-lg cursor-pointer flex items-center gap-1.5"
         >
           {saving ? (
             <span>Saving…</span>

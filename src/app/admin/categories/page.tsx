@@ -9,10 +9,10 @@ export default async function AdminCategoriesPage() {
   const serialized = JSON.parse(JSON.stringify(categories));
 
   return (
-    <div className="p-6 lg:p-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Categories</h1>
-        <p className="text-sm text-[#8A6A55] mt-1 font-serif">Curate & organize product departments</p>
+    <div>
+      <div className="mb-3">
+        <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Categories</h1>
+        <p className="text-sm text-[#8A6A55] mt-1 font-sans">Curate & organize product departments</p>
       </div>
       <AdminCategoriesClient categories={serialized} />
     </div>

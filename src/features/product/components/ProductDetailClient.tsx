@@ -176,7 +176,7 @@ export function ProductDetailClient({ product, related }: Props) {
                     key={i}
                     onClick={() => setSelectedImage(i)}
                     className={cn(
-                      'w-16 sm:w-full aspect-[4/5] shrink-0 rounded-xs overflow-hidden border-2 transition-all cursor-pointer bg-[#FAF7F2] relative group',
+                      'w-16 sm:w-full aspect-[4/5] shrink-0 rounded-lg overflow-hidden border-2 transition-all cursor-pointer bg-[#FAF7F2] relative group',
                       i === selectedImage
                         ? 'border-gold ring-1 ring-gold/40 shadow-xs'
                         : 'border-border/80 hover:border-gold/60 opacity-65 hover:opacity-100'
@@ -198,7 +198,7 @@ export function ProductDetailClient({ product, related }: Props) {
             {/* Main Stage Image — all gallery images are preloaded and stacked so
                 switching photos is an instant opacity toggle instead of a fresh
                 network request + on-demand image transform. */}
-            <div className="flex-1 w-full relative aspect-[4/5] max-h-[620px] lg:max-h-[660px] rounded-xs overflow-hidden bg-[#FAF7F2] border border-[#E8D8C8]/60 shadow-xs group">
+            <div className="flex-1 w-full relative aspect-[4/5] max-h-[620px] lg:max-h-[660px] rounded-2xl overflow-hidden bg-[#FAF7F2] shadow-md group">
               {allImages.length > 0 ? (
                 allImages.map((img, i) => (
                   <Image
@@ -222,7 +222,7 @@ export function ProductDetailClient({ product, related }: Props) {
 
               {/* Discount Badge */}
               {discountPct && (
-                <span className="absolute top-3.5 left-3.5 bg-gold text-surface text-[11px] font-semibold px-2.5 py-1 rounded-xs uppercase tracking-wider shadow-xs pointer-events-none">
+                <span className="absolute top-3.5 left-3.5 bg-gold text-surface text-[11px] font-semibold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-xs pointer-events-none">
                   -{discountPct}%
                 </span>
               )}
@@ -238,7 +238,7 @@ export function ProductDetailClient({ product, related }: Props) {
 
               {/* Photo Counter Overlay */}
               {allImages.length > 1 && (
-                <div className="absolute bottom-3.5 right-3.5 bg-black/60 backdrop-blur-xs text-white text-[10px] font-medium tracking-widest px-2.5 py-1 rounded-xs pointer-events-none">
+                <div className="absolute bottom-3.5 right-3.5 bg-black/60 backdrop-blur-xs text-white text-[10px] font-medium tracking-widest px-2.5 py-1 rounded-lg pointer-events-none">
                   {selectedImage + 1} / {allImages.length}
                 </div>
               )}
@@ -275,7 +275,7 @@ export function ProductDetailClient({ product, related }: Props) {
                     ? product.category.name
                     : product.fabric?.split(',')[0] || 'Luxury Couture'}
                 </p>
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-xs tracking-wider uppercase">
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-lg tracking-wider uppercase">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
                   {inStock ? 'Ready to Dispatch' : 'Made to Order'}
                 </span>
@@ -314,7 +314,7 @@ export function ProductDetailClient({ product, related }: Props) {
                     <span className="text-sm text-text line-through">
                       {formatPrice(comparePrice)}
                     </span>
-                    <span className="text-[11px] font-semibold text-gold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-xs uppercase tracking-wider">
+                    <span className="text-[11px] font-semibold text-gold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-lg uppercase tracking-wider">
                       Save {formatPrice(comparePrice - price)} ({discountPct}% OFF)
                     </span>
                   </>
@@ -325,7 +325,7 @@ export function ProductDetailClient({ product, related }: Props) {
               </p>
 
               {/* Curated Editorial Excerpt */}
-              <p className="text-xs sm:text-sm text-text leading-relaxed bg-[#FAF7F2] p-3 rounded-xs border border-border/70 mb-1">
+              <p className="text-xs sm:text-sm text-text leading-relaxed bg-[#FAF7F2] p-3 rounded-lg border border-border/70 mb-1">
                 {product.shortDescription || (product.description.length > 180 ? product.description.slice(0, 180) + '...' : product.description)}
               </p>
             </div>
@@ -404,7 +404,7 @@ export function ProductDetailClient({ product, related }: Props) {
                             onClick={() => setSelectedVariantIdx(i)}
                             disabled={!v.isActive || v.stock === 0}
                             className={cn(
-                              'min-w-[42px] px-3.5 py-2 text-xs font-semibold tracking-wider uppercase border transition-all rounded-xs cursor-pointer',
+                              'min-w-[42px] px-3.5 py-2 text-xs font-semibold tracking-wider uppercase border transition-all rounded-lg cursor-pointer',
                               !v.isActive || v.stock === 0
                                 ? 'border-border text-text/40 line-through cursor-not-allowed bg-background/50'
                                 : i === selectedVariantIdx
@@ -425,7 +425,7 @@ export function ProductDetailClient({ product, related }: Props) {
             {/* Quantity */}
             <div className="flex items-center gap-4 pt-1 border-t border-border/60">
               <p className="text-xs font-semibold uppercase tracking-wider text-heading">Quantity</p>
-              <div className="flex items-center w-28 border border-border bg-surface rounded-xs">
+              <div className="flex items-center w-28 border border-border bg-surface rounded-lg">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   className="px-3 py-1.5 text-heading hover:text-gold transition-colors font-medium text-base cursor-pointer"
@@ -451,7 +451,7 @@ export function ProductDetailClient({ product, related }: Props) {
               <button
                 onClick={handleAddToCart}
                 disabled={!inStock}
-                className="flex-1 bg-heading text-surface hover:bg-gold py-3 px-6 text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 disabled:opacity-40 rounded-xs shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+                className="flex-1 bg-heading text-surface hover:bg-gold py-3 px-6 text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 disabled:opacity-40 rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShoppingBag size={14} />
                 {inStock ? 'Add to Cart' : 'Out of Stock'}
@@ -460,7 +460,7 @@ export function ProductDetailClient({ product, related }: Props) {
               <button
                 onClick={handleBuyNow}
                 disabled={!inStock}
-                className="flex-1 bg-gold text-white hover:bg-gold/90 py-3 px-6 text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 disabled:opacity-40 rounded-xs shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+                className="flex-1 bg-gold text-white hover:bg-gold/90 py-3 px-6 text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 disabled:opacity-40 rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer"
               >
                 Buy Now
               </button>
@@ -499,7 +499,7 @@ export function ProductDetailClient({ product, related }: Props) {
         </div>
 
         {/* Full-Width Luxury Trust & Concierge Strip */}
-        <div className="my-10 sm:my-12 py-5 px-6 border-y border-border bg-[#FAF7F2] rounded-xs shadow-2xs">
+        <div className="my-10 sm:my-12 py-5 px-6 bg-[#FAF7F2] rounded-2xl shadow-sm">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
             <div className="flex flex-col items-center gap-1.5">
               <Truck size={18} className="text-gold" />
@@ -544,21 +544,21 @@ export function ProductDetailClient({ product, related }: Props) {
 
               {/* Garment Highlights Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
-                <div className="bg-[#FAF7F2] p-3.5 rounded-xs border border-border/70 space-y-1">
+                <div className="bg-[#FAF7F2] p-3.5 rounded-xl shadow-sm space-y-1">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-gold">Pure Fabric & Weave</p>
                   <p className="text-xs text-heading font-medium">{product.fabric || 'Pure Raw Silk & Chanderi Lining'}</p>
                 </div>
-                <div className="bg-[#FAF7F2] p-3.5 rounded-xs border border-border/70 space-y-1">
+                <div className="bg-[#FAF7F2] p-3.5 rounded-xl shadow-sm space-y-1">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-gold">Embroidery & Workmanship</p>
                   <p className="text-xs text-heading font-medium">{product.workType || 'Handcrafted Zardozi, Tilla & Gota Patti'}</p>
                 </div>
                 {product.occasion && product.occasion.length > 0 && (
-                  <div className="bg-[#FAF7F2] p-3.5 rounded-xs border border-border/70 space-y-1">
+                  <div className="bg-[#FAF7F2] p-3.5 rounded-xl shadow-sm space-y-1">
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-gold">Ideal For</p>
                     <p className="text-xs text-heading font-medium">{product.occasion.join(', ')}</p>
                   </div>
                 )}
-                <div className="bg-[#FAF7F2] p-3.5 rounded-xs border border-border/70 space-y-1">
+                <div className="bg-[#FAF7F2] p-3.5 rounded-xl shadow-sm space-y-1">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-gold">Fitting & Cut</p>
                   <p className="text-xs text-heading font-medium">Bespoke Custom Tailored / Standard Size</p>
                 </div>
@@ -593,7 +593,7 @@ export function ProductDetailClient({ product, related }: Props) {
                     'Hassle-free 7-day exchange window on standard sizes. Items must be unworn, undamaged, with original tags intact. Custom made-to-measure outfits include complimentary minor fitting adjustments by our master tailors.',
                 },
               ].map(({ key, label, content }) => (
-                <div key={key} className="border border-border rounded-xs bg-surface/90 overflow-hidden">
+                <div key={key} className="border border-border rounded-lg bg-surface/90 overflow-hidden">
                   <button
                     onClick={() => setAccordionOpen(accordionOpen === key ? null : key)}
                     className="flex items-center justify-between w-full text-left p-3.5 cursor-pointer hover:bg-[#FAF7F2] transition-colors"
@@ -619,7 +619,7 @@ export function ProductDetailClient({ product, related }: Props) {
               ))}
 
               {/* Stylist Concierge Banner */}
-              <div className="mt-4 p-4 rounded-xs border border-gold/30 bg-gold/5 flex items-center justify-between gap-3">
+              <div className="mt-4 p-4 rounded-lg border border-gold/30 bg-gold/5 flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-semibold text-heading uppercase tracking-wider">Need Styling Advice?</p>
                   <p className="text-[11px] text-text">Chat with our bridal & couture stylists directly</p>
@@ -628,7 +628,7 @@ export function ProductDetailClient({ product, related }: Props) {
                   href={`https://wa.me/${siteConfig.whatsapp}?text=Hi! I need styling consultation for ${encodeURIComponent(product.name)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="shrink-0 bg-gold text-white text-[11px] font-semibold uppercase tracking-wider px-3.5 py-2 rounded-xs hover:bg-gold/90 transition-colors shadow-xs"
+                  className="shrink-0 bg-gold text-white text-[11px] font-semibold uppercase tracking-wider px-3.5 py-2 rounded-lg hover:bg-gold/90 transition-colors shadow-xs"
                 >
                   WhatsApp Us
                 </a>
@@ -640,7 +640,7 @@ export function ProductDetailClient({ product, related }: Props) {
         {/* Related products */}
         {related.length > 0 && (
           <section className="mt-12 sm:mt-16 pt-10 sm:pt-12 border-t border-border">
-            <h2 className="font-serif text-2xl sm:text-3xl text-heading uppercase tracking-wide mb-6 sm:mb-8">
+            <h2 className="font-serif text-2xl sm:text-3xl text-heading tracking-tight mb-6 sm:mb-8">
               You May Also Like
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">

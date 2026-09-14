@@ -10,11 +10,11 @@ import { siteConfig } from '@/config/site.config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} — ${siteConfig.tagline}`,
-  description: 'Discover premium bridal lehengas, designer suits, and luxury ethnic wear by Aafreen Couture. Timeless elegance crafted for your most celebrated moments.',
+  title: `${siteConfig.name} | Bridal Lehengas, Designer Suits & Luxury Ethnic Wear`,
+  description: 'Shop premium bridal lehengas, designer suits, sharara sets, and luxury ethnic wear at Aafreen Couture. Handcrafted Indian wedding fashion, timeless elegance crafted for your most celebrated moments.',
   alternates: { canonical: siteConfig.url },
   openGraph: {
-    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    title: `${siteConfig.name} | Bridal Lehengas, Designer Suits & Luxury Ethnic Wear`,
     description: 'Premium bridal lehengas, designer suits, and luxury ethnic wear.',
     images: [{ url: `${siteConfig.url}/images/og-home.jpg`, width: 1200, height: 630 }],
   },

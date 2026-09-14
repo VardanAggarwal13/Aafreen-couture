@@ -26,7 +26,7 @@ function OccasionCard({ label, href, image }: { label: string; href: string; ima
   return (
     <Link
       href={href}
-      className="group relative overflow-hidden aspect-[3/4] rounded-xs border border-[#E8D8C8] shadow-2xs bg-[#FAF7F2]"
+      className="group relative overflow-hidden aspect-[3/4] rounded-xl shadow-sm bg-[#FAF7F2]"
     >
       {!err ? (
         <Image
@@ -46,7 +46,7 @@ function OccasionCard({ label, href, image }: { label: string; href: string; ima
 
       {/* Content overlay */}
       <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-        <h3 className="font-serif text-base sm:text-lg text-white tracking-wide uppercase leading-snug">
+        <h3 className="font-sans font-semibold text-base sm:text-lg text-white leading-snug">
           {label}
         </h3>
         <span className="text-[10px] text-[#A67C52] uppercase tracking-[0.2em] font-semibold mt-1 inline-flex items-center gap-1 group-hover:text-white transition-colors">

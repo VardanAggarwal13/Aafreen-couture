@@ -5,10 +5,10 @@ export const metadata: Metadata = { title: 'Add New Product | Admin' };
 
 export default function NewProductPage() {
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-serif text-[#2E221C] tracking-wide">Add New Product</h1>
-        <p className="text-sm text-[#8A6A55] mt-1 font-serif">Create a new couture ensemble with variants, bespoke tailoring, and imagery</p>
+        <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Add New Product</h1>
+        <p className="text-sm text-[#8A6A55] mt-1 font-sans">Create a new couture ensemble with variants, bespoke tailoring, and imagery</p>
       </div>
       <ProductForm />
     </div>

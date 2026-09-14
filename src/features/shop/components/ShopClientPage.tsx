@@ -170,13 +170,6 @@ export function ShopClientPage() {
                   The Royal <span className="italic font-light text-[#A67C52]">Bridal</span> Edit
                 </h1>
 
-                {/* Ornamental Filigree Divider */}
-                <div className="flex items-center gap-3 my-4">
-                  <div className="h-px w-10 bg-gradient-to-r from-[#C49A5A] to-transparent" />
-                  <span className="text-[#C49A5A] text-xs">✦</span>
-                  <div className="h-px w-10 bg-gradient-to-l from-[#C49A5A] to-transparent" />
-                </div>
-
                 <p className="text-sm sm:text-base text-[#5C554E] font-sans leading-relaxed mb-6 max-w-lg">
                   An ode to the timeless majesty of royal Indian weddings. Each masterpiece is individually hand-embroidered by master artisans in pure silks, velvets, and heirloom organza, adorned with authentic zardozi, dabka, cutdana, and micro-pearl craftsmanship.
                 </p>
@@ -203,7 +196,7 @@ export function ShopClientPage() {
                     href="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Royal%20Bridal%20Collection."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#221617] hover:bg-[#3D2628] text-[#F9F5EF] text-[11px] uppercase tracking-[0.2em] font-semibold rounded-xs transition-all duration-300 shadow-md hover:shadow-lg"
+                    className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#221617] hover:bg-[#3D2628] text-[#F9F5EF] text-[11px] uppercase tracking-[0.2em] font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
                   >
                     <span>Book Bridal Consultation</span>
                     <span className="text-[#C49A5A]">→</span>
@@ -216,7 +209,7 @@ export function ShopClientPage() {
 
               {/* Right Column: Complete Un-cropped Photograph */}
               <div className="lg:col-span-6 order-1 lg:order-2 flex justify-center lg:justify-end">
-                <div className="relative w-full max-w-[460px] aspect-[2/3] max-h-[600px] rounded-xs overflow-hidden shadow-[0_20px_50px_rgba(34,22,23,0.14)] border border-[#E8D4BE] bg-[#1A0E0C]">
+                <div className="relative w-full max-w-[460px] aspect-[2/3] max-h-[600px] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(34,22,23,0.14)] bg-[#1A0E0C]">
                   <Image
                     src="/images/banners/bridal-hero.webp"
                     alt="Aafreen Couture Royal Bridal Lehengas"
@@ -243,7 +236,7 @@ export function ShopClientPage() {
         <div className="flex items-center justify-between pb-4 border-b border-[#E8D8C8] mb-6">
           <div>
             {!isBridalCategory && (
-              <h1 className="text-2xl lg:text-3xl font-serif uppercase tracking-wider text-[#221617]">
+              <h1 className="text-2xl lg:text-3xl font-serif tracking-tight text-[#221617]">
                 {pageTitle}
               </h1>
             )}
@@ -278,7 +271,7 @@ export function ShopClientPage() {
 
       <div className="flex gap-5 lg:gap-6">
         {/* Sidebar filters — desktop always visible */}
-        <aside className={`w-60 shrink-0 bg-white border border-[#E8D8C8] p-4 rounded-xs h-fit ${showFilters ? 'block' : 'hidden lg:block'}`}>
+        <aside className={`w-60 shrink-0 bg-white shadow-sm p-4 rounded-xl h-fit ${showFilters ? 'block' : 'hidden lg:block'}`}>
           <div className="sticky top-24 space-y-5">
             <div className="flex items-center justify-between pb-2 border-b border-[#E8D8C8]">
               <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#221617]">
@@ -425,7 +418,7 @@ export function ShopClientPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4 lg:gap-5">
               {Array.from({ length: 9 }, (_, i) => (
                 <div key={i} className="flex flex-col gap-3">
-                  <div className="aspect-[4/5] bg-[#FAF7F2] border border-[#E8D8C8] rounded-xs animate-pulse" />
+                  <div className="aspect-[4/5] bg-[#FAF7F2] border border-[#E8D8C8] rounded-lg animate-pulse" />
                   <div className="space-y-1.5">
                     <div className="h-3.5 bg-[#FAF7F2] rounded animate-pulse w-3/4" />
                     <div className="h-3 bg-[#FAF7F2] rounded animate-pulse w-1/3" />
@@ -434,7 +427,7 @@ export function ShopClientPage() {
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="text-center py-12 sm:py-16 bg-white border border-[#E8D8C8] rounded-xs p-6 sm:p-8">
+            <div className="text-center py-12 sm:py-16 bg-white shadow-sm rounded-2xl p-6 sm:p-8">
               <p className="text-[#6E6A66] text-base font-serif">No products found for this filter selection.</p>
               <button
                 onClick={() => router.push('/shop')}

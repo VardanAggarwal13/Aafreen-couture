@@ -128,12 +128,6 @@ export default async function CollectionPage({ params }: Props) {
                 </h1>
 
                 {/* Ornamental Filigree Divider */}
-                <div className="flex items-center gap-3 my-4">
-                  <div className="h-px w-10 bg-gradient-to-r from-[#C49A5A] to-transparent" />
-                  <span className="text-[#C49A5A] text-xs">✦</span>
-                  <div className="h-px w-10 bg-gradient-to-l from-[#C49A5A] to-transparent" />
-                </div>
-
                 <p className="text-sm sm:text-base text-[#5C554E] font-sans leading-relaxed mb-6 max-w-lg">
                   {collection.description || 'An ode to the timeless majesty of royal Indian weddings. Each masterpiece is individually hand-embroidered by master artisans in pure silks, velvets, and heirloom organza, adorned with authentic zardozi, dabka, cutdana, and micro-pearl craftsmanship.'}
                 </p>
@@ -160,7 +154,7 @@ export default async function CollectionPage({ params }: Props) {
                     href="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Royal%20Bridal%20Collection."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#221617] hover:bg-[#3D2628] text-[#F9F5EF] text-[11px] uppercase tracking-[0.2em] font-semibold rounded-xs transition-all duration-300 shadow-md hover:shadow-lg"
+                    className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#221617] hover:bg-[#3D2628] text-[#F9F5EF] text-[11px] uppercase tracking-[0.2em] font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
                   >
                     <span>Book Bridal Consultation</span>
                     <span className="text-[#C49A5A]">→</span>
@@ -173,8 +167,8 @@ export default async function CollectionPage({ params }: Props) {
 
               {/* Right Column: Archival Framed Un-cropped Photograph */}
               <div className="lg:col-span-6 order-1 lg:order-2 flex justify-center">
-                <div className="p-2 sm:p-2.5 bg-white/80 border border-[#E8D4BE] rounded-xs shadow-[0_20px_50px_rgba(34,22,23,0.12)] max-w-[480px] w-full">
-                  <div className="relative w-full aspect-[2/3] max-h-[640px] rounded-xs overflow-hidden bg-[#1A0E0C]">
+                <div className="p-2 sm:p-2.5 bg-white/80 rounded-2xl shadow-[0_20px_50px_rgba(34,22,23,0.12)] max-w-[480px] w-full">
+                  <div className="relative w-full aspect-[2/3] max-h-[640px] rounded-xl overflow-hidden bg-[#1A0E0C]">
                     <Image
                       src={collection.bannerImage || '/images/banners/bridal-hero.webp'}
                       alt="Aafreen Couture Royal Bridal Campaign"
@@ -205,11 +199,6 @@ export default async function CollectionPage({ params }: Props) {
               <h1 className="text-3xl sm:text-4xl lg:text-[38px] xl:text-[42px] font-serif text-[#221617] tracking-tight leading-[1.12] mb-1.5">
                 {collection.name}
               </h1>
-              <div className="flex items-center gap-2.5 my-2">
-                <div className="h-px w-8 bg-gradient-to-r from-[#C49A5A] to-transparent" />
-                <span className="text-[#C49A5A] text-xs">✦</span>
-                <div className="h-px w-8 bg-gradient-to-l from-[#C49A5A] to-transparent" />
-              </div>
               <p className="text-xs sm:text-[13px] text-[#5C554E] font-sans leading-relaxed mb-4 max-w-lg">
                 {collection.description || 'Explore our exclusive handcrafted couture archive, individually tailored with heritage embroidery techniques and fine silks.'}
               </p>

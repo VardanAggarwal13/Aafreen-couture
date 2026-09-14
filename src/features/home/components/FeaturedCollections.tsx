@@ -39,7 +39,7 @@ export function FeaturedCollections() {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
         <div className="flex items-center justify-between mb-6 sm:mb-8 lg:mb-10">
           <div>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-wide text-[#221617] uppercase">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-tight text-[#221617]">
               Featured Collections
             </h2>
             <p className="text-xs text-[#6E6A66] mt-1 font-sans">
@@ -59,7 +59,7 @@ export function FeaturedCollections() {
             <Link
               key={col.slug}
               href={`/collections/${col.slug}`}
-              className="group relative overflow-hidden aspect-[3/4] bg-[#FAF7F2] border border-[#E8D8C8] rounded-xs shadow-2xs"
+              className="group relative overflow-hidden aspect-[3/4] bg-[#FAF7F2] rounded-xl shadow-sm"
             >
               <Image
                 src={col.image}

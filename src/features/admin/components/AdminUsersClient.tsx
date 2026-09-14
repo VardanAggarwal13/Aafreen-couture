@@ -15,6 +15,9 @@ import {
   Lock,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { AdminPagination } from '@/features/admin/components/AdminPagination';
+
+const PAGE_SIZE_OPTIONS = [10, 15, 25, 50, 100];
 
 export interface UserItem {
   _id: string;
@@ -34,6 +37,8 @@ export function AdminUsersClient({ initialUsers }: Props) {
   const [users, setUsers] = useState<UserItem[]>(initialUsers);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<'all' | 'admin' | 'customer'>('all');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(15);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
@@ -61,6 +66,24 @@ export function AdminUsersClient({ initialUsers }: Props) {
     }
     return true;
   });
+
+  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / pageSize));
+  const pagedUsers = filteredUsers.slice((page - 1) * pageSize, page * pageSize);
+
+  function handlePageSizeChange(size: number) {
+    setPageSize(size);
+    setPage(1);
+  }
+
+  function handleSearchChange(value: string) {
+    setSearch(value);
+    setPage(1);
+  }
+
+  function handleRoleFilterChange(value: 'all' | 'admin' | 'customer') {
+    setRoleFilter(value);
+    setPage(1);
+  }
 
   async function handleToggleRole(user: UserItem) {
     const targetRole = user.role === 'admin' ? 'customer' : 'admin';
@@ -157,11 +180,11 @@ export function AdminUsersClient({ initialUsers }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-serif font-medium text-[#2E221C] tracking-tight">
+          <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">
             Users &amp; Administrators
           </h1>
           <p className="text-xs text-[#8A6A55] mt-1 font-sans">
@@ -171,44 +194,44 @@ export function AdminUsersClient({ initialUsers }: Props) {
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="inline-flex items-center justify-center gap-2 bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold tracking-wider uppercase px-4 py-2.5 transition-colors shadow-xs rounded-xs cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold tracking-wider uppercase px-3.5 py-2 transition-colors shadow-xs rounded-lg cursor-pointer"
         >
           <Plus size={15} /> Add New Administrator
         </button>
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white border border-[#DDD2C5]/70 p-4 rounded-xs shadow-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="bg-white p-4 rounded-xl shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs text-[#8A6A55] uppercase tracking-wider font-semibold">Total Accounts</span>
             <Users size={16} className="text-[#C9A86A]" />
           </div>
-          <p className="text-2xl font-serif font-bold text-[#2E221C] mt-2">{users.length}</p>
+          <p className="text-2xl font-sans font-bold text-[#2E221C] mt-2 tabular-nums">{users.length}</p>
           <p className="text-[11px] text-[#8A6A55]/80 mt-0.5">Registered in atelier database</p>
         </div>
 
-        <div className="bg-white border border-[#C9A86A]/40 p-4 rounded-xs shadow-xs bg-gradient-to-br from-white to-[#FAF7F2]">
+        <div className="bg-white border border-[#C9A86A]/40 p-4 rounded-lg shadow-sm bg-gradient-to-br from-white to-[#FAF7F2]">
           <div className="flex items-center justify-between">
             <span className="text-xs text-[#9E7B3A] uppercase tracking-wider font-semibold">Administrators</span>
             <ShieldCheck size={16} className="text-[#C9A86A]" />
           </div>
-          <p className="text-2xl font-serif font-bold text-[#2E221C] mt-2">{totalAdmins}</p>
+          <p className="text-2xl font-sans font-bold text-[#2E221C] mt-2 tabular-nums">{totalAdmins}</p>
           <p className="text-[11px] text-[#9E7B3A] mt-0.5 font-medium">Full dashboard &amp; catalog privileges</p>
         </div>
 
-        <div className="bg-white border border-[#DDD2C5]/70 p-4 rounded-xs shadow-xs">
+        <div className="bg-white p-4 rounded-xl shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs text-[#8A6A55] uppercase tracking-wider font-semibold">Customers</span>
             <Users size={16} className="text-[#8A6A55]" />
           </div>
-          <p className="text-2xl font-serif font-bold text-[#2E221C] mt-2">{totalCustomers}</p>
+          <p className="text-2xl font-sans font-bold text-[#2E221C] mt-2 tabular-nums">{totalCustomers}</p>
           <p className="text-[11px] text-[#8A6A55]/80 mt-0.5">Boutique retail clients</p>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3 rounded-xs border border-[#DDD2C5]/70 shadow-xs">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3 rounded-lg border border-[#DDD2C5]/70 shadow-xs">
         {/* Search */}
         <div className="relative flex-1 max-w-md">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
@@ -216,16 +239,16 @@ export function AdminUsersClient({ initialUsers }: Props) {
             type="text"
             placeholder="Search by name, email, or phone…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] rounded-xs pl-8 pr-3 py-2 text-xs text-[#2E221C] placeholder:text-[#8A6A55]/60 outline-none focus:border-[#C9A86A] transition-colors"
+            onChange={(e) => handleSearchChange(e.target.value)}
+            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] rounded-lg pl-8 pr-3 py-2 text-xs text-[#2E221C] placeholder:text-[#8A6A55]/60 outline-none focus:border-[#C9A86A] transition-colors"
           />
         </div>
 
         {/* Role Filter Tabs */}
-        <div className="flex items-center gap-1 bg-[#FAF7F2] p-1 border border-[#DDD2C5] rounded-xs">
+        <div className="flex items-center gap-1 bg-[#FAF7F2] p-1 border border-[#DDD2C5] rounded-lg">
           <button
-            onClick={() => setRoleFilter('all')}
-            className={`px-3 py-1.5 text-xs rounded-xs font-medium transition-colors ${
+            onClick={() => handleRoleFilterChange('all')}
+            className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-colors ${
               roleFilter === 'all'
                 ? 'bg-white text-[#2E221C] shadow-xs font-semibold'
                 : 'text-[#8A6A55] hover:text-[#2E221C]'
@@ -234,8 +257,8 @@ export function AdminUsersClient({ initialUsers }: Props) {
             All ({users.length})
           </button>
           <button
-            onClick={() => setRoleFilter('admin')}
-            className={`px-3 py-1.5 text-xs rounded-xs font-medium transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleRoleFilterChange('admin')}
+            className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-colors flex items-center gap-1.5 ${
               roleFilter === 'admin'
                 ? 'bg-[#C9A86A] text-white shadow-xs font-semibold'
                 : 'text-[#8A6A55] hover:text-[#2E221C]'
@@ -244,8 +267,8 @@ export function AdminUsersClient({ initialUsers }: Props) {
             <ShieldCheck size={12} /> Admins ({totalAdmins})
           </button>
           <button
-            onClick={() => setRoleFilter('customer')}
-            className={`px-3 py-1.5 text-xs rounded-xs font-medium transition-colors ${
+            onClick={() => handleRoleFilterChange('customer')}
+            className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-colors ${
               roleFilter === 'customer'
                 ? 'bg-white text-[#2E221C] shadow-xs font-semibold'
                 : 'text-[#8A6A55] hover:text-[#2E221C]'
@@ -257,27 +280,27 @@ export function AdminUsersClient({ initialUsers }: Props) {
       </div>
 
       {/* User Table */}
-      <div className="bg-white border border-[#DDD2C5]/70 rounded-xs shadow-xs overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-sans">
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5] text-[#8A6A55] uppercase tracking-wider text-[10px] font-semibold">
-                <th className="px-5 py-3.5">User</th>
-                <th className="px-5 py-3.5">Contact Details</th>
-                <th className="px-5 py-3.5">Role</th>
-                <th className="px-5 py-3.5 hidden md:table-cell">Joined</th>
-                <th className="px-5 py-3.5 text-right">Access Controls</th>
+                <th className="px-5 py-2">User</th>
+                <th className="px-5 py-2">Contact Details</th>
+                <th className="px-5 py-2">Role</th>
+                <th className="px-5 py-2 hidden md:table-cell">Joined</th>
+                <th className="px-5 py-2 text-right">Access Controls</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#EAE2D7]">
-              {filteredUsers.length === 0 ? (
+              {pagedUsers.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-5 py-12 text-center text-[#8A6A55]/70">
                     No accounts match the specified criteria.
                   </td>
                 </tr>
               ) : (
-                filteredUsers.map((user) => {
+                pagedUsers.map((user) => {
                   const isAdmin = user.role === 'admin';
                   const initials = user.name
                     ? user.name
@@ -291,10 +314,10 @@ export function AdminUsersClient({ initialUsers }: Props) {
                   return (
                     <tr key={user._id} className="hover:bg-[#FAF7F2]/50 transition-colors">
                       {/* Name & Avatar */}
-                      <td className="px-5 py-4">
+                      <td className="px-5 py-2.5">
                         <div className="flex items-center gap-3">
                           <div
-                            className={`w-9 h-9 rounded-full flex items-center justify-center font-serif font-bold text-xs shrink-0 ${
+                            className={`w-9 h-9 rounded-full flex items-center justify-center font-sans font-bold text-xs shrink-0 ${
                               isAdmin
                                 ? 'bg-[#C9A86A]/20 text-[#9E7B3A] ring-2 ring-[#C9A86A]/30'
                                 : 'bg-[#EAE2D7] text-[#2E221C]'
@@ -315,7 +338,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                       </td>
 
                       {/* Contact */}
-                      <td className="px-5 py-4 text-[#8A6A55]">
+                      <td className="px-5 py-2.5 text-[#8A6A55]">
                         <div className="space-y-1">
                           <p className="flex items-center gap-1.5 text-xs text-[#2E221C]">
                             <Mail size={12} className="text-[#C9A86A]" /> {user.email}
@@ -327,7 +350,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                       </td>
 
                       {/* Role */}
-                      <td className="px-5 py-4">
+                      <td className="px-5 py-2.5">
                         {isAdmin ? (
                           <span className="inline-flex items-center gap-1.5 bg-[#C9A86A]/15 text-[#9E7B3A] border border-[#C9A86A]/40 text-[10.5px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
                             <ShieldCheck size={12} /> Administrator
@@ -340,7 +363,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                       </td>
 
                       {/* Joined Date */}
-                      <td className="px-5 py-4 text-[#8A6A55] text-xs hidden md:table-cell">
+                      <td className="px-5 py-2.5 text-[#8A6A55] text-xs hidden md:table-cell">
                         <div className="flex items-center gap-1.5">
                           <Calendar size={12} className="text-[#8A6A55]" />
                           {user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-IN') : '—'}
@@ -348,12 +371,12 @@ export function AdminUsersClient({ initialUsers }: Props) {
                       </td>
 
                       {/* Actions */}
-                      <td className="px-5 py-4 text-right">
+                      <td className="px-5 py-2.5 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => handleToggleRole(user)}
                             disabled={actionLoading === user._id}
-                            className={`px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider rounded-xs border transition-colors cursor-pointer ${
+                            className={`px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider rounded-lg border transition-colors cursor-pointer ${
                               isAdmin
                                 ? 'border-[#DDD2C5] text-[#8A6A55] hover:border-red-400 hover:text-red-600 bg-white'
                                 : 'border-[#C9A86A] bg-[#C9A86A]/10 text-[#9E7B3A] hover:bg-[#C9A86A] hover:text-white'
@@ -379,12 +402,20 @@ export function AdminUsersClient({ initialUsers }: Props) {
             </tbody>
           </table>
         </div>
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+          pageSize={pageSize}
+          pageSizeOptions={PAGE_SIZE_OPTIONS}
+          onPageSizeChange={handlePageSizeChange}
+        />
       </div>
 
       {/* Add New Administrator Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
-          <div className="bg-white border border-[#DDD2C5] rounded-xs shadow-xl max-w-md w-full p-6 relative">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-4 relative">
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-4 right-4 text-[#8A6A55] hover:text-[#2E221C] transition-colors cursor-pointer"
@@ -396,7 +427,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
               <div className="w-10 h-10 rounded-full bg-[#C9A86A]/15 text-[#9E7B3A] flex items-center justify-center mb-2">
                 <ShieldCheck size={20} />
               </div>
-              <h2 className="text-lg font-serif font-semibold text-[#2E221C]">Add New Administrator</h2>
+              <h2 className="text-lg font-sans font-semibold text-[#2E221C]">Add New Administrator</h2>
               <p className="text-xs text-[#8A6A55] mt-0.5">
                 Create an admin login with full administrative rights to manage the atelier store.
               </p>
@@ -413,7 +444,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                   placeholder="e.g. Vardan Aggarwal"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-xs outline-none focus:border-[#C9A86A]"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                 />
               </div>
 
@@ -427,7 +458,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                   placeholder="admin@aafreencouture.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-xs outline-none focus:border-[#C9A86A]"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                 />
               </div>
 
@@ -443,7 +474,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                     placeholder="••••••••••••"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-xs outline-none focus:border-[#C9A86A]"
+                    className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                   />
                   <Lock size={13} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
                 </div>
@@ -458,7 +489,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                   placeholder="+91 98765 43210"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-xs outline-none focus:border-[#C9A86A]"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                 />
               </div>
 
@@ -466,14 +497,14 @@ export function AdminUsersClient({ initialUsers }: Props) {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-xs text-[#8A6A55] hover:text-[#2E221C] transition-colors"
+                  className="px-3.5 py-2 text-xs text-[#8A6A55] hover:text-[#2E221C] transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded-xs transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
+                  className="bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold uppercase tracking-wider px-5 py-2 rounded-lg transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
                 >
                   {submitting ? 'Creating Administrator…' : 'Create Administrator'}
                 </button>
