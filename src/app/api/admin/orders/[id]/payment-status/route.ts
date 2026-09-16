@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { handleApiError } from '@/lib/api-errors';
 import { requireAdmin } from '@/server/auth';
+import { logAdminAction } from '@/server/services/audit-log.service';
 import type { PaymentStatus } from '@/models/Order';
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 
 export async function PATCH(req: NextRequest, { params }: Props) {
   try {
-    await requireAdmin(req);
+    const session = await requireAdmin(req);
     const { id } = await params;
     const { paymentStatus, note } = await req.json();
 
@@ -35,6 +36,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
       );
     }
 
+    logAdminAction(session, req, 'ORDER_PAYMENT_STATUS_UPDATE', `Order ${updated.orderNumber} payment → ${paymentStatus}`);
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     return handleApiError(error);

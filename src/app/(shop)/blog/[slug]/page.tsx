@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Calendar, User } from 'lucide-react';
-import { BLOG_POSTS } from '@/data/blog.data';
+import { blogRepository } from '@/server/repositories/blog.repository';
 import { siteConfig } from '@/config/site.config';
 import { buildBreadcrumbJsonLd } from '@/utils/seo';
 
@@ -13,7 +13,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = BLOG_POSTS.find((p) => p.slug === slug);
+  const post = await blogRepository.findBySlug(slug);
   if (!post) return { title: 'Article Not Found | Aafreen Couture' };
 
   return {
@@ -30,10 +30,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = BLOG_POSTS.find((p) => p.slug === slug);
+  const post = await blogRepository.findBySlug(slug);
   if (!post) notFound();
 
-  const related = BLOG_POSTS.filter((p) => p.slug !== slug).slice(0, 2);
+  const allPosts = await blogRepository.findAllPublished();
+  const related = allPosts.filter((p) => p.slug !== slug).slice(0, 2);
 
   const publishedIso = new Date(post.publishedAt).toISOString();
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([

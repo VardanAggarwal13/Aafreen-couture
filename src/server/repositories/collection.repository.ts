@@ -4,15 +4,18 @@ import type { ICollection } from '@/models/Collection';
 import { FALLBACK_COLLECTIONS } from '@/data/products.data';
 
 export class CollectionRepository {
-  async findAll(): Promise<ICollection[]> {
+  async findAll(includeInactive = false): Promise<ICollection[]> {
     try {
       await connectDB();
-      const docs = await Collection.find({ isActive: true }).sort({ sortOrder: 1, name: 1 }).lean<ICollection[]>();
+      const query = includeInactive ? {} : { isActive: true };
+      const docs = await Collection.find(query).sort({ sortOrder: 1, name: 1 }).lean<ICollection[]>();
       if (docs.length > 0) return docs;
     } catch {
       // Fallback
     }
-    return FALLBACK_COLLECTIONS as unknown as ICollection[];
+    return (includeInactive
+      ? FALLBACK_COLLECTIONS
+      : FALLBACK_COLLECTIONS.filter((c) => c.isActive)) as unknown as ICollection[];
   }
 
   async findBySlug(slug: string): Promise<ICollection | null> {

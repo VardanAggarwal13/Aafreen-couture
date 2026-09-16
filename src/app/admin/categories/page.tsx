@@ -5,7 +5,7 @@ import { categoryRepository } from '@/server/repositories/category.repository';
 export const metadata: Metadata = { title: 'Categories | Admin' };
 
 export default async function AdminCategoriesPage() {
-  const categories = await categoryRepository.findAll();
+  const categories = await categoryRepository.findAll(true);
   const serialized = JSON.parse(JSON.stringify(categories));
 
   return (

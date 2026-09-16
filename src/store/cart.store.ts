@@ -4,12 +4,20 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { CartItem } from '@/types';
 
+export interface AppliedCoupon {
+  code: string;
+  discount: number; // paise, computed server-side by /api/coupons/validate
+  freeShipping: boolean;
+}
+
 interface CartState {
   items: CartItem[];
+  appliedCoupon: AppliedCoupon | null;
   addItem: (item: CartItem) => void;
   removeItem: (productId: string, variantId?: string) => void;
   updateQuantity: (productId: string, variantId: string | undefined, quantity: number) => void;
   clearCart: () => void;
+  setAppliedCoupon: (coupon: AppliedCoupon | null) => void;
   getTotalItems: () => number;
   getSubtotal: () => number;
 }
@@ -22,6 +30,7 @@ export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      appliedCoupon: null,
 
       addItem: (item) =>
         set((state) => {
@@ -54,7 +63,9 @@ export const useCartStore = create<CartState>()(
           ),
         })),
 
-      clearCart: () => set({ items: [] }),
+      clearCart: () => set({ items: [], appliedCoupon: null }),
+
+      setAppliedCoupon: (coupon) => set({ appliedCoupon: coupon }),
 
       getTotalItems: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
 

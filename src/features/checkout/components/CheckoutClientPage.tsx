@@ -42,7 +42,7 @@ function loadRazorpayScript(): Promise<boolean> {
 export function CheckoutClientPage() {
   const router = useRouter();
   const { data: session, isPending } = useSession();
-  const { items, getSubtotal, clearCart } = useCartStore();
+  const { items, getSubtotal, clearCart, appliedCoupon } = useCartStore();
   const [step, setStep] = useState<Step>('Address');
   const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('cod');
   const [isPlacing, setIsPlacing] = useState(false);
@@ -66,8 +66,9 @@ export function CheckoutClientPage() {
   const [saveToAccount, setSaveToAccount] = useState(false);
 
   const subtotal = getSubtotal();
-  const shippingCharge = subtotal >= siteConfig.freeShippingThreshold ? 0 : 25000;
-  const total = subtotal + shippingCharge;
+  const discountAmount = appliedCoupon?.discount ?? 0;
+  const shippingCharge = appliedCoupon?.freeShipping || subtotal >= siteConfig.freeShippingThreshold ? 0 : 25000;
+  const total = Math.max(0, subtotal - discountAmount + shippingCharge);
 
   const {
     register,
@@ -169,6 +170,7 @@ export function CheckoutClientPage() {
         })),
         shippingAddress: { ...data, country: data.country ?? 'India' },
         paymentMethod,
+        couponCode: appliedCoupon?.code,
       });
 
       setOrderId(res.data?._id ?? null);
@@ -759,6 +761,12 @@ export function CheckoutClientPage() {
                 <span>Subtotal</span>
                 <span className="text-heading font-medium">{formatPrice(subtotal)}</span>
               </div>
+              {appliedCoupon && (
+                <div className="flex justify-between text-emerald-700 font-medium">
+                  <span>Privilege ({appliedCoupon.code})</span>
+                  <span>{appliedCoupon.freeShipping ? 'Free Shipping' : `-${formatPrice(discountAmount)}`}</span>
+                </div>
+              )}
               <div className="flex justify-between text-text">
                 <span>Shipping</span>
                 <span className={shippingCharge === 0 ? 'text-emerald-700 font-medium' : 'text-heading font-medium'}>

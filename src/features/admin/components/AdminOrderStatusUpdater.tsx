@@ -4,21 +4,25 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { RefreshCw, CheckCircle2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { getOrderStatusLabel } from '@/constants/order.constants';
 
 interface Props {
   orderId: string;
   currentStatus: string;
 }
 
+// The status the admin picks here is validated server-side against the allowed transitions
+// for the order's current status and payment method (see order.service.ts#ALLOWED_TRANSITIONS) —
+// this list is every reachable operational status, not necessarily all legal from here.
 const ORDER_STATUS_OPTIONS = [
-  { value: 'pending', label: 'Pending Verification' },
-  { value: 'confirmed', label: 'Confirmed & Sizing Logged' },
-  { value: 'processing', label: 'In Artisan Tailoring' },
-  { value: 'shipped', label: 'Dispatched via Air Express' },
-  { value: 'out_for_delivery', label: 'Out for Doorstep Handover' },
-  { value: 'delivered', label: 'Delivered to Customer' },
-  { value: 'cancelled', label: 'Cancelled' },
-];
+  'pending',
+  'confirmed',
+  'processing',
+  'shipped',
+  'out_for_delivery',
+  'delivered',
+  'cancelled',
+].map((value) => ({ value, label: getOrderStatusLabel(value) }));
 
 export function AdminOrderStatusUpdater({ orderId, currentStatus }: Props) {
   const router = useRouter();
@@ -36,7 +40,7 @@ export function AdminOrderStatusUpdater({ orderId, currentStatus }: Props) {
 
       const data = await res.json();
       if (res.ok && data.success) {
-        toast.success(`Order status updated to "${status.replace(/_/g, ' ')}"`);
+        toast.success(`Order status updated to "${getOrderStatusLabel(status)}"`);
         router.refresh();
       } else {
         toast.error(data.message || data.error || 'Failed to update order status');

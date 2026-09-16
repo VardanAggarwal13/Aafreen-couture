@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
 import { toast } from 'sonner';
+import { extractFieldErrors, FIELD_ERROR_CLASS } from '@/utils/form-errors';
 
 interface CategoryData {
   _id?: string;
@@ -14,13 +15,13 @@ interface CategoryData {
   image?: string;
   sortOrder?: number;
   isActive?: boolean;
-  isFeatured?: boolean;
 }
 
 export function CategoryForm({ category }: { category?: CategoryData }) {
   const router = useRouter();
   const isEdit = !!category?._id;
   const [saving, setSaving] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState({
     name: category?.name ?? '',
@@ -29,16 +30,17 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
     image: category?.image ?? '/images/cats/bridal.webp',
     sortOrder: category?.sortOrder ?? 1,
     isActive: category?.isActive ?? true,
-    isFeatured: category?.isFeatured ?? false,
   });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!formData.name) {
+      setFieldErrors({ name: 'Category name is required' });
       toast.error('Category name is required');
       return;
     }
 
+    setFieldErrors({});
     setSaving(true);
     try {
       const url = isEdit ? `/api/categories/${category._id}` : '/api/categories';
@@ -53,7 +55,16 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
         }),
       });
 
-      if (!res.ok) throw new Error('Failed to save category');
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        const errors = extractFieldErrors(body);
+        if (errors.length > 0) {
+          setFieldErrors(Object.fromEntries(errors.map((e) => [e.path, e.message])));
+          toast.error(`Please fix the highlighted field${errors.length > 1 ? 's' : ''} below`);
+          return;
+        }
+        throw new Error(body.error ?? 'Failed to save category');
+      }
 
       toast.success(isEdit ? 'Category updated successfully' : 'Category created successfully');
       router.push('/admin/categories');
@@ -64,6 +75,11 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
       setSaving(false);
     }
   }
+
+  const inputClass = (field: string) =>
+    `w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors ${
+      fieldErrors[field] ? FIELD_ERROR_CLASS : ''
+    }`;
 
   return (
     <form onSubmit={handleSubmit} className="max-w-3xl mx-auto space-y-4">
@@ -94,8 +110,9 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="e.g. Bridal Lehengas"
-            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
+            className={inputClass('name')}
           />
+          {fieldErrors.name && <p className="text-xs text-red-600 mt-1">{fieldErrors.name}</p>}
         </div>
 
         <div>
@@ -107,8 +124,9 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
             value={formData.slug}
             onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
             placeholder="bridal-lehengas (auto-generated if left blank)"
-            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] font-mono text-xs transition-colors"
+            className={`${inputClass('slug')} font-mono text-xs`}
           />
+          {fieldErrors.slug && <p className="text-xs text-red-600 mt-1">{fieldErrors.slug}</p>}
         </div>
 
         <div>
@@ -120,8 +138,9 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             placeholder="Short editorial description for category curation..."
-            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
+            className={inputClass('description')}
           />
+          {fieldErrors.description && <p className="text-xs text-red-600 mt-1">{fieldErrors.description}</p>}
         </div>
 
         <div>
@@ -159,16 +178,6 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
                 className="accent-[#C9A86A] w-4 h-4 rounded border-[#DDD2C5]"
               />
               Active in Store
-            </label>
-
-            <label className="flex items-center gap-2.5 text-sm text-[#2E221C] font-medium cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={formData.isFeatured}
-                onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
-                className="accent-[#C9A86A] w-4 h-4 rounded border-[#DDD2C5]"
-              />
-              Featured
             </label>
           </div>
         </div>

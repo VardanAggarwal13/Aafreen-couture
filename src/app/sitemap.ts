@@ -3,6 +3,7 @@ import { siteConfig } from '@/config/site.config';
 import { productRepository } from '@/server/repositories/product.repository';
 import { categoryRepository } from '@/server/repositories/category.repository';
 import { collectionRepository } from '@/server/repositories/collection.repository';
+import { blogRepository } from '@/server/repositories/blog.repository';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url.replace(/\/+$/, '');
@@ -18,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/bags`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/jewellery`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/collections`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${baseUrl}/faq`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
@@ -89,6 +91,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('[Sitemap] Error fetching collections:', err);
   }
 
+  // Dynamic blog posts
+  let blogRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const posts = await blogRepository.findAllPublished();
+    blogRoutes = posts.map((p) => ({
+      url: `${baseUrl}/blog/${p.slug}`,
+      lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    }));
+  } catch (err) {
+    console.error('[Sitemap] Error fetching blog posts:', err);
+  }
+
   return [
     ...staticRoutes,
     ...occasionRoutes,
@@ -96,5 +112,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...categoryRoutes,
     ...collectionRoutes,
     ...productRoutes,
+    ...blogRoutes,
   ];
 }

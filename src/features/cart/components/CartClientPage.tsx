@@ -22,15 +22,15 @@ import type { ApiResponse } from '@/types/api.types';
 export function CartClientPage() {
   const router = useRouter();
   const { data: session } = useSession();
-  const { items, removeItem, updateQuantity, addItem, getSubtotal } = useCartStore();
+  const { items, removeItem, updateQuantity, addItem, getSubtotal, appliedCoupon, setAppliedCoupon } = useCartStore();
 
   const [couponCode, setCouponCode] = useState('');
   const [showPromoInput, setShowPromoInput] = useState(false);
-  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discountPct: number } | null>(null);
+  const [applyingCoupon, setApplyingCoupon] = useState(false);
 
   const subtotal = getSubtotal();
-  const discountAmount = appliedCoupon ? Math.round((subtotal * appliedCoupon.discountPct) / 100) : 0;
-  const shippingCharge = subtotal >= siteConfig.freeShippingThreshold ? 0 : 25000;
+  const discountAmount = appliedCoupon?.discount ?? 0;
+  const shippingCharge = appliedCoupon?.freeShipping || subtotal >= siteConfig.freeShippingThreshold ? 0 : 25000;
   const total = Math.max(0, subtotal - discountAmount + shippingCharge);
 
   useEffect(() => {
@@ -96,18 +96,42 @@ export function CartClientPage() {
     toast.success(`Added "${p.name}" to your shopping bag`);
   }
 
-  function handleApplyCoupon(e: React.FormEvent) {
+  async function handleApplyCoupon(e: React.FormEvent) {
     e.preventDefault();
     const clean = couponCode.trim().toUpperCase();
-    if (clean === 'COUTURE10' || clean === 'ROYAL10' || clean === 'AAFREEN10') {
-      setAppliedCoupon({ code: clean, discountPct: 10 });
-      toast.success('Celebration Privilege applied: 10% Off');
-    } else if (clean === 'WELCOME15') {
-      setAppliedCoupon({ code: clean, discountPct: 15 });
-      toast.success('Welcome Privilege applied: 15% Off');
-    } else {
-      toast.error('Invalid code. Try COUTURE10');
+    if (!clean) return;
+
+    if (!session?.user) {
+      toast.error('Please sign in to apply a coupon');
+      return;
     }
+
+    setApplyingCoupon(true);
+    try {
+      const res = await fetch('/api/coupons/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: clean, subtotal }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error ?? 'Invalid or expired coupon code');
+
+      setAppliedCoupon({
+        code: json.data.code,
+        discount: json.data.discount,
+        freeShipping: json.data.freeShipping,
+      });
+      toast.success(`Coupon ${json.data.code} applied`);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Invalid or expired coupon code');
+    } finally {
+      setApplyingCoupon(false);
+    }
+  }
+
+  function handleRemoveCoupon() {
+    setAppliedCoupon(null);
+    setCouponCode('');
   }
 
   function handleProceedToCheckout() {
@@ -338,8 +362,17 @@ export function CartClientPage() {
 
               {appliedCoupon && (
                 <div className="flex justify-between text-emerald-700 font-medium">
-                  <span>Privilege ({appliedCoupon.code})</span>
-                  <span>-{formatPrice(discountAmount)}</span>
+                  <span className="flex items-center gap-1.5">
+                    Privilege ({appliedCoupon.code})
+                    <button
+                      type="button"
+                      onClick={handleRemoveCoupon}
+                      className="text-[10px] text-text/60 hover:text-red-600 underline underline-offset-2 cursor-pointer"
+                    >
+                      Remove
+                    </button>
+                  </span>
+                  <span>{appliedCoupon.freeShipping ? 'Free Shipping' : `-${formatPrice(discountAmount)}`}</span>
                 </div>
               )}
 
@@ -379,9 +412,10 @@ export function CartClientPage() {
                   />
                   <button
                     type="submit"
-                    className="px-3 py-1.5 bg-heading hover:bg-gold text-surface text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
+                    disabled={applyingCoupon}
+                    className="px-3 py-1.5 bg-heading hover:bg-gold text-surface text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors cursor-pointer disabled:opacity-50"
                   >
-                    Apply
+                    {applyingCoupon ? 'Checking…' : 'Apply'}
                   </button>
                 </form>
               ) : null}

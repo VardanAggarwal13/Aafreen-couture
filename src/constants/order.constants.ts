@@ -1,42 +1,25 @@
-export const ORDER_STATUSES = {
-  PENDING_PAYMENT: 'pending_payment',
-  PAYMENT_FAILED: 'payment_failed',
-  CONFIRMED: 'confirmed',
-  PROCESSING: 'processing',
-  PACKING: 'packing',
-  SHIPPED: 'shipped',
-  OUT_FOR_DELIVERY: 'out_for_delivery',
-  DELIVERED: 'delivered',
-  CANCELLED: 'cancelled',
-  RETURN_REQUESTED: 'return_requested',
-  RETURN_APPROVED: 'return_approved',
-  RETURN_PICKED: 'return_picked',
-  REFUNDED: 'refunded',
-} as const;
+import type { OrderStatus } from '@/models/Order';
 
-export type OrderStatus = (typeof ORDER_STATUSES)[keyof typeof ORDER_STATUSES];
+export type { OrderStatus };
 
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
-  pending_payment: 'Pending Payment',
-  payment_failed: 'Payment Failed',
+  pending: 'Pending Verification',
   confirmed: 'Confirmed',
-  processing: 'Processing',
-  packing: 'Packing',
+  processing: 'Under Processing',
   shipped: 'Shipped',
   out_for_delivery: 'Out for Delivery',
   delivered: 'Delivered',
   cancelled: 'Cancelled',
   return_requested: 'Return Requested',
-  return_approved: 'Return Approved',
-  return_picked: 'Return Picked Up',
+  returned: 'Returned',
   refunded: 'Refunded',
 };
 
-export const CANCELLABLE_STATUSES: OrderStatus[] = [
-  'pending_payment',
-  'confirmed',
-  'processing',
-];
+export function getOrderStatusLabel(status: string): string {
+  return ORDER_STATUS_LABELS[status as OrderStatus] ?? status.replace(/_/g, ' ');
+}
+
+export const CANCELLABLE_STATUSES: OrderStatus[] = ['pending', 'confirmed', 'processing'];
 
 export const RETURNABLE_STATUSES: OrderStatus[] = ['delivered'];
 

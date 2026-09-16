@@ -3,6 +3,7 @@ import { orderRepository } from '@/server/repositories/order.repository';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
 import { AdminPagination } from '@/features/admin/components/AdminPagination';
+import { getOrderStatusLabel } from '@/constants/order.constants';
 
 export const metadata = { title: 'Orders | Admin' };
 
@@ -99,7 +100,7 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
                     </td>
                     <td className="px-5 py-2.5">
                       <span className={`inline-block text-[10px] px-2.5 py-0.5 rounded-full font-medium capitalize ${STATUS_BADGE[order.status] ?? 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5]'}`}>
-                        {order.status.replace(/_/g, ' ')}
+                        {getOrderStatusLabel(order.status)}
                       </span>
                     </td>
                     <td className="px-5 py-2.5 text-[#8A6A55] whitespace-nowrap">{formatDate(order.createdAt)}</td>

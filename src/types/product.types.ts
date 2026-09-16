@@ -5,7 +5,7 @@ export interface ICategory {
   description?: string;
   image?: string;
   parentId?: string;
-  isFeatured: boolean;
+  isFeatured?: boolean;
   isActive: boolean;
   sortOrder: number;
 }

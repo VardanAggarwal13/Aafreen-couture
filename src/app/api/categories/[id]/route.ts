@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { categoryRepository } from '@/server/repositories/category.repository';
+import { categoryService } from '@/server/services/category.service';
 import { handleApiError } from '@/lib/api-errors';
 import { requireAdmin } from '@/server/auth';
+import { logAdminAction } from '@/server/services/audit-log.service';
 import { UpdateCategorySchema } from '@/validators/category.validators';
 
 interface Props { params: Promise<{ id: string }> }
@@ -26,12 +28,13 @@ export async function GET(_req: NextRequest, { params }: Props) {
 
 export async function PATCH(req: NextRequest, { params }: Props) {
   try {
-    await requireAdmin(req);
+    const session = await requireAdmin(req);
     const { id } = await params;
     const body = await req.json();
     const validated = UpdateCategorySchema.parse(body);
     const updated = await categoryRepository.update(id, validated);
     if (!updated) return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+    logAdminAction(session, req, 'CATEGORY_UPDATE', `Updated category "${updated.name}"`);
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     return handleApiError(error);
@@ -40,10 +43,11 @@ export async function PATCH(req: NextRequest, { params }: Props) {
 
 export async function DELETE(req: NextRequest, { params }: Props) {
   try {
-    await requireAdmin(req);
+    const session = await requireAdmin(req);
     const { id } = await params;
-    const deleted = await categoryRepository.delete(id);
-    return NextResponse.json({ success: true, deleted });
+    await categoryService.deleteCategory(id);
+    logAdminAction(session, req, 'CATEGORY_DELETE', `Deleted category ${id}`);
+    return NextResponse.json({ success: true, deleted: true });
   } catch (error) {
     return handleApiError(error);
   }

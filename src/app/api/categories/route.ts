@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { categoryRepository } from '@/server/repositories/category.repository';
 import { handleApiError } from '@/lib/api-errors';
 import { requireAdmin } from '@/server/auth';
+import { logAdminAction } from '@/server/services/audit-log.service';
 import { CreateCategorySchema } from '@/validators/category.validators';
 
 export async function GET() {
@@ -22,10 +23,11 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    await requireAdmin(req);
+    const session = await requireAdmin(req);
     const body = await req.json();
     const validated = CreateCategorySchema.parse(body);
     const created = await categoryRepository.create(validated);
+    logAdminAction(session, req, 'CATEGORY_CREATE', `Created category "${created.name}"`);
     return NextResponse.json({ success: true, data: created }, { status: 201 });
   } catch (error) {
     return handleApiError(error);

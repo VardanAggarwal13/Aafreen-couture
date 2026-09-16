@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Plus, Minus, Save, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatPrice } from '@/utils/format';
@@ -10,6 +11,7 @@ const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
 export interface InventoryItem {
   id: string;
+  productId: string;
   name: string;
   sku: string;
   size: string;
@@ -20,11 +22,14 @@ export interface InventoryItem {
 }
 
 export function AdminInventoryClient({ initialItems }: { initialItems: InventoryItem[] }) {
+  const router = useRouter();
   const [items, setItems] = useState<InventoryItem[]>(initialItems);
+  const [dirtyIds, setDirtyIds] = useState<Set<string>>(new Set());
   const [filter, setFilter] = useState<'all' | 'low' | 'out'>('all');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
+  const [saving, setSaving] = useState(false);
 
   function changeStock(id: string, delta: number) {
     setItems((prev) =>
@@ -32,6 +37,7 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
         item.id === id ? { ...item, stock: Math.max(0, item.stock + delta) } : item
       )
     );
+    setDirtyIds((prev) => new Set(prev).add(id));
   }
 
   function setDirectStock(id: string, value: number) {
@@ -40,10 +46,36 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
         item.id === id ? { ...item, stock: Math.max(0, value) } : item
       )
     );
+    setDirtyIds((prev) => new Set(prev).add(id));
   }
 
-  function handleSaveAll() {
-    toast.success('Inventory stock levels synchronized successfully');
+  async function handleSaveAll() {
+    if (dirtyIds.size === 0) {
+      toast.info('No stock changes to save');
+      return;
+    }
+    setSaving(true);
+    try {
+      const updates = items
+        .filter((item) => dirtyIds.has(item.id))
+        .map((item) => ({ productId: item.productId, sku: item.sku, stock: item.stock }));
+
+      const res = await fetch('/api/admin/inventory', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error ?? 'Failed to save inventory');
+
+      toast.success(`Inventory stock levels synchronized (${json.data?.updated ?? updates.length} updated)`);
+      setDirtyIds(new Set());
+      router.refresh();
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Failed to save inventory');
+    } finally {
+      setSaving(false);
+    }
   }
 
   const filtered = items.filter((item) => {
@@ -94,9 +126,10 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
           </div>
           <button
             onClick={handleSaveAll}
-            className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm"
+            disabled={saving}
+            className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm disabled:opacity-50 cursor-pointer"
           >
-            <Save size={13} className="text-[#C9A86A]" /> Save Stock
+            <Save size={13} className="text-[#C9A86A]" /> {saving ? 'Saving…' : dirtyIds.size > 0 ? `Save Stock (${dirtyIds.size})` : 'Save Stock'}
           </button>
         </div>
       </div>

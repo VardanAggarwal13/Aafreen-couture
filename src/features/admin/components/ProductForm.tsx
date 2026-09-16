@@ -2,13 +2,24 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray, type FieldPath } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { X } from 'lucide-react';
+import { X, Plus, Trash2 } from 'lucide-react';
+import { extractFieldErrors, FIELD_ERROR_CLASS } from '@/utils/form-errors';
 import type { IProduct } from '@/types';
+
+const variantSchema = z.object({
+  size: z.string().optional(),
+  color: z.string().optional(),
+  sku: z.string().min(1, 'SKU is required'),
+  price: z.number({ message: 'Enter a valid price' }).min(1, 'Price is required'),
+  comparePrice: z.number().optional(),
+  stock: z.number({ message: 'Enter a valid stock quantity' }).int('Stock must be a whole number').min(0, 'Stock cannot be negative'),
+  isActive: z.boolean().optional(),
+});
 
 const schema = z.object({
   name: z.string().min(2, 'Name is required'),
@@ -24,6 +35,7 @@ const schema = z.object({
   workType: z.string().optional(),
   careInstructions: z.string().optional(),
   images: z.string().optional(),
+  variants: z.array(variantSchema).min(1, 'Add at least one size / variant'),
   isActive: z.boolean().optional(),
   isFeatured: z.boolean().optional(),
   isNewArrival: z.boolean().optional(),
@@ -102,7 +114,7 @@ const STANDARD_CATEGORIES = [
 export function ProductForm({ product }: Props) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [formError, setFormError] = useState('');
   const [customCategories, setCustomCategories] = useState<Array<{ slug: string; name: string }>>([]);
 
   const isEdit = !!product;
@@ -126,7 +138,7 @@ export function ProductForm({ product }: Props) {
     ? (product.category as { slug?: string }).slug || 'bridal-lehengas'
     : (product?.category as string) || 'bridal-lehengas';
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormValues>({
+  const { register, handleSubmit, watch, setValue, setError, control, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: product
       ? {
@@ -149,6 +161,17 @@ export function ProductForm({ product }: Props) {
           workType: product.workType ?? '',
           careInstructions: product.careInstructions ?? '',
           images: product.images?.join(', ') ?? '',
+          variants: product.variants?.length
+            ? product.variants.map((v) => ({
+                size: v.size ?? '',
+                color: v.color ?? '',
+                sku: v.sku,
+                price: v.price / 100,
+                comparePrice: v.comparePrice ? v.comparePrice / 100 : undefined,
+                stock: v.stock,
+                isActive: v.isActive,
+              }))
+            : [{ size: '', color: '', sku: '', price: product.basePrice / 100, stock: 0, isActive: true }],
           tags: product.tags?.join(', ') ?? '',
           seoTitle: product.seoTitle ?? '',
           seoDescription: product.seoDescription ?? '',
@@ -162,7 +185,13 @@ export function ProductForm({ product }: Props) {
           isNewArrival: true,
           isBestSeller: false,
           images: '/images/products/noor-e-ishq.webp',
+          variants: [{ size: '', color: '', sku: '', price: 0, stock: 0, isActive: true }],
         },
+  });
+
+  const { fields: variantFields, append: appendVariant, remove: removeVariant } = useFieldArray({
+    control,
+    name: 'variants',
   });
 
   const selectedOccasions = watch('occasions') ?? [];
@@ -234,7 +263,7 @@ export function ProductForm({ product }: Props) {
 
   async function onSubmit(data: FormValues) {
     setSaving(true);
-    setError('');
+    setFormError('');
     try {
       const imageList = data.images
         ? data.images.split(',').map((url) => url.trim()).filter(Boolean)
@@ -255,6 +284,16 @@ export function ProductForm({ product }: Props) {
         occasion: data.occasions,
         tags: data.tags ? data.tags.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean) : [],
         images: imageList,
+        variants: data.variants.map((v) => ({
+          size: v.size || undefined,
+          color: v.color || undefined,
+          sku: v.sku,
+          price: Math.round(v.price * 100),
+          comparePrice: v.comparePrice ? Math.round(v.comparePrice * 100) : undefined,
+          stock: Math.round(v.stock),
+          images: [] as string[],
+          isActive: v.isActive ?? true,
+        })),
         isActive: data.isActive,
         isFeatured: data.isFeatured,
         isNewArrival: data.isNewArrival,
@@ -273,7 +312,17 @@ export function ProductForm({ product }: Props) {
       });
 
       if (!res.ok) {
-        const body = await res.json();
+        const body = await res.json().catch(() => ({}));
+        const fieldErrors = extractFieldErrors(body);
+        if (fieldErrors.length > 0) {
+          fieldErrors.forEach((fe) => {
+            setError(fe.path as FieldPath<FormValues>, { type: 'server', message: fe.message });
+          });
+          const msg = `Please fix the highlighted field${fieldErrors.length > 1 ? 's' : ''} below`;
+          setFormError(msg);
+          toast.error(msg);
+          return;
+        }
         throw new Error(body.error ?? 'Failed to save product');
       }
 
@@ -282,7 +331,7 @@ export function ProductForm({ product }: Props) {
       router.refresh();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Something went wrong';
-      setError(msg);
+      setFormError(msg);
       toast.error(msg);
     } finally {
       setSaving(false);
@@ -292,12 +341,13 @@ export function ProductForm({ product }: Props) {
   const inputClass = 'w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 text-xs focus:outline-none focus:border-[#C9A86A] transition-colors placeholder:text-[#8A6A55]/50 rounded-lg';
   const labelClass = 'block text-[10.5px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5';
   const errorClass = 'text-xs text-red-600 mt-1';
+  const fieldClass = (hasError: boolean | undefined) => (hasError ? `${inputClass} ${FIELD_ERROR_CLASS}` : inputClass);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto space-y-4 font-sans">
-      {error && (
+      {formError && (
         <div className="p-4 bg-red-50 border border-red-200 text-xs text-red-700 rounded-lg">
-          {error}
+          {formError}
         </div>
       )}
 
@@ -310,7 +360,7 @@ export function ProductForm({ product }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelClass}>Product Name *</label>
-            <input {...register('name')} className={inputClass} placeholder="e.g. Noor-e-Ishq Royal Bridal Lehenga" />
+            <input {...register('name')} className={fieldClass(!!errors.name)} placeholder="e.g. Noor-e-Ishq Royal Bridal Lehenga" />
             {errors.name && <p className={errorClass}>{errors.name.message}</p>}
           </div>
 
@@ -323,7 +373,7 @@ export function ProductForm({ product }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelClass}>Category & Subcategory *</label>
-            <select {...register('category')} className={inputClass}>
+            <select {...register('category')} className={fieldClass(!!errors.category)}>
               {STANDARD_CATEGORIES.map((grp) => (
                 <optgroup key={grp.group} label={grp.group}>
                   {grp.items.map((item) => (
@@ -365,7 +415,7 @@ export function ProductForm({ product }: Props) {
 
         <div>
           <label className={labelClass}>Full Atelier Story & Craftsmanship Description *</label>
-          <textarea {...register('description')} rows={4} className={inputClass} placeholder="Describe the royal craftsmanship, silhouette, fabrics, and artisanal heritage of the piece…" />
+          <textarea {...register('description')} rows={4} className={fieldClass(!!errors.description)} placeholder="Describe the royal craftsmanship, silhouette, fabrics, and artisanal heritage of the piece…" />
           {errors.description && <p className={errorClass}>{errors.description.message}</p>}
         </div>
       </div>
@@ -411,13 +461,14 @@ export function ProductForm({ product }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelClass}>Price in ₹ (INR) *</label>
-            <input {...register('basePrice', { valueAsNumber: true })} type="number" step="1" className={inputClass} placeholder="89999" />
+            <input {...register('basePrice', { valueAsNumber: true })} type="number" step="1" className={fieldClass(!!errors.basePrice)} placeholder="89999" />
             {errors.basePrice && <p className={errorClass}>{errors.basePrice.message}</p>}
           </div>
 
           <div>
             <label className={labelClass}>Compare Price in ₹ (Original M.R.P.)</label>
-            <input {...register('comparePrice', { valueAsNumber: true })} type="number" step="1" className={inputClass} placeholder="109999" />
+            <input {...register('comparePrice', { valueAsNumber: true })} type="number" step="1" className={fieldClass(!!errors.comparePrice)} placeholder="109999" />
+            {errors.comparePrice && <p className={errorClass}>{errors.comparePrice.message}</p>}
           </div>
         </div>
 
@@ -481,13 +532,92 @@ export function ProductForm({ product }: Props) {
             </label>
           </div>
 
-          <input {...register('images')} className={inputClass} placeholder="/images/products/noorani-moonstone-lilac-silk-suit-1.webp, /images/products/noorani-moonstone-lilac-silk-suit-2.webp" />
+          <input {...register('images')} className={fieldClass(!!errors.images)} placeholder="/images/products/noorani-moonstone-lilac-silk-suit-1.webp, /images/products/noorani-moonstone-lilac-silk-suit-2.webp" />
+          {errors.images && <p className={errorClass}>{errors.images.message}</p>}
           <p className="text-[10px] text-[#8A6A55] mt-1">Upload directly to Cloudinary, or paste image URLs / static paths above (comma separated). First image is used as the primary showcase hero image.</p>
         </div>
 
         <div>
           <label className={labelClass}>Tags (comma separated)</label>
           <input {...register('tags')} className={inputClass} placeholder="suits, silk, zardozi, unstitched, wedding" />
+        </div>
+      </div>
+
+      {/* Sizes & Stock (Variants) */}
+      <div className="bg-white p-4 space-y-4 rounded-xl shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-[#EAE2D7]">
+          <div>
+            <h2 className="text-xs font-sans font-bold text-[#2E221C] uppercase tracking-[0.15em]">
+              Sizes &amp; Stock *
+            </h2>
+            <p className="text-[11px] text-[#8A6A55] mt-1">
+              Every ensemble needs at least one size/variant with its own SKU, price, and stock quantity.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() =>
+              appendVariant({ size: '', color: '', sku: '', price: 0, stock: 0, isActive: true })
+            }
+            className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider px-3 py-1.5 border border-[#C9A86A] text-[#9E7B3A] rounded-lg hover:bg-[#C9A86A]/10 transition-colors cursor-pointer"
+          >
+            <Plus size={13} /> Add Size
+          </button>
+        </div>
+
+        {errors.variants && !Array.isArray(errors.variants) && (
+          <p className={errorClass}>{errors.variants.message}</p>
+        )}
+
+        <div className="space-y-3">
+          {variantFields.map((field, index) => (
+            <div key={field.id} className="grid grid-cols-2 sm:grid-cols-6 gap-2.5 p-3 bg-[#FAF7F2] rounded-lg border border-[#EAE2D7]">
+              <div>
+                <label className={labelClass}>Size</label>
+                <input {...register(`variants.${index}.size`)} className={inputClass} placeholder="M / Free Size" />
+              </div>
+              <div>
+                <label className={labelClass}>Color</label>
+                <input {...register(`variants.${index}.color`)} className={inputClass} placeholder="Rani Pink" />
+              </div>
+              <div>
+                <label className={labelClass}>SKU *</label>
+                <input {...register(`variants.${index}.sku`)} className={fieldClass(!!errors.variants?.[index]?.sku)} placeholder="AFR-1001-M" />
+                {errors.variants?.[index]?.sku && (
+                  <p className={errorClass}>{errors.variants[index]?.sku?.message}</p>
+                )}
+              </div>
+              <div>
+                <label className={labelClass}>Price ₹ *</label>
+                <input {...register(`variants.${index}.price`, { valueAsNumber: true })} type="number" step="1" className={fieldClass(!!errors.variants?.[index]?.price)} placeholder="89999" />
+                {errors.variants?.[index]?.price && (
+                  <p className={errorClass}>{errors.variants[index]?.price?.message}</p>
+                )}
+              </div>
+              <div>
+                <label className={labelClass}>Stock *</label>
+                <input {...register(`variants.${index}.stock`, { valueAsNumber: true })} type="number" step="1" className={fieldClass(!!errors.variants?.[index]?.stock)} placeholder="5" />
+                {errors.variants?.[index]?.stock && (
+                  <p className={errorClass}>{errors.variants[index]?.stock?.message}</p>
+                )}
+              </div>
+              <div className="flex items-end justify-between gap-2">
+                <label className="flex items-center gap-1.5 cursor-pointer pb-2">
+                  <input {...register(`variants.${index}.isActive`)} type="checkbox" defaultChecked className="accent-[#C9A86A] w-3.5 h-3.5" />
+                  <span className="text-[10.5px] text-[#2E221C] font-medium">Active</span>
+                </label>
+                <button
+                  type="button"
+                  onClick={() => removeVariant(index)}
+                  disabled={variantFields.length <= 1}
+                  className="p-1.5 text-[#8A6A55] hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                  aria-label="Remove size"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 

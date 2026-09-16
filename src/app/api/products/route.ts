@@ -3,6 +3,7 @@ import { productService } from '@/server/services/product.service';
 import { productRepository } from '@/server/repositories/product.repository';
 import { handleApiError } from '@/lib/api-errors';
 import { requireAdmin } from '@/server/auth';
+import { logAdminAction } from '@/server/services/audit-log.service';
 import { CreateProductSchema } from '@/validators/product.validators';
 import type { ProductFilters } from '@/server/repositories/product.repository';
 import type { IProduct } from '@/models/Product';
@@ -50,10 +51,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    await requireAdmin(request);
+    const session = await requireAdmin(request);
     const body = await request.json();
     const validated = CreateProductSchema.parse(body);
     const created = await productRepository.create(validated as unknown as Partial<IProduct>);
+    logAdminAction(session, request, 'PRODUCT_CREATE', `Created product "${created.name}"`);
     return NextResponse.json({ success: true, data: created }, { status: 201 });
   } catch (error) {
     return handleApiError(error);

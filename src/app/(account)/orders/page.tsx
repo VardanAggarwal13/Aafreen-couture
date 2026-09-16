@@ -7,6 +7,7 @@ import { orderService } from '@/server/services/order.service';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
 import { Pagination } from '@/components/common/Pagination';
+import { getOrderStatusLabel } from '@/constants/order.constants';
 import type { IOrder, IOrderItem } from '@/models/Order';
 
 export const metadata = { title: 'My Orders | Aafreen Couture' };
@@ -80,7 +81,7 @@ export default async function OrdersPage({ searchParams }: Props) {
                     <div className="flex flex-wrap items-center gap-2 mb-1.5">
                       <p className="text-sm font-semibold text-heading">#{order.orderNumber}</p>
                       <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium uppercase tracking-wider ${STATUS_COLORS[statusKey] ?? 'bg-stone-100 text-stone-700'}`}>
-                        {(order.status || 'pending').replace('_', ' ')}
+                        {getOrderStatusLabel(order.status || 'pending')}
                       </span>
                       {order.paymentStatus === 'paid' ? (
                         <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">

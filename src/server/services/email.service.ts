@@ -231,6 +231,115 @@ export class EmailService {
     }
   }
 
+  private generateStatusUpdateHtml(order: IOrder, heading: string, message: string): string {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://aafreencouture.com';
+    const trackOrderUrl = `${appUrl}/orders/${order._id}`;
+
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head><meta charset="utf-8"><title>${heading} — ${siteConfig.name}</title></head>
+      <body style="margin: 0; padding: 0; background-color: #F8F6F0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #F8F6F0; padding: 30px 15px;">
+          <tr>
+            <td align="center">
+              <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #FFFFFF; border: 1px solid #E8E5DF; max-width: 600px; width: 100%;">
+                <tr>
+                  <td align="center" style="padding: 35px 20px 25px; border-bottom: 2px solid #C49A5A; background-color: #1C1A17;">
+                    <h1 style="margin: 0; color: #C49A5A; font-family: 'Playfair Display', Georgia, serif; font-size: 26px; letter-spacing: 4px; text-transform: uppercase;">
+                      AAFREEN COUTURE
+                    </h1>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 30px 35px;">
+                    <h2 style="margin: 0 0 10px; font-family: 'Playfair Display', Georgia, serif; color: #1C1A17; font-size: 20px;">
+                      ${heading}
+                    </h2>
+                    <p style="margin: 0 0 20px; color: #524B43; font-size: 14px; line-height: 1.6;">
+                      ${message}
+                    </p>
+                    <table width="100%" style="background-color: #FAF8F5; border: 1px solid #E8E5DF; padding: 15px; border-radius: 2px;">
+                      <tr>
+                        <td style="font-size: 12px; color: #7D756C;">
+                          <strong>Order Number:</strong> <span style="color: #1C1A17; font-weight: 600;">${order.orderNumber}</span><br/>
+                          ${order.trackingNumber ? `<strong>Tracking Number:</strong> <span style="color: #1C1A17;">${order.trackingNumber}</span><br/>` : ''}
+                          <strong>Total:</strong> <span style="color: #1C1A17; font-weight: 600;">${this.formatCurrency(order.total)}</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding: 0 35px 35px;">
+                    <a href="${trackOrderUrl}" style="display: inline-block; background-color: #1C1A17; color: #FFFFFF; text-decoration: none; padding: 14px 28px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; border-radius: 2px;">
+                      View Order Details
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding: 25px 20px; background-color: #FAF8F5; border-top: 1px solid #E8E5DF; font-size: 11px; color: #7D756C;">
+                    <p style="margin: 0;">&copy; ${new Date().getFullYear()} Aafreen Couture. All rights reserved.</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `;
+  }
+
+  private async dispatchStatusEmail(order: IOrder, subject: string, heading: string, message: string): Promise<boolean> {
+    const recipient = order.shippingAddress?.email;
+    if (!recipient) {
+      console.warn(`[EmailService] Order ${order.orderNumber} has no email address. Skipping "${heading}" email.`);
+      return false;
+    }
+
+    const html = this.generateStatusUpdateHtml(order, heading, message);
+
+    try {
+      const resendApiKey = process.env.RESEND_API_KEY;
+      if (resendApiKey) {
+        const { resend, FROM_EMAIL } = await import('@/lib/resend');
+        await resend.emails.create({ from: FROM_EMAIL, to: [recipient], subject, html });
+        console.log(`[EmailService] "${heading}" email sent via Resend to ${recipient}`);
+        return true;
+      }
+      console.log(`[EmailService] "${heading}" email prepared for ${recipient} (Order #${order.orderNumber}).`);
+      return true;
+    } catch (error) {
+      console.error(`[EmailService] Failed to send "${heading}" email:`, error);
+      return false;
+    }
+  }
+
+  /**
+   * Dispatches a shipping notification when an order's status moves to "shipped"
+   */
+  async sendShippingUpdate(order: IOrder): Promise<boolean> {
+    return this.dispatchStatusEmail(
+      order,
+      `Your Order Has Shipped: ${order.orderNumber} — ${siteConfig.name}`,
+      'Your Order Is On Its Way',
+      `Great news, ${order.shippingAddress?.name || 'Valued Client'}! Your handcrafted ensemble has been packed with care and dispatched via our insured courier partner.`
+    );
+  }
+
+  /**
+   * Dispatches a delivery confirmation when an order's status moves to "delivered"
+   */
+  async sendDeliveryConfirmation(order: IOrder): Promise<boolean> {
+    return this.dispatchStatusEmail(
+      order,
+      `Delivered: ${order.orderNumber} — ${siteConfig.name}`,
+      'Your Order Has Been Delivered',
+      `Dear ${order.shippingAddress?.name || 'Valued Client'}, your order has been successfully delivered. We hope you love your Aafreen Couture ensemble — thank you for trusting us with your special occasion.`
+    );
+  }
+
   /**
    * Dispatches payment failed alert to customer
    */

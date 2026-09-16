@@ -3,6 +3,9 @@ import { productService } from '@/server/services/product.service';
 import { productRepository } from '@/server/repositories/product.repository';
 import { handleApiError } from '@/lib/api-errors';
 import { requireAdmin } from '@/server/auth';
+import { logAdminAction } from '@/server/services/audit-log.service';
+import { UpdateProductSchema } from '@/validators/product.validators';
+import type { IProduct } from '@/models/Product';
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -23,11 +26,13 @@ export async function GET(_request: NextRequest, { params }: Props) {
 
 export async function PATCH(request: NextRequest, { params }: Props) {
   try {
-    await requireAdmin(request);
+    const session = await requireAdmin(request);
     const { slug } = await params;
     const body = await request.json();
-    const updated = await productRepository.update(slug, body);
+    const data = UpdateProductSchema.parse(body);
+    const updated = await productRepository.update(slug, data as unknown as Partial<IProduct>);
     if (!updated) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    logAdminAction(session, request, 'PRODUCT_UPDATE', `Updated product "${updated.name}"`);
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     return handleApiError(error);
@@ -36,9 +41,10 @@ export async function PATCH(request: NextRequest, { params }: Props) {
 
 export async function DELETE(request: NextRequest, { params }: Props) {
   try {
-    await requireAdmin(request);
+    const session = await requireAdmin(request);
     const { slug } = await params;
     const deleted = await productRepository.delete(slug);
+    logAdminAction(session, request, 'PRODUCT_DELETE', `Deleted product ${slug}`);
     return NextResponse.json({ success: true, deleted });
   } catch (error) {
     return handleApiError(error);

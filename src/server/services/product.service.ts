@@ -54,6 +54,21 @@ export class ProductService {
   async getRelatedProducts(productId: string, categoryId: string): Promise<IProduct[]> {
     return productRepository.findRelated(productId, categoryId, 4, CARD_FIELDS);
   }
+
+  async updateVariantStockBatch(
+    updates: { productId: string; sku: string; stock: number }[]
+  ): Promise<{ updated: number; failed: { productId: string; sku: string }[] }> {
+    let updated = 0;
+    const failed: { productId: string; sku: string }[] = [];
+
+    for (const u of updates) {
+      const ok = await productRepository.updateVariantStock(u.productId, u.sku, u.stock);
+      if (ok) updated += 1;
+      else failed.push({ productId: u.productId, sku: u.sku });
+    }
+
+    return { updated, failed };
+  }
 }
 
 export const productService = new ProductService();

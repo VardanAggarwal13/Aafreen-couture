@@ -4,6 +4,7 @@ import { ArrowLeft, Mail, Phone, Calendar, ShoppingBag } from 'lucide-react';
 import { userRepository } from '@/server/repositories/user.repository';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { formatPrice } from '@/utils/format';
+import { getOrderStatusLabel } from '@/constants/order.constants';
 
 export const metadata: Metadata = { title: 'Customer Profile | Admin' };
 
@@ -110,7 +111,7 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
                       <td className="px-5 py-2.5 text-[#2E221C] font-semibold">{formatPrice(order.total)}</td>
                       <td className="px-5 py-2.5">
                         <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                          {order.status}
+                          {getOrderStatusLabel(order.status)}
                         </span>
                       </td>
                       <td className="px-5 py-2.5 text-right">

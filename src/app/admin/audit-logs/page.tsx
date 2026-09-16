@@ -1,43 +1,10 @@
 import { User, ShieldCheck } from 'lucide-react';
+import { auditLogRepository } from '@/server/repositories/audit-log.repository';
 
 export const metadata = { title: 'Audit Logs | Admin' };
 
-const AUDIT_LOGS = [
-  {
-    id: 'log-01',
-    user: 'Vardan Aggarwal',
-    action: 'PRODUCT_UPDATE',
-    details: 'Updated inventory for Noor-e-Ishq Bridal Lehenga (Size M +5)',
-    ip: '103.21.14.88',
-    timestamp: '2026-08-18 20:30:14',
-  },
-  {
-    id: 'log-02',
-    user: 'Pearl Kapoor',
-    action: 'COUPON_CREATE',
-    details: 'Created coupon code BRIDAL2026 (₹10,000 off orders over ₹80,000)',
-    ip: '103.21.14.88',
-    timestamp: '2026-08-18 19:15:42',
-  },
-  {
-    id: 'log-03',
-    user: 'System Admin',
-    action: 'ORDER_STATUS_CHANGE',
-    details: 'Updated Order #AFR-901248 status to SHIPPED',
-    ip: '127.0.0.1',
-    timestamp: '2026-08-18 18:02:11',
-  },
-  {
-    id: 'log-04',
-    user: 'Sanya Malhotra',
-    action: 'BANNER_PUBLISH',
-    details: 'Published new homepage spotlight banner for Signature Co-Ord Sets',
-    ip: '103.45.22.10',
-    timestamp: '2026-08-18 16:40:05',
-  },
-];
-
-export default function AdminAuditLogsPage() {
+export default async function AdminAuditLogsPage() {
+  const logs = await auditLogRepository.findRecent(200);
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -60,14 +27,21 @@ export default function AdminAuditLogsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#EAE2D7]">
-              {AUDIT_LOGS.map((log) => (
-                <tr key={log.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                  <td className="px-5 py-2.5 font-mono text-[#8A6A55] text-xs whitespace-nowrap">{log.timestamp}</td>
-                  <td className="px-5 py-2.5 font-medium text-[#2E221C] flex items-center gap-2 whitespace-nowrap">
-                    <div className="w-6 h-6 rounded-full bg-[#FAF7F2] border border-[#DDD2C5] flex items-center justify-center">
-                      <User size={12} className="text-[#C9A86A]" />
+              {logs.map((log) => (
+                <tr key={String(log._id)} className="hover:bg-[#FAF7F2]/60 transition-colors">
+                  <td className="px-5 py-2.5 font-mono text-[#8A6A55] text-xs whitespace-nowrap">
+                    {new Date(log.createdAt).toLocaleString('en-IN')}
+                  </td>
+                  <td className="px-5 py-2.5 font-medium text-[#2E221C] whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-[#FAF7F2] border border-[#DDD2C5] flex items-center justify-center shrink-0">
+                        <User size={12} className="text-[#C9A86A]" />
+                      </div>
+                      <div className="flex flex-col">
+                        <span>{log.userName}</span>
+                        <span className="text-[10px] text-[#8A6A55] font-normal">{log.userEmail}</span>
+                      </div>
                     </div>
-                    {log.user}
                   </td>
                   <td className="px-5 py-2.5">
                     <span className="px-2.5 py-1 text-[10px] font-mono font-semibold uppercase bg-[#FAF7F2] text-[#2E221C] border border-[#DDD2C5] rounded-md inline-flex items-center gap-1">
@@ -78,6 +52,13 @@ export default function AdminAuditLogsPage() {
                   <td className="px-5 py-2.5 font-mono text-[#8A6A55] text-xs">{log.ip}</td>
                 </tr>
               ))}
+              {logs.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-5 py-12 text-center text-[#8A6A55]">
+                    No administrative actions recorded yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

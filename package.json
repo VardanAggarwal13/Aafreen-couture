@@ -10,7 +10,8 @@
     "lint": "eslint",
     "type-check": "tsc --noEmit",
     "seed": "npx tsx scripts/seed.ts",
-    "seed:cms": "npx tsx scripts/seed-cms.ts"
+    "seed:cms": "npx tsx scripts/seed-cms.ts",
+    "seed:blog": "npx tsx scripts/seed-blog.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

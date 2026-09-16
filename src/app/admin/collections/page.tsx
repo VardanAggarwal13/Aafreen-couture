@@ -5,7 +5,7 @@ import { collectionRepository } from '@/server/repositories/collection.repositor
 export const metadata: Metadata = { title: 'Collections | Admin' };
 
 export default async function AdminCollectionsPage() {
-  const cols = await collectionRepository.findAll();
+  const cols = await collectionRepository.findAll(true);
   const serialized = JSON.parse(JSON.stringify(cols));
 
   return (

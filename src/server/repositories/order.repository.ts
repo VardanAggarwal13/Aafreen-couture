@@ -164,6 +164,46 @@ export class OrderRepository {
     return null;
   }
 
+  async markDelivered(id: string, note?: string): Promise<IOrder | null> {
+    const cleanId = id.replace(/^#/, '').trim();
+    try {
+      await connectDB();
+      const query = mongoose.Types.ObjectId.isValid(cleanId)
+        ? { _id: cleanId }
+        : { orderNumber: cleanId };
+      const doc = await OrderModel.findOneAndUpdate(
+        query,
+        {
+          status: 'delivered',
+          deliveredAt: new Date(),
+          $push: {
+            statusHistory: {
+              status: 'delivered',
+              timestamp: new Date(),
+              note: note ?? '',
+            },
+          },
+        },
+        { new: true }
+      ).lean<IOrder>();
+      if (doc) return doc;
+    } catch {
+      // Fallback
+    }
+
+    const found = getBackupStore().find(
+      (o) => String(o._id) === cleanId || o.orderNumber.toLowerCase() === cleanId.toLowerCase()
+    );
+    if (found) {
+      found.status = 'delivered';
+      found.deliveredAt = new Date();
+      found.statusHistory = found.statusHistory || [];
+      found.statusHistory.push({ status: 'delivered', timestamp: new Date(), note: note ?? '' });
+      return found;
+    }
+    return null;
+  }
+
   async updatePayment(
     id: string,
     data: {

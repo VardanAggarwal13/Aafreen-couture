@@ -32,6 +32,7 @@ export interface IProduct extends Document {
   isBestSeller: boolean;
   careInstructions?: string;
   fabric?: string;
+  workType?: string;
   occasion?: string[];
   averageRating: number;
   reviewCount: number;
@@ -74,6 +75,7 @@ const ProductSchema = new Schema<IProduct>(
     isBestSeller: { type: Boolean, default: false },
     careInstructions: { type: String },
     fabric: { type: String },
+    workType: { type: String },
     occasion: [{ type: String }],
     averageRating: { type: Number, default: 0, min: 0, max: 5 },
     reviewCount: { type: Number, default: 0 },

@@ -3,6 +3,7 @@ import { requireAdmin } from '@/server/auth';
 import { userRepository } from '@/server/repositories/user.repository';
 import { auth } from '@/lib/auth';
 import { handleApiError } from '@/lib/api-errors';
+import { logAdminAction } from '@/server/services/audit-log.service';
 import { connectDB } from '@/lib/db';
 import mongoose from 'mongoose';
 
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    await requireAdmin(request);
+    const session = await requireAdmin(request);
     const body = await request.json();
     const { name, email, password, phone, role = 'admin' } = body;
 
@@ -37,6 +38,7 @@ export async function POST(request: NextRequest) {
     if (existing) {
       // If user exists, update their role to the requested role
       const updated = await userRepository.updateRole(existing._id, role);
+      logAdminAction(session, request, 'USER_ROLE_UPDATE', `Set ${normalizedEmail} role to ${role} (via create-admin)`);
       return NextResponse.json({
         success: true,
         message: `Existing user ${normalizedEmail} updated to ${role}`,
@@ -79,6 +81,7 @@ export async function POST(request: NextRequest) {
     }
 
     const createdUser = await userRepository.findByEmail(normalizedEmail);
+    logAdminAction(session, request, 'USER_CREATE', `Created ${role} account for ${normalizedEmail}`);
     return NextResponse.json(
       {
         success: true,

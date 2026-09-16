@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Clock } from 'lucide-react';
-import { BLOG_POSTS } from '@/data/blog.data';
+import { blogRepository } from '@/server/repositories/blog.repository';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
@@ -11,8 +11,9 @@ export const metadata: Metadata = {
   alternates: { canonical: `${siteConfig.url}/blog` },
 };
 
-export default function BlogPage() {
-  const [featured, ...rest] = BLOG_POSTS;
+export default async function BlogPage() {
+  const posts = await blogRepository.findAllPublished();
+  const [featured, ...rest] = posts;
 
   return (
     <main className="min-h-screen bg-[#FAF7F2]">

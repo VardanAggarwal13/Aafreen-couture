@@ -1,66 +1,67 @@
 'use client';
 
 import { useState } from 'react';
-import { Star, Check, X, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Star, Check, X, Trash2, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 
 export interface ReviewItem {
-  id: string;
-  product: string;
-  author: string;
+  _id: string;
+  productName: string;
+  authorName: string;
   rating: number;
-  comment: string;
-  date: string;
-  status: 'approved' | 'pending' | 'rejected';
+  title: string;
+  body: string;
+  isApproved: boolean;
+  isVerifiedPurchase: boolean;
+  createdAt: string;
 }
 
-const INITIAL_REVIEWS: ReviewItem[] = [
-  {
-    id: 'r-01',
-    product: 'Noor-e-Ishq Bridal Lehenga',
-    author: 'Priya Sharma',
-    rating: 5,
-    comment: 'Absolutely royal craftsmanship! Received so many compliments on my wedding day.',
-    date: '2026-08-12',
-    status: 'approved',
-  },
-  {
-    id: 'r-02',
-    product: 'Mehrunissa Royal Velvet Anarkali',
-    author: 'Ananya Gupta',
-    rating: 5,
-    comment: 'The emerald green velvet is so rich and the embroidery work is pure poetry.',
-    date: '2026-08-10',
-    status: 'approved',
-  },
-  {
-    id: 'r-03',
-    product: 'Sitara Jadau Kundan Polki Choker',
-    author: 'Rhea Sen',
-    rating: 4,
-    comment: 'Exquisite jewelry piece. Packaging was very secure and luxurious.',
-    date: '2026-08-08',
-    status: 'pending',
-  },
-];
+export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
+  const router = useRouter();
+  const [filter, setFilter] = useState<'all' | 'pending' | 'approved'>('all');
+  const [viewing, setViewing] = useState<ReviewItem | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
 
-export function AdminReviewsClient() {
-  const [reviews, setReviews] = useState<ReviewItem[]>(INITIAL_REVIEWS);
-  const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
+  const filtered = reviews.filter((r) => {
+    if (filter === 'pending') return !r.isApproved;
+    if (filter === 'approved') return r.isApproved;
+    return true;
+  });
 
-  const filtered = reviews.filter((r) => (filter === 'all' ? true : r.status === filter));
-
-  function updateStatus(id: string, status: 'approved' | 'rejected') {
-    setReviews((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status } : r))
-    );
-    toast.success(`Review ${status}`);
+  async function updateApproval(id: string, isApproved: boolean) {
+    setBusyId(id);
+    try {
+      const res = await fetch(`/api/admin/reviews/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isApproved }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error ?? 'Failed to update review');
+      toast.success(isApproved ? 'Review approved' : 'Review unapproved');
+      router.refresh();
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Failed to update review');
+    } finally {
+      setBusyId(null);
+    }
   }
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     if (!confirm('Delete this review permanently?')) return;
-    setReviews((prev) => prev.filter((r) => r.id !== id));
-    toast.success('Review deleted');
+    setBusyId(id);
+    try {
+      const res = await fetch(`/api/admin/reviews/${id}`, { method: 'DELETE' });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error ?? 'Failed to delete review');
+      toast.success('Review deleted');
+      router.refresh();
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Failed to delete review');
+    } finally {
+      setBusyId(null);
+    }
   }
 
   return (
@@ -72,11 +73,11 @@ export function AdminReviewsClient() {
         </div>
 
         <div className="flex items-center gap-2">
-          {(['all', 'pending', 'approved', 'rejected'] as const).map((tab) => (
+          {(['all', 'pending', 'approved'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-3.5 py-1.5 text-xs rounded-lg capitalize font-medium transition-all ${
+              className={`px-3.5 py-1.5 text-xs rounded-lg capitalize font-medium transition-all cursor-pointer ${
                 filter === tab
                   ? 'bg-[#2E221C] text-[#F8F5F1] shadow-sm'
                   : 'bg-white text-[#8A6A55] hover:text-[#2E221C] border border-[#DDD2C5]'
@@ -93,7 +94,7 @@ export function AdminReviewsClient() {
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
-                {['Product', 'Client', 'Rating', 'Review Experience', 'Date', 'Status', 'Actions'].map((h) => (
+                {['Product', 'Client', 'Rating', 'Review', 'Date', 'Status', 'Actions'].map((h) => (
                   <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
@@ -102,12 +103,15 @@ export function AdminReviewsClient() {
             </thead>
             <tbody className="divide-y divide-[#EAE2D7]">
               {filtered.map((review) => (
-                <tr key={review.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
+                <tr key={review._id} className="hover:bg-[#FAF7F2]/60 transition-colors">
                   <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] max-w-[200px] truncate text-sm">
-                    {review.product}
+                    {review.productName}
                   </td>
                   <td className="px-5 py-2.5 text-[#2E221C] font-medium">
-                    {review.author}
+                    {review.authorName}
+                    {review.isVerifiedPurchase && (
+                      <span className="ml-1.5 text-[9px] text-emerald-700 font-semibold uppercase">Verified</span>
+                    )}
                   </td>
                   <td className="px-5 py-2.5 text-[#C9A86A] flex items-center gap-0.5">
                     {Array.from({ length: review.rating }).map((_, i) => (
@@ -115,45 +119,52 @@ export function AdminReviewsClient() {
                     ))}
                   </td>
                   <td className="px-5 py-2.5 text-[#8A6A55] max-w-[300px] truncate italic">
-                    &ldquo;{review.comment}&rdquo;
+                    &ldquo;{review.title}&rdquo;
                   </td>
                   <td className="px-5 py-2.5 text-[#8A6A55]">
-                    {review.date}
+                    {review.createdAt ? new Date(review.createdAt).toLocaleDateString('en-IN') : '—'}
                   </td>
                   <td className="px-5 py-2.5">
                     <span className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold ${
-                      review.status === 'approved'
+                      review.isApproved
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                        : review.status === 'pending'
-                        ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                        : 'bg-rose-50 text-rose-700 border border-rose-200'
+                        : 'bg-amber-50 text-amber-700 border border-amber-200'
                     }`}>
-                      {review.status}
+                      {review.isApproved ? 'approved' : 'pending'}
                     </span>
                   </td>
                   <td className="px-5 py-2.5">
                     <div className="flex items-center gap-2">
-                      {review.status === 'pending' && (
-                        <>
-                          <button
-                            onClick={() => updateStatus(review.id, 'approved')}
-                            className="p-1 text-emerald-700 hover:bg-emerald-50 rounded transition-colors"
-                            title="Approve Review"
-                          >
-                            <Check size={15} />
-                          </button>
-                          <button
-                            onClick={() => updateStatus(review.id, 'rejected')}
-                            className="p-1 text-rose-700 hover:bg-rose-50 rounded transition-colors"
-                            title="Reject Review"
-                          >
-                            <X size={15} />
-                          </button>
-                        </>
+                      <button
+                        onClick={() => setViewing(review)}
+                        className="p-1 text-[#8A6A55] hover:text-[#2E221C] rounded transition-colors cursor-pointer"
+                        title="View Review"
+                      >
+                        <Eye size={14} />
+                      </button>
+                      {!review.isApproved ? (
+                        <button
+                          onClick={() => updateApproval(review._id, true)}
+                          disabled={busyId === review._id}
+                          className="p-1 text-emerald-700 hover:bg-emerald-50 rounded transition-colors disabled:opacity-40 cursor-pointer"
+                          title="Approve Review"
+                        >
+                          <Check size={15} />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => updateApproval(review._id, false)}
+                          disabled={busyId === review._id}
+                          className="p-1 text-rose-700 hover:bg-rose-50 rounded transition-colors disabled:opacity-40 cursor-pointer"
+                          title="Unapprove Review"
+                        >
+                          <X size={15} />
+                        </button>
                       )}
                       <button
-                        onClick={() => handleDelete(review.id)}
-                        className="p-1 text-[#8A6A55] hover:text-red-600 rounded transition-colors"
+                        onClick={() => handleDelete(review._id)}
+                        disabled={busyId === review._id}
+                        className="p-1 text-[#8A6A55] hover:text-red-600 rounded transition-colors disabled:opacity-40 cursor-pointer"
                         title="Delete Review"
                       >
                         <Trash2 size={14} />
@@ -173,6 +184,51 @@ export function AdminReviewsClient() {
           </table>
         </div>
       </div>
+
+      {viewing && (
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-md p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 text-xs">
+            <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
+              <h3 className="font-sans font-semibold text-[#2E221C] text-base">{viewing.title}</h3>
+              <button onClick={() => setViewing(null)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md cursor-pointer">
+                <X size={16} />
+              </button>
+            </div>
+            <div className="space-y-3 text-[#2E221C]">
+              <div className="flex justify-between py-1 border-b border-[#EAE2D7]">
+                <span className="text-[#8A6A55]">Product:</span>
+                <span className="font-medium">{viewing.productName}</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-[#EAE2D7]">
+                <span className="text-[#8A6A55]">Client:</span>
+                <span className="font-medium">{viewing.authorName}</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-[#EAE2D7]">
+                <span className="text-[#8A6A55]">Rating:</span>
+                <span className="flex items-center gap-0.5 text-[#C9A86A]">
+                  {Array.from({ length: viewing.rating }).map((_, i) => (
+                    <Star key={i} size={13} fill="currentColor" />
+                  ))}
+                </span>
+              </div>
+              <div className="pt-1">
+                <span className="text-[#8A6A55] block mb-1">Review:</span>
+                <p className="bg-[#FAF7F2] p-3 rounded-lg border border-[#DDD2C5] text-xs text-[#2E221C] italic">
+                  &ldquo;{viewing.body}&rdquo;
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-end pt-4 border-t border-[#DDD2C5]">
+              <button
+                onClick={() => setViewing(null)}
+                className="px-5 py-2 bg-[#2E221C] text-[#F8F5F1] hover:bg-[#1A1410] rounded-lg text-xs font-semibold uppercase tracking-wider transition-all shadow-sm cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

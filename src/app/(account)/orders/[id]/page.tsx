@@ -8,6 +8,7 @@ import { auth } from '@/lib/auth';
 import { orderService } from '@/server/services/order.service';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
+import { getOrderStatusLabel } from '@/constants/order.constants';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -182,7 +183,7 @@ export default async function OrderDetailPage({ params }: Props) {
               STATUS_BADGES[order.status] ?? 'bg-surface text-heading'
             }`}
           >
-            {String(order.status).replace('_', ' ')}
+            {getOrderStatusLabel(order.status)}
           </span>
         </div>
       </div>

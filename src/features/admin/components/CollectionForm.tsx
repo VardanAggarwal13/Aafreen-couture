@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
 import { toast } from 'sonner';
+import { extractFieldErrors, FIELD_ERROR_CLASS } from '@/utils/form-errors';
 
 interface CollectionData {
   _id?: string;
@@ -24,6 +25,7 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
   const router = useRouter();
   const isEdit = !!collection?._id;
   const [saving, setSaving] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState({
     name: collection?.name ?? '',
@@ -41,10 +43,12 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!formData.name) {
+      setFieldErrors({ name: 'Collection name is required' });
       toast.error('Collection name is required');
       return;
     }
 
+    setFieldErrors({});
     setSaving(true);
     try {
       const url = isEdit ? `/api/collections/${collection._id}` : '/api/collections';
@@ -59,7 +63,16 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
         }),
       });
 
-      if (!res.ok) throw new Error('Failed to save collection');
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        const errors = extractFieldErrors(body);
+        if (errors.length > 0) {
+          setFieldErrors(Object.fromEntries(errors.map((e) => [e.path, e.message])));
+          toast.error(`Please fix the highlighted field${errors.length > 1 ? 's' : ''} below`);
+          return;
+        }
+        throw new Error(body.error ?? 'Failed to save collection');
+      }
 
       toast.success(isEdit ? 'Collection updated successfully' : 'Collection created successfully');
       router.push('/admin/collections');
@@ -70,6 +83,11 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
       setSaving(false);
     }
   }
+
+  const inputClass = (field: string) =>
+    `w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors ${
+      fieldErrors[field] ? FIELD_ERROR_CLASS : ''
+    }`;
 
   return (
     <form onSubmit={handleSubmit} className="max-w-3xl mx-auto space-y-4">
@@ -100,8 +118,9 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="e.g. Royal Heritage Couture 2026"
-            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
+            className={inputClass('name')}
           />
+          {fieldErrors.name && <p className="text-xs text-red-600 mt-1">{fieldErrors.name}</p>}
         </div>
 
         <div>
@@ -113,8 +132,9 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
             value={formData.slug}
             onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
             placeholder="royal-heritage-2026 (auto-generated if left blank)"
-            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] font-mono text-xs transition-colors"
+            className={`${inputClass('slug')} font-mono text-xs`}
           />
+          {fieldErrors.slug && <p className="text-xs text-red-600 mt-1">{fieldErrors.slug}</p>}
         </div>
 
         <div>

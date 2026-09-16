@@ -606,6 +606,27 @@ export class ProductRepository {
     return !!result;
   }
 
+  async countByCategory(categoryId: string): Promise<number> {
+    await connectDB();
+    return Product.countDocuments({ category: categoryId });
+  }
+
+  async countByCollection(collectionId: string): Promise<number> {
+    await connectDB();
+    return Product.countDocuments({ collectionRef: collectionId });
+  }
+
+  async updateVariantStock(productId: string, sku: string, stock: number): Promise<boolean> {
+    this.clearCache();
+    await connectDB();
+    const result = await Product.updateOne(
+      { _id: productId, 'variants.sku': sku },
+      { $set: { 'variants.$.stock': stock } }
+    );
+    this.clearCache();
+    return result.matchedCount > 0;
+  }
+
   async decrementStock(
     productId: string,
     variantId: string | undefined,

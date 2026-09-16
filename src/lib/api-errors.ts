@@ -48,7 +48,23 @@ export class BusinessError extends AppError {
   }
 }
 
+export function isDuplicateKeyError(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    (error as { code?: number }).code === 11000
+  );
+}
+
 export function handleApiError(error: unknown): NextResponse {
+  if (isDuplicateKeyError(error)) {
+    return NextResponse.json(
+      { success: false, error: 'A record with this value already exists', code: 'CONFLICT' },
+      { status: 409 }
+    );
+  }
+
   if (error instanceof ZodError) {
     return NextResponse.json(
       {

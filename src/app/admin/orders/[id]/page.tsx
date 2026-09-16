@@ -7,6 +7,7 @@ import { ROUTES } from '@/constants/routes';
 import { AdminOrderStatusUpdater } from '@/features/admin/components/AdminOrderStatusUpdater';
 import { AdminPaymentReconcileButton } from '@/features/admin/components/AdminPaymentReconcileButton';
 import { AdminPaymentStatusUpdater } from '@/features/admin/components/AdminPaymentStatusUpdater';
+import { getOrderStatusLabel } from '@/constants/order.constants';
 
 export const metadata = { title: 'Order Details | Admin' };
 
@@ -169,7 +170,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Order #{order.orderNumber}</h1>
             <span className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase font-medium tracking-wide ${STATUS_BADGE[order.status] ?? 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5]'}`}>
-              {String(order.status).replace(/_/g, ' ')}
+              {getOrderStatusLabel(order.status)}
             </span>
           </div>
           <p className="text-xs text-[#8A6A55] mt-1 font-sans">Placed on {formatDate(order.createdAt)}</p>
