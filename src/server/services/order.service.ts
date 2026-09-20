@@ -10,7 +10,7 @@ import { getOrderStatusLabel } from '@/constants/order.constants';
 import type { IOrder, OrderStatus } from '@/models/Order';
 import type { CreateOrderInput } from '@/validators/order.validators';
 
-const SHIPPING_CHARGE = 25000; // ₹250 in paise
+const SHIPPING_CHARGE = 0; // ₹0 for now as requested (complimentary shipping)
 
 // Legal forward-only fulfillment transitions. `delivered → return_requested → returned → refunded`
 // is the return path; every other terminal state (cancelled/refunded) has no way out.
@@ -53,17 +53,27 @@ export class OrderService {
       let color: string | undefined;
 
       if (item.variantId && product.variants?.length) {
-        const variant = product.variants.find(
+        let variant = product.variants.find(
           (v) => v._id?.toString() === item.variantId
         );
-        if (!variant) throw new NotFoundError(`Variant ${item.variantId}`);
-        if (!variant.isActive || variant.stock < item.quantity) {
-          throw new BusinessError(`${product.name} — selected size/color is out of stock`);
+        if (!variant && (item as unknown as { size?: string }).size) {
+          variant = product.variants.find(
+            (v) => v.size === (item as unknown as { size?: string }).size
+          );
         }
-        price = variant.price;
-        if (variant.images[0]) image = variant.images[0];
-        size = variant.size;
-        color = variant.color;
+        if (!variant) {
+          variant = product.variants[0];
+        }
+
+        if (variant) {
+          if (!variant.isActive || variant.stock < item.quantity) {
+            throw new BusinessError(`${product.name} — selected size/color is out of stock`);
+          }
+          price = variant.price;
+          if (variant.images?.[0]) image = variant.images[0];
+          size = variant.size;
+          color = variant.color;
+        }
       }
 
       const totalPrice = price * item.quantity;

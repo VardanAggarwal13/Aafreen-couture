@@ -5,9 +5,21 @@ import { requireAdmin } from '@/server/auth';
 import { logAdminAction } from '@/server/services/audit-log.service';
 import { CreateCategorySchema } from '@/validators/category.validators';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const categories = await categoryRepository.findAll();
+    // Inactive categories are only exposed to admins (e.g. the product form needs to keep
+    // showing a product's current category even if it was since deactivated).
+    const wantsInactive = request.nextUrl.searchParams.get('includeInactive') === 'true';
+    let includeInactive = false;
+    if (wantsInactive) {
+      try {
+        await requireAdmin(request);
+        includeInactive = true;
+      } catch {
+        includeInactive = false;
+      }
+    }
+    const categories = await categoryRepository.findAll(includeInactive);
     return NextResponse.json(
       { success: true, data: categories },
       {

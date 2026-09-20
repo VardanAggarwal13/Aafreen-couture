@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { productService } from '@/server/services/product.service';
 import { productRepository } from '@/server/repositories/product.repository';
 import { handleApiError } from '@/lib/api-errors';
@@ -33,6 +34,20 @@ export async function PATCH(request: NextRequest, { params }: Props) {
     const updated = await productRepository.update(slug, data as unknown as Partial<IProduct>);
     if (!updated) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     logAdminAction(session, request, 'PRODUCT_UPDATE', `Updated product "${updated.name}"`);
+
+    // Invalidate Next.js page caches so storefront and detail pages reflect updates immediately
+    try {
+      revalidatePath(`/product/${updated.slug}`);
+      revalidatePath('/shop');
+      revalidatePath('/bridal');
+      revalidatePath('/bridal/bridal-lehengas');
+      revalidatePath('/suits');
+      revalidatePath('/cart');
+      revalidatePath('/');
+    } catch {
+      // Ignore cache revalidation errors in non-standard environments
+    }
+
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     return handleApiError(error);

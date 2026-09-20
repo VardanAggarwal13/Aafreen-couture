@@ -46,6 +46,20 @@ export function LoginForm({ initialRedirect }: LoginFormProps = {}) {
     }
   }, []);
 
+  const { data: session, isPending } = authClient.useSession();
+
+  useEffect(() => {
+    if (!isPending && session?.user) {
+      const role = (session.user as { role?: string })?.role;
+      const email = session.user.email?.toLowerCase();
+      const isAdmin = role === 'admin' || email === 'vardanaggarwal13@gmail.com';
+      const targetUrl = (isAdmin && (!redirect || redirect === ROUTES.HOME || redirect === '/orders'))
+        ? '/admin'
+        : redirect;
+      router.replace(targetUrl);
+    }
+  }, [session, isPending, redirect, router]);
+
   const isCheckoutRedirect = redirect === ROUTES.CHECKOUT || redirect.startsWith(`${ROUTES.CHECKOUT}?`);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,11 +84,17 @@ export function LoginForm({ initialRedirect }: LoginFormProps = {}) {
         toast.error(result.error.message ?? 'Invalid email or password. Please try again.');
       } else {
         toast.success('Welcome back to Aafreen Couture!');
-        router.push(redirect);
+        const user = result.data?.user as { role?: string; email?: string } | undefined;
+        const isAdmin = user?.role === 'admin' || user?.email?.toLowerCase() === 'vardanaggarwal13@gmail.com';
+        const targetUrl = (isAdmin && (!redirect || redirect === ROUTES.HOME || redirect === '/orders'))
+          ? '/admin'
+          : redirect;
+        router.push(targetUrl);
         router.refresh();
       }
-    } catch {
-      toast.error('Something went wrong during sign in. Please try again.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Something went wrong during sign in. Please try again.';
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }

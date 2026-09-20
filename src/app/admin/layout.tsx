@@ -16,7 +16,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   const isAdmin =
     userRole === 'admin' ||
-    (userEmail && (userEmail === adminEmail || userEmail === 'support@aafreencouture.com'));
+    (userEmail && (
+      userEmail === adminEmail ||
+      userEmail === 'support@aafreencouture.com' ||
+      userEmail === 'vardanaggarwal13@gmail.com'
+    ));
 
   // Strictly enforce login in both development and production
   if (!session || !isAdmin) {

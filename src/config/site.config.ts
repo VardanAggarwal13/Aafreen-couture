@@ -21,7 +21,7 @@ export const siteConfig = {
   whatsapp: '919517901117',
   instagram: 'aafreen__couture',
   instagramUrl: 'https://www.instagram.com/aafreen__couture/',
-  freeShippingThreshold: 500000, // ₹5,000 in paise
+  freeShippingThreshold: 0, // Complimentary express shipping across India on all orders
   currency: 'INR',
   locale: 'en-IN',
 } as const;

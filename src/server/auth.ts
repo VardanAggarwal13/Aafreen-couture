@@ -13,7 +13,12 @@ export async function requireAdmin(request: NextRequest) {
     const userEmail = session.user.email?.toLowerCase();
     const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
 
-    if (role === 'admin' || userEmail === adminEmail || userEmail === 'support@aafreencouture.com') {
+    if (
+      role === 'admin' ||
+      userEmail === adminEmail ||
+      userEmail === 'support@aafreencouture.com' ||
+      userEmail === 'vardanaggarwal13@gmail.com'
+    ) {
       return session;
     }
     throw new ForbiddenError();

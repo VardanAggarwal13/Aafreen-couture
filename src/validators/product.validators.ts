@@ -23,7 +23,7 @@ export const ProductVariantSchema = z.object({
   price: z.number({ message: 'Price must be a number' }).int('Price must be a whole number (no decimals)').min(0, 'Price cannot be negative'),
   comparePrice: z.number({ message: 'Compare price must be a number' }).int('Compare price must be a whole number (no decimals)').min(0, 'Compare price cannot be negative').optional(),
   stock: z.number({ message: 'Stock must be a number' }).int('Stock must be a whole number').min(0, 'Stock cannot be negative'),
-  images: z.array(z.string().url('Each image must be a valid URL')).default([]),
+  images: z.array(z.string()).default([]),
   isActive: z.boolean().default(true),
 });
 
@@ -46,8 +46,8 @@ export const CreateProductSchema = z.object({
   fabric: z.string().optional(),
   workType: z.string().optional(),
   occasion: z.array(z.string()).default([]),
-  seoTitle: z.string().max(70).optional(),
-  seoDescription: z.string().max(160).optional(),
+  seoTitle: z.string().max(160, 'SEO Title must not exceed 160 characters').optional(),
+  seoDescription: z.string().max(500, 'SEO Description must not exceed 500 characters').optional(),
 });
 
 export const UpdateProductSchema = CreateProductSchema.partial();

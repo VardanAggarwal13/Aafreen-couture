@@ -67,7 +67,7 @@ export function CheckoutClientPage() {
 
   const subtotal = getSubtotal();
   const discountAmount = appliedCoupon?.discount ?? 0;
-  const shippingCharge = appliedCoupon?.freeShipping || subtotal >= siteConfig.freeShippingThreshold ? 0 : 25000;
+  const shippingCharge = 0; // Complimentary express shipping across India (shipping charges removed)
   const total = Math.max(0, subtotal - discountAmount + shippingCharge);
 
   const {

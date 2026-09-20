@@ -49,10 +49,15 @@ function StorefrontNavbar() {
   const [searchOpen, setSearchOpen] = useState(false);
 
   const { data: session } = useSession();
+  const [mounted, setMounted] = useState(false);
   const cartItemCount = useCartStore((s) => s.getTotalItems());
   const wishlistCount = useWishlistStore((s) => s.items.length);
 
   const accountMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // Warm key routes immediately so clicking has zero latency
@@ -266,7 +271,7 @@ function StorefrontNavbar() {
               </div>
               <Link href={ROUTES.WISHLIST} aria-label="Wishlist" className="p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors relative">
                 <Heart size={18} />
-                {wishlistCount > 0 && (
+                {mounted && wishlistCount > 0 && (
                   <span className="absolute top-1 right-0.5 bg-gold text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
                     {wishlistCount > 9 ? '9+' : wishlistCount}
                   </span>
@@ -274,7 +279,7 @@ function StorefrontNavbar() {
               </Link>
               <Link href={ROUTES.CART} aria-label="Cart" className="p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors relative">
                 <ShoppingBag size={18} />
-                {cartItemCount > 0 && (
+                {mounted && cartItemCount > 0 && (
                   <span className="absolute top-1 right-0.5 bg-gold text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
                     {cartItemCount > 9 ? '9+' : cartItemCount}
                   </span>

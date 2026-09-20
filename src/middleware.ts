@@ -33,7 +33,7 @@ export function middleware(request: NextRequest) {
 
   // Protect admin routes — full role verification happens in each admin page/API
   if (pathname.startsWith(ADMIN_PREFIX) && !isAuthenticated) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL(`/login?redirect=${encodeURIComponent(pathname)}`, request.url));
   }
 
   return NextResponse.next();

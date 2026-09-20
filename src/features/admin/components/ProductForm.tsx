@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { useForm, useFieldArray, type FieldPath } from 'react-hook-form';
+import { useForm, useFieldArray, type FieldPath, type FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
@@ -10,6 +10,41 @@ import { toast } from 'sonner';
 import { X, Plus, Trash2 } from 'lucide-react';
 import { extractFieldErrors, FIELD_ERROR_CLASS } from '@/utils/form-errors';
 import type { IProduct } from '@/types';
+
+const FIELD_LABELS: Record<string, string> = {
+  name: 'Product Name',
+  slug: 'Slug',
+  category: 'Category & Subcategory',
+  collectionRef: 'Collection',
+  description: 'Full Description',
+  shortDescription: 'Short Tagline',
+  basePrice: 'Price',
+  comparePrice: 'Compare Price',
+  images: 'Product Images',
+  seoTitle: 'Meta Title',
+  seoDescription: 'Meta Description',
+  fabric: 'Fabric',
+  workType: 'Work Type',
+  careInstructions: 'Care Instructions',
+  tags: 'Tags',
+  variants: 'Sizes & Stock',
+  size: 'Size',
+  color: 'Color',
+  sku: 'SKU',
+  price: 'Price',
+  stock: 'Stock',
+};
+
+function formatFieldErrorLabel(path: string): string {
+  if (path.startsWith('variants.')) {
+    const parts = path.split('.');
+    const index = parseInt(parts[1], 10);
+    const subfield = parts[2] || '';
+    const subLabel = FIELD_LABELS[subfield] || subfield;
+    return `Size #${index + 1} ${subLabel}`;
+  }
+  return FIELD_LABELS[path] || path;
+}
 
 const variantSchema = z.object({
   size: z.string().optional(),
@@ -25,8 +60,8 @@ const schema = z.object({
   name: z.string().min(2, 'Name is required'),
   slug: z.string().optional(),
   description: z.string().min(10, 'Description is required'),
-  shortDescription: z.string().optional(),
-  basePrice: z.number().min(1, 'Price is required'),
+  shortDescription: z.string().max(500, 'Tagline cannot exceed 500 characters').optional(),
+  basePrice: z.number({ message: 'Price is required' }).min(1, 'Price must be greater than 0'),
   comparePrice: z.number().optional(),
   category: z.string().min(1, 'Category is required'),
   collectionRef: z.string().optional(),
@@ -41,8 +76,8 @@ const schema = z.object({
   isNewArrival: z.boolean().optional(),
   isBestSeller: z.boolean().optional(),
   tags: z.string().optional(),
-  seoTitle: z.string().optional(),
-  seoDescription: z.string().optional(),
+  seoTitle: z.string().max(160, 'Meta title cannot exceed 160 characters').optional(),
+  seoDescription: z.string().max(500, 'Meta description cannot exceed 500 characters').optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -61,70 +96,31 @@ const OCCASION_OPTIONS = [
   'Reception',
 ];
 
-const STANDARD_CATEGORIES = [
-  {
-    group: 'Bridal',
-    items: [
-      { slug: 'bridal-lehengas', name: 'Bridal Lehengas' },
-      { slug: 'bridal-suits', name: 'Bridal Suits' },
-      { slug: 'bridesmaid-lehengas', name: 'Bridesmaid Lehengas' },
-      { slug: 'reception-gowns', name: 'Reception Gowns' },
-    ],
-  },
-  {
-    group: 'Suits',
-    items: [
-      { slug: 'cotton-kurta-sets', name: 'Cotton Kurta Sets' },
-      { slug: 'co-ord-sets', name: 'Co-ord Sets' },
-      { slug: 'summer-essentials', name: 'Summer Essentials' },
-      { slug: 'partywear-unstitched', name: 'Partywear Unstitched' },
-      { slug: 'handcrafted-luxury', name: 'Handcrafted Luxury' },
-      { slug: 'indo-western', name: 'Indo-Western' },
-    ],
-  },
-  {
-    group: 'Ready To Wear',
-    items: [
-      { slug: 'new-arrivals', name: 'New Arrivals' },
-      { slug: 'signature-co-ords', name: 'Signature Co-Ords' },
-      { slug: 'dresses', name: 'Dresses & Gowns' },
-      { slug: 'sharara-sets', name: 'Sharara Sets' },
-      { slug: 'occasion-lehengas', name: 'Occasion Lehengas' },
-    ],
-  },
-  {
-    group: 'Bags',
-    items: [
-      { slug: 'handbags', name: 'Handbags' },
-      { slug: 'potlis', name: 'Potlis' },
-      { slug: 'clutches', name: 'Clutches' },
-      { slug: 'totes', name: 'Totes' },
-      { slug: 'shoulder-bags', name: 'Shoulder Bags' },
-    ],
-  },
-  {
-    group: 'Jewellery & Accessories',
-    items: [
-      { slug: 'jewellery', name: 'Royal Jewellery' },
-      { slug: 'the-bag-edit', name: 'The Bag Edit' },
-    ],
-  },
-];
-
 export function ProductForm({ product }: Props) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState('');
-  const [customCategories, setCustomCategories] = useState<Array<{ slug: string; name: string }>>([]);
+  const [categories, setCategories] = useState<Array<{ slug: string; name: string }>>([]);
+  const [collections, setCollections] = useState<Array<{ slug: string; name: string }>>([]);
 
   const isEdit = !!product;
 
   useEffect(() => {
-    fetch('/api/categories')
+    // includeInactive so an existing product's current category/collection still shows even
+    // if it was since deactivated — otherwise the select silently jumps to another option on save.
+    fetch('/api/categories?includeInactive=true')
       .then((res) => res.json())
       .then((json) => {
         if (json.success && Array.isArray(json.data)) {
-          setCustomCategories(json.data);
+          setCategories(json.data);
+        }
+      })
+      .catch(() => {});
+    fetch('/api/collections?includeInactive=true')
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && Array.isArray(json.data)) {
+          setCollections(json.data);
         }
       })
       .catch(() => {});
@@ -197,6 +193,21 @@ export function ProductForm({ product }: Props) {
   const selectedOccasions = watch('occasions') ?? [];
   const imagesValue = watch('images') ?? '';
   const imageList = imagesValue.split(',').map((url) => url.trim()).filter(Boolean);
+  const seoTitleWatch = watch('seoTitle') ?? '';
+  const seoDescWatch = watch('seoDescription') ?? '';
+  const [syncVariantPrices, setSyncVariantPrices] = useState(true);
+
+  const applyPriceToAllVariants = (customBasePrice?: number, customComparePrice?: number) => {
+    const p = customBasePrice !== undefined ? customBasePrice : Number(watch('basePrice') || 0);
+    const cp = customComparePrice !== undefined ? customComparePrice : (watch('comparePrice') ? Number(watch('comparePrice')) : undefined);
+    variantFields.forEach((_, idx) => {
+      setValue(`variants.${idx}.price`, p, { shouldValidate: true, shouldDirty: true });
+      if (cp !== undefined) {
+        setValue(`variants.${idx}.comparePrice`, cp, { shouldValidate: true, shouldDirty: true });
+      }
+    });
+    toast.success(`Synchronized all sizes to ₹${p.toLocaleString('en-IN')}`);
+  };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -284,16 +295,20 @@ export function ProductForm({ product }: Props) {
         occasion: data.occasions,
         tags: data.tags ? data.tags.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean) : [],
         images: imageList,
-        variants: data.variants.map((v) => ({
-          size: v.size || undefined,
-          color: v.color || undefined,
-          sku: v.sku,
-          price: Math.round(v.price * 100),
-          comparePrice: v.comparePrice ? Math.round(v.comparePrice * 100) : undefined,
-          stock: Math.round(v.stock),
-          images: [] as string[],
-          isActive: v.isActive ?? true,
-        })),
+        variants: data.variants.map((v) => {
+          const finalPrice = syncVariantPrices ? data.basePrice : (v.price || data.basePrice);
+          const finalComparePrice = syncVariantPrices ? data.comparePrice : v.comparePrice;
+          return {
+            size: v.size || undefined,
+            color: v.color || undefined,
+            sku: v.sku,
+            price: Math.round(finalPrice * 100),
+            comparePrice: finalComparePrice ? Math.round(finalComparePrice * 100) : undefined,
+            stock: Math.round(v.stock),
+            images: [] as string[],
+            isActive: v.isActive ?? true,
+          };
+        }),
         isActive: data.isActive,
         isFeatured: data.isFeatured,
         isNewArrival: data.isNewArrival,
@@ -318,9 +333,10 @@ export function ProductForm({ product }: Props) {
           fieldErrors.forEach((fe) => {
             setError(fe.path as FieldPath<FormValues>, { type: 'server', message: fe.message });
           });
-          const msg = `Please fix the highlighted field${fieldErrors.length > 1 ? 's' : ''} below`;
-          setFormError(msg);
-          toast.error(msg);
+          const detailedList = fieldErrors.map((fe) => `${formatFieldErrorLabel(fe.path)}: ${fe.message}`);
+          setFormError(`Please fix the following issue${fieldErrors.length > 1 ? 's' : ''}:\n• ${detailedList.join('\n• ')}`);
+          toast.error(`Please fix ${fieldErrors.length} field error${fieldErrors.length > 1 ? 's' : ''}`);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
           return;
         }
         throw new Error(body.error ?? 'Failed to save product');
@@ -338,15 +354,44 @@ export function ProductForm({ product }: Props) {
     }
   }
 
+  const onInvalid = (fieldErrors: FieldErrors<FormValues>) => {
+    const errorList: string[] = [];
+    Object.entries(fieldErrors).forEach(([field, err]) => {
+      if (field === 'variants' && Array.isArray(err)) {
+        err.forEach((vErr, idx) => {
+          if (vErr) {
+            Object.entries(vErr).forEach(([subField, subErr]) => {
+              if (subErr && typeof subErr === 'object' && 'message' in subErr && subErr.message) {
+                errorList.push(`Size #${idx + 1} ${FIELD_LABELS[subField] || subField}: ${subErr.message}`);
+              }
+            });
+          }
+        });
+      } else if (err && typeof err === 'object' && 'message' in err && err.message) {
+        errorList.push(`${FIELD_LABELS[field] || field}: ${err.message}`);
+      }
+    });
+
+    if (errorList.length > 0) {
+      setFormError(`Please fix the following issue${errorList.length > 1 ? 's' : ''}:\n• ${errorList.join('\n• ')}`);
+      toast.error('Please fix the highlighted fields in the form');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const inputClass = 'w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 text-xs focus:outline-none focus:border-[#C9A86A] transition-colors placeholder:text-[#8A6A55]/50 rounded-lg';
   const labelClass = 'block text-[10.5px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5';
-  const errorClass = 'text-xs text-red-600 mt-1';
+  const errorClass = 'text-xs text-red-600 mt-1 font-medium';
   const fieldClass = (hasError: boolean | undefined) => (hasError ? `${inputClass} ${FIELD_ERROR_CLASS}` : inputClass);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto space-y-4 font-sans">
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="max-w-4xl mx-auto space-y-4 font-sans">
       {formError && (
-        <div className="p-4 bg-red-50 border border-red-200 text-xs text-red-700 rounded-lg">
+        <div className="p-4 bg-red-50 border-2 border-red-300 text-xs text-red-800 rounded-xl whitespace-pre-line shadow-xs">
+          <div className="font-semibold text-red-900 mb-1.5 flex items-center gap-1.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+            Please resolve the following before saving:
+          </div>
           {formError}
         </div>
       )}
@@ -366,7 +411,8 @@ export function ProductForm({ product }: Props) {
 
           <div>
             <label className={labelClass}>Slug (Auto-generated if empty)</label>
-            <input {...register('slug')} className={inputClass} placeholder="noor-e-ishq-royal-bridal-lehenga" />
+            <input {...register('slug')} className={fieldClass(!!errors.slug)} placeholder="noor-e-ishq-royal-bridal-lehenga" />
+            {errors.slug && <p className={errorClass}>{errors.slug.message}</p>}
           </div>
         </div>
 
@@ -374,43 +420,33 @@ export function ProductForm({ product }: Props) {
           <div>
             <label className={labelClass}>Category & Subcategory *</label>
             <select {...register('category')} className={fieldClass(!!errors.category)}>
-              {STANDARD_CATEGORIES.map((grp) => (
-                <optgroup key={grp.group} label={grp.group}>
-                  {grp.items.map((item) => (
-                    <option key={item.slug} value={item.slug}>
-                      {item.name}
-                    </option>
-                  ))}
-                </optgroup>
+              {categories.map((c) => (
+                <option key={c.slug} value={c.slug}>
+                  {c.name}
+                </option>
               ))}
-              {customCategories.length > 0 && (
-                <optgroup label="Custom Boutique Categories">
-                  {customCategories.map((c) => (
-                    <option key={c.slug} value={c.slug}>
-                      {c.name}
-                    </option>
-                  ))}
-                </optgroup>
-              )}
             </select>
             {errors.category && <p className={errorClass}>{errors.category.message}</p>}
           </div>
 
           <div>
             <label className={labelClass}>Collection</label>
-            <select {...register('collectionRef')} className={inputClass}>
+            <select {...register('collectionRef')} className={fieldClass(!!errors.collectionRef)}>
               <option value="">None / Standalone</option>
-              <option value="bridal-lehengas-suits">Bridal Collection</option>
-              <option value="signature-co-ord-sets">Signature Co-Ord Sets</option>
-              <option value="the-bag-edit">The Bag Edit</option>
-              <option value="saree-edit">The Saree Edit</option>
+              {collections.map((c) => (
+                <option key={c.slug} value={c.slug}>
+                  {c.name}
+                </option>
+              ))}
             </select>
+            {errors.collectionRef && <p className={errorClass}>{errors.collectionRef.message}</p>}
           </div>
         </div>
 
         <div>
           <label className={labelClass}>Short Tagline / Summary</label>
-          <input {...register('shortDescription')} className={inputClass} placeholder="e.g. Handcrafted crimson velvet bridal lehenga with antique gold zardozi" />
+          <input {...register('shortDescription')} className={fieldClass(!!errors.shortDescription)} placeholder="e.g. Handcrafted crimson velvet bridal lehenga with antique gold zardozi" />
+          {errors.shortDescription && <p className={errorClass}>{errors.shortDescription.message}</p>}
         </div>
 
         <div>
@@ -461,29 +497,89 @@ export function ProductForm({ product }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelClass}>Price in ₹ (INR) *</label>
-            <input {...register('basePrice', { valueAsNumber: true })} type="number" step="1" className={fieldClass(!!errors.basePrice)} placeholder="89999" />
+            <input
+              {...register('basePrice', {
+                setValueAs: (v) => (v === '' || isNaN(v) ? 0 : Number(v)),
+                onChange: (e) => {
+                  if (syncVariantPrices) {
+                    const val = Number(e.target.value) || 0;
+                    variantFields.forEach((_, idx) => {
+                      setValue(`variants.${idx}.price`, val, { shouldValidate: true, shouldDirty: true });
+                    });
+                  }
+                },
+              })}
+              type="number"
+              step="1"
+              className={fieldClass(!!errors.basePrice)}
+              placeholder="89999"
+            />
             {errors.basePrice && <p className={errorClass}>{errors.basePrice.message}</p>}
           </div>
 
           <div>
             <label className={labelClass}>Compare Price in ₹ (Original M.R.P.)</label>
-            <input {...register('comparePrice', { valueAsNumber: true })} type="number" step="1" className={fieldClass(!!errors.comparePrice)} placeholder="109999" />
+            <input
+              {...register('comparePrice', {
+                setValueAs: (v) => (v === '' || isNaN(v) ? undefined : Number(v)),
+                onChange: (e) => {
+                  if (syncVariantPrices) {
+                    const val = e.target.value === '' ? undefined : Number(e.target.value);
+                    variantFields.forEach((_, idx) => {
+                      setValue(`variants.${idx}.comparePrice`, val, { shouldValidate: true, shouldDirty: true });
+                    });
+                  }
+                },
+              })}
+              type="number"
+              step="1"
+              className={fieldClass(!!errors.comparePrice)}
+              placeholder="109999"
+            />
             {errors.comparePrice && <p className={errorClass}>{errors.comparePrice.message}</p>}
           </div>
+        </div>
+
+        {/* Real-time price sync toolbar */}
+        <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-[#FAF7F2] border border-[#C9A86A]/30 rounded-lg text-xs">
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={syncVariantPrices}
+              onChange={(e) => {
+                setSyncVariantPrices(e.target.checked);
+                if (e.target.checked) applyPriceToAllVariants();
+              }}
+              className="accent-[#C9A86A] w-4 h-4 rounded cursor-pointer"
+            />
+            <span className="text-[#2E221C] font-semibold text-[11px]">
+              Automatically sync this price across all sizes / variants
+            </span>
+          </label>
+          <button
+            type="button"
+            onClick={() => applyPriceToAllVariants()}
+            className="text-[11px] font-semibold text-[#9E7B3A] hover:text-[#2E221C] bg-white border border-[#C9A86A]/50 px-3 py-1 rounded-md transition-colors cursor-pointer shadow-2xs hover:bg-[#C9A86A]/10"
+          >
+            ⚡ Apply to All Sizes
+          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <label className={labelClass}>Fabric</label>
-            <input {...register('fabric')} className={inputClass} placeholder="Pure Raw Silk, Organza" />
+            <input {...register('fabric')} className={fieldClass(!!errors.fabric)} placeholder="Pure Raw Silk, Organza" />
+            {errors.fabric && <p className={errorClass}>{errors.fabric.message}</p>}
           </div>
           <div>
             <label className={labelClass}>Work Type</label>
-            <input {...register('workType')} className={inputClass} placeholder="Real Zardozi, Cutdana, Dabka" />
+            <input {...register('workType')} className={fieldClass(!!errors.workType)} placeholder="Real Zardozi, Cutdana, Dabka" />
+            {errors.workType && <p className={errorClass}>{errors.workType.message}</p>}
           </div>
           <div>
             <label className={labelClass}>Care Instructions</label>
-            <input {...register('careInstructions')} className={inputClass} placeholder="Dry clean only" />
+            <input {...register('careInstructions')} className={fieldClass(!!errors.careInstructions)} placeholder="Dry clean only" />
+            {errors.careInstructions && <p className={errorClass}>{errors.careInstructions.message}</p>}
           </div>
         </div>
 
@@ -539,7 +635,8 @@ export function ProductForm({ product }: Props) {
 
         <div>
           <label className={labelClass}>Tags (comma separated)</label>
-          <input {...register('tags')} className={inputClass} placeholder="suits, silk, zardozi, unstitched, wedding" />
+          <input {...register('tags')} className={fieldClass(!!errors.tags)} placeholder="suits, silk, zardozi, unstitched, wedding" />
+          {errors.tags && <p className={errorClass}>{errors.tags.message}</p>}
         </div>
       </div>
 
@@ -574,11 +671,13 @@ export function ProductForm({ product }: Props) {
             <div key={field.id} className="grid grid-cols-2 sm:grid-cols-6 gap-2.5 p-3 bg-[#FAF7F2] rounded-lg border border-[#EAE2D7]">
               <div>
                 <label className={labelClass}>Size</label>
-                <input {...register(`variants.${index}.size`)} className={inputClass} placeholder="M / Free Size" />
+                <input {...register(`variants.${index}.size`)} className={fieldClass(!!errors.variants?.[index]?.size)} placeholder="M / Free Size" />
+                {errors.variants?.[index]?.size && <p className={errorClass}>{errors.variants[index]?.size?.message}</p>}
               </div>
               <div>
                 <label className={labelClass}>Color</label>
-                <input {...register(`variants.${index}.color`)} className={inputClass} placeholder="Rani Pink" />
+                <input {...register(`variants.${index}.color`)} className={fieldClass(!!errors.variants?.[index]?.color)} placeholder="Rani Pink" />
+                {errors.variants?.[index]?.color && <p className={errorClass}>{errors.variants[index]?.color?.message}</p>}
               </div>
               <div>
                 <label className={labelClass}>SKU *</label>
@@ -589,14 +688,14 @@ export function ProductForm({ product }: Props) {
               </div>
               <div>
                 <label className={labelClass}>Price ₹ *</label>
-                <input {...register(`variants.${index}.price`, { valueAsNumber: true })} type="number" step="1" className={fieldClass(!!errors.variants?.[index]?.price)} placeholder="89999" />
+                <input {...register(`variants.${index}.price`, { setValueAs: (v) => (v === '' || isNaN(v) ? 0 : Number(v)) })} type="number" step="1" className={fieldClass(!!errors.variants?.[index]?.price)} placeholder="89999" />
                 {errors.variants?.[index]?.price && (
                   <p className={errorClass}>{errors.variants[index]?.price?.message}</p>
                 )}
               </div>
               <div>
                 <label className={labelClass}>Stock *</label>
-                <input {...register(`variants.${index}.stock`, { valueAsNumber: true })} type="number" step="1" className={fieldClass(!!errors.variants?.[index]?.stock)} placeholder="5" />
+                <input {...register(`variants.${index}.stock`, { setValueAs: (v) => (v === '' || isNaN(v) ? 0 : Number(v)) })} type="number" step="1" className={fieldClass(!!errors.variants?.[index]?.stock)} placeholder="5" />
                 {errors.variants?.[index]?.stock && (
                   <p className={errorClass}>{errors.variants[index]?.stock?.message}</p>
                 )}
@@ -652,12 +751,24 @@ export function ProductForm({ product }: Props) {
           SEO &amp; Social Metadata
         </h2>
         <div>
-          <label className={labelClass}>Meta Title</label>
-          <input {...register('seoTitle')} className={inputClass} placeholder="Noorani Moonstone Lilac Silk Suit | Aafreen Couture" />
+          <div className="flex items-center justify-between mb-1.5">
+            <label className={labelClass}>Meta Title</label>
+            <span className={`text-[10px] ${seoTitleWatch.length > 70 ? 'text-[#C9A86A] font-semibold' : 'text-[#8A6A55]'}`}>
+              {seoTitleWatch.length}/160 chars {seoTitleWatch.length > 70 && '(>70 chars may truncate in search previews)'}
+            </span>
+          </div>
+          <input {...register('seoTitle')} className={fieldClass(!!errors.seoTitle)} placeholder="Noorani Moonstone Lilac Silk Suit | Aafreen Couture" />
+          {errors.seoTitle && <p className={errorClass}>{errors.seoTitle.message}</p>}
         </div>
         <div>
-          <label className={labelClass}>Meta Description</label>
-          <textarea {...register('seoDescription')} rows={2} className={inputClass} placeholder="Discover handcrafted pure silk unstitched suit with schiffli cutwork lace and zardozi by Aafreen Couture…" />
+          <div className="flex items-center justify-between mb-1.5">
+            <label className={labelClass}>Meta Description</label>
+            <span className={`text-[10px] ${seoDescWatch.length > 160 ? 'text-[#C9A86A] font-semibold' : 'text-[#8A6A55]'}`}>
+              {seoDescWatch.length}/500 chars {seoDescWatch.length > 160 && '(>160 chars may truncate in search previews)'}
+            </span>
+          </div>
+          <textarea {...register('seoDescription')} rows={2} className={fieldClass(!!errors.seoDescription)} placeholder="Discover handcrafted pure silk unstitched suit with schiffli cutwork lace and zardozi by Aafreen Couture…" />
+          {errors.seoDescription && <p className={errorClass}>{errors.seoDescription.message}</p>}
         </div>
       </div>
 

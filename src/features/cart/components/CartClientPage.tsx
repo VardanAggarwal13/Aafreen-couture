@@ -22,7 +22,7 @@ import type { ApiResponse } from '@/types/api.types';
 export function CartClientPage() {
   const router = useRouter();
   const { data: session } = useSession();
-  const { items, removeItem, updateQuantity, addItem, getSubtotal, appliedCoupon, setAppliedCoupon } = useCartStore();
+  const { items, removeItem, updateQuantity, addItem, getSubtotal, appliedCoupon, setAppliedCoupon, syncItemPrices } = useCartStore();
 
   const [couponCode, setCouponCode] = useState('');
   const [showPromoInput, setShowPromoInput] = useState(false);
@@ -30,7 +30,7 @@ export function CartClientPage() {
 
   const subtotal = getSubtotal();
   const discountAmount = appliedCoupon?.discount ?? 0;
-  const shippingCharge = appliedCoupon?.freeShipping || subtotal >= siteConfig.freeShippingThreshold ? 0 : 25000;
+  const shippingCharge = 0; // Complimentary express shipping across India (shipping charges removed)
   const total = Math.max(0, subtotal - discountAmount + shippingCharge);
 
   useEffect(() => {
@@ -45,6 +45,12 @@ export function CartClientPage() {
     queryFn: () => api.get<IProduct[]>(`/api/products?ids=${productIds.join(',')}&limit=100`),
     enabled: productIds.length > 0,
   });
+
+  useEffect(() => {
+    if (productsData?.data && Array.isArray(productsData.data)) {
+      syncItemPrices(productsData.data);
+    }
+  }, [productsData, syncItemPrices]);
 
   // Fast dictionary for quick product details lookup
   const productMap = useMemo(() => {
