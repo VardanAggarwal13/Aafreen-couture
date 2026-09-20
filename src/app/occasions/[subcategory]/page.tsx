@@ -50,12 +50,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = OCCASIONS_SUB_INFO[subcategory];
   const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const description = info?.subtitle || `Discover handcrafted designer ensembles curated for ${title} by Aafreen Couture.`;
+  const description = `Discover royal ${title.toLowerCase()} couture by Aafreen Couture. Featuring artisanal zardozi embroidery, heritage silhouettes, and celebratory fabrics.`;
   return {
-    title: `${title} | Occasions | Aafreen Couture`,
+    title: `${title} — Wedding Occasions`,
     description,
     alternates: { canonical: `${siteConfig.url}/occasions/${subcategory}` },
-    openGraph: { title: `${title} | Occasions | Aafreen Couture`, description },
+    openGraph: { title: `${title} — Wedding Occasions | Aafreen Couture`, description },
   };
 }
 

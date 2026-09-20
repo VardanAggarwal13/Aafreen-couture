@@ -10,13 +10,28 @@ import { siteConfig } from '@/config/site.config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} | Bridal Lehengas, Designer Suits & Luxury Ethnic Wear`,
-  description: 'Shop premium bridal lehengas, designer suits, sharara sets, and luxury ethnic wear at Aafreen Couture. Handcrafted Indian wedding fashion, timeless elegance crafted for your most celebrated moments.',
+  title: {
+    absolute: `${siteConfig.name} — Luxury Indian Bridal & Wedding Wear`,
+  },
+  description:
+    'Shop luxury Indian bridal lehengas, bespoke designer suits, and handcrafted wedding wear at Aafreen Couture. Timeless royal elegance crafted for modern brides.',
   alternates: { canonical: siteConfig.url },
   openGraph: {
-    title: `${siteConfig.name} | Bridal Lehengas, Designer Suits & Luxury Ethnic Wear`,
-    description: 'Premium bridal lehengas, designer suits, and luxury ethnic wear.',
-    images: [{ url: `${siteConfig.url}/images/og-home.jpg`, width: 1200, height: 630 }],
+    title: `${siteConfig.name} — Luxury Indian Bridal & Wedding Wear`,
+    description:
+      'Shop luxury Indian bridal lehengas, bespoke designer suits, and handcrafted wedding wear at Aafreen Couture.',
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    images: [{ url: `${siteConfig.url}/images/og-home.jpg`, width: 1200, height: 630, alt: `${siteConfig.name} — Luxury Indian Bridal Wear` }],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${siteConfig.name} — Luxury Indian Bridal & Wedding Wear`,
+    description:
+      'Shop luxury Indian bridal lehengas, bespoke designer suits, and handcrafted wedding wear at Aafreen Couture.',
+    images: [`${siteConfig.url}/images/og-home.jpg`],
   },
 };
 

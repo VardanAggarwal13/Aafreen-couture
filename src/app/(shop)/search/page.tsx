@@ -4,8 +4,11 @@ import { SearchPageClient } from '@/features/search/components/SearchPageClient'
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: 'Search | Aafreen Couture',
+  title: 'Search Designer Couture',
+  description:
+    'Search our royal collection of Indian bridal wear, handcrafted lehengas, festive suits, and heirloom accessories at Aafreen Couture.',
   alternates: { canonical: `${siteConfig.url}/search` },
+  robots: { index: false, follow: true },
 };
 
 export default function SearchPage() {

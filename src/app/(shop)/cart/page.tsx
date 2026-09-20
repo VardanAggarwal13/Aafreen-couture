@@ -3,7 +3,7 @@ import { CartClientPage } from '@/features/cart/components/CartClientPage';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: `Your Bag — ${siteConfig.name}`,
+  title: 'Review Your Shopping Bag & Cart',
   robots: { index: false, follow: false },
 };
 

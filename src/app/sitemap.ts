@@ -41,12 +41,42 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Bridal subcategories
   const bridalRoutes: MetadataRoute.Sitemap = [
-    'bridal-lehengas', 'reception-gowns', 'haldi'
+    'bridal-lehengas', 'bridal-suits', 'bridesmaid-lehengas', 'reception-gowns', 'haldi'
   ].map((sub) => ({
     url: `${baseUrl}/bridal/${sub}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
+    priority: 0.85,
+  }));
+
+  // Suits subcategories
+  const suitsRoutes: MetadataRoute.Sitemap = [
+    'cotton-kurta-sets', 'co-ord-sets', 'summer-essentials', 'partywear-unstitched', 'handcrafted-luxury', 'indo-western'
+  ].map((sub) => ({
+    url: `${baseUrl}/suits/${sub}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
     priority: 0.8,
+  }));
+
+  // Ready To Wear subcategories
+  const rtwRoutes: MetadataRoute.Sitemap = [
+    'dresses', 'sharara-sets', 'occasion-lehengas', 'signature-co-ords', 'new-arrivals'
+  ].map((sub) => ({
+    url: `${baseUrl}/ready-to-wear/${sub}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }));
+
+  // Bags subcategories
+  const bagsRoutes: MetadataRoute.Sitemap = [
+    'handbags', 'potlis', 'clutches', 'totes', 'shoulder-bags'
+  ].map((sub) => ({
+    url: `${baseUrl}/bags/${sub}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.75,
   }));
 
   // Dynamic products from repository
@@ -61,20 +91,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
   } catch (err) {
     console.error('[Sitemap] Error fetching products:', err);
-  }
-
-  // Dynamic categories
-  let categoryRoutes: MetadataRoute.Sitemap = [];
-  try {
-    const categories = await categoryRepository.findAll();
-    categoryRoutes = categories.map((c) => ({
-      url: `${baseUrl}/${c.slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.75,
-    }));
-  } catch (err) {
-    console.error('[Sitemap] Error fetching categories:', err);
   }
 
   // Dynamic collections
@@ -105,12 +121,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('[Sitemap] Error fetching blog posts:', err);
   }
 
+  // Filtered categories (routing to shop with category query to ensure 200 OK)
+  let categoryRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const categories = await categoryRepository.findAll();
+    // Exclude subcategories already represented in direct hubs
+    const directSlugs = new Set([
+      'bridal-lehengas', 'bridal-suits', 'bridesmaid-lehengas', 'reception-gowns',
+      'cotton-kurta-sets', 'co-ord-sets', 'summer-essentials', 'partywear-unstitched',
+      'dresses', 'sharara-sets', 'occasion-lehengas', 'handbags', 'potlis', 'clutches', 'totes'
+    ]);
+    categoryRoutes = categories
+      .filter((c) => !directSlugs.has(c.slug))
+      .map((c) => ({
+        url: `${baseUrl}/shop?category=${c.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.75,
+      }));
+  } catch (err) {
+    console.error('[Sitemap] Error fetching categories:', err);
+  }
+
   return [
     ...staticRoutes,
-    ...occasionRoutes,
     ...bridalRoutes,
-    ...categoryRoutes,
+    ...suitsRoutes,
+    ...rtwRoutes,
+    ...occasionRoutes,
+    ...bagsRoutes,
     ...collectionRoutes,
+    ...categoryRoutes,
     ...productRoutes,
     ...blogRoutes,
   ];

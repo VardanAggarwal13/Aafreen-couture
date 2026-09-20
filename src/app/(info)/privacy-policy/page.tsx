@@ -7,9 +7,9 @@ import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { Shield, Lock, Mail, Phone, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Aafreen Couture',
+  title: 'Privacy Policy & Data Security',
   description:
-    'Official Privacy Policy for Aafreen Couture. Learn how we collect, use, protect, and process your personal and payment data in compliance with Indian IT and digital data protection laws.',
+    'Learn how Aafreen Couture protects your personal information, secures online transactions via Razorpay, and complies with digital privacy standards.',
   alternates: { canonical: `${siteConfig.url}/privacy-policy` },
 };
 

@@ -40,12 +40,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = BAGS_SUB_INFO[subcategory];
   const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const description = info?.subtitle || `Discover handcrafted ${title} by Aafreen Couture.`;
+  const description = `Discover handcrafted designer ${title.toLowerCase()} by Aafreen Couture. Embellished with fine pearls, zardozi work, and premium metallic accents.`;
   return {
-    title: `${title} | Luxury Bags | Aafreen Couture`,
+    title: `${title} — Luxury Designer Bags`,
     description,
     alternates: { canonical: `${siteConfig.url}/bags/${subcategory}` },
-    openGraph: { title: `${title} | Aafreen Couture`, description },
+    openGraph: { title: `${title} — Luxury Designer Bags | Aafreen Couture`, description },
   };
 }
 

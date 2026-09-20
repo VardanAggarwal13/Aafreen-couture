@@ -3,8 +3,9 @@ import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: 'Jewellery | Royal Chokers & Necklaces | Aafreen Couture',
-  description: 'Heritage kundan, polki, and pearl jewellery crafted to complement royal bridal and festive ensembles.',
+  title: 'Royal Bridal Jewellery, Chokers & Polki Sets',
+  description:
+    'Explore heritage kundan, polki, jadau, and cultured pearl jewellery handcrafted to crown royal bridal lehengas and festive Indian couture ensembles.',
   alternates: { canonical: `${siteConfig.url}/jewellery` },
 };
 

@@ -45,12 +45,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = SUITS_SUB_TITLES[subcategory];
   const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const description = info?.subtitle || `Discover handcrafted luxury ${title} by Aafreen Couture.`;
+  const description = `Explore handcrafted luxury ${title.toLowerCase()} by Aafreen Couture. Featuring artisanal hand embroidery, regal silhouettes, and premium fabrics.`;
   return {
-    title: `${title} | Aafreen Couture Suits`,
+    title: `${title} — Handcrafted Suits`,
     description,
     alternates: { canonical: `${siteConfig.url}/suits/${subcategory}` },
-    openGraph: { title: `${title} | Aafreen Couture Suits`, description },
+    openGraph: { title: `${title} — Handcrafted Suits | Aafreen Couture`, description },
   };
 }
 

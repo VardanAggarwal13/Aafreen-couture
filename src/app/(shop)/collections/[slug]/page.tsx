@@ -31,13 +31,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  if (!collection) return { title: 'Collection Not Found | Aafreen Couture' };
+  if (!collection) return { title: 'Collection Not Found' };
+  const rawTitle = collection.seoTitle ?? collection.name;
+  const cleanTitle = rawTitle.replace(/\s*\|\s*Aafreen Couture.*/i, '').trim();
+  const rawDesc = collection.seoDescription ?? collection.description ?? '';
+  let cleanDesc = rawDesc.trim();
+  if (!cleanDesc || cleanDesc.length < 120) {
+    cleanDesc = `Explore the ${collection.name} collection by Aafreen Couture. Featuring handcrafted bridal wear, bespoke embroidery, and regal Indian silhouettes.`;
+  } else if (cleanDesc.length > 155) {
+    cleanDesc = cleanDesc.slice(0, 152).trim() + '...';
+  }
+
   return {
-    title: `${collection.seoTitle ?? collection.name} | Aafreen Couture`,
-    description: collection.seoDescription ?? collection.description,
+    title: `${cleanTitle} — Designer Collection`,
+    description: cleanDesc,
     openGraph: {
-      title: collection.name,
-      description: collection.description,
+      title: `${cleanTitle} — Designer Collection | Aafreen Couture`,
+      description: cleanDesc,
       images: collection.bannerImage ? [{ url: collection.bannerImage }] : [],
     },
     alternates: { canonical: `${siteConfig.url}/collections/${slug}` },

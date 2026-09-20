@@ -25,7 +25,6 @@ import { useCartStore } from '@/store/cart.store';
 import { useWishlistStore } from '@/store/wishlist.store';
 import { ProductCard } from '@/components/product/ProductCard';
 import { siteConfig } from '@/config/site.config';
-import { buildBreadcrumbJsonLd } from '@/utils/seo';
 import type { IProduct } from '@/types';
 
 interface Props {
@@ -131,22 +130,8 @@ export function ProductDetailClient({ product, related }: Props) {
     ).values()
   );
 
-  const hasCategoryCrumb = typeof product.category === 'object' && !!product.category?.name;
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
-    { label: 'Home', href: '/' },
-    { label: 'Shop', href: '/shop' },
-    ...(hasCategoryCrumb
-      ? [{ label: (product.category as { name: string }).name, href: `/shop?category=${(product.category as { slug: string }).slug}` }]
-      : []),
-    { label: product.name },
-  ]);
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
       {/* Breadcrumb */}
       <nav className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-3 text-xs text-text flex items-center gap-2">
         <Link href="/" className="hover:text-gold transition-colors">Home</Link>
@@ -567,6 +552,7 @@ export function ProductDetailClient({ product, related }: Props) {
 
             {/* Right Column: Policies & Garment Care Accordions */}
             <div className="lg:col-span-5 space-y-3">
+              <h2 className="sr-only">Garment Details, Care & Boutique Guarantee</h2>
               <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-gold block mb-1">
                 Boutique Services
               </span>

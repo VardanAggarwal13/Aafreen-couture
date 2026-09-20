@@ -1,7 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Plus, Trash2, Edit2, ExternalLink, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatPrice } from '@/utils/format';
@@ -40,10 +41,16 @@ function getCategoryName(category: ProductItem['category']): string {
 }
 
 export function AdminProductsClient({ initialProducts, categories }: Props) {
+  const router = useRouter();
   const [products, setProducts] = useState<ProductItem[]>(initialProducts);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+
+  // Keep state in sync whenever server delivers updated initialProducts
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
 
   async function handleDelete(id: string, name: string) {
     if (!confirm(`Are you sure you want to permanently delete "${name}"?`)) return;
@@ -52,9 +59,11 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
       if (!res.ok) throw new Error('Failed to delete product');
       setProducts((prev) => prev.filter((p) => p._id !== id));
       toast.success(`Ensemble "${name}" deleted`);
+      router.refresh();
     } catch {
       setProducts((prev) => prev.filter((p) => p._id !== id));
       toast.success(`Ensemble "${name}" deleted`);
+      router.refresh();
     }
   }
 
@@ -74,8 +83,10 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
         body: JSON.stringify({ isActive: newStatus }),
       });
       toast.success(`Ensemble is now ${newStatus ? 'active' : 'hidden'}`);
+      router.refresh();
     } catch {
       toast.success(`Ensemble visibility updated`);
+      router.refresh();
     }
   }
 

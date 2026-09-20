@@ -10,6 +10,8 @@ import type { IProduct } from '@/models/Product';
 
 interface Props { params: Promise<{ slug: string }> }
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(_request: NextRequest, { params }: Props) {
   try {
     const { slug } = await params;
@@ -17,7 +19,7 @@ export async function GET(_request: NextRequest, { params }: Props) {
     if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     return NextResponse.json({ success: true, data: product }, {
       headers: {
-        'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
       },
     });
   } catch (error) {
@@ -35,15 +37,22 @@ export async function PATCH(request: NextRequest, { params }: Props) {
     if (!updated) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     logAdminAction(session, request, 'PRODUCT_UPDATE', `Updated product "${updated.name}"`);
 
-    // Invalidate Next.js page caches so storefront and detail pages reflect updates immediately
+    // Invalidate caches immediately across the entire site
+    productRepository.clearCache();
     try {
+      revalidatePath('/', 'layout');
       revalidatePath(`/product/${updated.slug}`);
+      revalidatePath('/admin/products');
       revalidatePath('/shop');
       revalidatePath('/bridal');
       revalidatePath('/bridal/bridal-lehengas');
       revalidatePath('/suits');
+      revalidatePath('/occasions');
+      revalidatePath('/collections');
+      revalidatePath('/ready-to-wear');
+      revalidatePath('/bags');
+      revalidatePath('/jewellery');
       revalidatePath('/cart');
-      revalidatePath('/');
     } catch {
       // Ignore cache revalidation errors in non-standard environments
     }
@@ -60,6 +69,25 @@ export async function DELETE(request: NextRequest, { params }: Props) {
     const { slug } = await params;
     const deleted = await productRepository.delete(slug);
     logAdminAction(session, request, 'PRODUCT_DELETE', `Deleted product ${slug}`);
+
+    // Invalidate caches immediately across the entire site
+    productRepository.clearCache();
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin/products');
+      revalidatePath('/shop');
+      revalidatePath('/bridal');
+      revalidatePath('/suits');
+      revalidatePath('/occasions');
+      revalidatePath('/collections');
+      revalidatePath('/ready-to-wear');
+      revalidatePath('/bags');
+      revalidatePath('/jewellery');
+      revalidatePath('/cart');
+    } catch {
+      // Ignore cache revalidation errors in non-standard environments
+    }
+
     return NextResponse.json({ success: true, deleted });
   } catch (error) {
     return handleApiError(error);

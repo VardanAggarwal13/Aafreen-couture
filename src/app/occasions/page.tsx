@@ -9,8 +9,9 @@ import type { IProduct } from '@/types';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: 'Shop By Occasion | Aafreen Couture',
-  description: 'Handcrafted couture for every milestone celebration — from sacred morning Haldi rituals and midnight Jago celebrations to opulent reception galas.',
+  title: 'Wedding & Festive Occasions Edit',
+  description:
+    'Handcrafted couture for every milestone celebration — from sacred morning Haldi rituals and midnight Jago celebrations to opulent reception galas.',
   alternates: { canonical: `${siteConfig.url}/occasions` },
 };
 

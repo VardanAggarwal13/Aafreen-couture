@@ -3,6 +3,9 @@ import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
 import { AdminShell } from '@/features/admin/components/AdminShell';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata = {
   title: 'Admin Atelier | Aafreen Couture',
   robots: { index: false, follow: false },

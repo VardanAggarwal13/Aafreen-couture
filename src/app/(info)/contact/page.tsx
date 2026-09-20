@@ -6,7 +6,7 @@ import { Mail, Phone, MessageCircle, Clock, MapPin, Sparkles, Calendar, ShieldCh
 import { cmsRepository } from '@/server/repositories/cms.repository';
 
 export const metadata: Metadata = {
-  title: 'Contact Us & Concierge | Aafreen Couture',
+  title: 'Contact Us & Bridal Concierge',
   description:
     'Get in touch with Aafreen Couture concierge for bridal appointments, custom measurements, order enquiries, and boutique consultations.',
   alternates: { canonical: `${siteConfig.url}/contact` },

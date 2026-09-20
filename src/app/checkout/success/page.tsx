@@ -9,7 +9,7 @@ import { OrderPaymentReconcilePoller } from '@/features/checkout/components/Orde
 import { formatPrice } from '@/utils/format';
 
 export const metadata: Metadata = {
-  title: `Order Confirmed — ${siteConfig.name}`,
+  title: 'Order Confirmed & Receipt',
   robots: { index: false },
 };
 

@@ -7,9 +7,9 @@ import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { RefreshCw, ShieldCheck, Video, CheckCircle2, PackageCheck, Mail, Phone, ArrowRight, Clock, AlertCircle, Scissors } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Exchange, Cancellation & Refund Policy | Aafreen Couture',
+  title: 'Exchange, Cancellation & Returns Policy',
   description:
-    'Official Exchange, Cancellation, and Refund Policy for Aafreen Couture. Learn about eligible exchanges within 7 days, unboxing video recommendations, custom bridal apparel, and our 100% refund on unaccepted parcels.',
+    'Learn about Aafreen Couture return policies, 7-day size exchanges, custom bridal alterations, doorstep refusal refunds, and our fast claim process.',
   alternates: { canonical: `${siteConfig.url}/returns-policy` },
 };
 

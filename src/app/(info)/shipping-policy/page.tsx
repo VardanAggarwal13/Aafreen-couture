@@ -7,9 +7,9 @@ import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { Truck, Globe, PackageCheck, Clock, Mail, Phone, ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Shipping & Delivery Policy | Aafreen Couture',
+  title: 'Shipping & Delivery Policy',
   description:
-    'Official Shipping & Delivery Policy for Aafreen Couture. Learn about domestic delivery timelines (5–7 days), international shipping to 50+ countries, free shipping thresholds, and real-time tracking.',
+    'Discover shipping timelines, free domestic delivery, worldwide express transit, insured packaging, and live order tracking details at Aafreen Couture.',
   alternates: { canonical: `${siteConfig.url}/shipping-policy` },
 };
 

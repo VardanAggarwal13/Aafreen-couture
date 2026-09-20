@@ -3,7 +3,7 @@ import { CheckoutClientPage } from '@/features/checkout/components/CheckoutClien
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: `Checkout — ${siteConfig.name}`,
+  title: 'Secure Luxury Checkout',
   robots: { index: false },
 };
 

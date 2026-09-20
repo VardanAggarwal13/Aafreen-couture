@@ -5,8 +5,9 @@ import { collections } from '@/config/navigation.config';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: 'All Collections | Aafreen Couture',
-  description: 'Explore our curated collections of bridal lehengas, suits, dresses, and accessories.',
+  title: 'Curated Designer Collections & Edits',
+  description:
+    'Explore curated couture collections of royal bridal lehengas, bespoke suits, festive dresses, and accessories handcrafted for grand celebrations.',
   alternates: { canonical: `${siteConfig.url}/collections` },
 };
 

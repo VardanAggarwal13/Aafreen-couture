@@ -3,9 +3,18 @@ import { CategoryHubView } from '@/components/shop/CategoryHubView';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: 'The Royal Bridal Edit | Aafreen Couture',
-  description: 'Handcrafted luxury royal bridal lehengas, bridal suits, bridesmaid lehengas, and reception gowns by Aafreen Couture.',
+  title: 'Royal Bridal Edit — Heirloom Lehengas & Gowns',
+  description:
+    'Discover heirloom bridal lehengas, regal bridal suits, bridesmaid ensembles, and reception gowns handcrafted with zardozi and fine silks at Aafreen Couture.',
   alternates: { canonical: `${siteConfig.url}/bridal` },
+  openGraph: {
+    title: `The Royal Bridal Edit | ${siteConfig.name}`,
+    description:
+      'Discover heirloom bridal lehengas, regal bridal suits, bridesmaid ensembles, and reception gowns handcrafted with zardozi and fine silks at Aafreen Couture.',
+    url: `${siteConfig.url}/bridal`,
+    siteName: siteConfig.name,
+    images: [{ url: `${siteConfig.url}/images/banners/bridal-hero-wide.webp`, width: 1200, height: 630, alt: 'Royal Bridal Edit Aafreen Couture' }],
+  },
 };
 
 export const revalidate = 120;

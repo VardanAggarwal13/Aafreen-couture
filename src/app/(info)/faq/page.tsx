@@ -5,7 +5,7 @@ import { siteConfig } from '@/config/site.config';
 import { cmsRepository } from '@/server/repositories/cms.repository';
 
 export const metadata: Metadata = {
-  title: 'Frequently Asked Questions (FAQs) | Aafreen Couture',
+  title: 'Frequently Asked Questions & Client Support',
   description:
     'Find clear answers to common questions about orders, payments via Razorpay, custom bridal lehengas, domestic/international shipping, and size exchanges.',
   alternates: { canonical: `${siteConfig.url}/faq` },

@@ -7,7 +7,7 @@ import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { Scale, Mail, Phone, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions | Aafreen Couture',
+  title: 'Terms & Conditions of Service',
   description:
     'Read the official Terms & Conditions governing orders, custom apparel, payments, intellectual property, and services at Aafreen Couture.',
   alternates: { canonical: `${siteConfig.url}/terms` },

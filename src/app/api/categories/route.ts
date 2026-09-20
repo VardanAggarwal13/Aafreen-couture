@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { categoryRepository } from '@/server/repositories/category.repository';
 import { handleApiError } from '@/lib/api-errors';
 import { requireAdmin } from '@/server/auth';
 import { logAdminAction } from '@/server/services/audit-log.service';
 import { CreateCategorySchema } from '@/validators/category.validators';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,7 +27,7 @@ export async function GET(request: NextRequest) {
       { success: true, data: categories },
       {
         headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=86400',
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
         },
       }
     );
@@ -40,6 +43,16 @@ export async function POST(req: NextRequest) {
     const validated = CreateCategorySchema.parse(body);
     const created = await categoryRepository.create(validated);
     logAdminAction(session, req, 'CATEGORY_CREATE', `Created category "${created.name}"`);
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin/categories');
+      revalidatePath('/admin/products');
+      revalidatePath('/shop');
+    } catch {
+      // Ignore in non-standard environments
+    }
+
     return NextResponse.json({ success: true, data: created }, { status: 201 });
   } catch (error) {
     return handleApiError(error);

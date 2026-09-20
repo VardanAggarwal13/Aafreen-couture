@@ -53,7 +53,7 @@ export class CategoryRepository {
   async update(id: string, data: Partial<ICategory>): Promise<ICategory | null> {
     await connectDB();
     const query = mongoose.isValidObjectId(id) ? { _id: id } : { slug: id };
-    return Category.findOneAndUpdate(query, data, { new: true }).lean<ICategory>();
+    return Category.findOneAndUpdate(query, { $set: data }, { new: true, runValidators: true }).lean<ICategory>();
   }
 
   async delete(id: string): Promise<boolean> {

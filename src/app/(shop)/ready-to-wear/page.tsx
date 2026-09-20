@@ -3,8 +3,9 @@ import { CategoryHubView } from '@/components/shop/CategoryHubView';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: 'Ready To Wear | Aafreen Couture',
-  description: 'Shop ready-to-wear designer dresses, co-ords, sharara sets, and occasion lehengas ready for immediate shipping.',
+  title: 'Designer Dresses, Co-Ords & Sharara Sets',
+  description:
+    'Shop luxury ready-to-wear Indian designer wear, chic co-ord sets, shararas, and festive party dresses crafted for weddings and gala celebrations.',
   alternates: { canonical: `${siteConfig.url}/ready-to-wear` },
 };
 

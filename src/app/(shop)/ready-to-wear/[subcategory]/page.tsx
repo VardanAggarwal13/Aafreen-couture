@@ -40,12 +40,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = RTW_SUB_INFO[subcategory];
   const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const description = info?.subtitle || `Discover ready-to-wear luxury ${title} by Aafreen Couture.`;
+  const description = `Discover ready-to-wear designer ${title.toLowerCase()} by Aafreen Couture. Impeccable tailoring, festive silhouettes, and fast express dispatch.`;
   return {
-    title: `${title} | Ready To Wear | Aafreen Couture`,
+    title: `${title} — Ready To Wear`,
     description,
     alternates: { canonical: `${siteConfig.url}/ready-to-wear/${subcategory}` },
-    openGraph: { title: `${title} | Ready To Wear | Aafreen Couture`, description },
+    openGraph: { title: `${title} — Ready To Wear | Aafreen Couture`, description },
   };
 }
 

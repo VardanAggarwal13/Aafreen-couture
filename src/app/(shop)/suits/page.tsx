@@ -3,9 +3,18 @@ import { CategoryHubView } from '@/components/shop/CategoryHubView';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: 'Suits & Kurta Sets | Aafreen Couture',
-  description: 'Discover handcrafted luxury suits, cotton kurta sets, unstitched partywear, and contemporary co-ords by Aafreen Couture.',
+  title: 'Designer Suits, Kurta Sets & Anarkalis',
+  description:
+    'Shop handcrafted luxury suits, pure cotton kurta sets, unstitched partywear, and contemporary festive co-ords with bespoke tailoring at Aafreen Couture.',
   alternates: { canonical: `${siteConfig.url}/suits` },
+  openGraph: {
+    title: `Designer Suits & Kurta Sets | ${siteConfig.name}`,
+    description:
+      'Shop handcrafted luxury suits, pure cotton kurta sets, unstitched partywear, and contemporary festive co-ords with bespoke tailoring at Aafreen Couture.',
+    url: `${siteConfig.url}/suits`,
+    siteName: siteConfig.name,
+    images: [{ url: `${siteConfig.url}/images/banners/suits-hero-wide.webp`, width: 1200, height: 630, alt: 'Aafreen Couture Designer Suits' }],
+  },
 };
 
 export const revalidate = 120;

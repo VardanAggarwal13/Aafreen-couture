@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { productService } from '@/server/services/product.service';
 import { productRepository } from '@/server/repositories/product.repository';
 import { handleApiError } from '@/lib/api-errors';
@@ -7,6 +8,8 @@ import { logAdminAction } from '@/server/services/audit-log.service';
 import { CreateProductSchema } from '@/validators/product.validators';
 import type { ProductFilters } from '@/server/repositories/product.repository';
 import type { IProduct } from '@/models/Product';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
@@ -41,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(result, {
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
       },
     });
   } catch (error) {
@@ -56,6 +59,25 @@ export async function POST(request: NextRequest) {
     const validated = CreateProductSchema.parse(body);
     const created = await productRepository.create(validated as unknown as Partial<IProduct>);
     logAdminAction(session, request, 'PRODUCT_CREATE', `Created product "${created.name}"`);
+
+    // Invalidate caches immediately across the entire site
+    productRepository.clearCache();
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath(`/product/${created.slug}`);
+      revalidatePath('/admin/products');
+      revalidatePath('/shop');
+      revalidatePath('/bridal');
+      revalidatePath('/suits');
+      revalidatePath('/occasions');
+      revalidatePath('/collections');
+      revalidatePath('/ready-to-wear');
+      revalidatePath('/bags');
+      revalidatePath('/jewellery');
+    } catch {
+      // Ignore in non-standard runtimes
+    }
+
     return NextResponse.json({ success: true, data: created }, { status: 201 });
   } catch (error) {
     return handleApiError(error);

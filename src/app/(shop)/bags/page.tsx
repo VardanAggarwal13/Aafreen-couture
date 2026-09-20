@@ -3,8 +3,9 @@ import { CategoryHubView } from '@/components/shop/CategoryHubView';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: 'The Bag Edit | Luxury Handbags & Potlis | Aafreen Couture',
-  description: 'Handcrafted couture handbags, embroidered potlis, clutches, and totes designed to crown your festive look.',
+  title: 'The Bag Edit — Designer Handbags & Potlis',
+  description:
+    'Shop handcrafted couture handbags, embroidered potlis, crystal clutches, and artisanal bridal totes designed to crown your festive and wedding looks.',
   alternates: { canonical: `${siteConfig.url}/bags` },
 };
 

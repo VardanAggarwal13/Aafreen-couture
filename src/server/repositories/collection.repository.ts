@@ -61,7 +61,7 @@ export class CollectionRepository {
 
   async update(id: string, data: Partial<ICollection>): Promise<ICollection | null> {
     await connectDB();
-    return Collection.findByIdAndUpdate(id, data, { new: true }).lean<ICollection>();
+    return Collection.findByIdAndUpdate(id, { $set: data }, { new: true, runValidators: true }).lean<ICollection>();
   }
 
   async delete(id: string): Promise<boolean> {

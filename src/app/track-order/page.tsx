@@ -7,7 +7,7 @@ import { siteConfig } from '@/config/site.config';
 import { ShieldCheck, Truck, Clock, Package, Phone, MessageCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Track Your Order | Aafreen Couture',
+  title: 'Track Your Order & Shipment Milestones',
   alternates: { canonical: `${siteConfig.url}/track-order` },
   description:
     'Track your luxury couture shipment in real-time. Enter your order reference number to view live courier transit milestones and estimated delivery date.',

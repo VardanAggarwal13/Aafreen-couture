@@ -13,7 +13,7 @@ export const siteConfig = {
   name: 'Aafreen Couture',
   tagline: 'Timeless Elegance, Crafted for You',
   description:
-    'Shop premium bridal lehengas, designer suits, ethnic dresses, sharara sets, and bridal accessories at Aafreen Couture — handcrafted luxury Indian wedding wear for the modern bride.',
+    'Shop luxury Indian bridal lehengas, designer suits, and handcrafted wedding wear at Aafreen Couture. Express delivery & custom fitting across India.',
   url: resolveSiteUrl(),
   ogImage: '/images/og-image.jpg',
   email: 'support@aafreencouture.com',
