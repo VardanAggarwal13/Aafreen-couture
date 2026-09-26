@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -17,6 +17,10 @@ import {
   ShieldCheck,
   RotateCcw,
   Scissors,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
+  X,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -37,6 +41,11 @@ export function ProductDetailClient({ product, related }: Props) {
   const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [accordionOpen, setAccordionOpen] = useState<string | null>('details');
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
+  const [zoomScale, setZoomScale] = useState(1);
+  const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
   const addItem = useCartStore((s) => s.addItem);
   const toggle = useWishlistStore((s) => s.toggle);
@@ -63,6 +72,42 @@ export function ProductDetailClient({ product, related }: Props) {
     }
     return ['/images/products/noor-e-ishq.webp'];
   })();
+ 
+  useEffect(() => {
+    if (!isZoomOpen) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsZoomOpen(false);
+        setZoomScale(1);
+        setPanPosition({ x: 0, y: 0 });
+      } else if (e.key === 'ArrowLeft') {
+        setSelectedImage((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
+        setZoomScale(1);
+        setPanPosition({ x: 0, y: 0 });
+      } else if (e.key === 'ArrowRight') {
+        setSelectedImage((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
+        setZoomScale(1);
+        setPanPosition({ x: 0, y: 0 });
+      } else if (e.key === '+' || e.key === '=') {
+        setZoomScale((prev) => Math.min(3, +(prev + 0.5).toFixed(1)));
+      } else if (e.key === '-') {
+        setZoomScale((prev) => {
+          const next = Math.max(1, +(prev - 0.5).toFixed(1));
+          if (next === 1) setPanPosition({ x: 0, y: 0 });
+          return next;
+        });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isZoomOpen, allImages.length]);
 
   function handleAddToCart() {
     addItem({
@@ -152,103 +197,146 @@ export function ProductDetailClient({ product, related }: Props) {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pb-14 sm:pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-start">
           {/* Gallery: Left Thumbnails Rail + Main Stage Image */}
-          <div className="lg:col-span-7 xl:col-span-7 flex flex-col-reverse sm:flex-row gap-3.5 sm:gap-4 lg:gap-5 items-start">
-            {/* Left Vertical Thumbnail Rail */}
-            {allImages.length > 1 && (
-              <div className="flex sm:flex-col gap-2.5 sm:w-20 lg:w-24 shrink-0 overflow-x-auto sm:overflow-y-auto max-h-[620px] lg:max-h-[660px] no-scrollbar pb-1 sm:pb-0 pr-0.5">
-                {allImages.map((img, i) => (
+          {(() => {
+            const isIndoWestern = typeof product.category === 'object' && product.category?.slug === 'indo-western';
+            const galleryBg = isIndoWestern ? 'bg-[#160B0C]' : 'bg-[#FAF7F2]';
+
+            return (
+              <div className="lg:col-span-7 xl:col-span-7 flex flex-col-reverse sm:flex-row gap-3.5 sm:gap-4 lg:gap-5 items-start">
+                {/* Left Vertical Thumbnail Rail */}
+                {allImages.length > 1 && (
+                  <div className="flex sm:flex-col gap-2.5 sm:w-20 lg:w-24 shrink-0 overflow-x-auto sm:overflow-y-auto max-h-[780px] lg:max-h-[880px] no-scrollbar pb-1 sm:pb-0 pr-0.5">
+                    {allImages.map((img, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSelectedImage(i)}
+                        className={cn(
+                          'w-16 sm:w-full aspect-[9/16] shrink-0 rounded-lg overflow-hidden border-2 transition-all cursor-pointer relative group',
+                          galleryBg,
+                          i === selectedImage
+                            ? 'border-gold ring-1 ring-gold/40 shadow-xs'
+                            : 'border-border/80 hover:border-gold/60 opacity-65 hover:opacity-100'
+                        )}
+                        aria-label={`View photo ${i + 1}`}
+                      >
+                        <Image
+                          src={img}
+                          alt={`${product.name} thumbnail ${i + 1}`}
+                          fill
+                          sizes="96px"
+                          className="object-contain object-center"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Main Stage Image — 9:16 aspect ratio matching high-fashion full-length photography */}
+                <div
+                  className={cn(
+                    'flex-1 w-full relative aspect-[9/16] max-h-[780px] lg:max-h-[880px] rounded-2xl overflow-hidden shadow-md group flex items-center justify-center',
+                    galleryBg
+                  )}
+                >
+                  {allImages.length > 0 ? (
+                    allImages.map((img, i) => (
+                      <Image
+                        key={img}
+                        src={img}
+                        alt={i === 0 ? product.name : `${product.name} — photo ${i + 1}`}
+                        fill
+                        priority={i === 0}
+                        unoptimized
+                        sizes="(max-width: 1024px) 100vw, 55vw"
+                        className={cn(
+                          'object-contain object-center transition-opacity duration-300 ease-out',
+                          i === selectedImage
+                            ? 'opacity-100 group-hover:scale-[1.02] transition-[opacity,transform] duration-300'
+                            : 'opacity-0 pointer-events-none'
+                        )}
+                      />
+                    ))
+                  ) : (
+                    <div className="w-full h-full bg-background" />
+                  )}
+
+                  {/* Expand & Zoom Button — ONLY this button triggers the zoom modal */}
                   <button
-                    key={i}
-                    onClick={() => setSelectedImage(i)}
-                    className={cn(
-                      'w-16 sm:w-full aspect-[4/5] shrink-0 rounded-lg overflow-hidden border-2 transition-all cursor-pointer bg-[#FAF7F2] relative group',
-                      i === selectedImage
-                        ? 'border-gold ring-1 ring-gold/40 shadow-xs'
-                        : 'border-border/80 hover:border-gold/60 opacity-65 hover:opacity-100'
-                    )}
-                    aria-label={`View photo ${i + 1}`}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setZoomScale(1);
+                      setPanPosition({ x: 0, y: 0 });
+                      setIsZoomOpen(true);
+                    }}
+                    className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-[11px] font-medium tracking-wider uppercase transition-all shadow-md cursor-pointer hover:border-gold/60 border border-white/15 group/btn"
+                    title="Open Ultra-HD full screen zoom viewer"
+                    aria-label="Expand & Zoom photo"
                   >
-                    <Image
-                      src={img}
-                      alt={`${product.name} thumbnail ${i + 1}`}
-                      fill
-                      sizes="96px"
-                      className="object-cover object-top"
-                    />
+                    <Maximize2 size={13} className="text-gold group-hover/btn:scale-110 transition-transform" />
+                    <span>Expand & Zoom</span>
                   </button>
-                ))}
-              </div>
-            )}
 
-            {/* Main Stage Image — all gallery images are preloaded and stacked so
-                switching photos is an instant opacity toggle instead of a fresh
-                network request + on-demand image transform. */}
-            <div className="flex-1 w-full relative aspect-[4/5] max-h-[620px] lg:max-h-[660px] rounded-2xl overflow-hidden bg-[#FAF7F2] shadow-md group">
-              {allImages.length > 0 ? (
-                allImages.map((img, i) => (
-                  <Image
-                    key={img}
-                    src={img}
-                    alt={i === 0 ? product.name : `${product.name} — photo ${i + 1}`}
-                    fill
-                    priority={i === 0}
-                    sizes="(max-width: 1024px) 100vw, 55vw"
-                    className={cn(
-                      'object-cover object-top transition-opacity duration-300 ease-out',
-                      i === selectedImage
-                        ? 'opacity-100 group-hover:scale-105 transition-[opacity,transform] duration-300'
-                        : 'opacity-0 pointer-events-none'
-                    )}
-                  />
-                ))
-              ) : (
-                <div className="w-full h-full bg-background" />
-              )}
+                  {/* Discount Badge */}
+                  {discountPct && (
+                    <span className="absolute top-12 left-3.5 sm:top-14 sm:left-4 bg-gold text-surface text-[11px] font-semibold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-xs pointer-events-none z-10">
+                      -{discountPct}%
+                    </span>
+                  )}
 
-              {/* Discount Badge */}
-              {discountPct && (
-                <span className="absolute top-3.5 left-3.5 bg-gold text-surface text-[11px] font-semibold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-xs pointer-events-none">
-                  -{discountPct}%
-                </span>
-              )}
+                  {/* Wishlist Button */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggle(product._id as string);
+                    }}
+                    className="absolute top-3.5 right-3.5 p-2.5 bg-surface/90 backdrop-blur-xs rounded-full text-heading hover:text-gold transition-colors shadow-xs cursor-pointer z-20"
+                    aria-label="Wishlist"
+                  >
+                    <Heart size={18} fill={isWishlisted ? 'currentColor' : 'none'} className={isWishlisted ? 'text-gold' : ''} />
+                  </button>
 
-              {/* Wishlist Button */}
-              <button
-                onClick={() => toggle(product._id as string)}
-                className="absolute top-3.5 right-3.5 p-2.5 bg-surface/90 backdrop-blur-xs rounded-full text-heading hover:text-gold transition-colors shadow-xs cursor-pointer z-10"
-                aria-label="Wishlist"
-              >
-                <Heart size={18} fill={isWishlisted ? 'currentColor' : 'none'} className={isWishlisted ? 'text-gold' : ''} />
-              </button>
+                  {/* Photo Counter Overlay */}
+                  {allImages.length > 1 && (
+                    <div className="absolute bottom-3.5 right-3.5 bg-black/60 backdrop-blur-xs text-white text-[10px] font-medium tracking-widest px-2.5 py-1 rounded-lg pointer-events-none z-10">
+                      {selectedImage + 1} / {allImages.length}
+                    </div>
+                  )}
 
-              {/* Photo Counter Overlay */}
-              {allImages.length > 1 && (
-                <div className="absolute bottom-3.5 right-3.5 bg-black/60 backdrop-blur-xs text-white text-[10px] font-medium tracking-widest px-2.5 py-1 rounded-lg pointer-events-none">
-                  {selectedImage + 1} / {allImages.length}
+                  {/* Quick Prev / Next Arrows — cleanly switch image right on this screen without opening modal */}
+                  {allImages.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImage((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
+                        }}
+                        className="absolute left-2.5 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-white/90 hover:bg-white text-heading hover:text-gold opacity-0 group-hover:opacity-100 transition-all shadow-md cursor-pointer z-20"
+                        title="Previous photo"
+                        aria-label="Previous photo"
+                      >
+                        <ChevronLeft size={18} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImage((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
+                        }}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-white/90 hover:bg-white text-heading hover:text-gold opacity-0 group-hover:opacity-100 transition-all shadow-md cursor-pointer z-20"
+                        title="Next photo"
+                        aria-label="Next photo"
+                      >
+                        <ChevronRight size={18} />
+                      </button>
+                    </>
+                  )}
                 </div>
-              )}
-
-              {/* Quick Prev / Next Arrows */}
-              {allImages.length > 1 && (
-                <>
-                  <button
-                    onClick={() => setSelectedImage((prev) => (prev === 0 ? allImages.length - 1 : prev - 1))}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/85 hover:bg-white text-heading hover:text-gold opacity-0 group-hover:opacity-100 transition-all shadow-xs cursor-pointer z-10"
-                    aria-label="Previous photo"
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
-                  <button
-                    onClick={() => setSelectedImage((prev) => (prev === allImages.length - 1 ? 0 : prev + 1))}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/85 hover:bg-white text-heading hover:text-gold opacity-0 group-hover:opacity-100 transition-all shadow-xs cursor-pointer z-10"
-                    aria-label="Next photo"
-                  >
-                    <ChevronRight size={16} />
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
+              </div>
+            );
+          })()}
 
           {/* Product info - Sticky Column */}
           <div className="lg:col-span-5 xl:col-span-5 flex flex-col gap-5 lg:sticky lg:top-24">
@@ -637,6 +725,231 @@ export function ProductDetailClient({ product, related }: Props) {
           </section>
         )}
       </div>
+
+      {/* Full-Screen Ultra-HD Studio Lightbox & Zoom Viewer */}
+      {isZoomOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-[#0A0607]/95 backdrop-blur-md flex flex-col justify-between select-none animate-in fade-in duration-200"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsZoomOpen(false);
+              setZoomScale(1);
+              setPanPosition({ x: 0, y: 0 });
+            }
+          }}
+        >
+          {/* Top Bar */}
+          <div className="px-4 sm:px-6 py-3.5 bg-black/60 backdrop-blur-md border-b border-white/10 flex items-center justify-between text-white z-20">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+              <h3 className="font-serif text-sm sm:text-base font-medium tracking-wide text-white/95">
+                {product.name}
+              </h3>
+              <span className="hidden sm:inline text-white/30">•</span>
+              <p className="text-[11px] text-white/70 tracking-wider">
+                Photo {selectedImage + 1} of {allImages.length} <span className="hidden md:inline text-gold/90 font-mono">(1800×3200 UHD Studio Capture)</span>
+              </p>
+            </div>
+
+            {/* Zoom Controls & Close Button */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex items-center bg-white/10 rounded-lg p-0.5 border border-white/10">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setZoomScale((prev) => {
+                      const next = Math.max(1, +(prev - 0.5).toFixed(1));
+                      if (next === 1) setPanPosition({ x: 0, y: 0 });
+                      return next;
+                    });
+                  }}
+                  disabled={zoomScale <= 1}
+                  className="p-1.5 hover:bg-white/15 text-white/90 disabled:text-white/30 rounded transition-colors cursor-pointer disabled:cursor-not-allowed"
+                  title="Zoom Out (-)"
+                  aria-label="Zoom Out"
+                >
+                  <ZoomOut size={16} />
+                </button>
+                <span className="px-2.5 text-xs font-mono font-medium text-gold min-w-[50px] text-center">
+                  {Math.round(zoomScale * 100)}%
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setZoomScale((prev) => Math.min(3, +(prev + 0.5).toFixed(1)));
+                  }}
+                  disabled={zoomScale >= 3}
+                  className="p-1.5 hover:bg-white/15 text-white/90 disabled:text-white/30 rounded transition-colors cursor-pointer disabled:cursor-not-allowed"
+                  title="Zoom In (+)"
+                  aria-label="Zoom In"
+                >
+                  <ZoomIn size={16} />
+                </button>
+              </div>
+
+              {zoomScale > 1 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setZoomScale(1);
+                    setPanPosition({ x: 0, y: 0 });
+                  }}
+                  className="px-2.5 py-1.5 text-xs font-medium text-white/80 hover:text-white bg-white/10 hover:bg-white/15 rounded-lg border border-white/10 transition-colors cursor-pointer"
+                >
+                  Reset
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={() => {
+                  setIsZoomOpen(false);
+                  setZoomScale(1);
+                  setPanPosition({ x: 0, y: 0 });
+                }}
+                className="p-2 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors cursor-pointer ml-1"
+                title="Close (Esc)"
+                aria-label="Close Lightbox"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          </div>
+
+          {/* Center Stage Viewer */}
+          <div
+            className={cn(
+              'relative flex-1 w-full overflow-hidden flex items-center justify-center',
+              zoomScale > 1 ? (isDragging ? 'cursor-grabbing' : 'cursor-grab') : 'cursor-zoom-in'
+            )}
+            onMouseDown={(e) => {
+              if (zoomScale <= 1) return;
+              setIsDragging(true);
+              setDragStart({ x: e.clientX - panPosition.x, y: e.clientY - panPosition.y });
+            }}
+            onMouseMove={(e) => {
+              if (!isDragging || zoomScale <= 1) return;
+              setPanPosition({
+                x: e.clientX - dragStart.x,
+                y: e.clientY - dragStart.y,
+              });
+            }}
+            onMouseUp={() => setIsDragging(false)}
+            onMouseLeave={() => setIsDragging(false)}
+            onDoubleClick={() => {
+              if (zoomScale > 1) {
+                setZoomScale(1);
+                setPanPosition({ x: 0, y: 0 });
+              } else {
+                setZoomScale(2);
+              }
+            }}
+            onWheel={(e) => {
+              if (e.deltaY < 0) {
+                setZoomScale((prev) => Math.min(3, +(prev + 0.25).toFixed(2)));
+              } else {
+                setZoomScale((prev) => {
+                  const next = Math.max(1, +(prev - 0.25).toFixed(2));
+                  if (next === 1) setPanPosition({ x: 0, y: 0 });
+                  return next;
+                });
+              }
+            }}
+          >
+            {/* Prev / Next Chevrons on stage */}
+            {allImages.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImage((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
+                    setZoomScale(1);
+                    setPanPosition({ x: 0, y: 0 });
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white border border-white/10 transition-all shadow-lg cursor-pointer"
+                  title="Previous image (Left Arrow)"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImage((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
+                    setZoomScale(1);
+                    setPanPosition({ x: 0, y: 0 });
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white border border-white/10 transition-all shadow-lg cursor-pointer"
+                  title="Next image (Right Arrow)"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={24} />
+                </button>
+              </>
+            )}
+
+            {/* The High-Resolution Image Container */}
+            <div
+              className="relative w-full h-full max-w-[92vw] max-h-[82vh] transition-transform duration-100 ease-out flex items-center justify-center"
+              style={{
+                transform: `translate(${panPosition.x}px, ${panPosition.y}px) scale(${zoomScale})`,
+                transformOrigin: 'center center',
+              }}
+            >
+              <Image
+                src={allImages[selectedImage]}
+                alt={`${product.name} — photo ${selectedImage + 1}`}
+                fill
+                unoptimized
+                priority
+                sizes="100vw"
+                className="object-contain drop-shadow-2xl pointer-events-none"
+              />
+            </div>
+
+            {/* Inspection Helper Tooltip */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-[11px] text-white/80 pointer-events-none tracking-wide">
+              {zoomScale > 1
+                ? 'Drag to inspect intricate embroidery • Double-click or click Reset to exit zoom'
+                : 'Double-click or scroll to zoom in up to 300% • Use arrows to switch photos'}
+            </div>
+          </div>
+
+          {/* Bottom Thumbnails Carousel */}
+          {allImages.length > 1 && (
+            <div className="px-4 py-3 bg-black/60 backdrop-blur-md border-t border-white/10 flex items-center justify-center gap-2 overflow-x-auto z-20">
+              {allImages.map((img, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setSelectedImage(idx);
+                    setZoomScale(1);
+                    setPanPosition({ x: 0, y: 0 });
+                  }}
+                  className={cn(
+                    'relative w-12 sm:w-14 aspect-[9/16] rounded-md overflow-hidden border-2 transition-all cursor-pointer shrink-0',
+                    idx === selectedImage
+                      ? 'border-gold scale-105 shadow-md shadow-gold/20'
+                      : 'border-white/20 opacity-50 hover:opacity-100'
+                  )}
+                  aria-label={`View photo ${idx + 1}`}
+                >
+                  <Image
+                    src={img}
+                    alt={`Thumbnail ${idx + 1}`}
+                    fill
+                    unoptimized
+                    sizes="56px"
+                    className="object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 }

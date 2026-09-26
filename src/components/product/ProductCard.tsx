@@ -32,8 +32,15 @@ export function ProductCard({ product, priority = false, className }: ProductCar
     <article
       className={cn('group relative flex flex-col transition-all duration-300', className)}
     >
-      {/* Image container */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-[#FAF7F2] rounded-xl shadow-sm">
+      {/* Image container — 9:16 aspect ratio to show full-length couture silhouettes and palazzo hemlines without cropping */}
+      <div
+        className={cn(
+          'relative aspect-[9/16] overflow-hidden rounded-xl shadow-sm transition-all',
+          typeof product.category === 'object' && product.category?.slug === 'indo-western'
+            ? 'bg-[#160B0C]'
+            : 'bg-[#FAF7F2]'
+        )}
+      >
         <Link href={ROUTES.PRODUCT(product.slug)} className="block w-full h-full relative">
           <Image
             src={primaryImage}
@@ -41,7 +48,8 @@ export function ProductCard({ product, priority = false, className }: ProductCar
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             priority={priority}
-            className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+            quality={95}
+            className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
           />
           {secondaryImage && (
             <Image
@@ -49,7 +57,8 @@ export function ProductCard({ product, priority = false, className }: ProductCar
               alt={`${product.name} — alternate view`}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="object-cover object-top opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none"
+              quality={95}
+              className="object-cover object-center opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none"
             />
           )}
         </Link>
