@@ -211,7 +211,7 @@ export function CoutureCatalogView({
               </button>
 
               {activeDropdown === 'price' && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
+                <div className="absolute top-full left-0 mt-2 w-56 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
                   <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Select Price Range
                   </p>
@@ -251,7 +251,7 @@ export function CoutureCatalogView({
               </button>
 
               {activeDropdown === 'color' && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
+                <div className="absolute top-full left-0 mt-2 w-64 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
                   <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Color Palette
                   </p>
@@ -292,7 +292,7 @@ export function CoutureCatalogView({
               </button>
 
               {activeDropdown === 'size' && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
+                <div className="absolute top-full left-0 mt-2 w-48 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
                   <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Select Size
                   </p>
@@ -330,7 +330,7 @@ export function CoutureCatalogView({
               </button>
 
               {activeDropdown === 'fabric' && (
-                <div className="absolute top-full left-0 mt-2 w-52 bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
+                <div className="absolute top-full left-0 mt-2 w-52 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
                   <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Fabric Selection
                   </p>

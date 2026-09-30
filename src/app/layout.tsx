@@ -5,6 +5,7 @@ import { Providers } from '@/providers/Providers';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { NavigationProgress } from '@/components/common/NavigationProgress';
+import { MetaPixel } from '@/components/analytics/MetaPixel';
 import { defaultMetadata } from '@/config/seo.config';
 import { siteConfig } from '@/config/site.config';
 import { cn } from '@/lib/utils';
@@ -88,6 +89,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased min-h-screen flex flex-col">
+        <Suspense fallback={null}>
+          <MetaPixel />
+        </Suspense>
         <Providers>
           <Suspense fallback={null}>
             <NavigationProgress />

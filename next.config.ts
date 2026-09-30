@@ -60,12 +60,12 @@ const nextConfig: NextConfig = {
         key: 'Content-Security-Policy',
         value: [
           "default-src 'self'",
-          "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://checkout.razorpay.com https://api.razorpay.com",
+          "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://checkout.razorpay.com https://api.razorpay.com https://connect.facebook.net",
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
           "font-src 'self' https://fonts.gstatic.com data:",
-          "img-src 'self' blob: data: https://res.cloudinary.com https://images.unsplash.com https://plus.unsplash.com",
+          "img-src 'self' blob: data: https://res.cloudinary.com https://images.unsplash.com https://plus.unsplash.com https://www.facebook.com",
           "frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com",
-          "connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com https://res.cloudinary.com",
+          "connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com https://res.cloudinary.com https://www.facebook.com https://connect.facebook.net",
         ].join('; '),
       },
     ];

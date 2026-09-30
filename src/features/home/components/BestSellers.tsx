@@ -67,6 +67,16 @@ export async function BestSellers() {
                 <ProductCardSkeleton key={i} index={i} />
               ))}
         </div>
+
+        <div className="mt-7 text-center sm:hidden">
+          <Link
+            href={`${ROUTES.SHOP}?sort=best-selling`}
+            className="inline-flex items-center justify-center gap-1.5 w-full py-3 px-4 text-xs font-semibold tracking-[0.16em] uppercase text-heading border border-border rounded-lg bg-surface hover:bg-gold hover:text-white transition-colors"
+          >
+            <span>View All Best Sellers</span>
+            <ArrowRight size={13} />
+          </Link>
+        </div>
       </div>
     </section>
   );
