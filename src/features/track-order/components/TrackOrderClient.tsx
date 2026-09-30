@@ -15,7 +15,6 @@ import {
   MapPin,
   Package,
   AlertCircle,
-  HelpCircle,
   Phone,
 } from 'lucide-react';
 import { siteConfig } from '@/config/site.config';

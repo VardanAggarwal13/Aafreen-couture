@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models, type Document } from 'mongoose';
+import { Schema, model, models, type Document } from 'mongoose';
 
 export interface IAddress extends Document {
   userId: string;
