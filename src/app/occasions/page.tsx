@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Sparkles, ChevronRight, ArrowRight, ShieldCheck, HeartHandshake, PhoneCall } from 'lucide-react';
+import { Sparkles, ChevronRight, ArrowRight } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import { productRepository } from '@/server/repositories/product.repository';
 import { ProductCard } from '@/components/product/ProductCard';

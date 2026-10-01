@@ -171,9 +171,15 @@ function StorefrontNavbar() {
                   onClick={() => setAccountMenuOpen((prev) => !prev)}
                   aria-label="Account"
                   aria-expanded={accountMenuOpen}
-                  className="p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors flex items-center gap-1.5 cursor-pointer relative"
                 >
                   <User size={18} />
+                  {/* On mobile screens, show combined cart/wishlist count badge on the user account icon */}
+                  {mounted && (cartItemCount > 0 || wishlistCount > 0) && (
+                    <span className="lg:hidden absolute top-1 right-0.5 bg-gold text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center shadow-xs">
+                      {cartItemCount > 0 ? (cartItemCount > 9 ? '9+' : cartItemCount) : wishlistCount}
+                    </span>
+                  )}
                   {session?.user && (
                     <span className="text-[11px] font-medium text-heading max-w-[85px] truncate hidden md:inline">
                       {session.user.name?.split(' ')[0]}
@@ -183,8 +189,44 @@ function StorefrontNavbar() {
 
                 {/* Dropdown Menu */}
                 {accountMenuOpen && (
-                  <div className="absolute right-0 top-full pt-1.5 z-50 w-60 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="bg-surface border border-border shadow-lg rounded-lg py-2 text-xs font-sans">
+                  <div className="absolute right-0 top-full pt-1.5 z-50 w-64 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="bg-surface border border-border shadow-xl rounded-xl py-2 text-xs font-sans overflow-hidden">
+                      {/* Mobile-only Quick Access: Bag & Wishlist */}
+                      <div className="lg:hidden px-2.5 py-1.5 border-b border-border/70 space-y-1 bg-background/50">
+                        <Link
+                          href={ROUTES.CART}
+                          prefetch={true}
+                          onClick={() => setAccountMenuOpen(false)}
+                          className="flex items-center justify-between px-3 py-2 rounded-lg text-heading font-medium hover:bg-surface hover:text-gold transition-colors"
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <ShoppingBag size={15} className="text-gold" />
+                            <span className="font-serif text-[12px] font-semibold">Shopping Bag</span>
+                          </div>
+                          {mounted && (
+                            <span className="bg-gold/15 text-gold border border-gold/30 text-[9.5px] font-bold px-2 py-0.5 rounded-full">
+                              {cartItemCount} {cartItemCount === 1 ? 'item' : 'items'}
+                            </span>
+                          )}
+                        </Link>
+                        <Link
+                          href={ROUTES.WISHLIST}
+                          prefetch={true}
+                          onClick={() => setAccountMenuOpen(false)}
+                          className="flex items-center justify-between px-3 py-2 rounded-lg text-heading font-medium hover:bg-surface hover:text-gold transition-colors"
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <Heart size={15} className="text-gold" />
+                            <span className="font-serif text-[12px] font-semibold">Saved Wishlist</span>
+                          </div>
+                          {mounted && (
+                            <span className="bg-gold/15 text-gold border border-gold/30 text-[9.5px] font-bold px-2 py-0.5 rounded-full">
+                              {wishlistCount} {wishlistCount === 1 ? 'item' : 'items'}
+                            </span>
+                          )}
+                        </Link>
+                      </div>
+
                       {session?.user ? (
                         <>
                           <div className="px-4 py-2.5 border-b border-border/60">
@@ -269,7 +311,9 @@ function StorefrontNavbar() {
                   </div>
                 )}
               </div>
-              <Link href={ROUTES.WISHLIST} aria-label="Wishlist" className="p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors relative">
+
+              {/* Desktop-only Wishlist and Cart Icons (Hidden on mobile to preserve clean logo breathing space) */}
+              <Link href={ROUTES.WISHLIST} aria-label="Wishlist" className="hidden lg:flex p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors relative">
                 <Heart size={18} />
                 {mounted && wishlistCount > 0 && (
                   <span className="absolute top-1 right-0.5 bg-gold text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
@@ -277,7 +321,7 @@ function StorefrontNavbar() {
                   </span>
                 )}
               </Link>
-              <Link href={ROUTES.CART} aria-label="Cart" className="p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors relative">
+              <Link href={ROUTES.CART} aria-label="Cart" className="hidden lg:flex p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors relative">
                 <ShoppingBag size={18} />
                 {mounted && cartItemCount > 0 && (
                   <span className="absolute top-1 right-0.5 bg-gold text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
@@ -380,6 +424,42 @@ function StorefrontNavbar() {
               </nav>
 
               <div className="px-5 py-5 border-t border-border space-y-3">
+                {/* Mobile Drawer Quick Bag & Wishlist Links */}
+                <div className="grid grid-cols-2 gap-2 pb-3 border-b border-border/60">
+                  <Link
+                    href={ROUTES.CART}
+                    prefetch={true}
+                    className="flex items-center justify-between px-3 py-2 rounded-lg bg-surface border border-border/70 text-heading text-xs font-medium hover:border-gold hover:text-gold transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <ShoppingBag size={13} className="text-gold" />
+                      <span>Bag</span>
+                    </div>
+                    {mounted && cartItemCount > 0 && (
+                      <span className="bg-gold text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full">
+                        {cartItemCount}
+                      </span>
+                    )}
+                  </Link>
+                  <Link
+                    href={ROUTES.WISHLIST}
+                    prefetch={true}
+                    className="flex items-center justify-between px-3 py-2 rounded-lg bg-surface border border-border/70 text-heading text-xs font-medium hover:border-gold hover:text-gold transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <Heart size={13} className="text-gold" />
+                      <span>Wishlist</span>
+                    </div>
+                    {mounted && wishlistCount > 0 && (
+                      <span className="bg-gold text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </Link>
+                </div>
+
                 {session?.user ? (
                   <>
                     <div className="pb-2 border-b border-border/60">

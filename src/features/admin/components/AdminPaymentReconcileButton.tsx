@@ -8,10 +8,10 @@ import { useRouter } from 'next/navigation';
 interface Props {
   orderId: string;
   hasRazorpayOrder: boolean;
-  paymentStatus: string;
+  paymentStatus?: string;
 }
 
-export function AdminPaymentReconcileButton({ orderId, hasRazorpayOrder, paymentStatus }: Props) {
+export function AdminPaymentReconcileButton({ orderId, hasRazorpayOrder }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 

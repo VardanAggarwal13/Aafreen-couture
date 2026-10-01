@@ -21,7 +21,6 @@ export function OrderPaymentReconcilePoller({
   const { clearCart } = useCartStore();
   const [status, setStatus] = useState<string>(initialPaymentStatus);
   const [isPolling, setIsPolling] = useState(false);
-  const [pollCount, setPollCount] = useState(0);
 
   // Guarantee cart is cleared once on confirmation page
   useEffect(() => {
@@ -36,7 +35,7 @@ export function OrderPaymentReconcilePoller({
     let isMounted = true;
     setIsPolling(true);
 
-    async function checkReconciliation(attempt: number) {
+    async function checkReconciliation() {
       if (!isMounted) return;
       try {
         const res = await fetch(`/api/orders/${orderId}/reconcile`, {
@@ -57,20 +56,17 @@ export function OrderPaymentReconcilePoller({
         console.warn('[AutoReconcile] Attempt failed:', e);
       }
 
-      if (isMounted) {
-        setPollCount(attempt);
-      }
       return false;
     }
 
     const t1 = setTimeout(async () => {
-      const ok = await checkReconciliation(1);
+      const ok = await checkReconciliation();
       if (!ok && isMounted) {
         const t2 = setTimeout(async () => {
-          const ok2 = await checkReconciliation(2);
+          const ok2 = await checkReconciliation();
           if (!ok2 && isMounted) {
             const t3 = setTimeout(async () => {
-              await checkReconciliation(3);
+              await checkReconciliation();
               if (isMounted) setIsPolling(false);
             }, 3500);
             return () => clearTimeout(t3);

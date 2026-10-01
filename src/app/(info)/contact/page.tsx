@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { ContactForm } from '@/features/contact/components/ContactForm';
 import { siteConfig } from '@/config/site.config';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
-import { Mail, Phone, MessageCircle, Clock, MapPin, Sparkles, Calendar, ShieldCheck } from 'lucide-react';
+import { Mail, Phone, MessageCircle, Clock, MapPin, Sparkles } from 'lucide-react';
 import { cmsRepository } from '@/server/repositories/cms.repository';
 
 export const metadata: Metadata = {

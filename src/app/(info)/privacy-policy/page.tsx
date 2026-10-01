@@ -4,7 +4,7 @@ import { siteConfig } from '@/config/site.config';
 import { cmsRepository } from '@/server/repositories/cms.repository';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
-import { Shield, Lock, Mail, Phone, Clock } from 'lucide-react';
+import { Shield, Lock, Mail, Phone } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy & Data Security',

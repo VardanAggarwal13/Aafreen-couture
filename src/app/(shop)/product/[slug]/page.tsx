@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { productService } from '@/server/services/product.service';
@@ -10,14 +11,17 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 120;
+
+const getProduct = cache(async (slug: string) => {
+  const raw = await productService.getProductBySlug(slug);
+  return JSON.parse(JSON.stringify(raw)) as IProduct;
+});
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const { slug } = await params;
-    const raw = await productService.getProductBySlug(slug);
-    const product = JSON.parse(JSON.stringify(raw)) as IProduct;
+    const product = await getProduct(slug);
 
     // Strip redundant branding if already present in seoTitle so template doesn't duplicate
     const cleanTitle = (product.seoTitle || product.name)
@@ -75,8 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProductPage({ params }: Props) {
   try {
     const { slug } = await params;
-    const raw = await productService.getProductBySlug(slug);
-    const product = JSON.parse(JSON.stringify(raw)) as IProduct;
+    const product = await getProduct(slug);
 
     const categoryId = typeof product.category === 'string'
       ? product.category

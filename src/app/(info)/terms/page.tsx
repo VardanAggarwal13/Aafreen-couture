@@ -4,7 +4,7 @@ import { siteConfig } from '@/config/site.config';
 import { cmsRepository } from '@/server/repositories/cms.repository';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
-import { Scale, Mail, Phone, Clock } from 'lucide-react';
+import { Scale, Mail, Phone } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions of Service',

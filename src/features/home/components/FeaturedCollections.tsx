@@ -15,7 +15,7 @@ const COLLECTIONS = [
     name: 'Signature Co-Ord Sets',
     description: 'Curated sets that define modern elegance',
     itemCount: '18 pieces',
-    image: '/images/products/roshani-coord.webp',
+    image: 'https://res.cloudinary.com/qkk8lnon/image/upload/v1790785803/aafreen-couture/products/gulnaz-fuchsia-embroidered-cape-set-1.webp',
   },
   {
     slug: 'saree-edit',

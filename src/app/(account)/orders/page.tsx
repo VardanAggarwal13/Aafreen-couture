@@ -10,6 +10,7 @@ import { Pagination } from '@/components/common/Pagination';
 import { getOrderStatusLabel } from '@/constants/order.constants';
 import type { IOrder, IOrderItem } from '@/models/Order';
 
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'My Orders | Aafreen Couture' };
 
 const PAGE_SIZE = 10;

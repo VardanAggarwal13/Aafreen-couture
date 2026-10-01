@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import Link from 'next/link';
-import { Check, ShieldCheck, CheckCircle2, Lock, ArrowLeft, RefreshCw, CreditCard, Banknote } from 'lucide-react';
+import { Check, ShieldCheck, CheckCircle2, Lock, RefreshCw, CreditCard, Banknote } from 'lucide-react';
 import { useSession } from '@/lib/auth-client';
 import { useCartStore } from '@/store/cart.store';
 import { formatPrice } from '@/utils/format';
@@ -92,6 +92,31 @@ export function CheckoutClientPage() {
     }
   }, [isPending, session, router]);
 
+  const applyAddress = useCallback(
+    (addr: {
+      _id: string;
+      name: string;
+      phone: string;
+      line1: string;
+      line2?: string;
+      city: string;
+      state: string;
+      pincode: string;
+      country?: string;
+    }) => {
+      setSelectedAddressId(addr._id);
+      setValue('name', addr.name);
+      setValue('phone', addr.phone);
+      setValue('line1', addr.line1);
+      setValue('line2', addr.line2 || '');
+      setValue('city', addr.city);
+      setValue('state', addr.state);
+      setValue('pincode', addr.pincode);
+      setValue('country', addr.country || 'India');
+    },
+    [setValue]
+  );
+
   // When session becomes active, pre-fill user info & fetch saved addresses
   useEffect(() => {
     if (session?.user) {
@@ -112,29 +137,7 @@ export function CheckoutClientPage() {
         })
         .catch(() => {});
     }
-  }, [session, setValue, getValues]);
-
-  function applyAddress(addr: {
-    _id: string;
-    name: string;
-    phone: string;
-    line1: string;
-    line2?: string;
-    city: string;
-    state: string;
-    pincode: string;
-    country?: string;
-  }) {
-    setSelectedAddressId(addr._id);
-    setValue('name', addr.name);
-    setValue('phone', addr.phone);
-    setValue('line1', addr.line1);
-    setValue('line2', addr.line2 || '');
-    setValue('city', addr.city);
-    setValue('state', addr.state);
-    setValue('pincode', addr.pincode);
-    setValue('country', addr.country || 'India');
-  }
+  }, [session, setValue, getValues, applyAddress]);
 
   if (isPending || !session?.user) {
     return (

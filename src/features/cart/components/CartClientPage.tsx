@@ -16,7 +16,6 @@ import { useCartStore } from '@/store/cart.store';
 import { useWishlistStore } from '@/store/wishlist.store';
 import { formatPrice } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
-import { siteConfig } from '@/config/site.config';
 import { api } from '@/utils/api';
 import { FALLBACK_PRODUCTS } from '@/data/products.data';
 import type { IProduct } from '@/types';

@@ -394,7 +394,7 @@ export function CategoryHubView({
               </a>
               <Link
                 href="/contact"
-                className={buttonVariants({ variant: 'outline', size: 'couture', className: 'border-white/30 hover:border-white text-white hover:bg-white/10' })}
+                className={buttonVariants({ variant: 'couture-light-outline', size: 'couture' })}
               >
                 Visit Atelier
               </Link>

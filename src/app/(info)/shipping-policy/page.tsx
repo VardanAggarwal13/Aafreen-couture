@@ -4,7 +4,7 @@ import { siteConfig } from '@/config/site.config';
 import { cmsRepository } from '@/server/repositories/cms.repository';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
-import { Truck, Globe, PackageCheck, Clock, Mail, Phone, ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Truck, Globe, PackageCheck, Clock, Mail, Phone, ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Shipping & Delivery Policy',

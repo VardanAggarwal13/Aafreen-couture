@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
-import { Eye, EyeOff, ShieldCheck, ArrowRight, ShoppingBag, Check } from 'lucide-react';
+import { Eye, EyeOff, ArrowRight, ShoppingBag, Check } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import { siteConfig } from '@/config/site.config';
 import { ROUTES } from '@/constants/routes';

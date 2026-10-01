@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { paymentService } from '@/server/services/payment.service';
-import { handleApiError, unauthorized } from '@/lib/api-errors';
+import { handleApiError } from '@/lib/api-errors';
 import { VerifyPaymentSchema } from '@/validators/order.validators';
 
 export async function POST(request: NextRequest) {

@@ -163,7 +163,7 @@ export const shopByOccasion = [
   {
     label: 'Jago Edit',
     href: '/occasions/jago',
-    image: '/images/occasions/sangeet.webp',
+    image: '/images/products/heer-jago-salwar-suit-1413.webp',
   },
   {
     label: 'Wedding',

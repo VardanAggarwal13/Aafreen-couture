@@ -9,6 +9,8 @@ export function NavigationProgress() {
   const [progress, setProgress] = useState(0);
   const timersRef = useRef<NodeJS.Timeout[]>([]);
 
+  const loadingRef = useRef(false);
+
   const clearTimers = () => {
     timersRef.current.forEach((t) => clearTimeout(t));
     timersRef.current = [];
@@ -17,10 +19,11 @@ export function NavigationProgress() {
   // Complete loading when route changes
   useEffect(() => {
     clearTimers();
-    if (loading) {
+    if (loadingRef.current) {
       setProgress(100);
       const finishTimer = setTimeout(() => {
         setLoading(false);
+        loadingRef.current = false;
         setProgress(0);
       }, 220);
       timersRef.current.push(finishTimer);
@@ -57,6 +60,7 @@ export function NavigationProgress() {
 
       // Start royal progress bar immediately
       setLoading(true);
+      loadingRef.current = true;
       setProgress(25);
 
       const step1 = setTimeout(() => setProgress(65), 120);

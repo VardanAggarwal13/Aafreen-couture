@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heart } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { formatPrice, getDiscountPercentage } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';

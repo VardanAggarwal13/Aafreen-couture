@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CheckCircle2, MessageCircle, Phone, ArrowRight, ShieldCheck, Sparkles, Clock, Check } from 'lucide-react';
+import { CheckCircle2, MessageCircle, Phone, ArrowRight, ShieldCheck, Sparkles, Clock } from 'lucide-react';
 import { ROUTES } from '@/constants/routes';
 import { siteConfig } from '@/config/site.config';
 import type { Metadata } from 'next';

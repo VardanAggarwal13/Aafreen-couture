@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { auth, type User } from '@/lib/auth';
 import { ProfileForm } from '@/features/account/components/ProfileForm';
 
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'My Profile | Aafreen Couture' };
 
 export default async function ProfilePage() {

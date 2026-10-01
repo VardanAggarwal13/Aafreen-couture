@@ -2,11 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, User, MapPin, RotateCcw, Bell, LogOut } from 'lucide-react';
+import { Package, User, MapPin, RotateCcw, Bell, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { authClient } from '@/lib/auth-client';
 import { ROUTES } from '@/constants/routes';
-import type { User as AuthUser } from '@/lib/auth';
 
 interface AccountSidebarProps {
   user: {

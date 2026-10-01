@@ -4,7 +4,7 @@ import { siteConfig } from '@/config/site.config';
 import { cmsRepository } from '@/server/repositories/cms.repository';
 import { PolicySidebar, type TocItem } from '@/features/info/components/PolicySidebar';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
-import { RefreshCw, ShieldCheck, Video, CheckCircle2, PackageCheck, Mail, Phone, ArrowRight, Clock, AlertCircle, Scissors } from 'lucide-react';
+import { RefreshCw, ShieldCheck, Video, CheckCircle2, Mail, Phone, Scissors } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Exchange, Cancellation & Returns Policy',

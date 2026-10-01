@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Sparkles, Heart, Scissors, ShieldCheck, ArrowRight, CheckCircle2, MessageCircle } from 'lucide-react';
+import { Sparkles, Heart, Scissors, ShieldCheck, MessageCircle } from 'lucide-react';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { siteConfig } from '@/config/site.config';
 import { cmsRepository } from '@/server/repositories/cms.repository';
