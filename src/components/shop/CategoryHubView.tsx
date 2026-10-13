@@ -36,12 +36,12 @@ export interface CategoryHubProps {
 }
 
 const OCCASION_CARDS = [
-  { label: 'Engagement', href: '/occasions/engagement', image: '/images/occasions/engagement.webp', tone: 'Cocktail & Rings' },
-  { label: 'Haldi', href: '/occasions/haldi', image: '/images/occasions/haldi.webp', tone: 'Sun-drenched Yellows' },
-  { label: 'Mehendi', href: '/occasions/mehendi', image: '/images/occasions/mehendi.webp', tone: 'Festive Greens & Flora' },
-  { label: 'Sangeet', href: '/occasions/sangeet', image: '/images/occasions/sangeet.webp', tone: 'High-Glitz Mirrorwork' },
-  { label: 'Wedding', href: '/occasions/wedding', image: '/images/occasions/wedding.webp', tone: 'Heirloom Crimson & Silk' },
-  { label: 'Reception', href: '/occasions/reception', image: '/images/occasions/reception.webp', tone: 'Sculptural Ballgowns' },
+  { label: 'Engagement', href: '/occasions/engagement', image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/engagement.webp', tone: 'Cocktail & Rings' },
+  { label: 'Haldi', href: '/occasions/haldi', image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/haldi.webp', tone: 'Sun-drenched Yellows' },
+  { label: 'Mehendi', href: '/occasions/mehendi', image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/mehendi.webp', tone: 'Festive Greens & Flora' },
+  { label: 'Sangeet', href: '/occasions/sangeet', image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/occasions/sangeet.webp', tone: 'High-Glitz Mirrorwork' },
+  { label: 'Wedding', href: '/occasions/wedding', image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/occasions/wedding.webp', tone: 'Heirloom Crimson & Silk' },
+  { label: 'Reception', href: '/occasions/reception', image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/reception.webp', tone: 'Sculptural Ballgowns' },
 ];
 
 function ChapterShelf({

@@ -77,7 +77,7 @@ export default function SuitsPage() {
       italicTitle="Suit Atelier"
       badge="Aafreen Atelier · Fine Tailoring"
       heroSubtitle="Elegantly tailored suits, handcrafted anarkalis, and ceremonial silhouettes crafted in pure silks, fine mulmul, and breathable cottons. Adorned with delicate gotta patti, mirror embellishments, and artisanal threadwork."
-      heroImage="/images/banners/suits-hero.webp"
+      heroImage="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/suits-hero.webp"
       heroObjectPosition="object-[center_18%]"
       heroHighlights={[
         'Pure Mulmul, Chanderi, and Raw Silk fabrics',

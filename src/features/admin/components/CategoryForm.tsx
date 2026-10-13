@@ -27,7 +27,7 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
     name: category?.name ?? '',
     slug: category?.slug ?? '',
     description: category?.description ?? '',
-    image: category?.image ?? '/images/cats/bridal.webp',
+    image: category?.image ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791872397/aafreen-couture/categories/bridal.webp',
     sortOrder: category?.sortOrder ?? 1,
     isActive: category?.isActive ?? true,
   });
@@ -151,7 +151,7 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
             type="text"
             value={formData.image}
             onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-            placeholder="/images/cats/bridal.webp"
+            placeholder="https://res.cloudinary.com/adzbklts/image/upload/v1791872397/aafreen-couture/categories/bridal.webp"
             className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
           />
         </div>

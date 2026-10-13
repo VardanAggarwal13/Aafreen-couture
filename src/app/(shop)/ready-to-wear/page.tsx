@@ -61,7 +61,7 @@ export default function ReadyToWearPage() {
       italicTitle="Ready To Wear"
       badge="Aafreen Atelier · Instant Couture"
       heroSubtitle="Effortless luxury ready for your grandest moments. High-impact designer creations finished to perfection and ready for immediate shipping worldwide."
-      heroImage="/images/banners/rtw-hero.webp"
+      heroImage="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/rtw-hero.webp"
       heroObjectPosition="object-[center_20%]"
       heroHighlights={[
         'Immediate dispatch on all ready-to-wear pieces',

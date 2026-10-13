@@ -29,7 +29,7 @@ const EMPTY_FORM = {
   excerpt: '',
   readTime: '4 min read',
   publishedAt: new Date().toISOString().split('T')[0],
-  image: '/images/hero-banner.webp',
+  image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/hero-banner.webp',
   author: 'Aafreen Style Studio',
   authorRole: 'Head Curator',
   content: '',
@@ -304,7 +304,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
                   type="text"
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  placeholder="/images/hero-banner.webp"
+                  placeholder="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/hero-banner.webp"
                   className={`${fieldClass('image')} font-mono text-[11px]`}
                 />
                 {fieldErrors.image && <p className="text-xs text-red-600 mt-1">{fieldErrors.image}</p>}

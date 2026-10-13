@@ -108,7 +108,7 @@ export function CartClientPage() {
       variantId: variant?._id,
       name: p.name,
       slug: p.slug,
-      image: p.images[0] ?? '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp',
+      image: p.images[0] ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791872431/aafreen-couture/products/shahi-sindoori-red-bridal-lehenga-0929.webp',
       size: variant?.size ?? 'Standard Bespoke',
       color: variant?.color ?? 'Signature',
       price: variant?.price ?? p.basePrice,
@@ -240,7 +240,7 @@ export function CartClientPage() {
                     className="block aspect-[3/4] relative overflow-hidden bg-[#F5ECE1] rounded-xl mb-3"
                   >
                     <Image
-                      src={p.images[0] ?? '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
+                      src={p.images[0] ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791872431/aafreen-couture/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
                       alt={p.name}
                       fill
                       sizes="(max-width: 640px) 50vw, 25vw"
@@ -343,7 +343,7 @@ export function CartClientPage() {
                     className="w-28 sm:w-36 aspect-[3/4] shrink-0 relative overflow-hidden bg-[#F5ECE1] border border-[#E0D0BC] rounded-xl group/img"
                   >
                     <Image
-                      src={item.image || product?.images[0] || '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
+                      src={item.image || product?.images[0] || 'https://res.cloudinary.com/adzbklts/image/upload/v1791872431/aafreen-couture/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
                       alt={item.name}
                       fill
                       sizes="144px"
@@ -727,7 +727,7 @@ export function CartClientPage() {
                       className="block aspect-[3/4] relative overflow-hidden bg-[#F5ECE1] rounded-xl mb-3"
                     >
                       <Image
-                        src={p.images[0] ?? '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
+                        src={p.images[0] ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791872431/aafreen-couture/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
                         alt={p.name}
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"

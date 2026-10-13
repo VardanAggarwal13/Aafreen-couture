@@ -132,7 +132,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
         {
           productId: 'prod-001',
           name: 'Noor-e-Ishq Bridal Lehenga',
-          image: '/images/products/noor-e-ishq.webp',
+          image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791873581/aafreen-couture/products/noor-e-ishq.webp',
           size: 'M',
           color: 'Crimson Maroon',
           price: 8999900,
@@ -195,7 +195,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                 return (
                   <div key={idx} className="py-3 first:pt-0 last:pb-0 flex items-center gap-3">
                     <div className="relative w-16 h-20 bg-[#FAF7F2] border border-[#DDD2C5] rounded-lg overflow-hidden shrink-0">
-                      <Image src={item.image || '/images/products/noor-e-ishq.webp'} alt={item.name} fill className="object-cover" />
+                      <Image src={item.image || 'https://res.cloudinary.com/adzbklts/image/upload/v1791873581/aafreen-couture/products/noor-e-ishq.webp'} alt={item.name} fill className="object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-serif font-medium text-[#2E221C] text-sm truncate">{item.name}</p>

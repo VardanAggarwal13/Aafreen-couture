@@ -70,7 +70,7 @@ export function ProductDetailClient({ product, related }: Props) {
     if (activeVariant?.images && activeVariant.images.length > 0) {
       return activeVariant.images;
     }
-    return ['/images/products/noor-e-ishq.webp'];
+    return ['https://res.cloudinary.com/adzbklts/image/upload/v1791873581/aafreen-couture/products/noor-e-ishq.webp'];
   })();
  
   useEffect(() => {
@@ -115,7 +115,7 @@ export function ProductDetailClient({ product, related }: Props) {
       variantId: activeVariant?._id?.toString(),
       name: product.name,
       slug: product.slug,
-      image: allImages[0] ?? '/images/products/noor-e-ishq.webp',
+      image: allImages[0] ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791873581/aafreen-couture/products/noor-e-ishq.webp',
       size: activeVariant?.size,
       color: activeVariant?.color,
       price,
@@ -133,7 +133,7 @@ export function ProductDetailClient({ product, related }: Props) {
       variantId: activeVariant?._id?.toString(),
       name: product.name,
       slug: product.slug,
-      image: allImages[0] ?? '/images/products/noor-e-ishq.webp',
+      image: allImages[0] ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791873581/aafreen-couture/products/noor-e-ishq.webp',
       size: activeVariant?.size,
       color: activeVariant?.color,
       price,

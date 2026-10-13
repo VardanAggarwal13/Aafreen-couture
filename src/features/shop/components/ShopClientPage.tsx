@@ -211,7 +211,7 @@ export function ShopClientPage() {
               <div className="lg:col-span-6 order-1 lg:order-2 flex justify-center lg:justify-end">
                 <div className="relative w-full max-w-[460px] aspect-[2/3] max-h-[600px] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(34,22,23,0.14)] bg-[#1A0E0C]">
                   <Image
-                    src="/images/banners/bridal-hero.webp"
+                    src="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/bridal-hero.webp"
                     alt="Aafreen Couture Royal Bridal Lehengas"
                     fill
                     priority

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'Discover heirloom bridal lehengas, regal bridal suits, bridesmaid ensembles, and reception gowns handcrafted with zardozi and fine silks at Aafreen Couture.',
     url: `${siteConfig.url}/bridal`,
     siteName: siteConfig.name,
-    images: [{ url: `${siteConfig.url}/images/banners/bridal-hero-wide.webp`, width: 1200, height: 630, alt: 'Royal Bridal Edit Aafreen Couture' }],
+    images: [{ url: `${siteConfig.url}https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/bridal-hero-wide.webp`, width: 1200, height: 630, alt: 'Royal Bridal Edit Aafreen Couture' }],
   },
 };
 
@@ -61,7 +61,7 @@ export default function BridalPage() {
       italicTitle="Bridal Edit"
       badge="Aafreen Atelier · Royal Heritage"
       heroSubtitle="An ode to the timeless majesty of royal Indian weddings. Each masterpiece is individually hand-embroidered by master artisans in pure silks, velvets, and heirloom organza, adorned with authentic zardozi, dabka, cutdana, and micro-pearl craftsmanship."
-      heroImage="/images/banners/bridal-hero-wide.webp"
+      heroImage="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/bridal-hero-wide.webp"
       heroObjectPosition="object-bottom"
       heroHighlights={[
         '200+ hours of painstaking hand embroidery per ensemble',

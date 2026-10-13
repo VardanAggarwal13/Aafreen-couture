@@ -180,7 +180,7 @@ export function ProductForm({ product }: Props) {
           isFeatured: false,
           isNewArrival: true,
           isBestSeller: false,
-          images: '/images/products/noor-e-ishq.webp',
+          images: 'https://res.cloudinary.com/adzbklts/image/upload/v1791873581/aafreen-couture/products/noor-e-ishq.webp',
           variants: [{ size: '', color: '', sku: '', price: 0, stock: 0, isActive: true }],
         },
   });
@@ -628,7 +628,7 @@ export function ProductForm({ product }: Props) {
             </label>
           </div>
 
-          <input {...register('images')} className={fieldClass(!!errors.images)} placeholder="/images/products/noorani-moonstone-lilac-silk-suit-1.webp, /images/products/noorani-moonstone-lilac-silk-suit-2.webp" />
+          <input {...register('images')} className={fieldClass(!!errors.images)} placeholder="https://res.cloudinary.com/adzbklts/image/upload/v1791872411/aafreen-couture/products/noorani-moonstone-lilac-silk-suit-1.webp, https://res.cloudinary.com/adzbklts/image/upload/v1791872411/aafreen-couture/products/noorani-moonstone-lilac-silk-suit-2.webp" />
           {errors.images && <p className={errorClass}>{errors.images.message}</p>}
           <p className="text-[10px] text-[#8A6A55] mt-1">Upload directly to Cloudinary, or paste image URLs / static paths above (comma separated). First image is used as the primary showcase hero image.</p>
         </div>

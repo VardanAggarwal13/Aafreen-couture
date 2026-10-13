@@ -8,28 +8,28 @@ const COLLECTIONS = [
     name: 'Bridal Collection',
     description: 'Statement pieces crafted for your special day',
     itemCount: '24 pieces',
-    image: '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872431/aafreen-couture/products/shahi-sindoori-red-bridal-lehenga-0929.webp',
   },
   {
     slug: 'signature-co-ord-sets',
     name: 'Signature Co-Ord Sets',
     description: 'Curated sets that define modern elegance',
     itemCount: '18 pieces',
-    image: 'https://res.cloudinary.com/qkk8lnon/image/upload/v1790785803/aafreen-couture/products/gulnaz-fuchsia-embroidered-cape-set-1.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872389/aafreen-couture/products/gulnaz-fuchsia-embroidered-cape-set-model-1.webp',
   },
   {
     slug: 'saree-edit',
     name: 'The Saree Edit',
     description: 'Grace in every drape — timeless silk sarees',
     itemCount: '15 pieces',
-    image: '/images/products/rivaayat-bridal-lehenga-1072.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872422/aafreen-couture/products/rivaayat-bridal-lehenga-1072.webp',
   },
   {
     slug: 'the-bag-edit',
     name: 'The Bag Edit',
     description: 'Handcrafted potlis and luxury clutches',
     itemCount: '20 pieces',
-    image: '/images/products/begum-potli.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/begum-potli.jpg',
   },
 ];
 

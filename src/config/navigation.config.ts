@@ -110,32 +110,32 @@ export const homeCategories = [
   {
     label: 'Bridal Lehengas',
     href: '/bridal/bridal-lehengas',
-    image: '/images/cats/bridal.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872397/aafreen-couture/categories/bridal.webp',
   },
   {
     label: 'Bridesmaid Lehengas',
     href: '/bridal/bridesmaid-lehengas',
-    image: '/images/cats/bridesmaid.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872397/aafreen-couture/categories/bridesmaid.webp',
   },
   {
     label: 'Suits',
     href: '/suits',
-    image: '/images/cats/suits.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/categories/suits.webp',
   },
   {
     label: 'Co-ord Sets',
     href: '/suits/co-ord-sets',
-    image: '/images/cats/coord.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872397/aafreen-couture/categories/coord.webp',
   },
   {
     label: 'Jewellery',
     href: '/jewellery',
-    image: '/images/cats/jewellery.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872397/aafreen-couture/categories/jewellery.webp',
   },
   {
     label: 'The Bag Edit',
     href: '/bags',
-    image: '/images/cats/bags.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872398/aafreen-couture/categories/bags.webp',
   },
 ] as const;
 
@@ -143,37 +143,37 @@ export const shopByOccasion = [
   {
     label: 'Engagement',
     href: '/occasions/engagement',
-    image: '/images/occasions/engagement.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/engagement.webp',
   },
   {
     label: 'Haldi',
     href: '/occasions/haldi',
-    image: '/images/occasions/haldi.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/haldi.webp',
   },
   {
     label: 'Mehendi',
     href: '/occasions/mehendi',
-    image: '/images/occasions/mehendi.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/mehendi.webp',
   },
   {
     label: 'Sangeet',
     href: '/occasions/sangeet',
-    image: '/images/occasions/sangeet.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/occasions/sangeet.webp',
   },
   {
     label: 'Jago Edit',
     href: '/occasions/jago',
-    image: '/images/products/heer-jago-salwar-suit-1413.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872421/aafreen-couture/products/heer-jago-salwar-suit-1413.webp',
   },
   {
     label: 'Wedding',
     href: '/occasions/wedding',
-    image: '/images/occasions/wedding.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/occasions/wedding.webp',
   },
   {
     label: 'Reception',
     href: '/occasions/reception',
-    image: '/images/occasions/reception.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/reception.webp',
   },
 ] as const;
 

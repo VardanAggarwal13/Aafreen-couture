@@ -22,7 +22,7 @@ const OCCASIONS_PRE_WEDDING = [
     num: '01',
     label: 'Engagement',
     href: '/occasions/engagement',
-    image: '/images/occasions/engagement.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/engagement.webp',
     tagline: 'Cocktail & Rings',
     description: 'Romantic pastels, glistening cutdana, and modern silhouette lehengas.',
   },
@@ -30,7 +30,7 @@ const OCCASIONS_PRE_WEDDING = [
     num: '02',
     label: 'Haldi',
     href: '/occasions/haldi',
-    image: '/images/occasions/haldi.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/haldi.webp',
     tagline: 'Sun-Drenched Rituals',
     description: 'Sunshine yellows, delicate gota patti, and playful lightweight silhouettes.',
   },
@@ -38,7 +38,7 @@ const OCCASIONS_PRE_WEDDING = [
     num: '03',
     label: 'Mehendi',
     href: '/occasions/mehendi',
-    image: '/images/occasions/mehendi.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/mehendi.webp',
     tagline: 'Festive Flora & Henna',
     description: 'Vibrant lime greens, teals, and emeralds detailed with floral threadwork.',
   },
@@ -46,7 +46,7 @@ const OCCASIONS_PRE_WEDDING = [
     num: '04',
     label: 'Sangeet',
     href: '/occasions/sangeet',
-    image: '/images/occasions/sangeet.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/occasions/sangeet.webp',
     tagline: 'High-Glamour Dance Night',
     description: 'Dazzling high-octane mirrorwork, metallic sequins, and flowing silhouettes.',
   },
@@ -57,7 +57,7 @@ const OCCASIONS_MAIN_CELEBRATION = [
     num: '05',
     label: 'Jago Night',
     href: '/occasions/jago',
-    image: '/images/products/heer-jago-salwar-suit-1413.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872421/aafreen-couture/products/heer-jago-salwar-suit-1413.webp',
     tagline: 'Midnight Punjabi Celebrations',
     description: 'Authentic raw silk salwar suits with peacock tilla and rich Phulkari drapes.',
   },
@@ -65,7 +65,7 @@ const OCCASIONS_MAIN_CELEBRATION = [
     num: '06',
     label: 'The Wedding Day',
     href: '/occasions/wedding',
-    image: '/images/occasions/wedding.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/occasions/wedding.webp',
     tagline: 'Sacred Pheras & Royal Vows',
     description: 'Majestic scarlet lehengas, heirloom zardozi velvets, and royal couture.',
   },
@@ -73,7 +73,7 @@ const OCCASIONS_MAIN_CELEBRATION = [
     num: '07',
     label: 'Reception Gala',
     href: '/occasions/reception',
-    image: '/images/occasions/reception.webp',
+    image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/reception.webp',
     tagline: 'The Grand Evening Finale',
     description: 'Sculptural ballgowns, dramatic capes, and crystal-embroidered eveningwear.',
   },
@@ -168,7 +168,7 @@ export default async function OccasionsPage() {
                   {/* Inner Frame with 4:3 Stable Ratio (Matches exact 1200x896 dimensions, zero height overflow) */}
                   <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xs border border-[#C49A5A]/35 bg-[#FAF5EE]">
                     <Image
-                      src="/images/occasions/occasions-hero-stable.webp"
+                      src="https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/occasions-hero-stable.webp"
                       alt="Aafreen Couture Milestone Occasions - Royal Wedding Seated Grandeur"
                       fill
                       priority

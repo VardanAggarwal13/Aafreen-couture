@@ -24,7 +24,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
       ? getDiscountPercentage(product.basePrice, product.comparePrice)
       : null;
 
-  const primaryImage = product.images?.[0] ?? '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp';
+  const primaryImage = product.images?.[0] ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791872431/aafreen-couture/products/shahi-sindoori-red-bridal-lehenga-0929.webp';
   const secondaryImage = product.images?.[1] && product.images[1] !== primaryImage ? product.images[1] : null;
 
   return (

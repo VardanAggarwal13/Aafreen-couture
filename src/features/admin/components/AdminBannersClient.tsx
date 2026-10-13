@@ -37,7 +37,7 @@ interface FormState {
 const EMPTY_FORM: FormState = {
   title: '',
   subtitle: '',
-  image: '/images/hero-banner.webp',
+  image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/hero-banner.webp',
   mobileImage: '',
   link: '/shop',
   position: 'hero',
@@ -306,7 +306,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
                   required
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  placeholder="/images/hero-banner.webp"
+                  placeholder="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/hero-banner.webp"
                   className={`w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[11px] ${fieldErrors.image ? FIELD_ERROR_CLASS : ''}`}
                 />
                 {fieldErrors.image && <p className="text-xs text-red-600 mt-1">{fieldErrors.image}</p>}

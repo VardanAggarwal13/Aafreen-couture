@@ -14,18 +14,18 @@ export const metadata: Metadata = {
 export const revalidate = 120;
 
 const COLLECTION_IMAGES: Record<string, string> = {
-  'bridal-lehengas-suits': '/images/products/shahi-sindoori-red-bridal-lehenga-0929.webp',
-  'bridesmaid-lehengas': '/images/products/gulbahar.webp',
-  'formals-cotton-kurta-set': '/images/products/mehrunissa-anarkali.webp',
-  'indo-western': '/images/products/roshani-coord.webp',
-  'signature-co-ord-sets': '/images/products/roshani-coord.webp',
-  'summer-essentials': '/images/products/gulrang-peach-bridal-lehenga-0913.webp',
-  'partywear-unstitched': '/images/products/shahzadi-sharara.webp',
-  'custom-embroidered-suits': '/images/products/mehrunissa-anarkali.webp',
-  'saree-edit': '/images/products/rivaayat-bridal-lehenga-1072.webp',
-  'jewellery': '/images/products/sitara-polki-choker.webp',
-  'the-bag-edit': '/images/products/begum-potli.webp',
-  'occasion-lehengas': '/images/products/meherbaan-rani-pink-bridal-lehenga-1011.webp',
+  'bridal-lehengas-suits': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872431/aafreen-couture/products/shahi-sindoori-red-bridal-lehenga-0929.webp',
+  'bridesmaid-lehengas': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/gulbahar.jpg',
+  'formals-cotton-kurta-set': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/mehrunissa-anarkali.jpg',
+  'indo-western': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/roshani-coord.jpg',
+  'signature-co-ord-sets': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/roshani-coord.jpg',
+  'summer-essentials': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872419/aafreen-couture/products/gulrang-peach-bridal-lehenga-0913.webp',
+  'partywear-unstitched': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/shahzadi-sharara.jpg',
+  'custom-embroidered-suits': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/mehrunissa-anarkali.jpg',
+  'saree-edit': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872422/aafreen-couture/products/rivaayat-bridal-lehenga-1072.webp',
+  'jewellery': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/sitara-polki-choker.jpg',
+  'the-bag-edit': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/begum-potli.jpg',
+  'occasion-lehengas': 'https://res.cloudinary.com/adzbklts/image/upload/v1791872432/aafreen-couture/products/meherbaan-rani-pink-bridal-lehenga-1011.webp',
 };
 
 const COLLECTION_GRADIENTS: Record<string, string> = {

@@ -180,7 +180,7 @@ export default async function CollectionPage({ params }: Props) {
                 <div className="p-2 sm:p-2.5 bg-white/80 rounded-2xl shadow-[0_20px_50px_rgba(34,22,23,0.12)] max-w-[480px] w-full">
                   <div className="relative w-full aspect-[2/3] max-h-[640px] rounded-xl overflow-hidden bg-[#1A0E0C]">
                     <Image
-                      src={collection.bannerImage || '/images/banners/bridal-hero.webp'}
+                      src={collection.bannerImage || 'https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/bridal-hero.webp'}
                       alt="Aafreen Couture Royal Bridal Campaign"
                       fill
                       priority
@@ -232,7 +232,7 @@ export default async function CollectionPage({ params }: Props) {
                 />
               ) : (
                 <Image
-                  src="/images/banners/rtw-hero.webp"
+                  src="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/rtw-hero.webp"
                   alt={collection.name}
                   fill
                   className="object-cover object-center"

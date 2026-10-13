@@ -16,7 +16,7 @@ export function AdminSettingsClient() {
     taxRate: '12',
     freeShippingThreshold: '0',
     flatShippingRate: '0',
-    razorpayKeyId: 'rzp_live_aafreen_9921',
+    razorpayKeyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_live_TdustBOmPwKwnF',
     razorpayKeySecret: '••••••••••••••••••••',
     enableCOD: true,
     enableRazorpay: true,

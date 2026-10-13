@@ -61,7 +61,7 @@ export default function BagsPage() {
       italicTitle="Bag Edit"
       badge="Aafreen Atelier · Handcrafted Accessories"
       heroSubtitle="Handcrafted heirloom potlis, evening clutches, and structured bags adorned with delicate beadwork, gold tassels, and intricate silk embroidery."
-      heroImage="/images/banners/bags-hero.webp"
+      heroImage="https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/banners/bags-hero.webp"
       heroObjectPosition="object-center"
       heroHighlights={[
         'Heirloom handcrafted potlis with micro-pearl beadwork',

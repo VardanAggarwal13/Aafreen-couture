@@ -31,8 +31,8 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
     name: collection?.name ?? '',
     slug: collection?.slug ?? '',
     description: collection?.description ?? '',
-    image: collection?.image ?? '/images/products/noor-e-ishq.webp',
-    bannerImage: collection?.bannerImage ?? '/images/hero-banner.webp',
+    image: collection?.image ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791873581/aafreen-couture/products/noor-e-ishq.webp',
+    bannerImage: collection?.bannerImage ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/hero-banner.webp',
     sortOrder: collection?.sortOrder ?? 1,
     isActive: collection?.isActive ?? true,
     isFeatured: collection?.isFeatured ?? false,
@@ -159,7 +159,7 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
               type="text"
               value={formData.image}
               onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-              placeholder="/images/products/noor-e-ishq.webp"
+              placeholder="https://res.cloudinary.com/adzbklts/image/upload/v1791873581/aafreen-couture/products/noor-e-ishq.webp"
               className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
             />
           </div>
@@ -172,7 +172,7 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
               type="text"
               value={formData.bannerImage}
               onChange={(e) => setFormData({ ...formData, bannerImage: e.target.value })}
-              placeholder="/images/hero-banner.webp"
+              placeholder="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/hero-banner.webp"
               className="w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 rounded-lg text-sm outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors"
             />
           </div>

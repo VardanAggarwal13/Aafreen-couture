@@ -11,7 +11,7 @@ export function HeroSection() {
 
       {/* Background image — 100% full brightness and clarity */}
       <Image
-        src="/images/hero-banner.webp"
+        src="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/hero-banner.webp"
         alt="Aafreen Couture — The Bridal Edit"
         fill
         priority
