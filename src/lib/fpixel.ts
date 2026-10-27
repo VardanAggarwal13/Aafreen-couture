@@ -1,4 +1,4 @@
-export const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || '1107855914977537';
+export const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || '1732684747801560';
 
 type FbqArgs = unknown[];
 type EventOptions = Record<string, string | number | boolean | null | undefined | unknown>;
