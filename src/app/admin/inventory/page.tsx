@@ -5,7 +5,7 @@ import { AdminInventoryClient, type InventoryItem } from '@/features/admin/compo
 export const metadata: Metadata = { title: 'Inventory | Admin' };
 
 export default async function AdminInventoryPage() {
-  const { items } = await productRepository.findMany({ isActive: undefined }, { limit: 100 });
+  const { items } = await productRepository.findMany({ includeInactive: true }, { limit: 500 });
   const products = JSON.parse(JSON.stringify(items));
 
   const inventoryList: InventoryItem[] = [];

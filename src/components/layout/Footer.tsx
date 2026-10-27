@@ -222,7 +222,7 @@ function StorefrontFooter() {
                   </a>
                 </li>
                 <li className="text-[11px] text-text/80 pt-1 leading-relaxed">
-                  Mon – Sat: 10:30 AM – 7:30 PM IST · Delhi / NCR Atelier
+                  Mon – Sat: 10:30 AM – 7:30 PM IST
                 </li>
               </ul>
             </div>

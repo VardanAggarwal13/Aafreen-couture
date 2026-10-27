@@ -34,7 +34,7 @@ export function HeroSection() {
               transition={{ delay: 0.1, duration: 0.6 }}
               className="mb-4 sm:mb-5 lg:mb-6"
             >
-              <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.35em] sm:tracking-[0.45em] text-[#C49A5A]">
+              <span className="font-display text-[10px] sm:text-xs font-semibold uppercase tracking-[0.35em] sm:tracking-[0.45em] text-[#C49A5A]">
                 Bridal Collection 2026
               </span>
             </motion.div>

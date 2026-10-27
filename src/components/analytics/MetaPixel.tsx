@@ -20,6 +20,10 @@ export function MetaPixel() {
     fpixel.pageview();
   }, [pathname, searchParams]);
 
+  if (!fpixel.FB_PIXEL_ID) {
+    return null;
+  }
+
   return (
     <>
       <Script

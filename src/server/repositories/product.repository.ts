@@ -20,6 +20,7 @@ export interface ProductFilters {
   maxPrice?: number;
   tags?: string[];
   isActive?: boolean;
+  includeInactive?: boolean;
   isFeatured?: boolean;
   isNewArrival?: boolean;
   isBestSeller?: boolean;
@@ -32,7 +33,15 @@ function matchFallbackFilters(p: IProduct, filters: ProductFilters): boolean {
     const idStr = String(p._id);
     if (!filters.ids.includes(idStr) && !filters.ids.includes(p.slug)) return false;
   }
-  if (filters.isActive !== undefined && p.isActive !== filters.isActive) return false;
+  if (!filters.includeInactive) {
+    if (filters.isActive !== undefined) {
+      if (p.isActive !== filters.isActive) return false;
+    } else {
+      if (p.isActive === false) return false;
+    }
+  } else if (filters.isActive !== undefined && p.isActive !== filters.isActive) {
+    return false;
+  }
   if (filters.isFeatured !== undefined && p.isFeatured !== filters.isFeatured) return false;
   if (filters.isNewArrival !== undefined && p.isNewArrival !== filters.isNewArrival) return false;
   if (filters.isBestSeller !== undefined && p.isBestSeller !== filters.isBestSeller) return false;
@@ -218,17 +227,33 @@ export class ProductRepository {
     return (found as unknown as IProduct) ?? null;
   }
 
-  async findBySlug(slug: string): Promise<IProduct | null> {
+  async findBySlug(slug: string, options?: { includeInactive?: boolean }): Promise<IProduct | null> {
     try {
       await connectDB();
-      const doc = await Product.findOne({ slug, isActive: true })
+      const query: Record<string, unknown> = { slug };
+      if (!options?.includeInactive) {
+        query.isActive = true;
+      }
+      const doc = await Product.findOne(query)
         .populate('category', 'name slug')
         .lean<IProduct>();
       if (doc) return doc;
+
+      // If connected to DB, verify whether this product exists in DB as inactive.
+      // If it exists and is inactive, it is deliberately hidden — do NOT resurrect from fallback!
+      if (!options?.includeInactive) {
+        const inactiveDoc = await Product.findOne({ slug }).select('_id isActive').lean();
+        if (inactiveDoc && !inactiveDoc.isActive) {
+          return null;
+        }
+      }
     } catch {
       // Fallback below
     }
     const found = FALLBACK_PRODUCTS.find((p) => p.slug === slug);
+    if (!options?.includeInactive && found && found.isActive === false) {
+      return null;
+    }
     return (found as unknown as IProduct) ?? null;
   }
 
@@ -240,7 +265,15 @@ export class ProductRepository {
     try {
       await connectDB();
 
-      const query: Record<string, unknown> = { isActive: true };
+      const query: Record<string, unknown> = {};
+
+      if (filters.includeInactive) {
+        if (filters.isActive !== undefined) {
+          query.isActive = filters.isActive;
+        }
+      } else {
+        query.isActive = filters.isActive !== undefined ? filters.isActive : true;
+      }
 
       if (filters.ids && filters.ids.length > 0) {
         const validObjectIds = filters.ids
@@ -317,6 +350,10 @@ export class ProductRepository {
         Product.countDocuments(query),
       ]);
 
+      const hasDbProducts = await Product.estimatedDocumentCount();
+      if (hasDbProducts > 0) {
+        return { items, total };
+      }
       if (items.length > 0) {
         return { items, total };
       }
@@ -356,6 +393,8 @@ export class ProductRepository {
         .limit(limit);
       if (select) findQuery.select(select);
       const docs = await findQuery.populate('category', 'name slug').lean<IProduct[]>();
+      const hasDbProducts = await Product.estimatedDocumentCount();
+      if (hasDbProducts > 0) return docs;
       if (docs.length > 0) return docs;
     } catch {
       // Fallback below
@@ -373,6 +412,8 @@ export class ProductRepository {
         .limit(limit);
       if (select) findQuery.select(select);
       const docs = await findQuery.populate('category', 'name slug').lean<IProduct[]>();
+      const hasDbProducts = await Product.estimatedDocumentCount();
+      if (hasDbProducts > 0) return docs;
       if (docs.length > 0) return docs;
     } catch {
       // Fallback below
@@ -390,6 +431,8 @@ export class ProductRepository {
         .limit(limit);
       if (select) findQuery.select(select);
       const docs = await findQuery.populate('category', 'name slug').lean<IProduct[]>();
+      const hasDbProducts = await Product.estimatedDocumentCount();
+      if (hasDbProducts > 0) return docs;
       if (docs.length > 0) return docs;
     } catch {
       // Fallback below
@@ -411,6 +454,8 @@ export class ProductRepository {
         .limit(limit);
       if (select) findQuery.select(select);
       const docs = await findQuery.populate('category', 'name slug').lean<IProduct[]>();
+      const hasDbProducts = await Product.estimatedDocumentCount();
+      if (hasDbProducts > 0) return docs;
       if (docs.length > 0) return docs;
     } catch {
       // Fallback below

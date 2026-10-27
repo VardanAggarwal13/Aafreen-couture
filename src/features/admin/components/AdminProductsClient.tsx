@@ -77,15 +77,23 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
     );
 
     try {
-      await fetch(`/api/products/${id}`, {
+      const res = await fetch(`/api/products/${product.slug || id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive: newStatus }),
       });
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || 'Failed to update ensemble status');
+      }
       toast.success(`Ensemble is now ${newStatus ? 'active' : 'hidden'}`);
       router.refresh();
-    } catch {
-      toast.success(`Ensemble visibility updated`);
+    } catch (err: unknown) {
+      setProducts((prev) =>
+        prev.map((p) => (p._id === id ? { ...p, isActive: !newStatus } : p))
+      );
+      const msg = err instanceof Error ? err.message : 'Failed to update visibility';
+      toast.error(msg);
       router.refresh();
     }
   }

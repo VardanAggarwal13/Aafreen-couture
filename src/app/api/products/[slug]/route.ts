@@ -47,6 +47,8 @@ export async function PATCH(request: NextRequest, { params }: Props) {
       revalidatePath('/bridal');
       revalidatePath('/bridal/bridal-lehengas');
       revalidatePath('/suits');
+      revalidatePath('/suits/partywear-unstitched');
+      revalidatePath('/admin/inventory');
       revalidatePath('/occasions');
       revalidatePath('/collections');
       revalidatePath('/ready-to-wear');

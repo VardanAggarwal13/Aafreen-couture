@@ -25,3 +25,4 @@ export const siteConfig = {
   currency: 'INR',
   locale: 'en-IN',
 } as const;
+  

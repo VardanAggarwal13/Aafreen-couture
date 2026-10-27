@@ -92,8 +92,8 @@ function StorefrontNavbar() {
     <>
       <header
         className={cn(
-          'sticky top-0 z-50 bg-navbar/95 backdrop-blur-md transition-shadow duration-300',
-          isScrolled ? 'shadow-[0_1px_4px_0_rgba(46,34,28,0.08)] border-b border-border' : 'border-b border-border'
+          'sticky top-0 z-50 w-full bg-navbar/95 backdrop-blur-md transition-all duration-300',
+          isScrolled ? 'shadow-[0_4px_20px_rgba(46,34,28,0.08)] border-b border-border' : 'border-b border-border'
         )}
       >
         <div className="max-w-[1440px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-10">

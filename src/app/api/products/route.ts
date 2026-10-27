@@ -18,6 +18,10 @@ export async function GET(request: NextRequest) {
     const idsParam = searchParams.get('ids');
     const ids = idsParam ? idsParam.split(',').map((s) => s.trim()).filter(Boolean) : undefined;
 
+    const isActiveParam = searchParams.get('isActive');
+    const isActive = isActiveParam === 'false' ? false : isActiveParam === 'true' ? true : undefined;
+    const includeInactive = searchParams.get('all') === 'true' || searchParams.get('includeInactive') === 'true';
+
     const filters: ProductFilters = {
       ids,
       category: searchParams.get('category') ?? undefined,
@@ -30,6 +34,8 @@ export async function GET(request: NextRequest) {
       maxPrice: searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : undefined,
       sort: (searchParams.get('sort') as ProductFilters['sort']) ?? undefined,
       search: searchParams.get('q') ?? undefined,
+      isActive,
+      includeInactive,
       isFeatured: searchParams.get('featured') === 'true' ? true : undefined,
       isNewArrival: searchParams.get('new') === 'true' ? true : undefined,
       isBestSeller: searchParams.get('bestseller') === 'true' ? true : undefined,

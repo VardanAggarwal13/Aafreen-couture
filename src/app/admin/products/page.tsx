@@ -6,7 +6,7 @@ export const metadata = { title: 'Products | Admin' };
 
 export default async function AdminProductsPage() {
   const [{ items: products }, categories] = await Promise.all([
-    productRepository.findMany({}, { page: 1, limit: 100 }),
+    productRepository.findMany({ includeInactive: true }, { page: 1, limit: 500 }),
     categoryRepository.findAll(true),
   ]);
   const serializedProducts = JSON.parse(JSON.stringify(products));

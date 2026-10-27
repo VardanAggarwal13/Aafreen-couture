@@ -39,6 +39,7 @@ export const CreateProductSchema = z.object({
   basePrice: z.number({ message: 'Price must be a number' }).int('Price must be a whole number (no decimals)').min(0, 'Price cannot be negative'),
   comparePrice: z.number({ message: 'Compare price must be a number' }).int('Compare price must be a whole number (no decimals)').min(0, 'Compare price cannot be negative').optional(),
   tags: z.array(z.string()).default([]),
+  isActive: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   isNewArrival: z.boolean().default(false),
   isBestSeller: z.boolean().default(false),

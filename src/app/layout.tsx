@@ -1,15 +1,38 @@
 import { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
-import { Playfair_Display, Manrope } from 'next/font/google';
+import { Cormorant_Garamond, Cinzel, Plus_Jakarta_Sans, Playfair_Display, Manrope } from 'next/font/google';
 import { Providers } from '@/providers/Providers';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { NavigationProgress } from '@/components/common/NavigationProgress';
 import { MetaPixel } from '@/components/analytics/MetaPixel';
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { defaultMetadata } from '@/config/seo.config';
 import { siteConfig } from '@/config/site.config';
 import { cn } from '@/lib/utils';
 import './globals.css';
+
+const cormorant = Cormorant_Garamond({
+  variable: '--font-cormorant',
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+});
+
+const cinzel = Cinzel({
+  variable: '--font-cinzel',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  variable: '--font-jakarta',
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+});
 
 const playfair = Playfair_Display({
   variable: '--font-playfair',
@@ -78,7 +101,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn(playfair.variable, manrope.variable)}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn(
+        cormorant.variable,
+        cinzel.variable,
+        jakarta.variable,
+        playfair.variable,
+        manrope.variable
+      )}
+    >
       <head>
         <script
           type="application/ld+json"
@@ -88,6 +121,9 @@ export default function RootLayout({
       <body className="font-sans antialiased min-h-screen flex flex-col">
         <Suspense fallback={null}>
           <MetaPixel />
+        </Suspense>
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
         </Suspense>
         <Providers>
           <Suspense fallback={null}>
