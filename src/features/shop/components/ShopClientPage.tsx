@@ -9,6 +9,7 @@ import { ProductCard } from '@/components/product/ProductCard';
 import { queryKeys } from '@/constants/query-keys';
 import { api } from '@/utils/api';
 import type { IProduct } from '@/types';
+import type { PaginatedResponse } from '@/types/api.types';
 
 const SORT_OPTIONS = [
   { value: 'newest', label: 'Newest First' },
@@ -76,7 +77,7 @@ const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 const FABRIC_OPTIONS = ['Silk', 'Organza', 'Velvet', 'Georgette', 'Chiffon', 'Crepe'];
 
-export function ShopClientPage() {
+export function ShopClientPage({ initialData }: { initialData?: PaginatedResponse<IProduct> }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
@@ -116,6 +117,19 @@ export function ShopClientPage() {
       if (page) q.set('page', String(page));
       return api.getPaginated<IProduct>(`/api/products?${q.toString()}`);
     },
+    // Server-rendered first page; only valid for the untouched default view.
+    initialData:
+      sort === 'newest' &&
+      !category &&
+      !occasion &&
+      !selectedColor &&
+      !selectedSize &&
+      !selectedFabric &&
+      !minPrice &&
+      !maxPrice &&
+      page === 1
+        ? initialData
+        : undefined,
     placeholderData: (prev) => prev,
   });
 
@@ -220,7 +234,7 @@ export function ShopClientPage() {
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#1A0E0C]/90 via-[#1A0E0C]/40 to-transparent py-2.5 text-center">
                     <p className="text-[10px] uppercase tracking-[0.25em] text-[#E8D4BE] font-sans">
-                      The Grand Palace Showcase · Jaipur Atelier
+                      The Grand Palace Showcase · Amritsar Atelier
                     </p>
                   </div>
                 </div>

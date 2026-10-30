@@ -92,7 +92,7 @@ export default async function OccasionsPage() {
   const weddingProducts = (JSON.parse(JSON.stringify(weddingData.items ?? [])) as IProduct[]);
 
   return (
-    <main className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-screen bg-[#FAF7F2]">
       {/* 1. Top Breadcrumb Bar (Distinct breathing separation from Navbar) */}
       <div className="w-full bg-[#FAF7F2] border-b border-[#E8D8C8]/70">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
@@ -466,6 +466,6 @@ export default async function OccasionsPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

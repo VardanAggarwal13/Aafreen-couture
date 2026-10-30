@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default async function ContactPage() {
   const cms = await cmsRepository.findBySlug('contact');
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
         badge={cms?.heroBadge ?? 'Aafreen Boutique Concierge'}
@@ -161,6 +161,6 @@ export default async function ContactPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

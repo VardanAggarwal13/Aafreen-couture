@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Cinzel, Plus_Jakarta_Sans, Playfair_Display, Manrope } from 'next/font/google';
+import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
 import { Providers } from '@/providers/Providers';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -9,6 +9,7 @@ import { MetaPixel } from '@/components/analytics/MetaPixel';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { defaultMetadata } from '@/config/seo.config';
 import { siteConfig } from '@/config/site.config';
+import { jsonLdString } from '@/utils/seo';
 import { cn } from '@/lib/utils';
 import './globals.css';
 
@@ -20,29 +21,10 @@ const cormorant = Cormorant_Garamond({
   display: 'swap',
 });
 
-const cinzel = Cinzel({
-  variable: '--font-cinzel',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-});
-
 const jakarta = Plus_Jakarta_Sans({
   variable: '--font-jakarta',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
-  display: 'swap',
-});
-
-const playfair = Playfair_Display({
-  variable: '--font-playfair',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-const manrope = Manrope({
-  variable: '--font-manrope',
-  subsets: ['latin'],
   display: 'swap',
 });
 
@@ -60,15 +42,37 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': 'Organization',
+      '@type': ['Organization', 'ClothingStore'],
       '@id': `${siteConfig.url}/#organization`,
       name: siteConfig.name,
       url: siteConfig.url,
       logo: {
         '@type': 'ImageObject',
-        url: `${siteConfig.url}/images/og-image.jpg`,
+        url: `${siteConfig.url}/images/logo.webp`,
       },
+      image: `${siteConfig.url}/images/og-image.jpg`,
       sameAs: [siteConfig.instagramUrl],
+      alternateName: 'Aafreen Couture By Pearl',
+      telephone: siteConfig.phone,
+      email: siteConfig.email,
+      priceRange: '₹₹₹',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'SCO No. 43, 1st Floor, B-Block Market, New Amritsar',
+        addressLocality: 'Amritsar',
+        addressRegion: 'Punjab',
+        postalCode: '143001',
+        addressCountry: 'IN',
+      },
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+          opens: '10:30',
+          closes: '19:30',
+        },
+      ],
+      areaServed: { '@type': 'Country', name: 'India' },
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'customer service',
@@ -102,20 +106,18 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="en-IN"
       suppressHydrationWarning
       className={cn(
         cormorant.variable,
-        cinzel.variable,
-        jakarta.variable,
-        playfair.variable,
-        manrope.variable
+        jakarta.variable
       )}
     >
       <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
         />
       </head>
       <body className="font-sans antialiased min-h-screen flex flex-col">

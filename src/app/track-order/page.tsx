@@ -9,13 +9,14 @@ import { ShieldCheck, Truck, Clock, Package, Phone, MessageCircle } from 'lucide
 export const metadata: Metadata = {
   title: 'Track Your Order & Shipment Milestones',
   alternates: { canonical: `${siteConfig.url}/track-order` },
+  robots: { index: false, follow: true },
   description:
     'Track your luxury couture shipment in real-time. Enter your order reference number to view live courier transit milestones and estimated delivery date.',
 };
 
 export default function TrackOrderPage() {
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Sub-nav header */}
       <InfoNavHeader />
 
@@ -151,6 +152,6 @@ export default function TrackOrderPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

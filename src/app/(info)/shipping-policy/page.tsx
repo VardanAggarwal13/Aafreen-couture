@@ -9,7 +9,7 @@ import { Truck, Globe, PackageCheck, Clock, Mail, Phone, ArrowRight, CheckCircle
 export const metadata: Metadata = {
   title: 'Shipping & Delivery Policy',
   description:
-    'Discover shipping timelines, free domestic delivery, worldwide express transit, insured packaging, and live order tracking details at Aafreen Couture.',
+    'Discover shipping timelines, delivery charges, worldwide express transit, insured packaging, and live order tracking details at Aafreen Couture.',
   alternates: { canonical: `${siteConfig.url}/shipping-policy` },
 };
 
@@ -27,7 +27,7 @@ const TOC: TocItem[] = [
 export default async function ShippingPolicyPage() {
   const cms = await cmsRepository.findBySlug('shipping-policy');
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
         badge={cms?.heroBadge ?? 'Aafreen Atelier Transit Protocols'}
@@ -92,13 +92,13 @@ export default async function ShippingPolicyPage() {
                 <PackageCheck size={20} />
               </div>
               <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#C49A5A] block mb-1">
-                Order Value Threshold
+                Delivery Charges
               </span>
               <h3 className="font-sans font-bold text-lg text-[#221617] mb-2">
-                Complimentary Shipping
+                Delivery Charges
               </h3>
               <p className="text-sm sm:text-base text-[#5C554E] leading-relaxed font-sans">
-                Free standard insured shipping on all domestic orders above <strong>₹5,000</strong>. Flat ₹149 for orders below ₹5,000.
+                Delivery charges are applicable on all orders and are shown to you before you pay. The charge depends on your delivery location and the order.
               </p>
             </div>
             <div className="mt-5 pt-3 border-t border-[#E8D8C8] flex items-center justify-between text-[11px] text-[#8C7A6B]">
@@ -203,7 +203,7 @@ export default async function ShippingPolicyPage() {
                 <div className="flex items-start gap-3 pb-3 border-b border-[#E8D8C8]/60">
                   <CheckCircle2 size={16} className="text-[#C49A5A] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-[#221617]">Free Shipping:</strong> Complimentary standard shipping on all prepaid orders exceeding ₹5,000. Flat ₹149 delivery applies to domestic orders below ₹5,000.
+                    <strong className="text-[#221617]">Delivery Charges:</strong> Delivery charges are applicable on domestic orders and are displayed before payment.
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -379,6 +379,6 @@ export default async function ShippingPolicyPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

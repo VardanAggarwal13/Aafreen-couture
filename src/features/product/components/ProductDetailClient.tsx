@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { categoryCrumbHref } from '@/config/catalog-seo.config';
 import { motion } from 'framer-motion';
 import {
   Heart,
@@ -185,7 +186,7 @@ export function ProductDetailClient({ product, related }: Props) {
         <span className="text-border">/</span>
         {typeof product.category === 'object' && product.category?.name && (
           <>
-            <Link href={`/shop?category=${product.category.slug}`} className="hover:text-gold transition-colors">
+            <Link href={categoryCrumbHref(product.category.slug)} className="hover:text-gold transition-colors">
               {product.category.name}
             </Link>
             <span className="text-border">/</span>
@@ -246,7 +247,7 @@ export function ProductDetailClient({ product, related }: Props) {
                         alt={i === 0 ? product.name : `${product.name} — photo ${i + 1}`}
                         fill
                         priority={i === 0}
-                        unoptimized
+                        quality={90}
                         sizes="(max-width: 1024px) 100vw, 55vw"
                         className={cn(
                           'object-contain object-center transition-opacity duration-300 ease-out',
@@ -366,13 +367,13 @@ export function ProductDetailClient({ product, related }: Props) {
                     <Star
                       key={i}
                       size={13}
-                      className={i < Math.round(product.averageRating || 5) ? 'text-gold fill-gold' : 'text-border fill-border'}
+                      className={i < Math.round(product.averageRating || 0) ? 'text-gold fill-gold' : 'text-border fill-border'}
                     />
                   ))}
                 </div>
-                <span className="font-medium text-heading">5.0</span>
+                <span className="font-medium text-heading">{product.reviewCount > 0 ? product.averageRating.toFixed(1) : null}</span>
                 <span className="text-border">·</span>
-                <span>{product.reviewCount || 24} client reviews</span>
+                <a href="#reviews" className="hover:text-gold transition-colors">{product.reviewCount > 0 ? `${product.reviewCount} client reviews` : "Be the first to review"}</a>
                 <span className="text-border">·</span>
                 <span className="text-gold font-medium">Bespoke Couture</span>
               </div>
@@ -394,7 +395,7 @@ export function ProductDetailClient({ product, related }: Props) {
                 )}
               </div>
               <p className="text-[11px] text-text/80 mb-3">
-                Inclusive of all taxes · Complimentary express insured delivery across India
+                Inclusive of all taxes · Delivery charges applicable
               </p>
 
               {/* Curated Editorial Excerpt */}
@@ -576,8 +577,8 @@ export function ProductDetailClient({ product, related }: Props) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
             <div className="flex flex-col items-center gap-1.5">
               <Truck size={18} className="text-gold" />
-              <p className="text-[11px] font-semibold text-heading uppercase tracking-wider">Free Express Delivery</p>
-              <p className="text-[10px] text-text">Pan-India insured shipping</p>
+              <p className="text-[11px] font-semibold text-heading uppercase tracking-wider">Insured Express Delivery</p>
+              <p className="text-[10px] text-text">Delivery charges applicable</p>
             </div>
             <div className="flex flex-col items-center gap-1.5">
               <ShieldCheck size={18} className="text-gold" />
@@ -656,9 +657,9 @@ export function ProductDetailClient({ product, related }: Props) {
                 },
                 {
                   key: 'shipping',
-                  label: 'COMPLIMENTARY SHIPPING & DISPATCH TIMELINE',
+                  label: 'SHIPPING & DISPATCH TIMELINE',
                   content:
-                    'Complimentary insured express shipping across India. Dispatch within 3-5 business days for ready styles. Bespoke made-to-measure orders ship within 10-14 business days. Real-time SMS & WhatsApp tracking provided.',
+                    'Insured shipping across India; delivery charges are applicable and shown before payment. Ready styles dispatch within 1-2 business days; delivery takes 5-7 business days after dispatch. Bespoke made-to-measure orders dispatch within 15-25 business days. Real-time SMS & WhatsApp tracking provided.',
                 },
                 {
                   key: 'returns',
@@ -901,8 +902,7 @@ export function ProductDetailClient({ product, related }: Props) {
                 src={allImages[selectedImage]}
                 alt={`${product.name} — photo ${selectedImage + 1}`}
                 fill
-                unoptimized
-                priority
+                quality={90}
                 sizes="100vw"
                 className="object-contain drop-shadow-2xl pointer-events-none"
               />
@@ -940,7 +940,6 @@ export function ProductDetailClient({ product, related }: Props) {
                     src={img}
                     alt={`Thumbnail ${idx + 1}`}
                     fill
-                    unoptimized
                     sizes="56px"
                     className="object-cover"
                   />

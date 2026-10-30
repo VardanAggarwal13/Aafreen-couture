@@ -25,7 +25,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
         <aside className="lg:col-span-1">
           <AccountSidebar user={safeUser} />
         </aside>
-        <main className="lg:col-span-3">{children}</main>
+        <div className="lg:col-span-3">{children}</div>
       </div>
     </div>
   );

@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function WishlistPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <WishlistClient />
-    </main>
+    </div>
   );
 }

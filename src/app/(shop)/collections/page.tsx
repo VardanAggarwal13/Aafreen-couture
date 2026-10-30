@@ -45,7 +45,7 @@ const COLLECTION_GRADIENTS: Record<string, string> = {
 
 export default function CollectionsPage() {
   return (
-    <main className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-screen bg-[#FAF7F2]">
       {/* Page header */}
       <div className="bg-white border-b border-[#E8D8C8] py-14 text-center">
         <p className="text-[10.5px] font-semibold uppercase tracking-[0.4em] text-[#A67C52] mb-3">
@@ -95,6 +95,6 @@ export default function CollectionsPage() {
           })}
         </div>
       </div>
-    </main>
+    </div>
   );
 }

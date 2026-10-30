@@ -556,9 +556,8 @@ export function CartClientPage() {
 
                 <div className="flex justify-between text-[#735A4A]">
                   <span>Insured Express Shipping</span>
-                  <span className="text-emerald-700 font-semibold flex items-center gap-1">
-                    <Check size={12} />
-                    <span>Free</span>
+                  <span className="text-[#735A4A] font-medium flex items-center gap-1">
+                    <span>Charges applicable</span>
                   </span>
                 </div>
 

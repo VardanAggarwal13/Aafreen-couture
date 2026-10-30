@@ -27,7 +27,7 @@ const TOC: TocItem[] = [
 export default async function PrivacyPolicyPage() {
   const cms = await cmsRepository.findBySlug('privacy-policy');
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
         badge={cms?.heroBadge ?? 'Data Protection & Security'}
@@ -229,6 +229,6 @@ export default async function PrivacyPolicyPage() {
 
         </div>
       </div>
-    </main>
+    </div>
   );
 }

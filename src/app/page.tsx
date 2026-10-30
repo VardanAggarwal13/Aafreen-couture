@@ -5,16 +5,16 @@ import { NewArrivals } from '@/features/home/components/NewArrivals';
 import { ShopByOccasion } from '@/features/home/components/ShopByOccasion';
 import { FeaturedCollections } from '@/features/home/components/FeaturedCollections';
 import { BestSellers } from '@/features/home/components/BestSellers';
-import { Testimonials } from '@/features/home/components/Testimonials';
+import { CustomerReviews } from '@/features/home/components/CustomerReviews';
 import { siteConfig } from '@/config/site.config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
-    absolute: `${siteConfig.name} — Luxury Indian Bridal & Wedding Wear`,
+    absolute: `Bridal Lehengas Online India | ${siteConfig.name}, Amritsar`,
   },
   description:
-    'Shop luxury Indian bridal lehengas, bespoke designer suits, and handcrafted wedding wear at Aafreen Couture. Timeless royal elegance crafted for modern brides.',
+    'Handcrafted bridal lehengas, designer suits and wedding couture from our Amritsar atelier. Made-to-measure pieces, shipped across India and worldwide.',
   alternates: { canonical: siteConfig.url },
   openGraph: {
     title: `${siteConfig.name} — Luxury Indian Bridal & Wedding Wear`,
@@ -34,6 +34,8 @@ export const metadata: Metadata = {
     images: [`${siteConfig.url}/images/og-home.jpg`],
   },
 };
+
+export const revalidate = 120;
 
 export default function HomePage() {
   return (
@@ -60,7 +62,7 @@ export default function HomePage() {
       <BestSellers />
 
       {/* 8. Testimonials */}
-      <Testimonials />
+      <CustomerReviews />
     </>
   );
 }

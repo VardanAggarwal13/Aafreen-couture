@@ -1,6 +1,6 @@
 export default function OccasionsLoading() {
   return (
-    <main className="min-h-screen bg-[#FAF7F2] animate-in fade-in duration-150">
+    <div className="min-h-screen bg-[#FAF7F2] animate-in fade-in duration-150">
       {/* Top Breadcrumb Bar */}
       <div className="w-full bg-[#FAF7F2] border-b border-[#E8D8C8]/70">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center gap-2">
@@ -42,6 +42,6 @@ export default function OccasionsLoading() {
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
 }

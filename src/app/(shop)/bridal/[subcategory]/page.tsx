@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
+import { notFound } from 'next/navigation';
+import { BRIDAL_OCCASION_ALIASES, CATALOG_SEO } from '@/config/catalog-seo.config';
+import { CoutureCatalogServer } from '@/components/shop/CoutureCatalogServer';
 import { siteConfig } from '@/config/site.config';
 
 export const revalidate = 120;
@@ -63,36 +65,46 @@ const BRIDAL_SUB_TITLES: Record<string, BridalSubInfo> = {
   },
 };
 
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return Object.keys(BRIDAL_SUB_TITLES).map((subcategory) => ({ subcategory }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = BRIDAL_SUB_TITLES[subcategory];
-  const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const description = info?.subtitle || `Explore authentic luxury ${title} by Aafreen Couture.`;
+  if (!info) notFound();
+  // /bridal/<occasion> repeats /occasions/<occasion>, so the occasion page is the canonical one.
+  const alias = BRIDAL_OCCASION_ALIASES[subcategory];
+  const seo = CATALOG_SEO[alias ? `occasions/${alias}` : `bridal/${subcategory}`];
+  const title = seo?.metaTitle ?? info.title;
+  const description = seo?.metaDescription ?? info.subtitle;
+  const path = alias ? `/occasions/${alias}` : `/bridal/${subcategory}`;
   return {
-    title: `${title} | Aafreen Couture Bridal`,
+    title,
     description,
-    alternates: { canonical: `${siteConfig.url}/bridal/${subcategory}` },
-    openGraph: { title: `${title} | Aafreen Couture Bridal`, description },
+    alternates: { canonical: `${siteConfig.url}${path}` },
+    openGraph: { title: `${title} | ${siteConfig.name}`, description },
   };
 }
 
 export default async function BridalSubcategoryPage({ params }: Props) {
   const { subcategory } = await params;
   const info = BRIDAL_SUB_TITLES[subcategory];
-  const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-
-  const categorySlug = info?.categorySlug ?? subcategory;
-  const occasionSlug = info?.occasionSlug;
+  if (!info) notFound();
+  const alias = BRIDAL_OCCASION_ALIASES[subcategory];
 
   return (
-    <CoutureCatalogView
-      title={title}
-      subtitle={info?.subtitle}
-      categorySlug={categorySlug}
-      occasionSlug={occasionSlug}
+    <CoutureCatalogServer
+      title={info.title}
+      subtitle={info.subtitle}
+      categorySlug={info.categorySlug ?? subcategory}
+      occasionSlug={info.occasionSlug}
+      seoKey={alias ? `occasions/${alias}` : `bridal/${subcategory}`}
       breadcrumbs={[
         { label: 'Bridal', href: '/bridal' },
-        { label: title },
+        { label: info.title },
       ]}
     />
   );

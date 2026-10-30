@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
+import { notFound } from 'next/navigation';
+import { CATALOG_SEO } from '@/config/catalog-seo.config';
+import { CoutureCatalogServer } from '@/components/shop/CoutureCatalogServer';
 import { siteConfig } from '@/config/site.config';
 
 export const revalidate = 120;
@@ -46,33 +48,41 @@ const OCCASIONS_SUB_INFO: Record<string, { title: string; subtitle: string; occa
   },
 };
 
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return Object.keys(OCCASIONS_SUB_INFO).map((subcategory) => ({ subcategory }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = OCCASIONS_SUB_INFO[subcategory];
-  const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const description = `Discover royal ${title.toLowerCase()} couture by Aafreen Couture. Featuring artisanal zardozi embroidery, heritage silhouettes, and celebratory fabrics.`;
+  if (!info) notFound();
+  const seo = CATALOG_SEO['occasions/' + subcategory];
+  const title = seo?.metaTitle ?? info.title;
+  const description = seo?.metaDescription ?? info.subtitle;
   return {
-    title: `${title} — Wedding Occasions`,
+    title,
     description,
     alternates: { canonical: `${siteConfig.url}/occasions/${subcategory}` },
-    openGraph: { title: `${title} — Wedding Occasions | Aafreen Couture`, description },
+    openGraph: { title: `${title} | ${siteConfig.name}`, description },
   };
 }
 
 export default async function OccasionSubcategoryPage({ params }: Props) {
   const { subcategory } = await params;
   const info = OCCASIONS_SUB_INFO[subcategory];
-  const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const occasionSlug = info?.occasionSlug || subcategory;
+  if (!info) notFound();
 
   return (
-    <CoutureCatalogView
-      title={title}
-      subtitle={info?.subtitle}
-      occasionSlug={occasionSlug}
+    <CoutureCatalogServer
+      title={info.title}
+      subtitle={info.subtitle}
+      occasionSlug={info.occasionSlug ?? subcategory}
+      seoKey={`occasions/${subcategory}`}
       breadcrumbs={[
         { label: 'Occasions', href: '/occasions' },
-        { label: title },
+        { label: info.title },
       ]}
     />
   );

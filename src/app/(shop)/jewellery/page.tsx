@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
+import { CoutureCatalogServer } from '@/components/shop/CoutureCatalogServer';
 import { siteConfig } from '@/config/site.config';
+import { CATALOG_SEO } from '@/config/catalog-seo.config';
 
 export const metadata: Metadata = {
-  title: 'Royal Bridal Jewellery, Chokers & Polki Sets',
-  description:
-    'Explore heritage kundan, polki, jadau, and cultured pearl jewellery handcrafted to crown royal bridal lehengas and festive Indian couture ensembles.',
+  title: CATALOG_SEO['jewellery/main'].metaTitle,
+  description: CATALOG_SEO['jewellery/main'].metaDescription,
   alternates: { canonical: `${siteConfig.url}/jewellery` },
 };
 
@@ -13,7 +13,8 @@ export const revalidate = 120;
 
 export default function JewelleryPage() {
   return (
-    <CoutureCatalogView
+    <CoutureCatalogServer
+      seoKey="jewellery/main"
       title="Royal Jewellery"
       subtitle="Exquisite heirloom kundan, jadau, polki, and cultured pearl creations handcrafted to accompany your couture attire."
       categorySlug="jewellery"

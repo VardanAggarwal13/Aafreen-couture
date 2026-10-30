@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
@@ -15,7 +16,7 @@ import { useCartStore } from '@/store/cart.store';
 import { useWishlistStore } from '@/store/wishlist.store';
 import { useSession, authClient } from '@/lib/auth-client';
 import { api } from '@/utils/api';
-import { SearchOverlay } from '@/components/common/SearchOverlay';
+const SearchOverlay = dynamic(() => import('@/components/common/SearchOverlay').then((m) => m.SearchOverlay), { ssr: false });
 
 export function Navbar() {
   const pathname = usePathname();
@@ -47,6 +48,7 @@ function StorefrontNavbar() {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchLoaded, setSearchLoaded] = useState(false);
 
   const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
@@ -60,17 +62,24 @@ function StorefrontNavbar() {
   }, []);
 
   useEffect(() => {
-    // Warm key routes immediately so clicking has zero latency
-    try {
-      router.prefetch(ROUTES.LOGIN);
-      router.prefetch(ROUTES.REGISTER);
-      router.prefetch(ROUTES.ORDERS);
-      router.prefetch(ROUTES.WISHLIST);
-      router.prefetch(ROUTES.CART);
-    } catch {
-      // Safe fallback
-    }
+    // Warm key routes once the browser is idle so first paint is not competing with prefetches
+    const warm = () => {
+      try {
+        router.prefetch(ROUTES.LOGIN);
+        router.prefetch(ROUTES.ORDERS);
+        router.prefetch(ROUTES.CART);
+      } catch {
+        // Safe fallback
+      }
+    };
+    const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback;
+    if (idle) idle(warm);
+    else setTimeout(warm, 2000);
   }, [router]);
+
+  useEffect(() => {
+    if (searchOpen) setSearchLoaded(true);
+  }, [searchOpen]);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 8);
@@ -195,7 +204,6 @@ function StorefrontNavbar() {
                       <div className="lg:hidden px-2.5 py-1.5 border-b border-border/70 space-y-1 bg-background/50">
                         <Link
                           href={ROUTES.CART}
-                          prefetch={true}
                           onClick={() => setAccountMenuOpen(false)}
                           className="flex items-center justify-between px-3 py-2 rounded-lg text-heading font-medium hover:bg-surface hover:text-gold transition-colors"
                         >
@@ -211,7 +219,6 @@ function StorefrontNavbar() {
                         </Link>
                         <Link
                           href={ROUTES.WISHLIST}
-                          prefetch={true}
                           onClick={() => setAccountMenuOpen(false)}
                           className="flex items-center justify-between px-3 py-2 rounded-lg text-heading font-medium hover:bg-surface hover:text-gold transition-colors"
                         >
@@ -235,7 +242,6 @@ function StorefrontNavbar() {
                           </div>
                           <Link
                             href={ROUTES.ORDERS}
-                            prefetch={true}
                             onClick={() => setAccountMenuOpen(false)}
                             className="block px-4 py-2 text-heading hover:bg-background hover:text-gold transition-colors"
                           >
@@ -243,7 +249,6 @@ function StorefrontNavbar() {
                           </Link>
                           <Link
                             href={ROUTES.ADDRESSES}
-                            prefetch={true}
                             onClick={() => setAccountMenuOpen(false)}
                             className="block px-4 py-2 text-heading hover:bg-background hover:text-gold transition-colors"
                           >
@@ -251,7 +256,6 @@ function StorefrontNavbar() {
                           </Link>
                           <Link
                             href={ROUTES.PROFILE}
-                            prefetch={true}
                             onClick={() => setAccountMenuOpen(false)}
                             className="block px-4 py-2 text-heading hover:bg-background hover:text-gold transition-colors"
                           >
@@ -290,7 +294,6 @@ function StorefrontNavbar() {
                           <div className="px-4 py-2 border-t border-border/60 space-y-2">
                             <Link
                               href={ROUTES.LOGIN}
-                              prefetch={true}
                               onClick={() => setAccountMenuOpen(false)}
                               className="block text-center py-2 bg-heading text-surface font-semibold uppercase tracking-wider text-[11px] rounded-lg hover:bg-gold transition-colors"
                             >
@@ -298,7 +301,6 @@ function StorefrontNavbar() {
                             </Link>
                             <Link
                               href={ROUTES.REGISTER}
-                              prefetch={true}
                               onClick={() => setAccountMenuOpen(false)}
                               className="block text-center py-1.5 border border-border text-heading font-medium text-[11px] rounded-lg hover:border-gold hover:text-gold transition-colors"
                             >
@@ -334,7 +336,7 @@ function StorefrontNavbar() {
         </div>
       </header>
 
-      <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      {(searchOpen || searchLoaded) && <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />}
 
       {/* Mobile drawer */}
       <AnimatePresence>
@@ -362,7 +364,6 @@ function StorefrontNavbar() {
                     width={160}
                     height={76}
                     className="h-11 w-auto object-contain"
-                    priority
                   />
                 </Link>
                 <button onClick={() => setMobileOpen(false)} aria-label="Close" className="p-1 text-heading/60 hover:text-heading">
@@ -394,7 +395,6 @@ function StorefrontNavbar() {
                               <Link
                                 key={sub.href}
                                 href={sub.href}
-                                prefetch={true}
                                 className={cn(
                                   'block pl-8 pr-5 py-2.5 text-[11px] text-text hover:text-gold transition-colors',
                                   i === arr.length - 1 && 'font-semibold text-gold border-t border-border/60 mt-1 pt-2.5'
@@ -428,7 +428,6 @@ function StorefrontNavbar() {
                 <div className="grid grid-cols-2 gap-2 pb-3 border-b border-border/60">
                   <Link
                     href={ROUTES.CART}
-                    prefetch={true}
                     className="flex items-center justify-between px-3 py-2 rounded-lg bg-surface border border-border/70 text-heading text-xs font-medium hover:border-gold hover:text-gold transition-colors"
                     onClick={() => setMobileOpen(false)}
                   >
@@ -444,7 +443,6 @@ function StorefrontNavbar() {
                   </Link>
                   <Link
                     href={ROUTES.WISHLIST}
-                    prefetch={true}
                     className="flex items-center justify-between px-3 py-2 rounded-lg bg-surface border border-border/70 text-heading text-xs font-medium hover:border-gold hover:text-gold transition-colors"
                     onClick={() => setMobileOpen(false)}
                   >
@@ -503,7 +501,6 @@ function StorefrontNavbar() {
                   <div className="space-y-2">
                     <Link
                       href={ROUTES.LOGIN}
-                      prefetch={true}
                       className="block text-center py-2 bg-heading text-surface text-xs font-semibold uppercase tracking-wider hover:bg-gold transition-colors rounded-lg"
                       onClick={() => setMobileOpen(false)}
                     >
@@ -511,7 +508,6 @@ function StorefrontNavbar() {
                     </Link>
                     <Link
                       href={ROUTES.REGISTER}
-                      prefetch={true}
                       className="block text-center py-2 border border-border text-heading text-xs font-medium hover:border-gold hover:text-gold transition-colors rounded-lg"
                       onClick={() => setMobileOpen(false)}
                     >
@@ -589,7 +585,6 @@ function NavItem({
     >
       <Link
         href={link.href}
-        prefetch={true}
         className={cn(
           'flex items-center gap-0.5 xl:gap-1 px-2 xl:px-3 py-2 text-[10px] xl:text-[11px] font-sans font-medium tracking-[0.11em] xl:tracking-[0.14em] uppercase transition-colors whitespace-nowrap',
           link.isSale
@@ -624,7 +619,6 @@ function NavItem({
                   <Link
                     key={sub.href}
                     href={sub.href}
-                    prefetch={true}
                     onMouseEnter={() => {
                       try {
                         router.prefetch(sub.href);

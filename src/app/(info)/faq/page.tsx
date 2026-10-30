@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { FaqAccordion, type FaqCategory } from '@/features/faq/components/FaqAccordion';
 import { InfoHeroBanner } from '@/features/info/components/InfoHeroBanner';
 import { siteConfig } from '@/config/site.config';
+import { jsonLdString } from '@/utils/seo';
 import { cmsRepository } from '@/server/repositories/cms.repository';
 
 export const metadata: Metadata = {
@@ -105,10 +106,10 @@ export default async function FAQPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(faqJsonLd) }}
       />
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
@@ -125,6 +126,6 @@ export default async function FAQPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <FaqAccordion faqs={FAQS} />
       </div>
-    </main>
+    </div>
   );
 }

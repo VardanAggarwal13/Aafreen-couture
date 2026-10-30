@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { CategoryHubView } from '@/components/shop/CategoryHubView';
+import { CategoryHubServer } from '@/components/shop/CategoryHubServer';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
@@ -72,7 +72,8 @@ const SUITS_CHAPTERS = [
 
 export default function SuitsPage() {
   return (
-    <CategoryHubView
+    <CategoryHubServer
+      hubKey="suits"
       title="The Royal"
       italicTitle="Suit Atelier"
       badge="Aafreen Atelier · Fine Tailoring"

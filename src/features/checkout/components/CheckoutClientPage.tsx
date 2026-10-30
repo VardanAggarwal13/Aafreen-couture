@@ -703,7 +703,7 @@ export function CheckoutClientPage() {
 
                 <div className="flex items-center gap-2 text-xs text-text/80 pt-2">
                   <ShieldCheck size={14} className="text-emerald-700 shrink-0" />
-                  <span>100% Insured Shipping · Complimentary Alterations · Atelier Concierge Care</span>
+                  <span>100% Insured Shipping · Complimentary Fit Alterations · Atelier Concierge Care</span>
                 </div>
 
                 <div className="flex gap-3 pt-3 border-t border-border">
@@ -772,8 +772,8 @@ export function CheckoutClientPage() {
               )}
               <div className="flex justify-between text-text">
                 <span>Shipping</span>
-                <span className={shippingCharge === 0 ? 'text-emerald-700 font-medium' : 'text-heading font-medium'}>
-                  {shippingCharge === 0 ? 'Complimentary' : formatPrice(shippingCharge)}
+                <span className="text-heading font-medium">
+                  {shippingCharge === 0 ? 'Charges applicable' : formatPrice(shippingCharge)}
                 </span>
               </div>
               <div className="flex justify-between font-serif text-sm font-bold text-heading pt-2 border-t border-border">

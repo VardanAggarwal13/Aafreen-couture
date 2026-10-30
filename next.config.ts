@@ -1,16 +1,18 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // Lets a verification build run beside a live dev server without touching its .next folder.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   serverExternalPackages: ['mongodb', 'mongoose'],
   compress: true,
   poweredByHeader: false,
   images: {
-    unoptimized: true,
-    formats: ['image/avif', 'image/webp'],
-    qualities: [75, 80, 85, 90, 95, 100],
+    // Resizing/format negotiation happens on the Cloudinary CDN (see image-loader.ts),
+    // so no server-side optimizer is involved and local /public images pass through as-is.
+    loader: 'custom',
+    loaderFile: './src/lib/image-loader.ts',
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 2592000, // 30 days
     remotePatterns: [
       {
         protocol: 'https',
@@ -62,12 +64,12 @@ const nextConfig: NextConfig = {
         key: 'Content-Security-Policy',
         value: [
           "default-src 'self'",
-          "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://checkout.razorpay.com https://api.razorpay.com https://connect.facebook.net",
+          "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://checkout.razorpay.com https://api.razorpay.com https://connect.facebook.net",
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
           "font-src 'self' https://fonts.gstatic.com data:",
-          "img-src 'self' blob: data: https://res.cloudinary.com https://images.unsplash.com https://plus.unsplash.com https://www.facebook.com",
+          "img-src 'self' blob: data: https://www.google-analytics.com https://www.googletagmanager.com https://res.cloudinary.com https://images.unsplash.com https://plus.unsplash.com https://www.facebook.com",
           "frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com",
-          "connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com https://res.cloudinary.com https://www.facebook.com https://connect.facebook.net",
+          "connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://api.razorpay.com https://lumberjack.razorpay.com https://res.cloudinary.com https://www.facebook.com https://connect.facebook.net",
         ].join('; '),
       },
     ];
@@ -101,7 +103,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=86400, stale-while-revalidate=604800',
+            value: 'public, max-age=2592000, stale-while-revalidate=604800',
           },
         ],
       },

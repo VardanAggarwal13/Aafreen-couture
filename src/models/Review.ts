@@ -2,7 +2,8 @@ import mongoose, { Schema, model, models, type Document } from 'mongoose';
 
 export interface IReview extends Document {
   product: mongoose.Types.ObjectId;
-  user: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId | string;
+  authorName: string;
   order: mongoose.Types.ObjectId;
   rating: number;
   title: string;
@@ -18,11 +19,13 @@ export interface IReview extends Document {
 const ReviewSchema = new Schema<IReview>(
   {
     product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    // Better Auth user ids are plain strings in some collections, so don't force ObjectId.
+    user: { type: Schema.Types.Mixed, required: true },
+    authorName: { type: String, trim: true, maxlength: 80, default: 'Verified Customer' },
     order: { type: Schema.Types.ObjectId, ref: 'Order', required: true },
     rating: { type: Number, required: true, min: 1, max: 5 },
     title: { type: String, required: true, trim: true, maxlength: 100 },
-    body: { type: String, required: true, trim: true, maxlength: 2000 },
+    body: { type: String, required: true, trim: true, minlength: 10, maxlength: 2000 },
     images: [{ type: String }],
     isVerifiedPurchase: { type: Boolean, default: true },
     isApproved: { type: Boolean, default: false },

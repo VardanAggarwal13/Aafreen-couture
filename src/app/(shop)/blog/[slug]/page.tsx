@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, Clock, Calendar, User } from 'lucide-react';
 import { blogRepository } from '@/server/repositories/blog.repository';
 import { siteConfig } from '@/config/site.config';
-import { buildBreadcrumbJsonLd } from '@/utils/seo';
+import { buildBreadcrumbJsonLd, jsonLdString } from '@/utils/seo';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -17,10 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return { title: 'Article Not Found | Aafreen Couture' };
 
   return {
-    title: `${post.title} | Aafreen Couture Journal`,
+    title: post.title,
     description: post.excerpt,
     alternates: { canonical: `${siteConfig.url}/blog/${slug}` },
     openGraph: {
+      type: 'article',
+      url: `${siteConfig.url}/blog/${slug}`,
       title: post.title,
       description: post.excerpt,
       images: [{ url: post.image }],
@@ -49,25 +51,25 @@ export default async function BlogPostPage({ params }: Props) {
     description: post.excerpt,
     image: post.image.startsWith('http') ? post.image : `${siteConfig.url}${post.image}`,
     datePublished: publishedIso,
-    dateModified: publishedIso,
+    dateModified: post.updatedAt ? new Date(post.updatedAt).toISOString() : publishedIso,
     author: { '@type': 'Person', name: post.author },
     publisher: {
       '@type': 'Organization',
       name: siteConfig.name,
-      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/images/og-image.jpg` },
+      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/images/logo.webp` },
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteConfig.url}/blog/${slug}` },
   };
 
   return (
-    <main className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumbJsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(articleJsonLd) }}
       />
       {/* Article Header */}
       <div className="bg-[#FAF7F2] border-b border-[#E8D8C8] py-14">
@@ -162,6 +164,6 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         )}
       </article>
-    </main>
+    </div>
   );
 }

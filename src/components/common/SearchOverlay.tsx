@@ -96,6 +96,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
         <form onSubmit={handleSubmit} className="flex items-center gap-3 px-5 sm:px-6 h-16 sm:h-[68px] shrink-0">
           <Search size={19} className={cn('shrink-0 transition-colors', focused ? 'text-gold' : 'text-text/50')} />
           <input
+            aria-label="Search products"
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}

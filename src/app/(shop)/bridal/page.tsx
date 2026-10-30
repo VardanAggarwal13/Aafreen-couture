@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { CategoryHubView } from '@/components/shop/CategoryHubView';
+import { CategoryHubServer } from '@/components/shop/CategoryHubServer';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'Discover heirloom bridal lehengas, regal bridal suits, bridesmaid ensembles, and reception gowns handcrafted with zardozi and fine silks at Aafreen Couture.',
     url: `${siteConfig.url}/bridal`,
     siteName: siteConfig.name,
-    images: [{ url: `${siteConfig.url}https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/bridal-hero-wide.webp`, width: 1200, height: 630, alt: 'Royal Bridal Edit Aafreen Couture' }],
+    images: [{ url: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/bridal-hero-wide.webp', width: 1200, height: 630, alt: 'Royal Bridal Edit Aafreen Couture' }],
   },
 };
 
@@ -56,7 +56,8 @@ const BRIDAL_CHAPTERS = [
 
 export default function BridalPage() {
   return (
-    <CategoryHubView
+    <CategoryHubServer
+      hubKey="bridal"
       title="The Royal"
       italicTitle="Bridal Edit"
       badge="Aafreen Atelier · Royal Heritage"

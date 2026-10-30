@@ -8,7 +8,7 @@ import { productService } from '@/server/services/product.service';
 import { ProductCard } from '@/components/product/ProductCard';
 import { siteConfig } from '@/config/site.config';
 import { FALLBACK_COLLECTIONS } from '@/data/products.data';
-import { buildBreadcrumbJsonLd } from '@/utils/seo';
+import { buildBreadcrumbJsonLd, buildItemListJsonLd, jsonLdString } from '@/utils/seo';
 import type { IProduct } from '@/types';
 
 interface Props { params: Promise<{ slug: string }> }
@@ -37,7 +37,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const rawDesc = collection.seoDescription ?? collection.description ?? '';
   let cleanDesc = rawDesc.trim();
   if (!cleanDesc || cleanDesc.length < 120) {
-    cleanDesc = `Explore the ${collection.name} collection by Aafreen Couture. Featuring handcrafted bridal wear, bespoke embroidery, and regal Indian silhouettes.`;
+    // Avoid "the The Bag Edit" when the collection name already starts with "The".
+    const collectionLabel = collection.name.replace(/^the\s+/i, '');
+    cleanDesc = `Explore the ${collectionLabel} collection by Aafreen Couture: handcrafted pieces with fine embroidery and regal Indian silhouettes, from our Amritsar atelier.`;
   } else if (cleanDesc.length > 155) {
     cleanDesc = cleanDesc.slice(0, 152).trim() + '...';
   }
@@ -103,8 +105,14 @@ export default async function CollectionPage({ params }: Props) {
     <div className="bg-[#FAF7F2] min-h-screen">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumbJsonLd) }}
       />
+      {products.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdString(buildItemListJsonLd(collection.name, products)) }}
+        />
+      )}
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3">
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-[#8C7A6B]">
@@ -190,7 +198,7 @@ export default async function CollectionPage({ params }: Props) {
                   </div>
                   <div className="pt-2 pb-0.5 text-center">
                     <p className="text-[10px] uppercase tracking-[0.25em] text-[#8C7A6B] font-sans">
-                      The Grand Palace Showcase · Jaipur Atelier
+                      The Grand Palace Showcase · Amritsar Atelier
                     </p>
                   </div>
                 </div>

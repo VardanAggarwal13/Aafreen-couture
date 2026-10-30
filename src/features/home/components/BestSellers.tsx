@@ -61,7 +61,7 @@ export async function BestSellers() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
           {products.length > 0
             ? products.map((product, i) => (
-                <ProductCard key={product._id} product={product} priority={i < 4} />
+                <ProductCard key={product._id} product={product} priority={false} />
               ))
             : Array.from({ length: 4 }, (_, i) => (
                 <ProductCardSkeleton key={i} index={i} />

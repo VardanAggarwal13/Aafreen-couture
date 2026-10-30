@@ -32,9 +32,9 @@ export function AdminShell({ user, children }: AdminShellProps) {
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#F8F5F1]">
         <AdminHeader user={user} onMenuClick={() => setMobileSidebarOpen(true)} />
-        <main className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-4 bg-[#F8F5F1]">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-4 bg-[#F8F5F1]">
           {children}
-        </main>
+        </div>
       </div>
     </div>
   );

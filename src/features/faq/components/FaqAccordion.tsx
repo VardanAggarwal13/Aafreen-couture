@@ -135,11 +135,9 @@ export function FaqAccordion({ faqs }: { faqs: FaqCategory[] }) {
                           <ChevronDown size={14} />
                         </div>
                       </button>
-                      {isOpen && (
-                        <div className="px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-[13px] text-[#5C554E] leading-[1.8] border-t border-[#E8D8C8]/60 bg-gradient-to-b from-[#FAF7F2]/40 to-white">
+                      <div hidden={!isOpen} className="px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-[13px] text-[#5C554E] leading-[1.8] border-t border-[#E8D8C8]/60 bg-gradient-to-b from-[#FAF7F2]/40 to-white">
                           <p>{item.a}</p>
                         </div>
-                      )}
                     </div>
                   );
                 })}

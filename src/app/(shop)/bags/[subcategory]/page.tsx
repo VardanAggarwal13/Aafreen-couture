@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
+import { notFound } from 'next/navigation';
+import { CATALOG_SEO } from '@/config/catalog-seo.config';
+import { CoutureCatalogServer } from '@/components/shop/CoutureCatalogServer';
 import { siteConfig } from '@/config/site.config';
 
 export const revalidate = 120;
@@ -36,33 +38,41 @@ const BAGS_SUB_INFO: Record<string, { title: string; subtitle: string; categoryS
   },
 };
 
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return Object.keys(BAGS_SUB_INFO).map((subcategory) => ({ subcategory }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = BAGS_SUB_INFO[subcategory];
-  const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const description = `Discover handcrafted designer ${title.toLowerCase()} by Aafreen Couture. Embellished with fine pearls, zardozi work, and premium metallic accents.`;
+  if (!info) notFound();
+  const seo = CATALOG_SEO['bags/' + subcategory];
+  const title = seo?.metaTitle ?? info.title;
+  const description = seo?.metaDescription ?? info.subtitle;
   return {
-    title: `${title} — Luxury Designer Bags`,
+    title,
     description,
     alternates: { canonical: `${siteConfig.url}/bags/${subcategory}` },
-    openGraph: { title: `${title} — Luxury Designer Bags | Aafreen Couture`, description },
+    openGraph: { title: `${title} | ${siteConfig.name}`, description },
   };
 }
 
 export default async function BagsSubcategoryPage({ params }: Props) {
   const { subcategory } = await params;
   const info = BAGS_SUB_INFO[subcategory];
-  const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const categorySlug = info?.categorySlug || subcategory;
+  if (!info) notFound();
 
   return (
-    <CoutureCatalogView
-      title={title}
-      subtitle={info?.subtitle}
-      categorySlug={categorySlug}
+    <CoutureCatalogServer
+      title={info.title}
+      subtitle={info.subtitle}
+      categorySlug={info.categorySlug ?? subcategory}
+      seoKey={`bags/${subcategory}`}
       breadcrumbs={[
         { label: 'Bags', href: '/bags' },
-        { label: title },
+        { label: info.title },
       ]}
     />
   );

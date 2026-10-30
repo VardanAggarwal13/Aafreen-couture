@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { ChevronRight, ChevronDown, X, RotateCcw } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
@@ -10,14 +9,14 @@ import { api } from '@/utils/api';
 import type { PaginatedResponse } from '@/types/api.types';
 import { ProductCard } from '@/components/product/ProductCard';
 import type { IProduct } from '@/types';
-import { buildBreadcrumbJsonLd } from '@/utils/seo';
+import { buildBreadcrumbJsonLd, buildItemListJsonLd, jsonLdString } from '@/utils/seo';
 
 export interface BreadcrumbItem {
   label: string;
   href?: string;
 }
 
-interface CoutureCatalogProps {
+export interface CoutureCatalogProps {
   title: string;
   subtitle?: string;
   categorySlug?: string;
@@ -25,6 +24,7 @@ interface CoutureCatalogProps {
   defaultSort?: string;
   breadcrumbs: BreadcrumbItem[];
   isBridalHero?: boolean;
+  initialData?: PaginatedResponse<IProduct>;
 }
 
 const SORT_OPTIONS = [
@@ -61,27 +61,38 @@ export function CoutureCatalogView({
   occasionSlug,
   defaultSort = 'newest',
   breadcrumbs,
+  initialData,
 }: CoutureCatalogProps) {
-  const searchParams = useSearchParams();
-
   const [activeDropdown, setActiveDropdown] = useState<'price' | 'color' | 'size' | 'fabric' | null>(null);
-  const [sort, setSort] = useState(searchParams?.get('sort') || defaultSort);
-  const [selectedColor, setSelectedColor] = useState(searchParams?.get('color') || '');
-  const [selectedSize, setSelectedSize] = useState(searchParams?.get('size') || '');
-  const [selectedFabric, setSelectedFabric] = useState(searchParams?.get('fabric') || '');
-  const initialPriceParam = searchParams?.get('price');
-  const [priceIdx, setPriceIdx] = useState<number | null>(
-    initialPriceParam !== null && initialPriceParam !== undefined && initialPriceParam !== ''
-      ? Number(initialPriceParam)
-      : null
-  );
-  const [page, setPage] = useState(
-    searchParams?.get('page') ? Number(searchParams.get('page')) : 1
-  );
+  // Filters start from the defaults so the server-rendered HTML (and first client render) is the
+  // plain listing; reading the query string here instead of via useSearchParams keeps the page
+  // statically renderable. A shared filtered link is applied right after mount.
+  const [sort, setSort] = useState(defaultSort);
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedFabric, setSelectedFabric] = useState('');
+  const [priceIdx, setPriceIdx] = useState<number | null>(null);
+  const [page, setPage] = useState(1);
+  const urlSynced = useRef(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('sort')) setSort(params.get('sort') as string);
+    if (params.get('color')) setSelectedColor(params.get('color') as string);
+    if (params.get('size')) setSelectedSize(params.get('size') as string);
+    if (params.get('fabric')) setSelectedFabric(params.get('fabric') as string);
+    const price = params.get('price');
+    if (price !== null && price !== '' && Number.isFinite(Number(price))) setPriceIdx(Number(price));
+    const pageParam = Number(params.get('page'));
+    if (pageParam > 1) setPage(pageParam);
+  }, []);
 
   // Sync state changes to browser URL query parameters without triggering full page reloads
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!urlSynced.current) {
+      urlSynced.current = true; // first run: leave the incoming URL alone
+      return;
+    }
     const params = new URLSearchParams();
     if (sort && sort !== defaultSort) params.set('sort', sort);
     if (selectedColor) params.set('color', selectedColor);
@@ -96,6 +107,8 @@ export function CoutureCatalogView({
   }, [sort, selectedColor, selectedSize, selectedFabric, priceIdx, page, defaultSort]);
 
   const activeRange = priceIdx !== null ? PRICE_RANGES[priceIdx] : null;
+  const isDefaultView =
+    sort === defaultSort && !selectedColor && !selectedSize && !selectedFabric && priceIdx === null && page === 1;
 
   const { data, isLoading } = useQuery<PaginatedResponse<IProduct>>({
     queryKey: [
@@ -122,6 +135,7 @@ export function CoutureCatalogView({
       if (page > 1) q.set('page', String(page));
       return api.getPaginated<IProduct>(`/api/products?${q.toString()}`);
     },
+    initialData: isDefaultView ? initialData : undefined,
     placeholderData: (prev) => prev,
     staleTime: 60 * 1000,
   });
@@ -157,8 +171,14 @@ export function CoutureCatalogView({
     <div className="min-h-screen bg-[#FAF7F2]">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumbJsonLd) }}
       />
+      {products.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdString(buildItemListJsonLd(title, products)) }}
+        />
+      )}
       {/* 1. Refined Minimal Editorial Header */}
       <div className="w-full bg-[#FAF5EE] border-b border-[#E8D4BE]">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-10 text-center">
@@ -382,6 +402,7 @@ export function CoutureCatalogView({
                 Sort:
               </span>
               <select
+                aria-label="Sort products"
                 value={sort}
                 onChange={(e) => {
                   setSort(e.target.value);
@@ -432,7 +453,7 @@ export function CoutureCatalogView({
       </div>
 
       {/* 3. Full-Width High-Fashion Product Grid */}
-      <main className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-10 lg:py-12">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-10 lg:py-12">
         {isLoading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-6">
             {Array.from({ length: 8 }, (_, i) => (
@@ -517,7 +538,7 @@ export function CoutureCatalogView({
             )}
           </>
         )}
-      </main>
+      </div>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { ROUTES } from '@/constants/routes';
 export const metadata: Metadata = {
   title: `Client Atelier Portal — ${siteConfig.name}`,
   description: 'Sign in to access your bespoke orders, bridal measurements, and exclusive preview collections.',
+  robots: { index: false, follow: false },
 };
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
@@ -46,9 +47,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       </header>
 
       {/* Main Authentication Flow */}
-      <main className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col">
         {children}
-      </main>
+      </div>
 
       {/* Discreet Luxury Auth Footer */}
       <footer className="border-t border-border/70 py-4 bg-surface/50 text-[11px] font-sans text-text/70">

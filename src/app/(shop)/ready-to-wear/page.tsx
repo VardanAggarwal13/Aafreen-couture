@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { CategoryHubView } from '@/components/shop/CategoryHubView';
+import { CategoryHubServer } from '@/components/shop/CategoryHubServer';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
@@ -56,7 +56,8 @@ const RTW_CHAPTERS = [
 
 export default function ReadyToWearPage() {
   return (
-    <CategoryHubView
+    <CategoryHubServer
+      hubKey="ready-to-wear"
       title="The Contemporary"
       italicTitle="Ready To Wear"
       badge="Aafreen Atelier · Instant Couture"

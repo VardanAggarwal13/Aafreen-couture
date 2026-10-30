@@ -8,8 +8,8 @@ const FEATURES = [
   },
   {
     icon: Truck,
-    title: 'Free Shipping Over ₹5,000',
-    description: 'Complimentary delivery across India, with real-time tracking for every order.',
+    title: 'Insured Delivery Across India',
+    description: 'Delivery charges applicable. Every order is insured and tracked in real time.',
   },
   {
     icon: RotateCcw,

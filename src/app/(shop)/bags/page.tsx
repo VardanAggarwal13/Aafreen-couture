@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { CategoryHubView } from '@/components/shop/CategoryHubView';
+import { CategoryHubServer } from '@/components/shop/CategoryHubServer';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
@@ -56,7 +56,8 @@ const BAGS_CHAPTERS = [
 
 export default function BagsPage() {
   return (
-    <CategoryHubView
+    <CategoryHubServer
+      hubKey="bags"
       title="The Couture"
       italicTitle="Bag Edit"
       badge="Aafreen Atelier · Handcrafted Accessories"

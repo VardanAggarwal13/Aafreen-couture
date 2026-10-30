@@ -6,7 +6,7 @@ import { blogRepository } from '@/server/repositories/blog.repository';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  title: 'The Journal | Aafreen Couture',
+  title: 'The Journal — Bridal Styling Guides & Craft Stories',
   description: 'Editorial guides, bridal styling tips, and heritage craftsmanship stories by Aafreen Couture.',
   alternates: { canonical: `${siteConfig.url}/blog` },
 };
@@ -16,7 +16,7 @@ export default async function BlogPage() {
   const [featured, ...rest] = posts;
 
   return (
-    <main className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-screen bg-[#FAF7F2]">
       {/* Header */}
       <div className="bg-white border-b border-[#E8D8C8] py-14 text-center">
         <p className="text-[10.5px] font-semibold uppercase tracking-[0.4em] text-[#A67C52] mb-3">
@@ -103,6 +103,6 @@ export default async function BlogPage() {
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -13,12 +13,12 @@ export const metadata: Metadata = {
 
 export default function SearchPage() {
   return (
-    <main className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-12">
         <Suspense fallback={<div className="py-20 text-center text-brand-stone text-sm">Loading…</div>}>
           <SearchPageClient />
         </Suspense>
       </div>
-    </main>
+    </div>
   );
 }

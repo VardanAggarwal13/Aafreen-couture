@@ -28,6 +28,7 @@ export function PageSizeSelect({ pageSize, pageSizeOptions, onPageSizeChange }: 
 
   return (
     <select
+      aria-label="Items per page"
       value={pageSize}
       onChange={handleChange}
       className="border border-[#E8D8C8] bg-white rounded-lg px-2 py-1.5 text-xs text-[#221617] outline-none focus:border-[#C49A5A] cursor-pointer"

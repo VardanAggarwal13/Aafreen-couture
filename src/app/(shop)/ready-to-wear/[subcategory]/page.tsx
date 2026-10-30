@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
+import { notFound } from 'next/navigation';
+import { CATALOG_SEO } from '@/config/catalog-seo.config';
+import { CoutureCatalogServer } from '@/components/shop/CoutureCatalogServer';
 import { siteConfig } from '@/config/site.config';
 
 export const revalidate = 120;
@@ -36,33 +38,41 @@ const RTW_SUB_INFO: Record<string, { title: string; subtitle: string; categorySl
   },
 };
 
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return Object.keys(RTW_SUB_INFO).map((subcategory) => ({ subcategory }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = RTW_SUB_INFO[subcategory];
-  const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const description = `Discover ready-to-wear designer ${title.toLowerCase()} by Aafreen Couture. Impeccable tailoring, festive silhouettes, and fast express dispatch.`;
+  if (!info) notFound();
+  const seo = CATALOG_SEO['ready-to-wear/' + subcategory];
+  const title = seo?.metaTitle ?? info.title;
+  const description = seo?.metaDescription ?? info.subtitle;
   return {
-    title: `${title} — Ready To Wear`,
+    title,
     description,
     alternates: { canonical: `${siteConfig.url}/ready-to-wear/${subcategory}` },
-    openGraph: { title: `${title} — Ready To Wear | Aafreen Couture`, description },
+    openGraph: { title: `${title} | ${siteConfig.name}`, description },
   };
 }
 
 export default async function ReadyToWearSubcategoryPage({ params }: Props) {
   const { subcategory } = await params;
   const info = RTW_SUB_INFO[subcategory];
-  const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const categorySlug = info?.categorySlug || subcategory;
+  if (!info) notFound();
 
   return (
-    <CoutureCatalogView
-      title={title}
-      subtitle={info?.subtitle}
-      categorySlug={categorySlug}
+    <CoutureCatalogServer
+      title={info.title}
+      subtitle={info.subtitle}
+      categorySlug={info.categorySlug ?? subcategory}
+      seoKey={`ready-to-wear/${subcategory}`}
       breadcrumbs={[
         { label: 'Ready To Wear', href: '/ready-to-wear' },
-        { label: title },
+        { label: info.title },
       ]}
     />
   );

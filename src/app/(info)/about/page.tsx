@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const cms = await cmsRepository.findBySlug('about');
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
         badge={cms?.heroBadge ?? 'Aafreen Couture By Pearl'}
@@ -211,6 +211,6 @@ export default async function AboutPage() {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }

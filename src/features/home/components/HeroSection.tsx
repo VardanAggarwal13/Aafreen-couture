@@ -40,15 +40,12 @@ export function HeroSection() {
             </motion.div>
 
             {/* Title — stacked 2 lines to stay on left column */}
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.22, duration: 0.7 }}
+            <h1
               className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal leading-[1.08] tracking-tight mb-5 sm:mb-6 lg:mb-7 drop-shadow-md"
             >
               <span className="sr-only">Aafreen Couture Bridal Lehengas &amp; Designer Suits — </span>
               The Bridal<br />Edit
-            </motion.h1>
+            </h1>
 
             {/* Subtitle */}
             <motion.p

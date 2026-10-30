@@ -9,7 +9,7 @@ import { api } from '@/utils/api';
 import { ProductCard } from '@/components/product/ProductCard';
 import type { IProduct } from '@/types';
 import type { PaginatedResponse } from '@/types/api.types';
-import { buildBreadcrumbJsonLd } from '@/utils/seo';
+import { buildBreadcrumbJsonLd, jsonLdString } from '@/utils/seo';
 
 export interface HubChapter {
   id: string;
@@ -20,6 +20,7 @@ export interface HubChapter {
   categorySlug?: string;
   occasionSlug?: string;
   tag?: string;
+  initialData?: PaginatedResponse<IProduct>;
 }
 
 export interface CategoryHubProps {
@@ -61,6 +62,7 @@ function ChapterShelf({
       q.set('limit', '4');
       return api.getPaginated<IProduct>(`/api/products?${q.toString()}`);
     },
+    initialData: chapter.initialData,
     placeholderData: (prev) => prev,
     staleTime: 60 * 1000,
   });
@@ -166,7 +168,7 @@ export function CategoryHubView({
     <div className="min-h-screen bg-[#FAF7F2]">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumbJsonLd) }}
       />
       {/* 0. Top Breadcrumb Bar (Distinct breathing separation from Navbar) */}
       <div className="w-full bg-[#FAF7F2] border-b border-[#E8D8C8]/70">
@@ -311,7 +313,7 @@ export function CategoryHubView({
       </nav>
 
       {/* 3. Subcategories Presented One By One (Alternating Editorial Chapters) */}
-      <main>
+      <div>
         {chapters.map((ch, idx) => (
           <ChapterShelf
             key={ch.id}
@@ -380,7 +382,7 @@ export function CategoryHubView({
               Bespoke Couture Consultation
             </h2>
             <p className="text-xs sm:text-[13px] text-white/70 max-w-2xl mx-auto font-sans leading-relaxed">
-              Every creation can be customized to your precise measurements, preferred color palette, and heirloom zardozi placement. Connect directly with our master atelier in Jaipur for a private virtual styling consultation.
+              Every creation can be customized to your precise measurements, preferred color palette, and heirloom zardozi placement. Connect directly with our master atelier in Amritsar for a private virtual styling consultation.
             </p>
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
               <a
@@ -401,7 +403,7 @@ export function CategoryHubView({
             </div>
           </div>
         </section>
-      </main>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import { CoutureCatalogView } from '@/components/shop/CoutureCatalogView';
+import { notFound } from 'next/navigation';
+import { CATALOG_SEO } from '@/config/catalog-seo.config';
+import { CoutureCatalogServer } from '@/components/shop/CoutureCatalogServer';
 import { siteConfig } from '@/config/site.config';
 
 export const revalidate = 120;
@@ -41,33 +43,41 @@ const SUITS_SUB_TITLES: Record<string, { title: string; subtitle: string; catego
   },
 };
 
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return Object.keys(SUITS_SUB_TITLES).map((subcategory) => ({ subcategory }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory } = await params;
   const info = SUITS_SUB_TITLES[subcategory];
-  const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const description = `Explore handcrafted luxury ${title.toLowerCase()} by Aafreen Couture. Featuring artisanal hand embroidery, regal silhouettes, and premium fabrics.`;
+  if (!info) notFound();
+  const seo = CATALOG_SEO['suits/' + subcategory];
+  const title = seo?.metaTitle ?? info.title;
+  const description = seo?.metaDescription ?? info.subtitle;
   return {
-    title: `${title} — Handcrafted Suits`,
+    title,
     description,
     alternates: { canonical: `${siteConfig.url}/suits/${subcategory}` },
-    openGraph: { title: `${title} — Handcrafted Suits | Aafreen Couture`, description },
+    openGraph: { title: `${title} | ${siteConfig.name}`, description },
   };
 }
 
 export default async function SuitsSubcategoryPage({ params }: Props) {
   const { subcategory } = await params;
   const info = SUITS_SUB_TITLES[subcategory];
-  const title = info ? info.title : subcategory.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const categorySlug = info?.categorySlug || subcategory;
+  if (!info) notFound();
 
   return (
-    <CoutureCatalogView
-      title={title}
-      subtitle={info?.subtitle}
-      categorySlug={categorySlug}
+    <CoutureCatalogServer
+      title={info.title}
+      subtitle={info.subtitle}
+      categorySlug={info.categorySlug ?? subcategory}
+      seoKey={`suits/${subcategory}`}
       breadcrumbs={[
         { label: 'Suits', href: '/suits' },
-        { label: title },
+        { label: info.title },
       ]}
     />
   );

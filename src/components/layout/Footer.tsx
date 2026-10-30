@@ -1,13 +1,42 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Mail, Phone, ArrowRight, ArrowUp, MessageCircle } from 'lucide-react';
+import { Mail, Phone, ArrowRight, ArrowUp, ChevronDown, Clock, MapPin } from 'lucide-react';
 import { InstagramIcon, WhatsAppIcon } from '@/components/ui/icons';
 import { toast } from 'sonner';
 import { siteConfig } from '@/config/site.config';
+import { cn } from '@/lib/utils';
+
+const COLLECTION_LINKS = [
+  { href: '/bridal', label: 'Bridal Lehengas' },
+  { href: '/suits', label: 'Luxury Suits' },
+  { href: '/ready-to-wear', label: 'Ready To Wear' },
+  { href: '/jewellery', label: 'Royal Jewellery' },
+  { href: '/bags', label: 'The Bag Edit' },
+  { href: '/occasions', label: 'Shop By Occasion' },
+  { href: '/blog', label: 'The Journal' },
+];
+
+const CARE_LINKS = [
+  { href: '/about', label: 'Our Story & Atelier' },
+  { href: '/contact', label: 'Contact & Appointments' },
+  { href: '/track-order', label: 'Track Your Order' },
+  { href: '/shipping-policy', label: 'Shipping & Delivery' },
+  { href: '/returns-policy', label: 'Exchange & Returns' },
+  { href: '/faq', label: 'Help & FAQs' },
+];
+
+const LEGAL_LINKS = [
+  { href: '/privacy-policy', label: 'Privacy Policy' },
+  { href: '/terms', label: 'Terms of Service' },
+  { href: '/returns-policy', label: 'Exchange & Refund' },
+  { href: '/shipping-policy', label: 'Shipping Policy' },
+];
+
+const PAYMENT_METHODS = ['Visa', 'Mastercard', 'UPI', 'RuPay'];
 
 export function Footer() {
   const pathname = usePathname();
@@ -27,6 +56,64 @@ export function Footer() {
   }
 
   return <StorefrontFooter />;
+}
+
+/**
+ * Collapsible on phones (large tap target, one section open at a time is not
+ * enforced), always open from `lg` up. Links stay in the DOM when collapsed so
+ * crawlers and screen readers still reach them; collapsed content is
+ * `invisible`, which also removes it from the keyboard tab order.
+ */
+function FooterNav({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) {
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+
+  return (
+    <div className={cn('border-b border-heading/10 md:border-0', className)}>
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full min-h-12 items-center justify-between text-left md:min-h-0 md:pb-4 md:pointer-events-none md:cursor-default"
+      >
+        <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-heading">{title}</span>
+        <ChevronDown
+          size={18}
+          aria-hidden="true"
+          className={cn('text-gold transition-transform duration-300 md:hidden', open && 'rotate-180')}
+        />
+      </button>
+      <div
+        id={panelId}
+        className={cn(
+          'grid transition-[grid-template-rows] duration-300 ease-out md:block',
+          open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+        )}
+      >
+        <div className={cn('overflow-hidden md:overflow-visible', open ? 'visible' : 'invisible md:visible')}>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FooterLinkList({ links }: { links: { href: string; label: string }[] }) {
+  return (
+    <ul className="pb-3 md:pb-0">
+      {links.map((link) => (
+        <li key={link.href}>
+          <Link
+            href={link.href}
+            className="flex min-h-11 items-center text-[13.5px] text-text transition-colors hover:text-gold active:text-gold md:min-h-0 md:py-1.5 md:text-[13px]"
+          >
+            {link.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 function StorefrontFooter() {
@@ -51,215 +138,167 @@ function StorefrontFooter() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  const socialButton =
+    'flex h-11 w-11 items-center justify-center rounded-full border border-heading/25 bg-transparent text-heading transition-all hover:border-heading hover:bg-heading hover:text-footer active:scale-95';
+
   return (
-    <footer className="bg-footer text-heading mt-auto border-t border-border font-sans">
-      {/* 1. Sleek Minimal Newsletter */}
-      <div className="border-b border-border bg-background py-8 sm:py-12">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 text-center">
-          <p className="text-[10px] sm:text-[10.5px] font-semibold uppercase tracking-[0.3em] text-gold mb-1.5">
-            The Atelier Newsletter
-          </p>
-          <h2 className="font-serif text-2xl sm:text-3xl text-heading tracking-tight mb-2">
+    <footer className="mt-auto border-t border-heading/10 bg-footer font-sans text-heading">
+      {/* 1. Newsletter */}
+      <div className="border-b border-heading/10 bg-heading/[0.05] px-4 py-9 sm:px-6 sm:py-12">
+        <div className="mx-auto max-w-xl text-center">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.32em] text-gold">The Atelier Newsletter</p>
+          <h2 className="mb-2 font-serif text-[26px] leading-tight tracking-tight text-heading sm:text-3xl">
             Join The World of Aafreen Couture
           </h2>
-          <p className="text-xs sm:text-sm text-text max-w-md mx-auto mb-5 sm:mb-6 leading-relaxed font-sans px-2">
-            Subscribe for exclusive collection previews, bespoke bridal invitations, and atelier stories.
+          <p className="mx-auto mb-6 max-w-sm text-[13px] leading-relaxed text-text sm:text-sm">
+            Collection previews, bespoke bridal invitations and atelier stories, straight to your inbox.
           </p>
 
           {!isSubscribed ? (
-            <form onSubmit={handleSubscribe} className="max-w-md mx-auto flex flex-col sm:flex-row gap-2 sm:gap-2.5">
+            <form onSubmit={handleSubscribe} className="mx-auto flex max-w-md flex-col gap-2.5 sm:flex-row">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
+                placeholder="Your email address"
                 aria-label="Email address"
+                autoComplete="email"
                 required
-                className="flex-1 bg-surface border border-border px-4 py-2.5 sm:py-2.5 text-base sm:text-xs text-heading placeholder:text-text/60 rounded-lg focus:outline-none focus:border-gold transition-colors h-11 sm:h-auto"
+                className="h-12 w-full rounded-xl sm:flex-1 border border-heading/20 bg-transparent px-4 text-base text-heading placeholder:text-text/70 transition-colors focus:border-gold focus:outline-none sm:text-sm"
               />
               <button
                 type="submit"
-                className="bg-heading hover:bg-gold text-surface text-xs sm:text-[11px] font-semibold uppercase tracking-[0.2em] px-6 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1.5 shrink-0 cursor-pointer h-11 sm:h-auto active:scale-[0.99]"
+                className="flex h-12 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-heading px-7 text-[11px] font-semibold uppercase tracking-[0.2em] text-surface transition-colors hover:bg-gold active:scale-[0.99]"
               >
                 <span>Subscribe</span>
-                <ArrowRight size={13} />
+                <ArrowRight size={14} />
               </button>
             </form>
           ) : (
-            <p className="text-xs text-gold font-medium tracking-wide">
-              Thank you for subscribing to our private preview list.
-            </p>
+            <p className="text-sm font-medium tracking-wide text-gold">Thank you for subscribing to our private preview list.</p>
           )}
         </div>
       </div>
 
-      {/* 2. Main Footer Directory — 2 columns on mobile, 4 columns on desktop */}
-      <div className="py-8 sm:py-12 lg:py-14">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 sm:gap-x-8 gap-y-8 sm:gap-y-10 lg:gap-10">
-            
-            {/* Brand Column — Spans full width on mobile, 1 col on desktop */}
-            <div className="col-span-2 lg:col-span-1 space-y-3.5 sm:space-y-4 pb-2 sm:pb-0">
-              <Link href="/" className="inline-block select-none transition-opacity hover:opacity-90">
-                <Image
-                  src="/images/logo-header.webp"
-                  alt="Aafreen Couture By Pearl"
-                  width={240}
-                  height={114}
-                  className="h-12 sm:h-14 lg:h-15 w-auto object-contain"
-                />
-              </Link>
+      {/* 2. Directory */}
+      <div className="px-4 pb-4 pt-10 sm:px-6 lg:px-10 lg:pb-12 lg:pt-14">
+        <div className="mx-auto flex max-w-[1400px] flex-col lg:grid lg:grid-cols-12 lg:gap-x-10">
+          {/* Brand */}
+          <div className="flex flex-col items-center text-center lg:col-span-4 lg:items-start lg:text-left">
+            <Link href="/" className="inline-block select-none transition-opacity hover:opacity-90" aria-label="Aafreen Couture home">
+              <Image
+                src="/images/logo-header.webp"
+                alt="Aafreen Couture By Pearl"
+                width={240}
+                height={114}
+                className="h-16 w-auto object-contain sm:h-[72px]"
+              />
+            </Link>
+            <p className="mt-4 max-w-xs text-[13.5px] leading-relaxed text-text lg:max-w-sm">
+              Handcrafted luxury Indian bridal wear and bespoke couture, celebrating royal heritage craftsmanship with modern elegance.
+            </p>
+            <div className="mt-5 flex items-center gap-3">
+              <a href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer" className={socialButton} aria-label="Instagram">
+                <InstagramIcon width={18} height={18} />
+              </a>
+              <a href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer" className={socialButton} aria-label="WhatsApp">
+                <WhatsAppIcon width={18} height={18} />
+              </a>
+              <a href={`mailto:${siteConfig.email}`} className={socialButton} aria-label="Email">
+                <Mail size={17} />
+              </a>
+              <a href={`tel:${siteConfig.phone}`} className={socialButton} aria-label="Call us">
+                <Phone size={17} />
+              </a>
+            </div>
+          </div>
 
-              <p className="text-xs text-text leading-relaxed max-w-sm font-sans">
-                Handcrafted luxury Indian bridal wear and bespoke couture, celebrating royal heritage craftsmanship with modern elegance.
-              </p>
+          {/* Concierge card: first thing a phone visitor can act on */}
+          <div className="order-none mt-8 lg:order-last lg:col-span-4 lg:mt-0">
+            <div className="rounded-2xl border border-heading/10 bg-heading/[0.05] p-5 sm:p-6">
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-gold">Boutique Concierge</p>
+              <h3 className="mb-4 font-serif text-xl leading-snug text-heading">Plan your bridal look with our stylists</h3>
 
-              {/* Social Channels — Touch-friendly tap targets */}
-              <div className="flex items-center gap-2.5 pt-1">
+              <div className="grid grid-cols-2 gap-2.5">
                 <a
-                  href={siteConfig.instagramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 sm:w-8 sm:h-8 rounded-full border border-border bg-surface flex items-center justify-center text-heading/80 hover:text-gold hover:border-gold transition-colors active:scale-95 shadow-2xs"
-                  aria-label="Instagram"
+                  href={`tel:${siteConfig.phone}`}
+                  className="flex h-12 items-center justify-center gap-2 rounded-xl bg-heading text-[11px] font-semibold uppercase tracking-[0.16em] text-surface transition-colors hover:bg-gold active:scale-[0.98]"
                 >
-                  <InstagramIcon width={16} height={16} />
+                  <Phone size={15} /> Call
                 </a>
                 <a
                   href={`https://wa.me/${siteConfig.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 sm:w-8 sm:h-8 rounded-full border border-border bg-surface flex items-center justify-center text-heading/80 hover:text-gold hover:border-gold transition-colors active:scale-95 shadow-2xs"
-                  aria-label="WhatsApp"
+                  className="flex h-12 items-center justify-center gap-2 rounded-xl border border-emerald-800/30 bg-emerald-800/10 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-900 transition-colors hover:bg-emerald-800/20 active:scale-[0.98]"
                 >
-                  <WhatsAppIcon width={16} height={16} />
-                </a>
-                <a
-                  href={`mailto:${siteConfig.email}`}
-                  className="w-9 h-9 sm:w-8 sm:h-8 rounded-full border border-border bg-surface flex items-center justify-center text-heading/80 hover:text-gold hover:border-gold transition-colors active:scale-95 shadow-2xs"
-                  aria-label="Email"
-                >
-                  <Mail size={15} />
-                </a>
-                <a
-                  href={`tel:${siteConfig.phone}`}
-                  className="w-9 h-9 sm:w-8 sm:h-8 rounded-full border border-border bg-surface flex items-center justify-center text-heading/80 hover:text-gold hover:border-gold transition-colors active:scale-95 shadow-2xs"
-                  aria-label="Phone"
-                >
-                  <Phone size={14} />
+                  <WhatsAppIcon width={16} height={16} /> WhatsApp
                 </a>
               </div>
-            </div>
 
-            {/* Column 1: Collections — Sits side-by-side with Client Care on mobile */}
-            <div className="col-span-1 space-y-3">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading border-b border-border/80 pb-2">
-                Collections
-              </h3>
-              <ul className="space-y-1 text-xs font-sans">
-                <li><Link href="/bridal" className="block py-1 text-text hover:text-gold transition-colors">Bridal Lehengas</Link></li>
-                <li><Link href="/suits" className="block py-1 text-text hover:text-gold transition-colors">Luxury Suits</Link></li>
-                <li><Link href="/ready-to-wear" className="block py-1 text-text hover:text-gold transition-colors">Ready To Wear</Link></li>
-                <li><Link href="/jewellery" className="block py-1 text-text hover:text-gold transition-colors">Royal Jewellery</Link></li>
-                <li><Link href="/bags" className="block py-1 text-text hover:text-gold transition-colors">The Bag Edit</Link></li>
-                <li><Link href="/occasions" className="block py-1 text-text hover:text-gold transition-colors">Shop By Occasion</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 2: Client Care — Sits side-by-side with Collections on mobile */}
-            <div className="col-span-1 space-y-3">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading border-b border-border/80 pb-2">
-                Client Care
-              </h3>
-              <ul className="space-y-1 text-xs font-sans">
-                <li><Link href="/about" className="block py-1 text-text hover:text-gold transition-colors">Our Story &amp; Atelier</Link></li>
-                <li><Link href="/track-order" className="block py-1 text-text hover:text-gold transition-colors">Track Your Order</Link></li>
-                <li><Link href="/shipping-policy" className="block py-1 text-text hover:text-gold transition-colors">Shipping &amp; Delivery</Link></li>
-                <li><Link href="/returns-policy" className="block py-1 text-text hover:text-gold transition-colors">Exchange &amp; Returns</Link></li>
-                <li><Link href="/faq" className="block py-1 text-text hover:text-gold transition-colors">Help &amp; FAQs</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 3: Concierge — Spans full width on mobile with clean touch rows */}
-            <div className="col-span-2 sm:col-span-2 lg:col-span-1 space-y-3 pt-4 sm:pt-0 border-t sm:border-t-0 border-border/60">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading border-b border-border/80 pb-2">
-                Boutique Concierge
-              </h3>
-              <ul className="space-y-2 text-xs font-sans">
+              <ul className="mt-4 space-y-3 text-[13px] text-text">
                 <li>
-                  <a
-                    href={`tel:${siteConfig.phone}`}
-                    className="text-text hover:text-gold transition-colors inline-flex items-center gap-2.5 py-1"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-gold/15 flex items-center justify-center shrink-0">
-                      <Phone size={12} className="text-gold" />
-                    </div>
-                    <span className="font-medium">{siteConfig.phone}</span>
+                  <a href={`mailto:${siteConfig.email}`} className="flex items-center gap-3 transition-colors hover:text-gold">
+                    <Mail size={15} className="shrink-0 text-gold" />
+                    <span className="min-w-0 break-all">{siteConfig.email}</span>
                   </a>
                 </li>
-                <li>
-                  <a
-                    href={`mailto:${siteConfig.email}`}
-                    className="text-text hover:text-gold transition-colors inline-flex items-center gap-2.5 py-1"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-gold/15 flex items-center justify-center shrink-0">
-                      <Mail size={12} className="text-gold" />
-                    </div>
-                    <span className="font-medium truncate">{siteConfig.email}</span>
-                  </a>
+                <li className="flex items-start gap-3">
+                  <Clock size={15} className="mt-0.5 shrink-0 text-gold" />
+                  <span>Mon – Sat, 10:30 AM – 7:30 PM IST</span>
                 </li>
-                <li>
-                  <a
-                    href={`https://wa.me/${siteConfig.whatsapp}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-text hover:text-gold transition-colors inline-flex items-center gap-2.5 py-1"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-emerald-600/15 flex items-center justify-center shrink-0">
-                      <MessageCircle size={12} className="text-emerald-700" />
-                    </div>
-                    <span className="font-medium">WhatsApp Consultation</span>
-                  </a>
-                </li>
-                <li className="text-[11px] text-text/80 pt-1 leading-relaxed">
-                  Mon – Sat: 10:30 AM – 7:30 PM IST
+                <li className="flex items-start gap-3">
+                  <MapPin size={15} className="mt-0.5 shrink-0 text-gold" />
+                  <span>SCO No. 43, 1st Floor, B-Block Market, New Amritsar, Amritsar, Punjab 143001</span>
                 </li>
               </ul>
             </div>
+          </div>
 
+          {/* Link groups: accordions on phones, side by side from tablet up */}
+          <div className="mt-8 border-t border-heading/10 md:grid md:grid-cols-2 md:gap-x-8 md:border-0 lg:col-span-4 lg:mt-0">
+            <FooterNav title="Collections">
+              <FooterLinkList links={COLLECTION_LINKS} />
+            </FooterNav>
+            <FooterNav title="Client Care">
+              <FooterLinkList links={CARE_LINKS} />
+            </FooterNav>
           </div>
         </div>
       </div>
 
-      {/* 3. Bottom Copyright, Policies & Payment Strip */}
-      <div className="border-t border-border bg-footer pt-5 pb-8 sm:py-5">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-text font-sans">
-          <p className="text-center sm:text-left text-[11.5px] text-text/85 order-2 md:order-1">
-            © {year} Aafreen Couture By Pearl. All Rights Reserved.
-          </p>
+      {/* 3. Legal strip */}
+      <div className="border-t border-heading/10 px-4 pb-8 pt-6 sm:px-6 lg:px-10 lg:py-5">
+        <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-5 text-xs text-text lg:flex-row lg:justify-between">
+          <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-[12px]">
+            {LEGAL_LINKS.map((link) => (
+              <Link key={link.label} href={link.href} className="py-1.5 transition-colors hover:text-gold">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
 
-          <div className="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-2 text-[11px] text-text/90 order-1 md:order-2">
-            <Link href="/privacy-policy" className="hover:text-gold transition-colors py-0.5">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-gold transition-colors py-0.5">Terms of Service</Link>
-            <Link href="/returns-policy" className="hover:text-gold transition-colors py-0.5">Exchange &amp; Refund</Link>
-            <Link href="/shipping-policy" className="hover:text-gold transition-colors py-0.5">Shipping Policy</Link>
-          </div>
-
-          <div className="flex items-center justify-between sm:justify-end w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-border/50 gap-4 order-3">
-            <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-wider text-text/75 font-medium">
-              <span>VISA</span> · <span>MC</span> · <span>UPI</span> · <span>RUPAY</span>
-            </div>
-
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+            <ul className="flex flex-wrap items-center justify-center gap-1.5" aria-label="Accepted payment methods">
+              {PAYMENT_METHODS.map((method) => (
+                <li
+                  key={method}
+                  className="rounded-md border border-heading/20 bg-transparent px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-text"
+                >
+                  {method}
+                </li>
+              ))}
+            </ul>
             <button
               onClick={scrollToTop}
-              className="inline-flex items-center gap-1 px-2.5 py-1 sm:p-1.5 rounded-full border border-border text-xs sm:text-[11px] text-heading hover:border-gold hover:text-gold transition-colors cursor-pointer bg-surface/80 shadow-2xs active:scale-95"
+              className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-full border border-heading/25 bg-transparent px-4 text-[11px] font-semibold uppercase tracking-wider text-heading transition-colors hover:border-heading hover:bg-heading hover:text-footer active:scale-95"
               aria-label="Scroll to top"
-              title="Scroll to top"
             >
-              <span className="text-[10px] uppercase font-semibold sm:hidden">Top</span>
-              <ArrowUp size={13} />
+              Back to top <ArrowUp size={14} />
             </button>
           </div>
+
+          <p className="text-center text-[11.5px] text-text/85">© {year} Aafreen Couture By Pearl. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

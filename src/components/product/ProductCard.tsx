@@ -47,7 +47,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             priority={priority}
-            quality={95}
+            quality={80}
             className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
           />
           {secondaryImage && (
@@ -56,7 +56,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
               alt={`${product.name} — alternate view`}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              quality={95}
+              quality={80}
               className="object-cover object-center opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none"
             />
           )}

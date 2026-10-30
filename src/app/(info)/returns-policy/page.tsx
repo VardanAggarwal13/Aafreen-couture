@@ -29,7 +29,7 @@ const TOC: TocItem[] = [
 export default async function ReturnsPolicyPage() {
   const cms = await cmsRepository.findBySlug('returns-policy');
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
         badge={cms?.heroBadge ?? 'Aafreen Atelier Fitting Protocols'}
@@ -422,6 +422,6 @@ export default async function ReturnsPolicyPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -259,6 +259,14 @@ export default async function OrderDetailPage({ params }: Props) {
                   >
                     {item.name}
                   </Link>
+                  {order.status === 'delivered' && item.slug && (
+                    <Link
+                      href={`/product/${item.slug}#reviews`}
+                      className="block text-[11px] font-semibold uppercase tracking-wider text-gold hover:text-heading transition-colors mt-1"
+                    >
+                      Write a review
+                    </Link>
+                  )}
                   <div className="flex flex-wrap items-center gap-3 text-xs text-text mt-1">
                     {item.size && <span>Size: <strong className="text-heading">{item.size}</strong></span>}
                     {item.color && <span>Color: <strong className="text-heading">{item.color}</strong></span>}

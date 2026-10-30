@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { siteConfig } from '@/config/site.config';
+import { SUBCATEGORY_SLUGS } from '@/config/catalog-seo.config';
 import { productRepository } from '@/server/repositories/product.repository';
-import { categoryRepository } from '@/server/repositories/category.repository';
 import { collectionRepository } from '@/server/repositories/collection.repository';
 import { blogRepository } from '@/server/repositories/blog.repository';
 
@@ -10,71 +10,56 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Core static routes
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${baseUrl}`, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
-    { url: `${baseUrl}/shop`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${baseUrl}/bridal`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${baseUrl}/ready-to-wear`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
-    { url: `${baseUrl}/suits`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
-    { url: `${baseUrl}/occasions`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${baseUrl}/bags`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${baseUrl}/jewellery`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${baseUrl}/collections`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${baseUrl}/faq`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
-    { url: `${baseUrl}/privacy-policy`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
-    { url: `${baseUrl}/shipping-policy`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
-    { url: `${baseUrl}/returns-policy`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}`, changeFrequency: 'daily', priority: 1.0 },
+    { url: `${baseUrl}/shop`, changeFrequency: 'daily', priority: 0.9 },
+    { url: `${baseUrl}/bridal`, changeFrequency: 'daily', priority: 0.9 },
+    { url: `${baseUrl}/ready-to-wear`, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${baseUrl}/suits`, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${baseUrl}/occasions`, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${baseUrl}/bags`, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${baseUrl}/jewellery`, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${baseUrl}/collections`, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${baseUrl}/blog`, changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${baseUrl}/about`, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${baseUrl}/contact`, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${baseUrl}/faq`, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${baseUrl}/terms`, changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/privacy-policy`, changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/shipping-policy`, changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/returns-policy`, changeFrequency: 'monthly', priority: 0.3 },
   ];
 
-  // Specific high-value Occasion subcategories
-  const occasionRoutes: MetadataRoute.Sitemap = [
-    'engagement', 'haldi', 'mehendi', 'sangeet', 'jago', 'wedding', 'reception'
-  ].map((occ) => ({
+  // Subcategory landing pages come from the same config the pages validate against
+  const occasionRoutes: MetadataRoute.Sitemap = SUBCATEGORY_SLUGS.occasions.map((occ) => ({
     url: `${baseUrl}/occasions/${occ}`,
-    lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.8,
   }));
 
   // Bridal subcategories
-  const bridalRoutes: MetadataRoute.Sitemap = [
-    'bridal-lehengas', 'bridal-suits', 'bridesmaid-lehengas', 'reception-gowns', 'haldi'
-  ].map((sub) => ({
+  const bridalRoutes: MetadataRoute.Sitemap = SUBCATEGORY_SLUGS.bridal.map((sub) => ({
     url: `${baseUrl}/bridal/${sub}`,
-    lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.85,
   }));
 
   // Suits subcategories
-  const suitsRoutes: MetadataRoute.Sitemap = [
-    'cotton-kurta-sets', 'co-ord-sets', 'summer-essentials', 'partywear-unstitched', 'handcrafted-luxury', 'indo-western'
-  ].map((sub) => ({
+  const suitsRoutes: MetadataRoute.Sitemap = SUBCATEGORY_SLUGS.suits.map((sub) => ({
     url: `${baseUrl}/suits/${sub}`,
-    lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.8,
   }));
 
   // Ready To Wear subcategories
-  const rtwRoutes: MetadataRoute.Sitemap = [
-    'dresses', 'sharara-sets', 'occasion-lehengas', 'signature-co-ords', 'new-arrivals'
-  ].map((sub) => ({
+  const rtwRoutes: MetadataRoute.Sitemap = SUBCATEGORY_SLUGS['ready-to-wear'].map((sub) => ({
     url: `${baseUrl}/ready-to-wear/${sub}`,
-    lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.8,
   }));
 
   // Bags subcategories
-  const bagsRoutes: MetadataRoute.Sitemap = [
-    'handbags', 'potlis', 'clutches', 'totes', 'shoulder-bags'
-  ].map((sub) => ({
+  const bagsRoutes: MetadataRoute.Sitemap = SUBCATEGORY_SLUGS.bags.map((sub) => ({
     url: `${baseUrl}/bags/${sub}`,
-    lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.75,
   }));
@@ -82,7 +67,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic products from repository
   let productRoutes: MetadataRoute.Sitemap = [];
   try {
-    const { items: products } = await productRepository.findMany({}, { limit: 1000 });
+    const { items: products } = await productRepository.findMany({}, { limit: 5000 });
     productRoutes = products.map((p) => ({
       url: `${baseUrl}/product/${p.slug}`,
       lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
@@ -99,7 +84,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const collections = await collectionRepository.findAll();
     collectionRoutes = collections.map((col) => ({
       url: `${baseUrl}/collections/${col.slug}`,
-      lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.75,
     }));
@@ -121,28 +105,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('[Sitemap] Error fetching blog posts:', err);
   }
 
-  // Filtered categories (routing to shop with category query to ensure 200 OK)
-  let categoryRoutes: MetadataRoute.Sitemap = [];
-  try {
-    const categories = await categoryRepository.findAll();
-    // Exclude subcategories already represented in direct hubs
-    const directSlugs = new Set([
-      'bridal-lehengas', 'bridal-suits', 'bridesmaid-lehengas', 'reception-gowns',
-      'cotton-kurta-sets', 'co-ord-sets', 'summer-essentials', 'partywear-unstitched',
-      'dresses', 'sharara-sets', 'occasion-lehengas', 'handbags', 'potlis', 'clutches', 'totes'
-    ]);
-    categoryRoutes = categories
-      .filter((c) => !directSlugs.has(c.slug))
-      .map((c) => ({
-        url: `${baseUrl}/shop?category=${c.slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.75,
-      }));
-  } catch (err) {
-    console.error('[Sitemap] Error fetching categories:', err);
-  }
-
+  // /shop?category=… URLs are intentionally omitted: /shop canonicalises to itself,
+  // so listing parameterised duplicates in the sitemap sends conflicting signals.
   return [
     ...staticRoutes,
     ...bridalRoutes,
@@ -151,7 +115,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...occasionRoutes,
     ...bagsRoutes,
     ...collectionRoutes,
-    ...categoryRoutes,
     ...productRoutes,
     ...blogRoutes,
   ];

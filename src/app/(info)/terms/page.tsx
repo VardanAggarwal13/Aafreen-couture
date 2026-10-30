@@ -35,7 +35,7 @@ const TOC: TocItem[] = [
 export default async function TermsPage() {
   const cms = await cmsRepository.findBySlug('terms');
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#221617]">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
         badge={cms?.heroBadge ?? 'Legal & Compliance Hub'}
@@ -395,6 +395,6 @@ export default async function TermsPage() {
 
         </div>
       </div>
-    </main>
+    </div>
   );
 }
