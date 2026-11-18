@@ -222,6 +222,27 @@ export function ProductForm({ product }: Props) {
     setValue('images', next.join(', '));
   }
 
+  /** Downscale big images (max 2400px, WebP) before upload. Returns the original file if anything fails. */
+  async function shrinkImage(file: File): Promise<File> {
+    const MAX_BYTES = 1.5 * 1024 * 1024;
+    const MAX_EDGE = 2400;
+    if (!file.type.startsWith('image/') || file.size <= MAX_BYTES) return file;
+    try {
+      const bitmap = await createImageBitmap(file);
+      const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(bitmap.width * scale);
+      canvas.height = Math.round(bitmap.height * scale);
+      canvas.getContext('2d')?.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      bitmap.close();
+      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/webp', 0.86));
+      if (!blob || blob.size >= file.size) return file;
+      return new File([blob], file.name.replace(/\.[^.]+$/, '') + '.webp', { type: 'image/webp' });
+    } catch {
+      return file;
+    }
+  }
+
   async function handleFilesSelected(files: FileList | null) {
     if (!files || files.length === 0) return;
     setUploading(true);
@@ -234,7 +255,10 @@ export function ProductForm({ product }: Props) {
       const { signature, timestamp, cloudName, apiKey, folder } = sigJson.data;
 
       const uploadedUrls: string[] = [];
-      for (const file of Array.from(files)) {
+      const failed: string[] = [];
+      for (const original of Array.from(files)) {
+        // Phone/camera photos can be 10MB+; shrink them first so the upload does not stall or drop.
+        const file = await shrinkImage(original);
         const formData = new FormData();
         formData.append('file', file);
         formData.append('api_key', apiKey);
@@ -242,19 +266,30 @@ export function ProductForm({ product }: Props) {
         formData.append('signature', signature);
         formData.append('folder', folder);
 
-        const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-          method: 'POST',
-          body: formData,
-        });
-        const uploadJson = await uploadRes.json();
-        if (!uploadRes.ok || !uploadJson.secure_url) {
-          throw new Error(uploadJson.error?.message ?? `Failed to upload ${file.name}`);
+        try {
+          const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+            method: 'POST',
+            body: formData,
+          });
+          const uploadJson = await uploadRes.json();
+          if (!uploadRes.ok || !uploadJson.secure_url) {
+            failed.push(`${original.name}: ${uploadJson.error?.message ?? 'upload rejected'}`);
+            continue;
+          }
+          uploadedUrls.push(uploadJson.secure_url as string);
+        } catch {
+          const mb = (file.size / 1024 / 1024).toFixed(1);
+          failed.push(`${original.name} (${mb} MB): connection to the image server failed, please try again`);
         }
-        uploadedUrls.push(uploadJson.secure_url as string);
       }
 
-      addImageUrls(uploadedUrls);
-      toast.success(`${uploadedUrls.length} image${uploadedUrls.length > 1 ? 's' : ''} uploaded`);
+      if (uploadedUrls.length > 0) {
+        addImageUrls(uploadedUrls);
+        toast.success(`${uploadedUrls.length} image${uploadedUrls.length > 1 ? 's' : ''} uploaded`);
+      }
+      if (failed.length > 0) {
+        toast.error(failed.join(' | '));
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Image upload failed';
       toast.error(msg);
