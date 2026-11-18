@@ -80,7 +80,7 @@ export function NavigationProgress() {
   return (
     <div
       aria-hidden="true"
-      className="fixed top-0 left-0 right-0 z-[99999] h-[2.5px] pointer-events-none bg-transparent"
+      className="fixed top-0 left-0 right-0 z-[99999] h-[0.15625rem] pointer-events-none bg-transparent"
     >
       <div
         className="h-full bg-gradient-to-r from-gold via-[#dfc491] to-gold shadow-[0_0_10px_rgba(201,168,106,0.85)] transition-all duration-200 ease-out"

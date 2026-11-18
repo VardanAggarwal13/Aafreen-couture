@@ -160,7 +160,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
           onClick={openCreateModal}
           className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm cursor-pointer"
         >
-          <Plus size={14} className="text-[#C9A86A]" /> Write Article
+          <Plus size="0.875rem" className="text-[#C9A86A]" /> Write Article
         </button>
       </div>
 
@@ -170,7 +170,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Article', 'Category', 'Author', 'Status', 'Date', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[0.625rem] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -184,13 +184,13 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
                       <div className="w-12 h-12 relative bg-[#FAF7F2] shrink-0 rounded-lg overflow-hidden border border-[#DDD2C5]">
                         <Image src={post.image} alt={post.title} fill sizes="48px" className="object-cover" />
                       </div>
-                      <span className="truncate max-w-[280px]">{post.title}</span>
+                      <span className="truncate max-w-[17.5rem]">{post.title}</span>
                     </div>
                   </td>
                   <td className="px-5 py-2.5 text-[#C9A86A] font-semibold">{post.category}</td>
                   <td className="px-5 py-2.5 text-[#2E221C] font-medium">{post.author}</td>
                   <td className="px-5 py-2.5">
-                    <span className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold ${
+                    <span className={`px-2.5 py-0.5 text-[0.625rem] rounded-full uppercase tracking-wider font-semibold ${
                       post.status === 'published'
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                         : 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5]'
@@ -206,7 +206,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
                         className="p-1 rounded text-[#8A6A55] hover:text-[#2E221C] transition-colors cursor-pointer"
                         title="View Article"
                       >
-                        <Eye size={14} />
+                        <Eye size="0.875rem" />
                       </button>
                       <a
                         href={`/blog/${post.slug}`}
@@ -215,14 +215,14 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
                         className="p-1 rounded text-[#8A6A55] hover:text-[#2E221C] transition-colors"
                         title="Preview Live"
                       >
-                        <BookOpen size={14} />
+                        <BookOpen size="0.875rem" />
                       </a>
                       <button
                         onClick={() => openEditModal(post)}
                         className="p-1 rounded text-[#8A6A55] hover:text-[#2E221C] transition-colors cursor-pointer"
                         title="Edit Article"
                       >
-                        <Edit2 size={14} />
+                        <Edit2 size="0.875rem" />
                       </button>
                       <button
                         onClick={() => handleDelete(post._id)}
@@ -230,7 +230,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
                         className="p-1 rounded text-[#8A6A55] hover:text-red-600 transition-colors disabled:opacity-40 cursor-pointer"
                         title="Delete Article"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size="0.875rem" />
                       </button>
                     </div>
                   </td>
@@ -251,19 +251,19 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
       {/* Create / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-2xl p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white w-full max-w-2xl p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90dvh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base">
                 {editingId ? 'Edit Editorial Story' : 'Write New Editorial Story'}
               </h3>
               <button onClick={() => setIsModalOpen(false)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md cursor-pointer">
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
 
             <form onSubmit={handleSave} className="space-y-4 text-xs">
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Article Title *</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Article Title *</label>
                 <input
                   type="text"
                   required
@@ -277,7 +277,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Category</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Category</label>
                   <input
                     type="text"
                     value={formData.category}
@@ -287,7 +287,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Read Time</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Read Time</label>
                   <input
                     type="text"
                     value={formData.readTime}
@@ -299,19 +299,19 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Cover Image Path / URL</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Cover Image Path / URL</label>
                 <input
                   type="text"
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                   placeholder="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/hero-banner.webp"
-                  className={`${fieldClass('image')} font-mono text-[11px]`}
+                  className={`${fieldClass('image')} font-mono text-[0.6875rem]`}
                 />
                 {fieldErrors.image && <p className="text-xs text-red-600 mt-1">{fieldErrors.image}</p>}
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Excerpt / Summary</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Excerpt / Summary</label>
                 <textarea
                   rows={2}
                   value={formData.excerpt}
@@ -323,7 +323,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Full Content (Separate paragraphs with double Enter)</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Full Content (Separate paragraphs with double Enter)</label>
                 <textarea
                   rows={6}
                   value={formData.content}
@@ -335,7 +335,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Published Date</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Published Date</label>
                   <input
                     type="text"
                     value={formData.publishedAt}
@@ -344,7 +344,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Status</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Status</label>
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as 'published' | 'draft' })}
@@ -369,7 +369,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
                   disabled={saving}
                   className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] text-xs rounded-lg shadow-sm transition-all disabled:opacity-50 cursor-pointer"
                 >
-                  <Check size={13} className="text-[#C9A86A]" /> {saving ? 'Saving…' : editingId ? 'Save Changes' : 'Publish Article'}
+                  <Check size="0.8125rem" className="text-[#C9A86A]" /> {saving ? 'Saving…' : editingId ? 'Save Changes' : 'Publish Article'}
                 </button>
               </div>
             </form>
@@ -380,11 +380,11 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
       {/* View Modal */}
       {viewing && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-lg p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 text-xs max-h-[90vh] overflow-y-auto">
+          <div className="bg-white w-full max-w-lg p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 text-xs max-h-[90dvh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base">{viewing.title}</h3>
               <button onClick={() => setViewing(null)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md cursor-pointer">
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
             <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-[#DDD2C5]">

@@ -38,7 +38,7 @@ export function WhyChooseUs() {
           {FEATURES.map(({ icon: Icon, title, description }) => (
             <div key={title} className="flex flex-col items-center text-center gap-4">
               <div className="w-12 h-12 rounded-full border border-brand-gold/30 flex items-center justify-center text-brand-gold">
-                <Icon size={20} />
+                <Icon size="1.25rem" />
               </div>
               <h3 className="text-brand-pearl text-base font-serif">{title}</h3>
               <p className="text-brand-stone text-sm leading-relaxed">{description}</p>

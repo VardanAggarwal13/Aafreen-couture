@@ -5,14 +5,16 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || '.next',
   serverExternalPackages: ['mongodb', 'mongoose'],
   compress: true,
+  // Render <title>/<meta>/canonical inside <head> for every client instead of streaming them into <body>
+  htmlLimitedBots: /.*/,
   poweredByHeader: false,
   images: {
     // Resizing/format negotiation happens on the Cloudinary CDN (see image-loader.ts),
     // so no server-side optimizer is involved and local /public images pass through as-is.
     loader: 'custom',
     loaderFile: './src/lib/image-loader.ts',
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    deviceSizes: [360, 480, 640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 192, 256, 384],
     remotePatterns: [
       {
         protocol: 'https',
@@ -67,9 +69,9 @@ const nextConfig: NextConfig = {
           "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://checkout.razorpay.com https://api.razorpay.com https://connect.facebook.net",
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
           "font-src 'self' https://fonts.gstatic.com data:",
-          "img-src 'self' blob: data: https://www.google-analytics.com https://www.googletagmanager.com https://res.cloudinary.com https://images.unsplash.com https://plus.unsplash.com https://www.facebook.com",
-          "frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com",
-          "connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://api.razorpay.com https://lumberjack.razorpay.com https://res.cloudinary.com https://www.facebook.com https://connect.facebook.net",
+          "img-src 'self' blob: data: https://www.google-analytics.com https://www.googletagmanager.com https://res.cloudinary.com https://images.unsplash.com https://plus.unsplash.com https://www.facebook.com https://connect.facebook.net",
+          "frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com https://www.facebook.com https://connect.facebook.net",
+          "connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://api.razorpay.com https://lumberjack.razorpay.com https://res.cloudinary.com https://api.cloudinary.com https://www.facebook.com https://connect.facebook.net",
         ].join('; '),
       },
     ];
@@ -156,7 +158,7 @@ const nextConfig: NextConfig = {
   },
 
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion', '@tanstack/react-query', 'clsx', 'tailwind-merge'],
+    optimizePackageImports: ['lucide-react', '@tanstack/react-query', 'clsx', 'tailwind-merge'],
   },
 };
 

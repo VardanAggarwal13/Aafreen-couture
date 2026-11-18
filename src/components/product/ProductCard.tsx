@@ -1,24 +1,21 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatPrice, getDiscountPercentage } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
-import { useWishlistStore } from '@/store/wishlist.store';
+import { WishlistHeartButton } from '@/components/product/WishlistHeartButton';
 import type { IProduct } from '@/types';
 
 interface ProductCardProps {
   product: IProduct;
   priority?: boolean;
   className?: string;
+  /** Heading level for the product name; use 'h2' on pages whose only higher heading is the h1. */
+  headingLevel?: 'h2' | 'h3';
 }
 
-export function ProductCard({ product, priority = false, className }: ProductCardProps) {
-  const toggle = useWishlistStore((s) => s.toggle);
-  const isWishlisted = useWishlistStore((s) => s.isInWishlist(product._id));
-
+export function ProductCard({ product, priority = false, className, headingLevel = 'h3' }: ProductCardProps) {
+  const Heading = headingLevel;
   const discountPct =
     product.comparePrice && product.comparePrice > product.basePrice
       ? getDiscountPercentage(product.basePrice, product.comparePrice)
@@ -45,7 +42,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
             src={primaryImage}
             alt={product.name}
             fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            sizes="(max-width: 40em) 50vw, (max-width: 64em) 33vw, 25vw"
             priority={priority}
             quality={80}
             className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
@@ -55,9 +52,9 @@ export function ProductCard({ product, priority = false, className }: ProductCar
               src={secondaryImage}
               alt={`${product.name} — alternate view`}
               fill
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              sizes="(max-width: 40em) 50vw, (max-width: 64em) 33vw, 25vw"
               quality={80}
-              className="object-cover object-center opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none"
+              className="[@media(hover:none)]:hidden object-cover object-center opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none"
             />
           )}
         </Link>
@@ -65,43 +62,31 @@ export function ProductCard({ product, priority = false, className }: ProductCar
         {/* Badges */}
         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 items-start pointer-events-none">
           {discountPct && (
-            <span className="bg-gold text-white text-[9.5px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-md">
+            <span className="bg-gold text-heading text-[0.59375rem] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-md">
               {discountPct}% Off
             </span>
           )}
           {product.isNewArrival && (
-            <span className="bg-heading text-surface text-[9.5px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-md">
+            <span className="bg-heading text-surface text-[0.59375rem] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-md">
               New
             </span>
           )}
         </div>
 
-        {/* Wishlist Heart Icon — Always visible on image top right as in reference mockup */}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            toggle(product._id);
-          }}
-          className={cn(
-            'absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full bg-surface/90 backdrop-blur-xs flex items-center justify-center transition-all duration-200 shadow-xs cursor-pointer',
-            isWishlisted ? 'text-gold' : 'text-heading/70 hover:text-gold'
-          )}
-          aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-        >
-          <Heart size={15} fill={isWishlisted ? 'currentColor' : 'none'} />
-        </button>
+        {/* Wishlist heart: the only client-side piece of the card */}
+        <WishlistHeartButton productId={product._id} />
       </div>
 
       {/* Info matching reference image */}
       <div className="pt-3 flex flex-col gap-1 text-center sm:text-left">
         <Link href={ROUTES.PRODUCT(product.slug)} className="hover:text-gold transition-colors">
-          <h3 className="font-sans text-sm font-semibold text-heading line-clamp-1">
+          <Heading className="font-sans text-sm font-semibold text-heading line-clamp-1">
             {product.name}
-          </h3>
+          </Heading>
         </Link>
 
         {product.fabric && (
-          <p className="text-[11px] text-text uppercase tracking-wider">{product.fabric}</p>
+          <p className="text-[0.6875rem] text-text uppercase tracking-wider">{product.fabric}</p>
         )}
 
         <div className="flex items-baseline gap-2 mt-0.5 justify-center sm:justify-start">
@@ -109,7 +94,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
             {formatPrice(product.basePrice)}
           </span>
           {product.comparePrice && product.comparePrice > product.basePrice && (
-            <span className="text-xs text-text/80 line-through">
+            <span className="text-xs text-text line-through">
               {formatPrice(product.comparePrice)}
             </span>
           )}

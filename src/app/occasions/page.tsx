@@ -19,7 +19,6 @@ export const revalidate = 120;
 
 const OCCASIONS_PRE_WEDDING = [
   {
-    num: '01',
     label: 'Engagement',
     href: '/occasions/engagement',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/engagement.webp',
@@ -27,7 +26,6 @@ const OCCASIONS_PRE_WEDDING = [
     description: 'Romantic pastels, glistening cutdana, and modern silhouette lehengas.',
   },
   {
-    num: '02',
     label: 'Haldi',
     href: '/occasions/haldi',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/haldi.webp',
@@ -35,7 +33,6 @@ const OCCASIONS_PRE_WEDDING = [
     description: 'Sunshine yellows, delicate gota patti, and playful lightweight silhouettes.',
   },
   {
-    num: '03',
     label: 'Mehendi',
     href: '/occasions/mehendi',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/mehendi.webp',
@@ -43,7 +40,6 @@ const OCCASIONS_PRE_WEDDING = [
     description: 'Vibrant lime greens, teals, and emeralds detailed with floral threadwork.',
   },
   {
-    num: '04',
     label: 'Sangeet',
     href: '/occasions/sangeet',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/occasions/sangeet.webp',
@@ -54,7 +50,6 @@ const OCCASIONS_PRE_WEDDING = [
 
 const OCCASIONS_MAIN_CELEBRATION = [
   {
-    num: '05',
     label: 'Jago Night',
     href: '/occasions/jago',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872421/aafreen-couture/products/heer-jago-salwar-suit-1413.webp',
@@ -62,7 +57,6 @@ const OCCASIONS_MAIN_CELEBRATION = [
     description: 'Authentic raw silk salwar suits with peacock tilla and rich Phulkari drapes.',
   },
   {
-    num: '06',
     label: 'The Wedding Day',
     href: '/occasions/wedding',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/occasions/wedding.webp',
@@ -70,7 +64,6 @@ const OCCASIONS_MAIN_CELEBRATION = [
     description: 'Majestic scarlet lehengas, heirloom zardozi velvets, and royal couture.',
   },
   {
-    num: '07',
     label: 'Reception Gala',
     href: '/occasions/reception',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/reception.webp',
@@ -92,132 +85,91 @@ export default async function OccasionsPage() {
   const weddingProducts = (JSON.parse(JSON.stringify(weddingData.items ?? [])) as IProduct[]);
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-dvh bg-[#FAF7F2]">
       {/* 1. Top Breadcrumb Bar (Distinct breathing separation from Navbar) */}
       <div className="w-full bg-[#FAF7F2] border-b border-[#E8D8C8]/70">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[10.5px] uppercase tracking-[0.2em] text-[#8C7A6B]">
+        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[0.65625rem] uppercase tracking-[0.2em] text-[#6E5C4D]">
             <Link href="/" className="hover:text-[#A67C52] transition-colors">Home</Link>
-            <ChevronRight size={10} className="text-[#C49A5A]" />
+            <ChevronRight size="0.625rem" className="text-[#C49A5A]" />
             <span className="text-[#221617] font-semibold">Occasions</span>
           </nav>
         </div>
       </div>
 
-      {/* 2. Haute Couture Editorial Framed Hero (Clean Inset Frame - ZERO Navbar Merging) */}
-      <section className="w-full bg-[#FAF5EE] border-b border-[#E8D4BE]">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      {/* 2. Hero: same layout as the category pages (text left, wide rounded photo right, no frame) */}
+      <section className="bg-[#F5EFE6] border-b border-[#E8D4BE]">
+        <div className="max-w-[90rem] mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-5 lg:gap-10 px-6 sm:px-10 lg:px-12 py-6 sm:py-7 lg:py-8">
+          <div className="order-2 lg:order-1 max-w-xl">
+            <p className="inline-flex items-center gap-2 text-[0.65625rem] uppercase tracking-[0.3em] text-gold-ink font-semibold mb-2.5">
+              <Sparkles size="0.75rem" className="text-[#C49A5A]" />
+              Aafreen Atelier · Celebration Edit
+            </p>
 
-            {/* Left Column: Editorial Storytelling */}
-            <div className="lg:col-span-6 xl:col-span-6 flex flex-col justify-center text-[#221617]">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E8D4BE]/40 border border-[#C49A5A]/50 text-[10px] uppercase tracking-[0.3em] text-[#A67C52] font-semibold w-fit mb-3">
-                <Sparkles size={11} className="text-[#C49A5A]" />
-                <span>Aafreen Atelier · Celebration Edit</span>
-              </div>
+            <h1 className="text-4xl sm:text-[2.625rem] lg:text-[2.875rem] font-serif text-[#221617] tracking-tight leading-[1.05] mb-2.5">
+              The Milestone{' '}
+              <span className="italic font-light text-[#A67C52]">Occasions</span>
+            </h1>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-serif text-[#221617] tracking-tight leading-[1.15] mb-2">
-                The Milestone{' '}
-                <span className="italic font-light text-[#A67C52]">Occasions</span>
-              </h1>
+            <p className="text-sm text-[#4A433C] font-sans leading-relaxed mb-4">
+              Find the perfect handcrafted couture look for every celebration — from intimate morning Haldi rituals and midnight Jago dances to dramatic royal wedding pheras and reception galas.
+            </p>
 
-              <p className="text-xs sm:text-[13px] text-[#5C554E] font-sans leading-relaxed mb-4 max-w-lg">
-                Find the perfect handcrafted couture look for every celebration — from intimate morning Haldi rituals and midnight Jago dances to dramatic royal wedding pheras and reception galas.
-              </p>
+            <ul className="space-y-1 mb-5">
+              {[
+                'Bespoke ensembles curated for 7 sacred wedding ceremonies',
+                'Pure heritage raw silks, velvets, organzas & Phulkari weaves',
+                'Personalized bridal squad styling & family coordination',
+              ].map((point) => (
+                <li key={point} className="flex items-start gap-2.5 text-[0.8125rem] text-[#3D332A] font-sans leading-snug">
+                  <span className="mt-1.5 w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0" />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
 
-              <div className="space-y-1.5 pb-4 mb-4 border-b border-[#E8D4BE]/80">
-                <div className="flex items-center gap-2 text-xs text-[#3D332A] font-serif tracking-wide">
-                  <span className="w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0" />
-                  <span>Bespoke ensembles curated for 7 sacred wedding ceremonies</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-[#3D332A] font-serif tracking-wide">
-                  <span className="w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0" />
-                  <span>Pure heritage raw silks, velvets, organzas & Phulkari weaves</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-[#3D332A] font-serif tracking-wide">
-                  <span className="w-1.5 h-1.5 rotate-45 bg-[#C49A5A] shrink-0" />
-                  <span>Personalized bridal squad styling & family coordination</span>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <a
-                  href="#occasions-grid"
-                  className={buttonVariants({ variant: 'couture', size: 'couture' })}
-                >
-                  <span>Explore 7 Occasions</span>
-                  <ArrowRight size={13} className="text-[#C49A5A]" />
-                </a>
-
-                <a
-                  href="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20Occasion%20Wear."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={buttonVariants({ variant: 'couture-outline', size: 'couture' })}
-                >
-                  <span>Book Consultation</span>
-                  <ArrowRight size={13} className="text-[#C49A5A]" />
-                </a>
-              </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <a href="#occasions-grid" className={buttonVariants({ variant: 'couture', size: 'couture' })}>
+                <span>Explore 7 Occasions</span>
+                <ArrowRight size="0.8125rem" className="text-[#C49A5A]" />
+              </a>
+              <a
+                href="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20Occasion%20Wear."
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonVariants({ variant: 'couture-outline', size: 'couture' })}
+              >
+                <span>Book Consultation</span>
+                <ArrowRight size="0.8125rem" className="text-[#C49A5A]" />
+              </a>
             </div>
+          </div>
 
-            {/* Right Column: Balanced, Stable Haute Couture Showcase (4:3 Aspect Ratio) */}
-            <div className="lg:col-span-6 xl:col-span-6 flex justify-center items-center">
-              <div className="w-full max-w-[560px] mx-auto">
-                <div className="relative p-2.5 sm:p-3 bg-white/95 shadow-[0_16px_50px_rgba(34,22,23,0.08)] rounded-2xl">
-                  {/* Inner Frame with 4:3 Stable Ratio (Matches exact 1200x896 dimensions, zero height overflow) */}
-                  <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xs border border-[#C49A5A]/35 bg-[#FAF5EE]">
-                    <Image
-                      src="https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/occasions-hero-stable.webp"
-                      alt="Aafreen Couture Milestone Occasions - Royal Wedding Seated Grandeur"
-                      fill
-                      priority
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-cover object-center"
-                    />
-
-                    {/* Subtle Corner Atelier Badge */}
-                    <div className="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#221617]/80 backdrop-blur-xs text-[9px] uppercase font-bold tracking-[0.2em] text-[#FAF5EE] pointer-events-none">
-                      <Sparkles size={10} className="text-[#C49A5A]" />
-                      <span>Royal Nuptials & Ceremonies</span>
-                    </div>
-                  </div>
-
-                  {/* Clean Museum Plaque Below the Picture */}
-                  <div className="mt-2.5 pt-2 border-t border-[#E8D4BE]/70 flex items-center justify-between text-[#221617]">
-                    <div>
-                      <span className="text-[9.5px] uppercase font-bold tracking-[0.25em] text-[#C49A5A] block">
-                        Ceremonial Grandeur
-                      </span>
-                      <p className="font-serif text-xs sm:text-sm font-medium tracking-wide text-[#221617] mt-0.5">
-                        Heirloom Velvet & Antique Zardozi Kalis
-                      </p>
-                    </div>
-                    <a
-                      href="#occasions-grid"
-                      className="text-[10px] uppercase font-semibold tracking-[0.2em] text-[#A67C52] hover:text-[#221617] transition-colors border-b border-[#C49A5A] pb-0.5 shrink-0"
-                    >
-                      Explore 7 Occasions ↓
-                    </a>
-                  </div>
-                </div>
-              </div>
+          <div className="order-1 lg:order-2 mx-auto w-full max-w-[34rem]">
+            <div className="relative aspect-[4/3] lg:aspect-[34/25] overflow-hidden rounded-2xl bg-[#E8D8C8] shadow-[0_18px_40px_-24px_rgba(46,34,28,0.45)]">
+              <Image
+                src="https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/occasions-hero-stable.webp"
+                alt="Aafreen Couture Milestone Occasions - Royal Wedding Seated Grandeur"
+                fill
+                priority
+                sizes="(max-width: 64em) 100vw, 544px"
+                className="object-cover object-center"
+              />
             </div>
-
           </div>
         </div>
       </section>
 
       {/* 3. The 7 Sacred Occasions Directory */}
-      <section id="occasions-grid" className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 scroll-mt-24">
+      <section id="occasions-grid" className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 scroll-mt-24">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
           <div className="flex items-center justify-center gap-2.5 mb-1.5">
-            <span className="text-[10px] uppercase font-bold tracking-[0.35em] text-[#C49A5A]">
+            <span className="text-[0.625rem] uppercase font-bold tracking-[0.35em] text-gold-ink">
               Ceremonial Journey
             </span>
             <span className="w-8 h-px bg-[#C49A5A]/60" />
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#8C7A6B]">
+            <span className="text-[0.625rem] uppercase tracking-[0.25em] text-[#6E5C4D]">
               Atelier Archive
             </span>
           </div>
@@ -232,7 +184,7 @@ export default async function OccasionsPage() {
         {/* Tier 1: Pre-Wedding Celebrations (4 columns) */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-3.5 pb-2 border-b border-[#E8D8C8]">
-            <span className="text-[10px] uppercase font-bold tracking-[0.25em] text-[#A67C52]">
+            <span className="text-[0.625rem] uppercase font-bold tracking-[0.25em] text-[#A67C52]">
               Part I · Pre-Wedding Celebrations
             </span>
           </div>
@@ -248,26 +200,23 @@ export default async function OccasionsPage() {
                   src={occ.image}
                   alt={occ.label}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 40em) 100vw, (max-width: 64em) 50vw, 25vw"
                   className="object-cover object-center group-hover:scale-106 transition-transform duration-700 opacity-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#221617]/95 via-[#221617]/40 to-transparent" />
-                <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-xs border border-white/20 text-[9px] text-white/90 font-mono tracking-widest">
-                  {occ.num}
-                </div>
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-left">
-                  <span className="text-[9.5px] uppercase font-semibold tracking-[0.2em] text-[#C49A5A] block mb-1">
+                  <span className="text-[0.59375rem] uppercase font-semibold tracking-[0.2em] text-[#C49A5A] block mb-1">
                     {occ.tagline}
                   </span>
                   <h3 className="text-white font-sans font-semibold text-lg leading-tight mb-1.5">
                     {occ.label}
                   </h3>
-                  <p className="text-white/75 text-[11px] font-sans leading-snug line-clamp-2 mb-3">
+                  <p className="text-white/75 text-[0.6875rem] font-sans leading-snug line-clamp-2 mb-3">
                     {occ.description}
                   </p>
-                  <span className="inline-flex items-center gap-1.5 text-[10px] text-[#E8C06A] font-semibold tracking-widest uppercase border-b border-[#E8C06A]/50 pb-0.5 group-hover:text-white group-hover:border-white transition-colors">
+                  <span className="inline-flex items-center gap-1.5 text-[0.625rem] text-[#E8C06A] font-semibold tracking-widest uppercase border-b border-[#E8C06A]/50 pb-0.5 group-hover:text-white group-hover:border-white transition-colors">
                     <span>Explore Collection</span>
-                    <ArrowRight size={10} className="group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size="0.625rem" className="group-hover:translate-x-1 transition-transform" />
                   </span>
                 </div>
               </Link>
@@ -278,7 +227,7 @@ export default async function OccasionsPage() {
         {/* Tier 2: Grand Wedding Festivities (3 featured wide columns) */}
         <div>
           <div className="flex items-center gap-2 mb-3.5 pb-2 border-b border-[#E8D8C8]">
-            <span className="text-[10px] uppercase font-bold tracking-[0.25em] text-[#A67C52]">
+            <span className="text-[0.625rem] uppercase font-bold tracking-[0.25em] text-[#A67C52]">
               Part II · Grand Wedding Celebrations
             </span>
           </div>
@@ -294,15 +243,12 @@ export default async function OccasionsPage() {
                   src={occ.image}
                   alt={occ.label}
                   fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes="(max-width: 48em) 100vw, 33vw"
                   className="object-cover object-[center_20%] group-hover:scale-106 transition-transform duration-700 opacity-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#221617]/95 via-[#221617]/35 to-transparent" />
-                <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-xs border border-white/20 text-[9px] text-white/90 font-mono tracking-widest">
-                  {occ.num}
-                </div>
                 <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 text-left">
-                  <span className="text-[10px] uppercase font-semibold tracking-[0.22em] text-[#C49A5A] block mb-1">
+                  <span className="text-[0.625rem] uppercase font-semibold tracking-[0.22em] text-[#C49A5A] block mb-1">
                     {occ.tagline}
                   </span>
                   <h3 className="text-white font-sans font-semibold text-xl leading-tight mb-1.5">
@@ -311,9 +257,9 @@ export default async function OccasionsPage() {
                   <p className="text-white/80 text-xs font-sans leading-relaxed line-clamp-2 mb-3 max-w-md">
                     {occ.description}
                   </p>
-                  <span className="inline-flex items-center gap-1.5 text-[10px] text-[#E8C06A] font-semibold tracking-widest uppercase border-b border-[#E8C06A]/50 pb-0.5 group-hover:text-white group-hover:border-white transition-colors">
+                  <span className="inline-flex items-center gap-1.5 text-[0.625rem] text-[#E8C06A] font-semibold tracking-widest uppercase border-b border-[#E8C06A]/50 pb-0.5 group-hover:text-white group-hover:border-white transition-colors">
                     <span>Explore Collection</span>
-                    <ArrowRight size={10} className="group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size="0.625rem" className="group-hover:translate-x-1 transition-transform" />
                   </span>
                 </div>
               </Link>
@@ -325,10 +271,10 @@ export default async function OccasionsPage() {
       {/* 4. Live Curated Spotlight 01: Jago Night Edit */}
       {jagoProducts.length > 0 && (
         <section className="py-10 sm:py-12 bg-[#FAF5EE] border-t border-b border-[#E8D4BE]/70">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-3 border-b border-[#E2D2C2] gap-3">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-[#C49A5A] block mb-1">
+                <span className="text-[0.625rem] uppercase font-bold tracking-[0.3em] text-[#C49A5A] block mb-1">
                   Spotlight 01 · Midnight Punjabi Revelry
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] tracking-tight">
@@ -344,7 +290,7 @@ export default async function OccasionsPage() {
                 className={buttonVariants({ variant: 'couture-outline', size: 'couture-sm', className: 'shrink-0' })}
               >
                 <span>View All Jago ({jagoProducts.length})</span>
-                <ArrowRight size={12} className="text-[#C49A5A]" />
+                <ArrowRight size="0.75rem" className="text-[#C49A5A]" />
               </Link>
             </div>
 
@@ -360,10 +306,10 @@ export default async function OccasionsPage() {
       {/* 5. Live Curated Spotlight 02: Haldi Auspicious Rituals */}
       {haldiProducts.length > 0 && (
         <section className="py-10 sm:py-12 bg-[#FAF7F2] border-b border-[#E8D4BE]/70">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-3 border-b border-[#E2D2C2] gap-3">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-[#C49A5A] block mb-1">
+                <span className="text-[0.625rem] uppercase font-bold tracking-[0.3em] text-[#C49A5A] block mb-1">
                   Spotlight 02 · Sun-Drenched Joy
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] tracking-tight">
@@ -379,7 +325,7 @@ export default async function OccasionsPage() {
                 className={buttonVariants({ variant: 'couture-outline', size: 'couture-sm', className: 'shrink-0' })}
               >
                 <span>View All Haldi ({haldiProducts.length})</span>
-                <ArrowRight size={12} className="text-[#C49A5A]" />
+                <ArrowRight size="0.75rem" className="text-[#C49A5A]" />
               </Link>
             </div>
 
@@ -395,10 +341,10 @@ export default async function OccasionsPage() {
       {/* 6. Live Curated Spotlight 03: The Royal Wedding */}
       {weddingProducts.length > 0 && (
         <section className="py-10 sm:py-12 bg-[#FAF5EE] border-b border-[#E8D4BE]/70">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-3 border-b border-[#E2D2C2] gap-3">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-[#C49A5A] block mb-1">
+                <span className="text-[0.625rem] uppercase font-bold tracking-[0.3em] text-[#C49A5A] block mb-1">
                   Spotlight 03 · Sacred Pheras & Heritage
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] tracking-tight">
@@ -414,7 +360,7 @@ export default async function OccasionsPage() {
                 className={buttonVariants({ variant: 'couture-outline', size: 'couture-sm', className: 'shrink-0' })}
               >
                 <span>View All Wedding ({weddingProducts.length})</span>
-                <ArrowRight size={12} className="text-[#C49A5A]" />
+                <ArrowRight size="0.75rem" className="text-[#C49A5A]" />
               </Link>
             </div>
 
@@ -429,12 +375,12 @@ export default async function OccasionsPage() {
 
       {/* 7. Haute Couture Concierge Banner */}
       <section className="py-12 sm:py-16 bg-[#FAF7F2]">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[75rem] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative p-6 sm:p-10 lg:p-12 bg-white shadow-[0_10px_35px_rgba(34,22,23,0.06)] rounded-2xl text-center">
             <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#FAF5EE] border border-[#C49A5A]/50 text-[#C49A5A] mb-3.5 mx-auto">
-              <Sparkles size={18} />
+              <Sparkles size="1.125rem" />
             </div>
-            <span className="text-[10px] uppercase font-bold tracking-[0.35em] text-[#A67C52] block mb-1">
+            <span className="text-[0.625rem] uppercase font-bold tracking-[0.35em] text-[#A67C52] block mb-1">
               Bespoke Styling Service
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#221617] tracking-tight mb-2.5">
@@ -452,7 +398,7 @@ export default async function OccasionsPage() {
                 className={buttonVariants({ variant: 'couture', size: 'couture' })}
               >
                 <span>WhatsApp Atelier Stylist</span>
-                <ArrowRight size={13} className="text-[#C49A5A]" />
+                <ArrowRight size="0.8125rem" className="text-[#C49A5A]" />
               </a>
 
               <Link
@@ -460,7 +406,7 @@ export default async function OccasionsPage() {
                 className={buttonVariants({ variant: 'couture-outline', size: 'couture' })}
               >
                 <span>Explore Bridal Edit</span>
-                <ChevronRight size={13} className="text-[#C49A5A]" />
+                <ChevronRight size="0.8125rem" className="text-[#C49A5A]" />
               </Link>
             </div>
           </div>

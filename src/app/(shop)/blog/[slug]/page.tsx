@@ -62,7 +62,7 @@ export default async function BlogPostPage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-dvh bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumbJsonLd) }}
@@ -78,10 +78,10 @@ export default async function BlogPostPage({ params }: Props) {
             href="/blog"
             className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#A67C52] hover:text-[#221617] transition-colors mb-6"
           >
-            <ArrowLeft size={14} /> Back to Journal
+            <ArrowLeft size="0.875rem" /> Back to Journal
           </Link>
 
-          <span className="block text-[10.5px] text-[#A67C52] font-semibold uppercase tracking-[0.3em] mb-2">
+          <span className="block text-[0.65625rem] text-[#A67C52] font-semibold uppercase tracking-[0.3em] mb-2">
             {post.category}
           </span>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#221617] leading-tight mb-6">
@@ -89,9 +89,9 @@ export default async function BlogPostPage({ params }: Props) {
           </h1>
 
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-[#6E6A66] pt-4 border-t border-[#E8D8C8]/60 font-sans">
-            <span className="flex items-center gap-1.5"><User size={14} className="text-[#A67C52]" /> {post.author} ({post.authorRole})</span>
-            <span className="flex items-center gap-1.5"><Calendar size={14} className="text-[#A67C52]" /> {post.publishedAt}</span>
-            <span className="flex items-center gap-1.5"><Clock size={14} className="text-[#A67C52]" /> {post.readTime}</span>
+            <span className="flex items-center gap-1.5"><User size="0.875rem" className="text-[#A67C52]" /> {post.author} ({post.authorRole})</span>
+            <span className="flex items-center gap-1.5"><Calendar size="0.875rem" className="text-[#A67C52]" /> {post.publishedAt}</span>
+            <span className="flex items-center gap-1.5"><Clock size="0.875rem" className="text-[#A67C52]" /> {post.readTime}</span>
           </div>
         </div>
       </div>
@@ -104,7 +104,7 @@ export default async function BlogPostPage({ params }: Props) {
             alt={post.title}
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 896px"
+            sizes="(max-width: 64em) 100vw, 896px"
             className="object-cover"
           />
         </div>
@@ -131,7 +131,7 @@ export default async function BlogPostPage({ params }: Props) {
           </p>
           <Link
             href="/contact"
-            className="inline-block bg-[#221617] text-white text-[10.5px] font-semibold tracking-[0.25em] uppercase px-8 py-3 hover:bg-[#A67C52] transition-colors rounded-lg"
+            className="inline-block bg-[#221617] text-white text-[0.65625rem] font-semibold tracking-[0.25em] uppercase px-8 py-3 hover:bg-[#A67C52] transition-colors rounded-lg"
           >
             Schedule Atelier Visit
           </Link>
@@ -154,9 +154,9 @@ export default async function BlogPostPage({ params }: Props) {
                     <Image src={r.image} alt={r.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex flex-col justify-center">
-                    <span className="text-[9px] text-[#A67C52] font-semibold uppercase tracking-wider">{r.category}</span>
+                    <span className="text-[0.5625rem] text-[#A67C52] font-semibold uppercase tracking-wider">{r.category}</span>
                     <h4 className="font-serif text-sm text-[#221617] group-hover:text-[#A67C52] transition-colors line-clamp-2 mt-1">{r.title}</h4>
-                    <span className="text-[10.5px] text-[#6E6A66] mt-2">{r.readTime}</span>
+                    <span className="text-[0.65625rem] text-[#6E6A66] mt-2">{r.readTime}</span>
                   </div>
                 </Link>
               ))}

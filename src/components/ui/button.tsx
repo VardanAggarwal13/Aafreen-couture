@@ -12,9 +12,9 @@ const buttonVariants = cva(
         couture:
           "bg-heading text-surface hover:bg-heading/90 uppercase tracking-[0.2em] font-semibold text-xs rounded-lg shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98]",
         "couture-gold":
-          "bg-gold text-white hover:bg-gold-hover uppercase tracking-[0.2em] font-semibold text-xs rounded-lg shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98]",
+          "bg-gold text-heading hover:bg-gold-hover uppercase tracking-[0.2em] font-semibold text-xs rounded-lg shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98]",
         "couture-outline":
-          "border border-heading bg-transparent hover:bg-navbar hover:border-gold text-heading hover:text-gold uppercase tracking-[0.2em] font-semibold text-xs rounded-lg transition-all duration-300 active:scale-[0.98]",
+          "border border-heading! bg-transparent hover:bg-navbar hover:border-gold! text-heading hover:text-gold uppercase tracking-[0.2em] font-semibold text-xs rounded-lg transition-all duration-300 active:scale-[0.98]",
         "couture-light-outline":
           "border border-white/40 bg-transparent hover:bg-white hover:text-[#140B0A] hover:border-white text-white uppercase tracking-[0.2em] font-semibold text-xs rounded-lg transition-all duration-300 active:scale-[0.98]",
         "couture-ghost":
@@ -33,19 +33,19 @@ const buttonVariants = cva(
         default:
           "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
         couture:
-          "h-9 sm:h-9.5 gap-1.5 px-4 sm:px-5 py-1.5 text-[10.5px] uppercase tracking-[0.16em] font-semibold",
+          "h-9 sm:h-9.5 gap-1.5 px-4 sm:px-5 py-1.5 text-[0.65625rem] uppercase tracking-[0.16em] font-semibold",
         "couture-sm":
-          "h-7.5 sm:h-8 gap-1.5 px-3 sm:px-3.5 py-1 text-[9.5px] sm:text-[10px] uppercase tracking-[0.14em] font-semibold",
+          "h-7.5 sm:h-8 gap-1.5 px-3 sm:px-3.5 py-1 text-[0.59375rem] sm:text-[0.625rem] uppercase tracking-[0.14em] font-semibold",
         "couture-lg":
-          "h-10 sm:h-11 gap-2 px-5 sm:px-6 py-2 text-[11px] sm:text-xs uppercase tracking-[0.18em] font-semibold",
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
+          "h-10 sm:h-11 gap-2 px-5 sm:px-6 py-2 text-[0.6875rem] sm:text-xs uppercase tracking-[0.18em] font-semibold",
+        xs: "h-6 gap-1 rounded-[min(var(--radius-md),0.625rem)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
+        sm: "h-7 gap-1 rounded-[min(var(--radius-md),0.75rem)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
         lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
         icon: "size-8",
         "icon-xs":
-          "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
+          "size-6 rounded-[min(var(--radius-md),0.625rem)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
         "icon-sm":
-          "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
+          "size-7 rounded-[min(var(--radius-md),0.75rem)] in-data-[slot=button-group]:rounded-lg",
         "icon-lg": "size-9",
       },
     },

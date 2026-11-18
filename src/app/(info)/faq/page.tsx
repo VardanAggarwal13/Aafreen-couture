@@ -45,10 +45,6 @@ const FAQS: FaqCategory[] = [
         q: 'How long does a made-to-order bridal piece take to craft?',
         a: 'Handcrafted bridal lehengas and bespoke creations typically take 15–25 business days to craft, depending on the complexity of hand embroidery (zardozi, gota patti, dabka) and hand dyeing.',
       },
-      {
-        q: 'Do you offer complimentary alterations?',
-        a: 'Yes, we offer complimentary fit alterations on all custom bridal pieces within 10 days of delivery to ensure a flawless fit for your wedding celebrations.',
-      },
     ],
   },
   {
@@ -56,7 +52,7 @@ const FAQS: FaqCategory[] = [
     items: [
       {
         q: 'How long does domestic shipping take across India?',
-        a: 'Ready-to-ship pieces are dispatched within 1–2 business days, and delivery takes 5–7 business days post-dispatch via insured air courier partners (Blue Dart, Delhivery).',
+        a: 'Ready-to-ship pieces are dispatched within 1–2 business days, and delivery takes 5–7 business days post-dispatch via air courier partners (Blue Dart, Delhivery).',
       },
       {
         q: 'Do you ship internationally?',
@@ -64,7 +60,7 @@ const FAQS: FaqCategory[] = [
       },
       {
         q: 'How can I track my shipment?',
-        a: 'Once your order is handed over to the courier partner, an automated email and WhatsApp notification with your AWB tracking link will be sent. You can also track your shipment live on our dedicated Track Order portal.',
+        a: 'Once your order is handed over to the courier partner, an automated email and WhatsApp notification with your AWB tracking link will be sent.',
       },
     ],
   },
@@ -106,7 +102,7 @@ export default async function FAQPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+    <div className="min-h-dvh bg-background text-heading">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString(faqJsonLd) }}
@@ -118,9 +114,9 @@ export default async function FAQPage() {
         italicTitle={cms?.heroItalicTitle ?? 'Atelier Guidance'}
         subtitle={
           cms?.heroSubtitle ??
-          'Everything you need to know regarding bespoke bridal sizing, payment security, express air transit, and our fitting guarantee.'
+          'Everything you need to know regarding bespoke bridal sizing, payment security, and express air transit.'
         }
-        metaInfo={cms?.heroMetaInfo ?? 'Dedicated Styling Concierge · Direct WhatsApp Assistance · 24-48h Response Guarantee'}
+        metaInfo={cms?.heroMetaInfo ?? 'Dedicated Styling Concierge · Direct WhatsApp Assistance · Replies during business hours'}
       />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">

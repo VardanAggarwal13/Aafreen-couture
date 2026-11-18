@@ -21,6 +21,7 @@
   --color-heading: var(--heading);
   --color-gold: var(--gold);
   --color-gold-hover: var(--gold-hover);
+  --color-gold-ink: var(--gold-ink, #6E4F14);
   --color-border: var(--border);
 
   /* Legacy brand color aliases for backward compatibility */
@@ -54,6 +55,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
 }
+
+/* Off-screen sections skip layout/paint until the visitor scrolls near them */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 40rem;
+}
+
+/* Height of the sticky site header; sticky sub-bars sit just beneath it (rem, so it scales with user text size) */
+:root { --header-h: 4.5rem; }
+@media (min-width: 40rem) { :root { --header-h: 4.75rem; } }
+@media (min-width: 64rem) { :root { --header-h: 5.25rem; } }
 
 @layer base {
   /* Headings use Cormorant Garamond luxury serif */
@@ -148,11 +160,13 @@ body {
   --navbar: #EAE2D7;
   --footer: #EAE2D7;
 
-  --text: #8A6A55;
+  --text: #7A5C47;
   --heading: #2E221C;
 
   --gold: #C9A86A;
   --gold-hover: #B58E52;
+  /* Deeper gold for small gold text on cream (5.3:1); --gold itself stays for fills and large type */
+  --gold-ink: #6E4F14;
 
   --border: #DDD2C5;
 
@@ -249,5 +263,42 @@ body {
   }
   html {
     @apply font-sans;
+  }
+}
+/* Respect the visitor's "reduce motion" system setting */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Loading placeholders: theme-token colour with a soft moving highlight (see components/ui/skeleton.tsx) */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: color-mix(in srgb, var(--border) 55%, transparent);
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.5), transparent);
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+    display: none;
   }
 }

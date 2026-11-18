@@ -56,7 +56,7 @@ export function AdminOrderDetail({ order }: Props) {
             {new Date(order.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
         </div>
-        <span className={`text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider ${statusColor}`}>
+        <span className={`text-[0.6875rem] font-semibold px-3 py-1 rounded-full uppercase tracking-wider ${statusColor}`}>
           {order.status.replace(/_/g, ' ').toUpperCase()}
         </span>
       </div>
@@ -123,7 +123,7 @@ export function AdminOrderDetail({ order }: Props) {
               <button
                 onClick={handleStatusUpdate}
                 disabled={updating || newStatus === order.status}
-                className="bg-[#2E221C] text-[#F8F5F1] text-[11px] font-semibold tracking-wider uppercase px-6 py-2 rounded-lg hover:bg-[#1A1410] transition-all shadow-sm disabled:opacity-50"
+                className="bg-[#2E221C] text-[#F8F5F1] text-[0.6875rem] font-semibold tracking-wider uppercase px-6 py-2 rounded-lg hover:bg-[#1A1410] transition-all shadow-sm disabled:opacity-50"
               >
                 {updating ? 'Updating…' : 'Update'}
               </button>

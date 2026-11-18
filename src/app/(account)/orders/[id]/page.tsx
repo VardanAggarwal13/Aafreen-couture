@@ -165,7 +165,7 @@ export default async function OrderDetailPage({ params }: Props) {
             href={ROUTES.ORDERS}
             className="inline-flex items-center gap-1.5 text-xs text-gold hover:text-heading transition-colors font-semibold uppercase tracking-wider mb-2"
           >
-            <ArrowLeft size={13} /> Back to My Orders
+            <ArrowLeft size="0.8125rem" /> Back to My Orders
           </Link>
           <h1 className="font-serif text-2xl text-heading tracking-tight">
             Order #{order.orderNumber}
@@ -197,34 +197,34 @@ export default async function OrderDetailPage({ params }: Props) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
           <div className="flex flex-col items-center">
             <div className="w-10 h-10 rounded-full bg-gold/10 text-gold border border-gold/30 flex items-center justify-center mb-2">
-              <Clock size={18} />
+              <Clock size="1.125rem" />
             </div>
-            <p className="text-[11px] font-semibold text-heading uppercase">Confirmed</p>
-            <p className="text-[10px] text-text">Order Placed</p>
+            <p className="text-[0.6875rem] font-semibold text-heading uppercase">Confirmed</p>
+            <p className="text-[0.625rem] text-text">Order Placed</p>
           </div>
 
           <div className="flex flex-col items-center">
             <div className="w-10 h-10 rounded-full bg-gold/10 text-gold border border-gold/30 flex items-center justify-center mb-2">
-              <ShieldCheck size={18} />
+              <ShieldCheck size="1.125rem" />
             </div>
-            <p className="text-[11px] font-semibold text-heading uppercase">Tailoring</p>
-            <p className="text-[10px] text-text">Quality Check</p>
+            <p className="text-[0.6875rem] font-semibold text-heading uppercase">Tailoring</p>
+            <p className="text-[0.625rem] text-text">Quality Check</p>
           </div>
 
           <div className="flex flex-col items-center">
             <div className="w-10 h-10 rounded-full bg-surface text-text/60 border border-border flex items-center justify-center mb-2 opacity-60">
-              <Truck size={18} />
+              <Truck size="1.125rem" />
             </div>
-            <p className="text-[11px] font-semibold text-text uppercase">In Transit</p>
-            <p className="text-[10px] text-text">Insured Dispatch</p>
+            <p className="text-[0.6875rem] font-semibold text-text uppercase">In Transit</p>
+            <p className="text-[0.625rem] text-text">Insured Dispatch</p>
           </div>
 
           <div className="flex flex-col items-center">
             <div className="w-10 h-10 rounded-full bg-surface text-text/60 border border-border flex items-center justify-center mb-2 opacity-60">
-              <PackageCheck size={18} />
+              <PackageCheck size="1.125rem" />
             </div>
-            <p className="text-[11px] font-semibold text-text uppercase">Delivered</p>
-            <p className="text-[10px] text-text">At Your Doorstep</p>
+            <p className="text-[0.6875rem] font-semibold text-text uppercase">Delivered</p>
+            <p className="text-[0.625rem] text-text">At Your Doorstep</p>
           </div>
         </div>
       </div>
@@ -262,7 +262,7 @@ export default async function OrderDetailPage({ params }: Props) {
                   {order.status === 'delivered' && item.slug && (
                     <Link
                       href={`/product/${item.slug}#reviews`}
-                      className="block text-[11px] font-semibold uppercase tracking-wider text-gold hover:text-heading transition-colors mt-1"
+                      className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-gold hover:text-heading transition-colors mt-1"
                     >
                       Write a review
                     </Link>
@@ -313,7 +313,7 @@ export default async function OrderDetailPage({ params }: Props) {
         <div className="bg-surface p-6 rounded-xl shadow-sm flex flex-col justify-between">
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading mb-3 flex items-center gap-2">
-              <CreditCard size={15} className="text-gold" /> Payment Information
+              <CreditCard size="0.9375rem" className="text-gold" /> Payment Information
             </h2>
             <div className="text-xs text-text space-y-2">
               <div className="flex justify-between items-center">
@@ -325,7 +325,7 @@ export default async function OrderDetailPage({ params }: Props) {
               <div className="flex justify-between items-center">
                 <span>Payment Status:</span>
                 <span
-                  className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase font-semibold tracking-wider ${
+                  className={`px-2.5 py-0.5 text-[0.625rem] rounded-full uppercase font-semibold tracking-wider ${
                     order.paymentStatus === 'paid'
                       ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                       : order.paymentMethod === 'cod'
@@ -347,7 +347,7 @@ export default async function OrderDetailPage({ params }: Props) {
               {order.razorpayPaymentId && (
                 <div className="flex justify-between items-center pt-2 border-t border-border/60">
                   <span className="text-text">Transaction Reference:</span>
-                  <span className="font-mono text-heading text-[11px] font-medium bg-background px-2 py-0.5 rounded-lg border border-border">
+                  <span className="font-mono text-heading text-[0.6875rem] font-medium bg-background px-2 py-0.5 rounded-lg border border-border">
                     {order.razorpayPaymentId}
                   </span>
                 </div>
@@ -367,7 +367,7 @@ export default async function OrderDetailPage({ params }: Props) {
         {address && (
           <div className="bg-surface p-6 rounded-xl shadow-sm">
             <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading mb-3 flex items-center gap-2">
-              <MapPin size={15} className="text-gold" /> Shipping Address
+              <MapPin size="0.9375rem" className="text-gold" /> Shipping Address
             </h2>
             <div className="text-xs text-text space-y-1">
               <p className="font-semibold text-heading">{address.fullName}</p>

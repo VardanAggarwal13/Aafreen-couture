@@ -65,8 +65,8 @@ const PAGES = [
     heroTitle: 'Frequently Asked Questions',
     heroItalicTitle: 'Atelier Guidance',
     heroSubtitle:
-      'Everything you need to know regarding bespoke bridal sizing, payment security, express air transit, and our fitting guarantee.',
-    heroMetaInfo: 'Dedicated Styling Concierge · Direct WhatsApp Assistance · 24-48h Response Guarantee',
+      'Everything you need to know regarding bespoke bridal sizing, payment security, and express air transit.',
+    heroMetaInfo: 'Dedicated Styling Concierge · Direct WhatsApp Assistance · Replies during business hours',
   },
   {
     slug: 'shipping-policy',
@@ -76,7 +76,7 @@ const PAGES = [
     heroTitle: 'Shipping & Delivery',
     heroItalicTitle: 'Global Logistics & Care',
     heroSubtitle:
-      'Delivering handcrafted Indian bridal couture with 100% transit insurance, white-glove packaging, and live milestone updates across India and 50+ countries.',
+      'Delivering handcrafted Indian bridal couture with white-glove packaging and live milestone updates across India and 50+ countries.',
     heroMetaInfo: 'Effective Season 2026 · Compliant with Indian E-Commerce Consumer Protection Rules',
   },
   {
@@ -85,9 +85,9 @@ const PAGES = [
     route: '/returns-policy',
     heroBadge: 'Aafreen Atelier Fitting Protocols',
     heroTitle: 'Exchange & Returns',
-    heroItalicTitle: 'Client Care & Fitting Guarantee',
+    heroItalicTitle: 'Client Care & Size Exchange',
     heroSubtitle:
-      'Dedicated to ensuring every heirloom ensemble fits you flawlessly. Learn about our 7-day size exchanges, complimentary bridal alterations, and full refund guarantees.',
+      'Dedicated to ensuring every heirloom ensemble fits you flawlessly. Learn about our 7-day size exchanges and full refund guarantees.',
     heroMetaInfo: 'Effective Season 2026 · Compliant with Consumer Protection (E-Commerce) Rules',
   },
   {

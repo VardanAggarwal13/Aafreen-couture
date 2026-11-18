@@ -11,7 +11,7 @@ interface ProductReviewsProps {
   averageRating: number;
 }
 
-function Stars({ value, size = 14 }: { value: number; size?: number }) {
+function Stars({ value, size = '0.875rem' }: { value: number; size?: string }) {
   return (
     <span className="inline-flex items-center gap-0.5" aria-label={`${value} out of 5 stars`}>
       {[1, 2, 3, 4, 5].map((n) => (
@@ -40,7 +40,7 @@ export function ProductReviews({ productId, productSlug, productName, reviews, r
           </div>
           {reviewCount > 0 && (
             <div className="flex items-center gap-2">
-              <Stars value={Math.round(average)} size={16} />
+              <Stars value={Math.round(average)} size="1rem" />
               <span className="text-sm text-heading font-semibold">{average.toFixed(1)}</span>
               <span className="text-xs text-text">({reviewCount})</span>
             </div>
@@ -58,11 +58,11 @@ export function ProductReviews({ productId, productSlug, productName, reviews, r
                   <h3 className="text-sm font-semibold text-heading font-sans">{review.title}</h3>
                 </div>
                 <p className="text-sm text-text leading-relaxed mt-2 font-sans whitespace-pre-line">{review.body}</p>
-                <div className="flex flex-wrap items-center gap-x-3 mt-3 text-[11px] text-text font-sans">
+                <div className="flex flex-wrap items-center gap-x-3 mt-3 text-[0.6875rem] text-text font-sans">
                   <span className="font-semibold text-heading">{review.authorName}</span>
                   {review.isVerifiedPurchase && (
                     <span className="inline-flex items-center gap-1 text-emerald-700">
-                      <BadgeCheck size={13} /> Verified purchase
+                      <BadgeCheck size="0.8125rem" /> Verified purchase
                     </span>
                   )}
                   <time dateTime={review.createdAt}>

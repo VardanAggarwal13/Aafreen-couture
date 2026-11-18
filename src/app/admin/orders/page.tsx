@@ -60,7 +60,7 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Order #', 'Customer', 'Items', 'Total', 'Method', 'Payment', 'Fulfillment', 'Date', 'Action'].map((h) => (
-                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider whitespace-nowrap">
+                  <th key={h} className="text-left px-5 py-2 text-[0.625rem] font-semibold text-[#8A6A55] uppercase tracking-wider whitespace-nowrap">
                     {h}
                   </th>
                 ))}
@@ -75,19 +75,19 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
                 orders.map((order) => (
                   <tr key={String(order._id)} className="hover:bg-[#FAF7F2]/60 transition-colors group">
                     <td className="px-5 py-2.5 font-mono font-semibold text-[#2E221C]">#{order.orderNumber}</td>
-                    <td className="px-5 py-2.5 text-[#2E221C] font-medium max-w-[150px] truncate">{order.shippingAddress.name}</td>
+                    <td className="px-5 py-2.5 text-[#2E221C] font-medium max-w-[9.375rem] truncate">{order.shippingAddress.name}</td>
                     <td className="px-5 py-2.5 text-[#8A6A55]">{order.items.length}</td>
                     <td className="px-5 py-2.5 font-semibold text-[#2E221C]">{formatPrice(order.total)}</td>
                     <td className="px-5 py-2.5">
                       {order.paymentMethod === 'cod' ? (
-                        <span className="inline-block text-[10px] bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded font-semibold">COD</span>
+                        <span className="inline-block text-[0.625rem] bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded font-semibold">COD</span>
                       ) : (
-                        <span className="inline-block text-[10px] bg-sky-50 text-sky-800 border border-sky-200 px-2 py-0.5 rounded font-semibold">Razorpay</span>
+                        <span className="inline-block text-[0.625rem] bg-sky-50 text-sky-800 border border-sky-200 px-2 py-0.5 rounded font-semibold">Razorpay</span>
                       )}
                     </td>
                     <td className="px-5 py-2.5">
                       <span
-                        className={`inline-block text-[10px] px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider ${
+                        className={`inline-block text-[0.625rem] px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider ${
                           order.paymentStatus === 'paid'
                             ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                             : order.paymentStatus === 'pending'
@@ -99,7 +99,7 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
                       </span>
                     </td>
                     <td className="px-5 py-2.5">
-                      <span className={`inline-block text-[10px] px-2.5 py-0.5 rounded-full font-medium capitalize ${STATUS_BADGE[order.status] ?? 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5]'}`}>
+                      <span className={`inline-block text-[0.625rem] px-2.5 py-0.5 rounded-full font-medium capitalize ${STATUS_BADGE[order.status] ?? 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5]'}`}>
                         {getOrderStatusLabel(order.status)}
                       </span>
                     </td>

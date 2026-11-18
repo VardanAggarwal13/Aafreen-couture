@@ -21,7 +21,7 @@ export default async function NotificationsPage() {
         {/* Empty state */}
         <div className="bg-surface p-10 text-center rounded-2xl shadow-sm">
           <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-4">
-            <Bell size={22} className="text-gold" />
+            <Bell size="1.375rem" className="text-gold" />
           </div>
           <h3 className="text-base font-serif text-heading mb-1.5">No notifications yet</h3>
           <p className="text-xs sm:text-sm text-text">

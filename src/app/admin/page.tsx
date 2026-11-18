@@ -98,9 +98,9 @@ export default async function AdminDashboardPage() {
           >
             <div className="flex items-start justify-between mb-2">
               <div className={`w-10 h-10 ${iconBg} rounded-lg flex items-center justify-center`}>
-                <Icon size={18} className={iconColor} />
+                <Icon size="1.125rem" className={iconColor} />
               </div>
-              <span className="text-[10.5px] font-semibold text-[#9E7B3A] bg-[#C9A86A]/10 px-2 py-0.5 rounded-full uppercase tracking-wider">
+              <span className="text-[0.65625rem] font-semibold text-[#9E7B3A] bg-[#C9A86A]/10 px-2 py-0.5 rounded-full uppercase tracking-wider">
                 {badge}
               </span>
             </div>
@@ -117,21 +117,21 @@ export default async function AdminDashboardPage() {
           <div className="flex items-center justify-between mb-3 pb-2">
             <div>
               <h2 className="text-sm font-sans font-semibold text-[#2E221C]">Recent Orders</h2>
-              <p className="text-[11px] text-[#8A6A55]">Latest client purchases and bespoke reservations</p>
+              <p className="text-[0.6875rem] text-[#8A6A55]">Latest client purchases and bespoke reservations</p>
             </div>
             <Link
               href="/admin/orders"
               className="text-xs text-[#9E7B3A] hover:text-[#2E221C] font-semibold flex items-center gap-1 transition-colors"
             >
               <span>View All Orders</span>
-              <ArrowRight size={12} />
+              <ArrowRight size="0.75rem" />
             </Link>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-sans">
               <thead>
-                <tr className="bg-[#FAF7F2] border-b border-[#EAE2D7] text-[#8A6A55] uppercase tracking-wider text-[10px] font-semibold">
+                <tr className="bg-[#FAF7F2] border-b border-[#EAE2D7] text-[#8A6A55] uppercase tracking-wider text-[0.625rem] font-semibold">
                   <th className="px-3.5 py-2">Order</th>
                   <th className="px-3.5 py-2">Client</th>
                   <th className="px-3.5 py-2">Total Amount</th>
@@ -146,7 +146,7 @@ export default async function AdminDashboardPage() {
                         #{order.orderNumber}
                       </Link>
                     </td>
-                    <td className="px-3.5 py-2.5 text-[#2E221C] truncate max-w-[140px]">
+                    <td className="px-3.5 py-2.5 text-[#2E221C] truncate max-w-[8.75rem]">
                       {order.shippingAddress?.name || 'Valued Client'}
                     </td>
                     <td className="px-3.5 py-2.5 font-medium text-[#2E221C]">
@@ -154,7 +154,7 @@ export default async function AdminDashboardPage() {
                     </td>
                     <td className="px-3.5 py-2.5">
                       <span
-                        className={`inline-block text-[10px] px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider border ${
+                        className={`inline-block text-[0.625rem] px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider border ${
                           STATUS_BADGE[order.status] ?? 'bg-gray-100 text-gray-700 border-gray-200'
                         }`}
                       >
@@ -180,7 +180,7 @@ export default async function AdminDashboardPage() {
           {/* Quick Actions Card */}
           <div className="bg-white rounded-xl shadow-sm p-4">
             <h2 className="text-sm font-sans font-semibold text-[#2E221C] mb-1">Quick Actions</h2>
-            <p className="text-[11px] text-[#8A6A55] mb-3">Direct shortcuts to critical storefront controls</p>
+            <p className="text-[0.6875rem] text-[#8A6A55] mb-3">Direct shortcuts to critical storefront controls</p>
 
             <div className="space-y-1 font-sans">
               {[
@@ -198,7 +198,7 @@ export default async function AdminDashboardPage() {
                   className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-[#2E221C] hover:bg-[#FAF7F2] hover:text-[#9E7B3A] transition-all group"
                 >
                   <span>{label}</span>
-                  <ArrowRight size={12} className="text-[#8A6A55] group-hover:text-[#9E7B3A] transition-transform group-hover:translate-x-0.5" />
+                  <ArrowRight size="0.75rem" className="text-[#8A6A55] group-hover:text-[#9E7B3A] transition-transform group-hover:translate-x-0.5" />
                 </Link>
               ))}
             </div>
@@ -207,10 +207,10 @@ export default async function AdminDashboardPage() {
           {/* Administrators Security Badge */}
           <div className="bg-[#FAF7F2] rounded-xl p-4 text-xs font-sans">
             <div className="flex items-center gap-2 text-[#9E7B3A] font-semibold text-xs mb-1">
-              <ShieldCheck size={16} />
+              <ShieldCheck size="1rem" />
               <span>Client Confidential Access</span>
             </div>
-            <p className="text-[#8A6A55] text-[11px] leading-relaxed">
+            <p className="text-[#8A6A55] text-[0.6875rem] leading-relaxed">
               All administrative operations are protected. You can grant or revoke staff administrator access directly from the <Link href="/admin/customers" className="text-[#2E221C] font-semibold underline">Users &amp; Admins</Link> panel.
             </p>
           </div>

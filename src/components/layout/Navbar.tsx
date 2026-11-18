@@ -7,7 +7,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X, Search, ShoppingBag, Heart, User, ChevronDown, MapPin, ShieldCheck } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { navLinks } from '@/config/navigation.config';
 import type { NavLink } from '@/config/navigation.config';
@@ -105,8 +104,8 @@ function StorefrontNavbar() {
           isScrolled ? 'shadow-[0_4px_20px_rgba(46,34,28,0.08)] border-b border-border' : 'border-b border-border'
         )}
       >
-        <div className="max-w-[1440px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-10">
-          <div className="relative flex items-center justify-between lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] h-[72px] sm:h-[76px] lg:h-[84px] py-1.5">
+        <div className="max-w-[90rem] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-10">
+          <div className="relative flex items-center justify-between lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] h-[4.5rem] sm:h-[4.75rem] lg:h-[5.25rem] py-1.5">
 
             {/* Left section: Hamburger on mobile, Brand logo on desktop */}
             <div className="flex items-center justify-start min-w-0">
@@ -116,7 +115,7 @@ function StorefrontNavbar() {
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open navigation"
               >
-                <Menu size={22} />
+                <Menu size="1.375rem" />
               </button>
 
               {/* Brand Logo */}
@@ -129,7 +128,7 @@ function StorefrontNavbar() {
                   alt="Aafreen Couture By Pearl"
                   width={260}
                   height={123}
-                  className="h-11 sm:h-14 lg:h-[62px] xl:h-[66px] w-auto object-contain drop-shadow-2xs"
+                  className="h-11 sm:h-14 lg:h-[3.875rem] xl:h-[4.125rem] w-auto object-contain drop-shadow-2xs"
                   priority
                 />
               </Link>
@@ -156,7 +155,7 @@ function StorefrontNavbar() {
                 aria-label="Search"
                 className="p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors cursor-pointer"
               >
-                <Search size={18} />
+                <Search size="1.125rem" />
               </button>
               
               {/* Account / Sign In Dropdown */}
@@ -182,15 +181,15 @@ function StorefrontNavbar() {
                   aria-expanded={accountMenuOpen}
                   className="p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors flex items-center gap-1.5 cursor-pointer relative"
                 >
-                  <User size={18} />
+                  <User size="1.125rem" />
                   {/* On mobile screens, show combined cart/wishlist count badge on the user account icon */}
                   {mounted && (cartItemCount > 0 || wishlistCount > 0) && (
-                    <span className="lg:hidden absolute top-1 right-0.5 bg-gold text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center shadow-xs">
+                    <span className="lg:hidden absolute top-1 right-0.5 bg-gold text-heading text-[0.5rem] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center shadow-xs">
                       {cartItemCount > 0 ? (cartItemCount > 9 ? '9+' : cartItemCount) : wishlistCount}
                     </span>
                   )}
                   {session?.user && (
-                    <span className="text-[11px] font-medium text-heading max-w-[85px] truncate hidden md:inline">
+                    <span className="text-[0.6875rem] font-medium text-heading max-w-[5.3125rem] truncate hidden md:inline">
                       {session.user.name?.split(' ')[0]}
                     </span>
                   )}
@@ -208,11 +207,11 @@ function StorefrontNavbar() {
                           className="flex items-center justify-between px-3 py-2 rounded-lg text-heading font-medium hover:bg-surface hover:text-gold transition-colors"
                         >
                           <div className="flex items-center gap-2.5">
-                            <ShoppingBag size={15} className="text-gold" />
-                            <span className="font-serif text-[12px] font-semibold">Shopping Bag</span>
+                            <ShoppingBag size="0.9375rem" className="text-gold" />
+                            <span className="font-serif text-[0.75rem] font-semibold">Shopping Bag</span>
                           </div>
                           {mounted && (
-                            <span className="bg-gold/15 text-gold border border-gold/30 text-[9.5px] font-bold px-2 py-0.5 rounded-full">
+                            <span className="bg-gold/15 text-gold border border-gold/30 text-[0.59375rem] font-bold px-2 py-0.5 rounded-full">
                               {cartItemCount} {cartItemCount === 1 ? 'item' : 'items'}
                             </span>
                           )}
@@ -223,11 +222,11 @@ function StorefrontNavbar() {
                           className="flex items-center justify-between px-3 py-2 rounded-lg text-heading font-medium hover:bg-surface hover:text-gold transition-colors"
                         >
                           <div className="flex items-center gap-2.5">
-                            <Heart size={15} className="text-gold" />
-                            <span className="font-serif text-[12px] font-semibold">Saved Wishlist</span>
+                            <Heart size="0.9375rem" className="text-gold" />
+                            <span className="font-serif text-[0.75rem] font-semibold">Saved Wishlist</span>
                           </div>
                           {mounted && (
-                            <span className="bg-gold/15 text-gold border border-gold/30 text-[9.5px] font-bold px-2 py-0.5 rounded-full">
+                            <span className="bg-gold/15 text-gold border border-gold/30 text-[0.59375rem] font-bold px-2 py-0.5 rounded-full">
                               {wishlistCount} {wishlistCount === 1 ? 'item' : 'items'}
                             </span>
                           )}
@@ -238,7 +237,7 @@ function StorefrontNavbar() {
                         <>
                           <div className="px-4 py-2.5 border-b border-border/60">
                             <p className="font-serif text-xs font-semibold text-heading truncate">{session.user.name}</p>
-                            <p className="text-[10.5px] text-text truncate">{session.user.email}</p>
+                            <p className="text-[0.65625rem] text-text truncate">{session.user.email}</p>
                           </div>
                           <Link
                             href={ROUTES.ORDERS}
@@ -267,7 +266,7 @@ function StorefrontNavbar() {
                               onClick={() => setAccountMenuOpen(false)}
                               className="flex items-center gap-1.5 px-4 py-2 text-gold font-medium hover:bg-background transition-colors border-t border-border/60 mt-1 pt-2.5"
                             >
-                              <ShieldCheck size={13} />
+                              <ShieldCheck size="0.8125rem" />
                               Admin Dashboard
                             </Link>
                           )}
@@ -289,20 +288,20 @@ function StorefrontNavbar() {
                         <>
                           <div className="px-4 py-2.5 text-text">
                             <p className="font-serif text-xs font-semibold text-heading mb-0.5">Welcome to Aafreen Couture</p>
-                            <p className="text-[10.5px] text-text">Access orders & saved addresses</p>
+                            <p className="text-[0.65625rem] text-text">Access orders & saved addresses</p>
                           </div>
                           <div className="px-4 py-2 border-t border-border/60 space-y-2">
                             <Link
                               href={ROUTES.LOGIN}
                               onClick={() => setAccountMenuOpen(false)}
-                              className="block text-center py-2 bg-heading text-surface font-semibold uppercase tracking-wider text-[11px] rounded-lg hover:bg-gold transition-colors"
+                              className="block text-center py-2 bg-heading text-surface font-semibold uppercase tracking-wider text-[0.6875rem] rounded-lg hover:bg-gold transition-colors"
                             >
                               Sign In
                             </Link>
                             <Link
                               href={ROUTES.REGISTER}
                               onClick={() => setAccountMenuOpen(false)}
-                              className="block text-center py-1.5 border border-border text-heading font-medium text-[11px] rounded-lg hover:border-gold hover:text-gold transition-colors"
+                              className="block text-center py-1.5 border border-border text-heading font-medium text-[0.6875rem] rounded-lg hover:border-gold hover:text-gold transition-colors"
                             >
                               Create Account
                             </Link>
@@ -316,17 +315,17 @@ function StorefrontNavbar() {
 
               {/* Desktop-only Wishlist and Cart Icons (Hidden on mobile to preserve clean logo breathing space) */}
               <Link href={ROUTES.WISHLIST} aria-label="Wishlist" className="hidden lg:flex p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors relative">
-                <Heart size={18} />
+                <Heart size="1.125rem" />
                 {mounted && wishlistCount > 0 && (
-                  <span className="absolute top-1 right-0.5 bg-gold text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
+                  <span className="absolute top-1 right-0.5 bg-gold text-heading text-[0.5rem] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
                     {wishlistCount > 9 ? '9+' : wishlistCount}
                   </span>
                 )}
               </Link>
               <Link href={ROUTES.CART} aria-label="Cart" className="hidden lg:flex p-1.5 sm:p-2.5 text-heading/80 hover:text-gold transition-colors relative">
-                <ShoppingBag size={18} />
+                <ShoppingBag size="1.125rem" />
                 {mounted && cartItemCount > 0 && (
-                  <span className="absolute top-1 right-0.5 bg-gold text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
+                  <span className="absolute top-1 right-0.5 bg-gold text-heading text-[0.5rem] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
                     {cartItemCount > 9 ? '9+' : cartItemCount}
                   </span>
                 )}
@@ -339,18 +338,14 @@ function StorefrontNavbar() {
       {(searchOpen || searchLoaded) && <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />}
 
       {/* Mobile drawer */}
-      <AnimatePresence>
-        {mobileOpen && (
+      {mobileOpen && (
           <>
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/40 z-50 lg:hidden"
+            <div
+              className="fixed inset-0 bg-black/40 z-50 lg:hidden animate-in fade-in duration-200"
               onClick={() => setMobileOpen(false)}
             />
-            <motion.aside
-              initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
-              transition={{ type: 'tween', duration: 0.22 }}
-              className="fixed left-0 top-0 bottom-0 w-[300px] bg-navbar z-50 flex flex-col"
+            <aside
+              className="fixed left-0 top-0 bottom-0 w-[18.75rem] bg-navbar z-50 flex flex-col animate-in slide-in-from-left duration-200"
             >
               <div className="flex items-center justify-between px-5 h-20 border-b border-border">
                 <Link
@@ -367,7 +362,7 @@ function StorefrontNavbar() {
                   />
                 </Link>
                 <button onClick={() => setMobileOpen(false)} aria-label="Close" className="p-1 text-heading/60 hover:text-heading">
-                  <X size={18} />
+                  <X size="1.125rem" />
                 </button>
               </div>
 
@@ -379,13 +374,13 @@ function StorefrontNavbar() {
                         <button
                           onClick={() => setMobileExpanded(mobileExpanded === link.label ? null : link.label)}
                           className={cn(
-                            'w-full flex items-center justify-between px-5 py-3.5 text-[11px] font-sans font-medium tracking-[0.15em] uppercase',
+                            'w-full flex items-center justify-between px-5 py-3.5 text-[0.6875rem] font-sans font-medium tracking-[0.15em] uppercase',
                             link.isSale ? 'text-red-600' : 'text-heading'
                           )}
                         >
                           {link.label}
                           <ChevronDown
-                            size={13}
+                            size="0.8125rem"
                             className={cn('transition-transform text-gold', mobileExpanded === link.label && 'rotate-180')}
                           />
                         </button>
@@ -396,7 +391,7 @@ function StorefrontNavbar() {
                                 key={sub.href}
                                 href={sub.href}
                                 className={cn(
-                                  'block pl-8 pr-5 py-2.5 text-[11px] text-text hover:text-gold transition-colors',
+                                  'block pl-8 pr-5 py-2.5 text-[0.6875rem] text-text hover:text-gold transition-colors',
                                   i === arr.length - 1 && 'font-semibold text-gold border-t border-border/60 mt-1 pt-2.5'
                                 )}
                                 onClick={() => setMobileOpen(false)}
@@ -411,7 +406,7 @@ function StorefrontNavbar() {
                       <Link
                         href={link.href}
                         className={cn(
-                          'flex items-center px-5 py-3.5 text-[11px] font-sans font-medium tracking-[0.15em] uppercase transition-colors',
+                          'flex items-center px-5 py-3.5 text-[0.6875rem] font-sans font-medium tracking-[0.15em] uppercase transition-colors',
                           link.isSale ? 'text-red-600' : 'text-heading hover:text-gold'
                         )}
                         onClick={() => setMobileOpen(false)}
@@ -432,11 +427,11 @@ function StorefrontNavbar() {
                     onClick={() => setMobileOpen(false)}
                   >
                     <div className="flex items-center gap-1.5">
-                      <ShoppingBag size={13} className="text-gold" />
+                      <ShoppingBag size="0.8125rem" className="text-gold" />
                       <span>Bag</span>
                     </div>
                     {mounted && cartItemCount > 0 && (
-                      <span className="bg-gold text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full">
+                      <span className="bg-gold text-heading text-[0.5625rem] font-bold px-1.5 py-0.2 rounded-full">
                         {cartItemCount}
                       </span>
                     )}
@@ -447,11 +442,11 @@ function StorefrontNavbar() {
                     onClick={() => setMobileOpen(false)}
                   >
                     <div className="flex items-center gap-1.5">
-                      <Heart size={13} className="text-gold" />
+                      <Heart size="0.8125rem" className="text-gold" />
                       <span>Wishlist</span>
                     </div>
                     {mounted && wishlistCount > 0 && (
-                      <span className="bg-gold text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full">
+                      <span className="bg-gold text-heading text-[0.5625rem] font-bold px-1.5 py-0.2 rounded-full">
                         {wishlistCount}
                       </span>
                     )}
@@ -462,21 +457,21 @@ function StorefrontNavbar() {
                   <>
                     <div className="pb-2 border-b border-border/60">
                       <p className="font-serif text-xs font-semibold text-heading">{session.user.name}</p>
-                      <p className="text-[11px] text-text">{session.user.email}</p>
+                      <p className="text-[0.6875rem] text-text">{session.user.email}</p>
                     </div>
                     <Link
                       href={ROUTES.ORDERS}
                       className="flex items-center gap-2 text-xs text-heading hover:text-gold transition-colors font-medium"
                       onClick={() => setMobileOpen(false)}
                     >
-                      <ShoppingBag size={14} /> My Orders
+                      <ShoppingBag size="0.875rem" /> My Orders
                     </Link>
                     <Link
                       href={ROUTES.ADDRESSES}
                       className="flex items-center gap-2 text-xs text-heading hover:text-gold transition-colors font-medium"
                       onClick={() => setMobileOpen(false)}
                     >
-                      <MapPin size={14} /> Saved Addresses
+                      <MapPin size="0.875rem" /> Saved Addresses
                     </Link>
                     {(session.user as { role?: string }).role === 'admin' && (
                       <Link
@@ -484,7 +479,7 @@ function StorefrontNavbar() {
                         className="flex items-center gap-2 text-xs text-gold hover:text-heading transition-colors font-semibold"
                         onClick={() => setMobileOpen(false)}
                       >
-                        <ShieldCheck size={14} /> Admin Dashboard
+                        <ShieldCheck size="0.875rem" /> Admin Dashboard
                       </Link>
                     )}
                     <button
@@ -516,10 +511,9 @@ function StorefrontNavbar() {
                   </div>
                 )}
               </div>
-            </motion.aside>
+            </aside>
           </>
         )}
-      </AnimatePresence>
     </>
   );
 }
@@ -586,7 +580,7 @@ function NavItem({
       <Link
         href={link.href}
         className={cn(
-          'flex items-center gap-0.5 xl:gap-1 px-2 xl:px-3 py-2 text-[10px] xl:text-[11px] font-sans font-medium tracking-[0.11em] xl:tracking-[0.14em] uppercase transition-colors whitespace-nowrap',
+          'flex items-center gap-0.5 xl:gap-1 px-2 xl:px-3 py-2 text-[0.625rem] xl:text-[0.6875rem] font-sans font-medium tracking-[0.11em] xl:tracking-[0.14em] uppercase transition-colors whitespace-nowrap',
           link.isSale
             ? 'text-red-600 hover:text-red-700'
             : isActive
@@ -597,21 +591,16 @@ function NavItem({
         {link.label}
         {link.megaMenu && (
           <ChevronDown
-            size={11}
+            size="0.6875rem"
             className={cn('mt-px transition-transform duration-200', isActive && 'rotate-180 text-gold')}
           />
         )}
       </Link>
 
       {/* Mega menu dropdown */}
-      <AnimatePresence>
         {isActive && link.megaMenu && (
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-0 bg-surface border border-border shadow-lg z-50 min-w-[210px] py-1.5"
+          <div
+            className="animate-in fade-in slide-in-from-top-1 duration-150 absolute top-full left-1/2 -translate-x-1/2 mt-0 bg-surface border border-border shadow-lg z-50 min-w-[13.125rem] py-1.5"
           >
             {link.megaMenu.map((group) => (
               <div key={group.title} className="py-1">
@@ -626,7 +615,7 @@ function NavItem({
                     }}
                     onClick={onLeave}
                     className={cn(
-                      'block px-5 py-2 text-[11.5px] text-heading/80 hover:text-gold hover:bg-background transition-colors whitespace-nowrap',
+                      'block px-5 py-2 text-[0.71875rem] text-heading/80 hover:text-gold hover:bg-background transition-colors whitespace-nowrap',
                       i === group.links.length - 1 && 'font-semibold text-gold border-t border-border/60 mt-1 pt-2.5'
                     )}
                   >
@@ -635,9 +624,8 @@ function NavItem({
                 ))}
               </div>
             ))}
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </div>
   );
 }

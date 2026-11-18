@@ -185,7 +185,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
           onClick={openCreateModal}
           className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm cursor-pointer"
         >
-          <Plus size={14} className="text-[#C9A86A]" /> Add New Banner
+          <Plus size="0.875rem" className="text-[#C9A86A]" /> Add New Banner
         </button>
       </div>
 
@@ -196,7 +196,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
               <Image src={banner.image} alt={banner.title} fill sizes="400px" className="object-cover" />
               <button
                 onClick={() => toggleStatus(banner)}
-                className={`absolute top-3 right-3 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full shadow-sm transition-colors cursor-pointer ${
+                className={`absolute top-3 right-3 px-2.5 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider rounded-full shadow-sm transition-colors cursor-pointer ${
                   banner.isActive ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'
                 }`}
               >
@@ -206,7 +206,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
 
             <div className="p-4 flex-1 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] text-[#C9A86A] uppercase tracking-wider font-semibold">{POSITION_LABELS[banner.position]}</span>
+                <span className="text-[0.625rem] text-[#C9A86A] uppercase tracking-wider font-semibold">{POSITION_LABELS[banner.position]}</span>
                 <h3 className="font-sans font-semibold text-[#2E221C] text-base mt-1">{banner.title}</h3>
                 {banner.link && <p className="text-xs text-[#8A6A55] truncate mt-1 font-mono">Link: {banner.link}</p>}
               </div>
@@ -219,14 +219,14 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
                     className="p-1 rounded text-[#8A6A55] hover:text-[#2E221C] transition-colors cursor-pointer"
                     title="View Banner"
                   >
-                    <Eye size={14} />
+                    <Eye size="0.875rem" />
                   </button>
                   <button
                     onClick={() => openEditModal(banner)}
                     className="p-1 rounded text-[#8A6A55] hover:text-[#2E221C] transition-colors cursor-pointer"
                     title="Edit Banner"
                   >
-                    <Edit2 size={14} />
+                    <Edit2 size="0.875rem" />
                   </button>
                   <button
                     onClick={() => handleDelete(banner._id)}
@@ -234,7 +234,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
                     className="p-1 rounded text-[#8A6A55] hover:text-red-600 transition-colors disabled:opacity-40 cursor-pointer"
                     title="Delete Banner"
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size="0.875rem" />
                   </button>
                 </div>
               </div>
@@ -251,19 +251,19 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
       {/* Create / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-md p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white w-full max-w-md p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90dvh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base">
                 {editingId ? 'Edit Visual Banner' : 'Add New Visual Banner'}
               </h3>
               <button onClick={() => setIsModalOpen(false)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md cursor-pointer">
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
 
             <form onSubmit={handleSave} className="space-y-4 text-xs">
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Banner Title *</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Banner Title *</label>
                 <input
                   type="text"
                   required
@@ -276,7 +276,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Subtitle</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Subtitle</label>
                 <input
                   type="text"
                   value={formData.subtitle}
@@ -287,7 +287,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Placement</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Placement</label>
                 <select
                   value={formData.position}
                   onChange={(e) => setFormData({ ...formData, position: e.target.value as BannerItem['position'] })}
@@ -300,43 +300,43 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Image Path / URL *</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Image Path / URL *</label>
                 <input
                   type="text"
                   required
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                   placeholder="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/hero-banner.webp"
-                  className={`w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[11px] ${fieldErrors.image ? FIELD_ERROR_CLASS : ''}`}
+                  className={`w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[0.6875rem] ${fieldErrors.image ? FIELD_ERROR_CLASS : ''}`}
                 />
                 {fieldErrors.image && <p className="text-xs text-red-600 mt-1">{fieldErrors.image}</p>}
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Mobile Image (optional)</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Mobile Image (optional)</label>
                 <input
                   type="text"
                   value={formData.mobileImage}
                   onChange={(e) => setFormData({ ...formData, mobileImage: e.target.value })}
                   placeholder="/images/hero-banner-mobile.webp"
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[11px]"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[0.6875rem]"
                 />
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Target Destination Link</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Target Destination Link</label>
                 <input
                   type="text"
                   value={formData.link}
                   onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                   placeholder="/collections/bridal-lehengas-suits"
-                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[11px]"
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3.5 py-2 text-[#2E221C] outline-none focus:border-[#C9A86A] rounded-lg font-mono text-[0.6875rem]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Valid From</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Valid From</label>
                   <input
                     type="date"
                     value={formData.validFrom}
@@ -345,7 +345,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Valid Until</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Valid Until</label>
                   <input
                     type="date"
                     value={formData.validUntil}
@@ -356,7 +356,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Sort Order</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Sort Order</label>
                 <input
                   type="number"
                   value={formData.sortOrder}
@@ -388,7 +388,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
                   disabled={saving}
                   className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] text-xs rounded-lg shadow-sm transition-all disabled:opacity-50 cursor-pointer"
                 >
-                  <Check size={13} className="text-[#C9A86A]" /> {saving ? 'Saving…' : editingId ? 'Save Changes' : 'Add Banner'}
+                  <Check size="0.8125rem" className="text-[#C9A86A]" /> {saving ? 'Saving…' : editingId ? 'Save Changes' : 'Add Banner'}
                 </button>
               </div>
             </form>
@@ -403,7 +403,7 @@ export function AdminBannersClient({ banners }: { banners: BannerItem[] }) {
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base">{viewing.title}</h3>
               <button onClick={() => setViewing(null)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md cursor-pointer">
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
             <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-[#DDD2C5]">

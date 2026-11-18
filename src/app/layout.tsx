@@ -120,7 +120,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
         />
       </head>
-      <body className="font-sans antialiased min-h-screen flex flex-col">
+      <body className="font-sans antialiased min-h-dvh flex flex-col">
         <Suspense fallback={null}>
           <MetaPixel />
         </Suspense>

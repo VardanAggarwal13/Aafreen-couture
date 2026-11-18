@@ -13,21 +13,22 @@ export const metadata: Metadata = {
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-between selection:bg-gold selection:text-white">
+    <div className="min-h-dvh bg-background flex flex-col justify-between selection:bg-gold selection:text-white">
       {/* Minimalist Atelier Auth Top Bar */}
       <header className="border-b border-border/80 bg-surface/80 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+        <div className="w-full px-4 sm:px-6 lg:px-10 h-14 sm:h-16 [@media(max-height:48rem)]:h-12 [@media(max-height:48rem)]:sm:h-12 grid grid-cols-[1fr_auto_1fr] items-center lg:flex lg:justify-between">
           {/* Back to Store Button */}
           <Link
             href={ROUTES.HOME}
-            className="group flex items-center gap-2 text-xs font-sans uppercase tracking-[0.16em] text-text hover:text-gold transition-colors"
+            aria-label="Back to store"
+            className="group -ml-2 flex w-fit items-center gap-2 p-2 sm:ml-0 sm:p-0 text-xs font-sans uppercase tracking-[0.16em] text-text hover:text-gold transition-colors"
           >
-            <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform text-gold" />
-            <span className="font-semibold">Back to Store</span>
+            <ArrowLeft size="0.9375rem" className="group-hover:-translate-x-1 transition-transform text-gold" />
+            <span className="hidden font-semibold sm:inline">Back to Store</span>
           </Link>
 
           {/* Centered Brand Logo */}
-          <Link href={ROUTES.HOME} className="transition-transform hover:scale-102">
+          <Link href={ROUTES.HOME} className="transition-transform hover:scale-102 lg:hidden">
             <Image
               src="/images/logo-header.webp"
               alt={siteConfig.name}
@@ -39,9 +40,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           </Link>
 
           {/* Secure Client Portal Badge */}
-          <div className="flex items-center gap-1.5 text-[11px] text-text/80 font-sans tracking-wider uppercase">
-            <ShieldCheck size={14} className="text-gold" />
-            <span className="hidden sm:inline font-medium">Atelier Security</span>
+          <div className="hidden items-center gap-1.5 justify-self-end text-[0.6875rem] text-text/80 font-sans tracking-wider uppercase sm:flex">
+            <ShieldCheck size="0.875rem" className="text-gold" />
+            <span className="font-medium">Atelier Security</span>
           </div>
         </div>
       </header>
@@ -52,8 +53,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       </div>
 
       {/* Discreet Luxury Auth Footer */}
-      <footer className="border-t border-border/70 py-4 bg-surface/50 text-[11px] font-sans text-text/70">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <footer className="[@media(max-height:56rem)]:hidden border-t border-border/70 py-3 bg-surface/50 text-[0.6875rem] font-sans text-text/70">
+        <div className="w-full px-4 sm:px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="tracking-wider">
             © {new Date().getFullYear()} {siteConfig.name} Atelier. Handcrafted Luxury.
           </p>

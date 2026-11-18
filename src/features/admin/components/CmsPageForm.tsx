@@ -79,21 +79,21 @@ export function CmsPageForm({ page }: { page?: CmsPageData }) {
           href="/admin/cms"
           className="inline-flex items-center gap-1.5 text-xs text-[#8A6A55] hover:text-[#2E221C] transition-colors font-medium"
         >
-          <ArrowLeft size={14} /> Back to CMS Pages
+          <ArrowLeft size="0.875rem" /> Back to CMS Pages
         </Link>
         <button
           type="submit"
           disabled={saving}
           className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-6 py-2 rounded-lg hover:bg-[#1A1410] shadow-sm transition-all disabled:opacity-50"
         >
-          <Save size={14} className="text-[#C9A86A]" /> {saving ? 'Saving…' : 'Save Page'}
+          <Save size="0.875rem" className="text-[#C9A86A]" /> {saving ? 'Saving…' : 'Save Page'}
         </button>
       </div>
 
       <div className="bg-white rounded-xl p-4 shadow-sm space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+            <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
               Admin Label (Page Title) *
             </label>
             <input
@@ -106,7 +106,7 @@ export function CmsPageForm({ page }: { page?: CmsPageData }) {
             />
           </div>
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+            <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
               URL Route *
             </label>
             <input
@@ -121,7 +121,7 @@ export function CmsPageForm({ page }: { page?: CmsPageData }) {
         </div>
 
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+          <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
             Slug (Internal Identifier)
           </label>
           <input
@@ -134,13 +134,13 @@ export function CmsPageForm({ page }: { page?: CmsPageData }) {
         </div>
 
         <div className="pt-2 border-t border-[#EAE2D7]">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-[#9E7B3A] mb-3">
+          <p className="text-[0.6875rem] font-semibold uppercase tracking-wider text-[#9E7B3A] mb-3">
             Hero Banner Content
           </p>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+              <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
                 Eyebrow Badge Text
               </label>
               <input
@@ -154,7 +154,7 @@ export function CmsPageForm({ page }: { page?: CmsPageData }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+                <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
                   Hero Title *
                 </label>
                 <input
@@ -167,7 +167,7 @@ export function CmsPageForm({ page }: { page?: CmsPageData }) {
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+                <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
                   Hero Italic Highlight
                 </label>
                 <input
@@ -181,7 +181,7 @@ export function CmsPageForm({ page }: { page?: CmsPageData }) {
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+              <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
                 Hero Subtitle *
               </label>
               <textarea
@@ -195,7 +195,7 @@ export function CmsPageForm({ page }: { page?: CmsPageData }) {
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+              <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
                 Hero Meta Info Line
               </label>
               <input
@@ -210,7 +210,7 @@ export function CmsPageForm({ page }: { page?: CmsPageData }) {
         </div>
 
         <div className="pt-2 border-t border-[#EAE2D7]">
-          <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+          <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
             Status
           </label>
           <select

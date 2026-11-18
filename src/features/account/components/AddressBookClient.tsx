@@ -174,7 +174,7 @@ export function AddressBookClient() {
           onClick={openAddModal}
           className="inline-flex items-center gap-2 bg-[#221617] text-white px-5 py-2.5 text-xs font-semibold uppercase tracking-wider hover:bg-[#A67C52] transition-colors rounded-lg shadow-xs"
         >
-          <Plus size={15} /> Add New Address
+          <Plus size="0.9375rem" /> Add New Address
         </button>
       </div>
 
@@ -185,7 +185,7 @@ export function AddressBookClient() {
       ) : addresses.length === 0 ? (
         <div className="bg-white p-10 text-center rounded-2xl shadow-sm">
           <div className="w-12 h-12 rounded-full bg-[#FAF7F2] border border-[#E8D8C8] text-[#A67C52] flex items-center justify-center mx-auto mb-4">
-            <MapPin size={22} />
+            <MapPin size="1.375rem" />
           </div>
           <h3 className="text-base font-serif text-[#221617] mb-2">No Saved Addresses</h3>
           <p className="text-xs text-[#6E6A66] mb-6 max-w-sm mx-auto font-sans">
@@ -195,7 +195,7 @@ export function AddressBookClient() {
             onClick={openAddModal}
             className="inline-flex items-center gap-2 bg-[#A67C52] text-white text-xs font-semibold tracking-wider uppercase px-6 py-2.5 hover:bg-[#221617] transition-colors rounded-lg"
           >
-            <Plus size={14} /> Add Address
+            <Plus size="0.875rem" /> Add Address
           </button>
         </div>
       ) : (
@@ -215,8 +215,8 @@ export function AddressBookClient() {
                     {addr.name}
                   </h3>
                   {addr.isDefault && (
-                    <span className="inline-flex items-center gap-1 text-[9.5px] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#FAF7F2] text-[#A67C52] border border-[#E8D8C8] rounded-lg">
-                      <CheckCircle2 size={10} /> Default
+                    <span className="inline-flex items-center gap-1 text-[0.59375rem] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#FAF7F2] text-[#A67C52] border border-[#E8D8C8] rounded-lg">
+                      <CheckCircle2 size="0.625rem" /> Default
                     </span>
                   )}
                 </div>
@@ -227,14 +227,14 @@ export function AddressBookClient() {
                     className="p-1 hover:text-[#221617] transition-colors"
                     title="Edit address"
                   >
-                    <Edit2 size={14} />
+                    <Edit2 size="0.875rem" />
                   </button>
                   <button
                     onClick={() => handleDelete(addr._id)}
                     className="p-1 hover:text-red-600 transition-colors"
                     title="Delete address"
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size="0.875rem" />
                   </button>
                 </div>
               </div>
@@ -252,7 +252,7 @@ export function AddressBookClient() {
               {!addr.isDefault && (
                 <button
                   onClick={() => handleSetDefault(addr._id)}
-                  className="text-[11px] font-semibold text-[#A67C52] hover:text-[#221617] transition-colors border-t border-[#E8D8C8] pt-2 w-full text-left uppercase tracking-wider"
+                  className="text-[0.6875rem] font-semibold text-[#A67C52] hover:text-[#221617] transition-colors border-t border-[#E8D8C8] pt-2 w-full text-left uppercase tracking-wider"
                 >
                   Set as Default Address
                 </button>
@@ -274,14 +274,14 @@ export function AddressBookClient() {
                 onClick={() => setShowModal(false)}
                 className="p-1 text-[#6E6A66] hover:text-[#221617] transition-colors"
               >
-                <X size={18} />
+                <X size="1.125rem" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4 font-sans text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
+                  <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
                     Recipient Full Name *
                   </label>
                   <input
@@ -295,7 +295,7 @@ export function AddressBookClient() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
+                  <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
                     Contact Phone Number *
                   </label>
                   <input
@@ -310,7 +310,7 @@ export function AddressBookClient() {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
+                <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
                   Street Address / Flat / Building *
                 </label>
                 <input
@@ -324,7 +324,7 @@ export function AddressBookClient() {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
+                <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
                   Apartment / Suite / Area (Optional)
                 </label>
                 <input
@@ -338,7 +338,7 @@ export function AddressBookClient() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
+                  <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
                     City / District *
                   </label>
                   <input
@@ -352,7 +352,7 @@ export function AddressBookClient() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
+                  <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
                     State *
                   </label>
                   <select
@@ -367,7 +367,7 @@ export function AddressBookClient() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
+                  <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-1.5">
                     PIN Code (6 digits) *
                   </label>
                   <input

@@ -12,7 +12,7 @@ export default function VerifyEmailPage() {
     <div className="flex-1 flex items-center justify-center px-4 py-12 bg-background">
       <div className="w-full max-w-md bg-surface p-8 sm:p-10 text-center shadow-md rounded-2xl">
         <div className="w-14 h-14 rounded-full bg-background text-gold flex items-center justify-center mx-auto mb-5 border border-border">
-          <MailCheck size={26} />
+          <MailCheck size="1.625rem" />
         </div>
 
         <h1 className="font-serif text-2xl text-heading tracking-tight mb-2">
@@ -28,7 +28,7 @@ export default function VerifyEmailPage() {
             href={ROUTES.LOGIN}
             className="inline-flex items-center justify-center gap-2 w-full py-3 bg-heading text-surface text-xs font-semibold uppercase tracking-[0.2em] hover:bg-gold transition-colors duration-300 rounded-lg shadow-xs"
           >
-            Go to Sign In <ArrowRight size={14} />
+            Go to Sign In <ArrowRight size="0.875rem" />
           </Link>
 
           <Link

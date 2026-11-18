@@ -55,9 +55,9 @@ export function AdminPaymentReconcileButton({ orderId, hasRazorpayOrder }: Props
       title="Check Razorpay server for any captured payments for this order"
     >
       {loading ? (
-        <RefreshCw size={13} className="animate-spin text-[#C9A86A]" />
+        <RefreshCw size="0.8125rem" className="animate-spin text-[#C9A86A]" />
       ) : (
-        <ShieldCheck size={14} className="text-[#C9A86A]" />
+        <ShieldCheck size="0.875rem" className="text-[#C9A86A]" />
       )}
       <span>{loading ? 'Verifying with Razorpay…' : 'Sync Live Razorpay Gateway Status'}</span>
     </button>

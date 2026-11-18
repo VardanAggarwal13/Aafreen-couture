@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CheckCircle2, MessageCircle, Phone, ArrowRight, ShieldCheck, Sparkles, Clock } from 'lucide-react';
+import { CheckCircle2, MessageCircle, Phone, ShieldCheck, Sparkles, Clock } from 'lucide-react';
 import { ROUTES } from '@/constants/routes';
 import { siteConfig } from '@/config/site.config';
 import type { Metadata } from 'next';
@@ -54,7 +54,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
   );
 
   return (
-    <div className="min-h-[80vh] bg-background py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-[80dvh] bg-background py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-2xl mx-auto">
         {/* Main Confirmation Card */}
         <div className="bg-surface rounded-2xl p-6 sm:p-10 shadow-md text-center relative overflow-hidden">
@@ -63,10 +63,10 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
 
           {/* Golden Seal Checkmark */}
           <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gold/10 border-2 border-gold flex items-center justify-center mx-auto mb-6 shadow-sm">
-            <CheckCircle2 size={38} className="text-gold" />
+            <CheckCircle2 size="2.375rem" className="text-gold" />
           </div>
 
-          <span className="inline-block text-[10.5px] uppercase font-bold tracking-[0.35em] text-gold mb-2">
+          <span className="inline-block text-[0.65625rem] uppercase font-bold tracking-[0.35em] text-gold mb-2">
             Aafreen Atelier Confirmation
           </span>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-heading tracking-tight mb-3">
@@ -91,7 +91,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
           <div className="bg-background border border-border p-4 sm:p-5 rounded-lg mb-8 text-left space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
               <div>
-                <span className="text-[10px] uppercase font-semibold text-text/70 tracking-wider block">
+                <span className="text-[0.625rem] uppercase font-semibold text-text/70 tracking-wider block">
                   Order Reference
                 </span>
                 <span className="text-base sm:text-lg font-sans font-bold text-heading tracking-wider">
@@ -100,17 +100,17 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
               </div>
               {isRazorpay ? (
                 isPaid ? (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600 text-white text-[10px] uppercase font-bold tracking-wider shadow-xs">
-                    <ShieldCheck size={11} /> Online Payment Confirmed
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600 text-white text-[0.625rem] uppercase font-bold tracking-wider shadow-xs">
+                    <ShieldCheck size="0.6875rem" /> Online Payment Confirmed
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-600 text-white text-[10px] uppercase font-bold tracking-wider shadow-xs">
-                    <Clock size={11} /> Verifying Bank Payment
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-600 text-white text-[0.625rem] uppercase font-bold tracking-wider shadow-xs">
+                    <Clock size="0.6875rem" /> Verifying Bank Payment
                   </span>
                 )
               ) : (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold text-surface text-[10px] uppercase font-bold tracking-wider">
-                  <Sparkles size={11} /> Cash on Delivery Confirmed
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold text-surface text-[0.625rem] uppercase font-bold tracking-wider">
+                  <Sparkles size="0.6875rem" /> Cash on Delivery Confirmed
                 </span>
               )}
             </div>
@@ -120,7 +120,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
                 <>
                   {order?.razorpayPaymentId && (
                     <div className="flex items-center gap-2">
-                      <ShieldCheck size={13} className="text-emerald-600 shrink-0" />
+                      <ShieldCheck size="0.8125rem" className="text-emerald-600 shrink-0" />
                       <span>
                         Razorpay Payment Ref:{' '}
                         <strong className="font-mono text-heading">{order.razorpayPaymentId}</strong>
@@ -128,7 +128,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
                     </div>
                   )}
                   <div className="flex items-center gap-2">
-                    <Clock size={13} className="text-gold shrink-0" />
+                    <Clock size="0.8125rem" className="text-gold shrink-0" />
                     <span>
                       {isPaid
                         ? '100% Payment Secured & Verified via Razorpay'
@@ -138,7 +138,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
                 </>
               ) : (
                 <div className="flex items-center gap-2">
-                  <Clock size={13} className="text-gold shrink-0" />
+                  <Clock size="0.8125rem" className="text-gold shrink-0" />
                   <span>Zero advance deducted · Pay cash or UPI upon doorstep delivery</span>
                 </div>
               )}
@@ -149,7 +149,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
                 </div>
               )}
               <div className="flex items-center gap-2 pt-1 border-t border-border/60">
-                <ShieldCheck size={13} className="text-emerald-600 shrink-0" />
+                <ShieldCheck size="0.8125rem" className="text-emerald-600 shrink-0" />
                 <span>All pieces pass a 48-point quality &amp; embroidery inspection before dispatch</span>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
             </h2>
             <ol className="space-y-3 text-xs text-text">
               <li className="flex items-start gap-3">
-                <span className="w-5 h-5 rounded-full bg-gold/10 border border-gold text-gold font-semibold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-gold/10 border border-gold text-gold font-semibold text-[0.625rem] flex items-center justify-center shrink-0 mt-0.5">
                   1
                 </span>
                 <div>
@@ -171,7 +171,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-5 h-5 rounded-full bg-gold/10 border border-gold text-gold font-semibold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-gold/10 border border-gold text-gold font-semibold text-[0.625rem] flex items-center justify-center shrink-0 mt-0.5">
                   2
                 </span>
                 <div>
@@ -180,7 +180,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-5 h-5 rounded-full bg-gold/10 border border-gold text-gold font-semibold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-gold/10 border border-gold text-gold font-semibold text-[0.625rem] flex items-center justify-center shrink-0 mt-0.5">
                   3
                 </span>
                 <div>
@@ -199,25 +199,16 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
               rel="noopener noreferrer"
               className="w-full bg-[#1B7F49] hover:bg-[#15673B] text-white py-3.5 px-6 text-xs sm:text-sm font-semibold uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
-              <MessageCircle size={16} />
+              <MessageCircle size="1rem" />
               <span>Confirm Instantly on WhatsApp (+91 95179 01117)</span>
             </a>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Link
-                href={`/track-order?orderId=${encodeURIComponent(orderNumber)}`}
-                className="bg-heading hover:bg-gold text-surface py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center gap-1.5"
-              >
-                <span>Track Order Live</span>
-                <ArrowRight size={13} />
-              </Link>
-              <Link
-                href={ROUTES.SHOP}
-                className="border border-border text-heading hover:border-gold hover:text-gold py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center"
-              >
-                Continue Shopping
-              </Link>
-            </div>
+            <Link
+              href={ROUTES.SHOP}
+              className="border border-border text-heading hover:border-gold hover:text-gold py-3 px-4 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center"
+            >
+              Continue Shopping
+            </Link>
           </div>
 
           {/* Concierge Help Strip */}
@@ -227,7 +218,7 @@ export default async function OrderSuccessPage({ searchParams }: Props) {
             </p>
             <p className="flex items-center justify-center gap-4 text-heading font-medium pt-1">
               <a href={`tel:${siteConfig.phone}`} className="hover:text-gold flex items-center gap-1.5 transition-colors">
-                <Phone size={12} className="text-gold" /> {siteConfig.phone}
+                <Phone size="0.75rem" className="text-gold" /> {siteConfig.phone}
               </a>
               <span>·</span>
               <a href={`mailto:${siteConfig.email}`} className="hover:text-gold transition-colors">

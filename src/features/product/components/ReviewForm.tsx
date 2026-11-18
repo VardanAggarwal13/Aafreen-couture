@@ -84,7 +84,7 @@ export function ReviewForm({ productId, productSlug }: ReviewFormProps) {
         Bought this piece from us?{' '}
         <Link
           href={`/login?redirect=${encodeURIComponent(`/product/${productSlug}`)}`}
-          className="text-gold font-semibold underline underline-offset-2"
+          className="text-gold-ink font-semibold underline underline-offset-2"
         >
           Sign in
         </Link>{' '}
@@ -110,7 +110,7 @@ export function ReviewForm({ productId, productSlug }: ReviewFormProps) {
       </div>
 
       <div>
-        <span className="block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5">Your rating</span>
+        <span className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-heading mb-1.5">Your rating</span>
         <div className="flex items-center gap-1" role="radiogroup" aria-label="Star rating">
           {[1, 2, 3, 4, 5].map((n) => (
             <button
@@ -125,7 +125,7 @@ export function ReviewForm({ productId, productSlug }: ReviewFormProps) {
               className="p-0.5 cursor-pointer"
             >
               <Star
-                size={24}
+                size="1.5rem"
                 className={n <= (hover || rating) ? 'text-gold fill-gold' : 'text-border fill-border'}
               />
             </button>
@@ -134,7 +134,7 @@ export function ReviewForm({ productId, productSlug }: ReviewFormProps) {
       </div>
 
       <div>
-        <label htmlFor="review-title" className="block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5">
+        <label htmlFor="review-title" className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-heading mb-1.5">
           Headline
         </label>
         <input
@@ -150,7 +150,7 @@ export function ReviewForm({ productId, productSlug }: ReviewFormProps) {
       </div>
 
       <div>
-        <label htmlFor="review-body" className="block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5">
+        <label htmlFor="review-body" className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-heading mb-1.5">
           Your review
         </label>
         <textarea

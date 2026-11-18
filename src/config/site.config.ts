@@ -16,7 +16,7 @@ export const siteConfig = {
     'Shop luxury Indian bridal lehengas, designer suits, and handcrafted wedding wear at Aafreen Couture. Express delivery & custom fitting across India.',
   url: resolveSiteUrl(),
   ogImage: '/images/og-image.jpg',
-  email: 'support@aafreencouture.com',
+  email: 'aafreencouturebypearl@gmail.com',
   phone: '+91 95179 01117',
   whatsapp: '919517901117',
   instagram: 'aafreen__couture',

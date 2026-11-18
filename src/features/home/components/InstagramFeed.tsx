@@ -10,7 +10,7 @@ const PLACEHOLDER_POSTS = Array.from({ length: 6 }, (_, i) => ({
 export function InstagramFeed() {
   return (
     <section className="py-20 bg-white">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="max-w-[87.5rem] mx-auto px-4 sm:px-6 lg:px-10">
         <div className="flex flex-col items-center gap-2 mb-10">
           <InstagramIcon width={20} height={20} className="text-brand-gold" />
           <p className="text-xs font-medium uppercase tracking-[0.3em] text-brand-stone">

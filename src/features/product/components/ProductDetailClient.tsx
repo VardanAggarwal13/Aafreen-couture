@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { categoryCrumbHref } from '@/config/catalog-seo.config';
-import { motion } from 'framer-motion';
 import {
   Heart,
   Share2,
@@ -179,7 +178,7 @@ export function ProductDetailClient({ product, related }: Props) {
   return (
     <>
       {/* Breadcrumb */}
-      <nav className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-3 text-xs text-text flex items-center gap-2">
+      <nav className="max-w-[87.5rem] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-3 text-xs text-text flex items-center gap-2">
         <Link href="/" className="hover:text-gold transition-colors">Home</Link>
         <span className="text-border">/</span>
         <Link href="/shop" className="hover:text-gold transition-colors">Shop</Link>
@@ -192,10 +191,10 @@ export function ProductDetailClient({ product, related }: Props) {
             <span className="text-border">/</span>
           </>
         )}
-        <span className="text-heading font-medium truncate max-w-[200px] sm:max-w-none">{product.name}</span>
+        <span className="text-heading font-medium truncate max-w-[12.5rem] sm:max-w-none">{product.name}</span>
       </nav>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pb-14 sm:pb-20">
+      <div className="max-w-[87.5rem] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pb-14 sm:pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-start">
           {/* Gallery: Left Thumbnails Rail + Main Stage Image */}
           {(() => {
@@ -206,7 +205,7 @@ export function ProductDetailClient({ product, related }: Props) {
               <div className="lg:col-span-7 xl:col-span-7 flex flex-col-reverse sm:flex-row gap-3.5 sm:gap-4 lg:gap-5 items-start">
                 {/* Left Vertical Thumbnail Rail */}
                 {allImages.length > 1 && (
-                  <div className="flex sm:flex-col gap-2.5 sm:w-20 lg:w-24 shrink-0 overflow-x-auto sm:overflow-y-auto max-h-[780px] lg:max-h-[880px] no-scrollbar pb-1 sm:pb-0 pr-0.5">
+                  <div className="flex sm:flex-col gap-2.5 sm:w-20 lg:w-24 shrink-0 overflow-x-auto sm:overflow-y-auto max-h-[48.75rem] lg:max-h-[55rem] no-scrollbar pb-1 sm:pb-0 pr-0.5">
                     {allImages.map((img, i) => (
                       <button
                         key={i}
@@ -235,7 +234,7 @@ export function ProductDetailClient({ product, related }: Props) {
                 {/* Main Stage Image — 9:16 aspect ratio matching high-fashion full-length photography */}
                 <div
                   className={cn(
-                    'flex-1 w-full relative aspect-[9/16] max-h-[780px] lg:max-h-[880px] rounded-2xl overflow-hidden shadow-md group flex items-center justify-center',
+                    'flex-1 w-full relative aspect-[9/16] max-h-[48.75rem] lg:max-h-[55rem] rounded-2xl overflow-hidden shadow-md group flex items-center justify-center',
                     galleryBg
                   )}
                 >
@@ -248,7 +247,7 @@ export function ProductDetailClient({ product, related }: Props) {
                         fill
                         priority={i === 0}
                         quality={90}
-                        sizes="(max-width: 1024px) 100vw, 55vw"
+                        sizes="(max-width: 64em) 100vw, 55vw"
                         className={cn(
                           'object-contain object-center transition-opacity duration-300 ease-out',
                           i === selectedImage
@@ -270,17 +269,17 @@ export function ProductDetailClient({ product, related }: Props) {
                       setPanPosition({ x: 0, y: 0 });
                       setIsZoomOpen(true);
                     }}
-                    className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-[11px] font-medium tracking-wider uppercase transition-all shadow-md cursor-pointer hover:border-gold/60 border border-white/15 group/btn"
+                    className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-[0.6875rem] font-medium tracking-wider uppercase transition-all shadow-md cursor-pointer hover:border-gold/60 border border-white/15 group/btn"
                     title="Open Ultra-HD full screen zoom viewer"
                     aria-label="Expand & Zoom photo"
                   >
-                    <Maximize2 size={13} className="text-gold group-hover/btn:scale-110 transition-transform" />
+                    <Maximize2 size="0.8125rem" className="text-gold group-hover/btn:scale-110 transition-transform" />
                     <span>Expand & Zoom</span>
                   </button>
 
                   {/* Discount Badge */}
                   {discountPct && (
-                    <span className="absolute top-12 left-3.5 sm:top-14 sm:left-4 bg-gold text-surface text-[11px] font-semibold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-xs pointer-events-none z-10">
+                    <span className="absolute top-12 left-3.5 sm:top-14 sm:left-4 bg-gold text-heading text-[0.6875rem] font-semibold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-xs pointer-events-none z-10">
                       -{discountPct}%
                     </span>
                   )}
@@ -295,12 +294,12 @@ export function ProductDetailClient({ product, related }: Props) {
                     className="absolute top-3.5 right-3.5 p-2.5 bg-surface/90 backdrop-blur-xs rounded-full text-heading hover:text-gold transition-colors shadow-xs cursor-pointer z-20"
                     aria-label="Wishlist"
                   >
-                    <Heart size={18} fill={isWishlisted ? 'currentColor' : 'none'} className={isWishlisted ? 'text-gold' : ''} />
+                    <Heart size="1.125rem" fill={isWishlisted ? 'currentColor' : 'none'} className={isWishlisted ? 'text-gold' : ''} />
                   </button>
 
                   {/* Photo Counter Overlay */}
                   {allImages.length > 1 && (
-                    <div className="absolute bottom-3.5 right-3.5 bg-black/60 backdrop-blur-xs text-white text-[10px] font-medium tracking-widest px-2.5 py-1 rounded-lg pointer-events-none z-10">
+                    <div className="absolute bottom-3.5 right-3.5 bg-black/60 backdrop-blur-xs text-white text-[0.625rem] font-medium tracking-widest px-2.5 py-1 rounded-lg pointer-events-none z-10">
                       {selectedImage + 1} / {allImages.length}
                     </div>
                   )}
@@ -318,7 +317,7 @@ export function ProductDetailClient({ product, related }: Props) {
                         title="Previous photo"
                         aria-label="Previous photo"
                       >
-                        <ChevronLeft size={18} />
+                        <ChevronLeft size="1.125rem" />
                       </button>
                       <button
                         type="button"
@@ -330,7 +329,7 @@ export function ProductDetailClient({ product, related }: Props) {
                         title="Next photo"
                         aria-label="Next photo"
                       >
-                        <ChevronRight size={18} />
+                        <ChevronRight size="1.125rem" />
                       </button>
                     </>
                   )}
@@ -344,12 +343,12 @@ export function ProductDetailClient({ product, related }: Props) {
             <div>
               {/* Category & Stock Status */}
               <div className="flex items-center justify-between gap-2 mb-1.5">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-gold">
+                <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.25em] text-gold-ink">
                   {typeof product.category === 'object' && product.category?.name
                     ? product.category.name
                     : product.fabric?.split(',')[0] || 'Luxury Couture'}
                 </p>
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-lg tracking-wider uppercase">
+                <span className="inline-flex items-center gap-1.5 text-[0.625rem] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-lg tracking-wider uppercase">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
                   {inStock ? 'Ready to Dispatch' : 'Made to Order'}
                 </span>
@@ -366,7 +365,7 @@ export function ProductDetailClient({ product, related }: Props) {
                   {Array.from({ length: 5 }, (_, i) => (
                     <Star
                       key={i}
-                      size={13}
+                      size="0.8125rem"
                       className={i < Math.round(product.averageRating || 0) ? 'text-gold fill-gold' : 'text-border fill-border'}
                     />
                   ))}
@@ -375,7 +374,7 @@ export function ProductDetailClient({ product, related }: Props) {
                 <span className="text-border">·</span>
                 <a href="#reviews" className="hover:text-gold transition-colors">{product.reviewCount > 0 ? `${product.reviewCount} client reviews` : "Be the first to review"}</a>
                 <span className="text-border">·</span>
-                <span className="text-gold font-medium">Bespoke Couture</span>
+                <span className="text-gold-ink font-medium">Bespoke Couture</span>
               </div>
 
               {/* Price Row */}
@@ -388,13 +387,13 @@ export function ProductDetailClient({ product, related }: Props) {
                     <span className="text-sm text-text line-through">
                       {formatPrice(comparePrice)}
                     </span>
-                    <span className="text-[11px] font-semibold text-gold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-lg uppercase tracking-wider">
+                    <span className="text-[0.6875rem] font-semibold text-gold-ink bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-lg uppercase tracking-wider">
                       Save {formatPrice(comparePrice - price)} ({discountPct}% OFF)
                     </span>
                   </>
                 )}
               </div>
-              <p className="text-[11px] text-text/80 mb-3">
+              <p className="text-[0.6875rem] text-text mb-3">
                 Inclusive of all taxes · Delivery charges applicable
               </p>
 
@@ -414,7 +413,7 @@ export function ProductDetailClient({ product, related }: Props) {
                       <p className="text-xs font-semibold uppercase tracking-wider text-heading">
                         Color: <span className="font-normal text-text">{activeVariant?.color}</span>
                       </p>
-                      <span className="text-[11px] text-gold font-medium">
+                      <span className="text-[0.6875rem] text-gold-ink font-medium">
                         {uniqueColors.length > 1 ? `${uniqueColors.length} Shades Available` : 'Signature Colorway'}
                       </span>
                     </div>
@@ -466,7 +465,7 @@ export function ProductDetailClient({ product, related }: Props) {
                         </p>
                         <button
                           onClick={() => setAccordionOpen('details')}
-                          className="text-xs text-gold underline underline-offset-2 hover:text-heading transition-colors cursor-pointer"
+                          className="text-xs text-gold-ink underline underline-offset-2 hover:text-heading transition-colors cursor-pointer"
                         >
                           Size & Fit Guide
                         </button>
@@ -478,7 +477,7 @@ export function ProductDetailClient({ product, related }: Props) {
                             onClick={() => setSelectedVariantIdx(i)}
                             disabled={!v.isActive || v.stock === 0}
                             className={cn(
-                              'min-w-[42px] px-3.5 py-2 text-xs font-semibold tracking-wider uppercase border transition-all rounded-lg cursor-pointer',
+                              'min-w-[2.625rem] px-3.5 py-2 text-xs font-semibold tracking-wider uppercase border transition-all rounded-lg cursor-pointer',
                               !v.isActive || v.stock === 0
                                 ? 'border-border text-text/40 line-through cursor-not-allowed bg-background/50'
                                 : i === selectedVariantIdx
@@ -527,14 +526,14 @@ export function ProductDetailClient({ product, related }: Props) {
                 disabled={!inStock}
                 className="flex-1 bg-heading text-surface hover:bg-gold py-3 px-6 text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 disabled:opacity-40 rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer"
               >
-                <ShoppingBag size={14} />
+                <ShoppingBag size="0.875rem" />
                 {inStock ? 'Add to Cart' : 'Out of Stock'}
               </button>
 
               <button
                 onClick={handleBuyNow}
                 disabled={!inStock}
-                className="flex-1 bg-gold text-white hover:bg-gold/90 py-3 px-6 text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 disabled:opacity-40 rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+                className="flex-1 bg-gold text-heading hover:bg-gold/90 py-3 px-6 text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 disabled:opacity-40 rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer"
               >
                 Buy Now
               </button>
@@ -546,7 +545,7 @@ export function ProductDetailClient({ product, related }: Props) {
                 onClick={() => toggle(product._id as string)}
                 className="flex items-center gap-1.5 text-xs tracking-wider uppercase font-semibold text-heading hover:text-gold transition-colors cursor-pointer"
               >
-                <Heart size={14} fill={isWishlisted ? 'currentColor' : 'none'} className={isWishlisted ? 'text-gold' : ''} />
+                <Heart size="0.875rem" fill={isWishlisted ? 'currentColor' : 'none'} className={isWishlisted ? 'text-gold' : ''} />
                 {isWishlisted ? 'In Wishlist' : 'Add to Wishlist'}
               </button>
 
@@ -556,14 +555,14 @@ export function ProductDetailClient({ product, related }: Props) {
                   className="flex items-center gap-1 text-xs tracking-wider uppercase font-semibold text-text hover:text-heading transition-colors cursor-pointer"
                   aria-label="Share product"
                 >
-                  <Share2 size={13} /> Share
+                  <Share2 size="0.8125rem" /> Share
                 </button>
 
                 <a
                   href={`https://wa.me/${siteConfig.whatsapp}?text=Hi! I'm interested in ${encodeURIComponent(product.name)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-gold font-semibold uppercase tracking-wider hover:underline"
+                  className="text-xs text-gold-ink font-semibold uppercase tracking-wider hover:underline"
                 >
                   Stylist Consult
                 </a>
@@ -576,24 +575,24 @@ export function ProductDetailClient({ product, related }: Props) {
         <div className="my-10 sm:my-12 py-5 px-6 bg-[#FAF7F2] rounded-2xl shadow-sm">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
             <div className="flex flex-col items-center gap-1.5">
-              <Truck size={18} className="text-gold" />
-              <p className="text-[11px] font-semibold text-heading uppercase tracking-wider">Insured Express Delivery</p>
-              <p className="text-[10px] text-text">Delivery charges applicable</p>
+              <Truck size="1.125rem" className="text-gold" />
+              <p className="text-[0.6875rem] font-semibold text-heading uppercase tracking-wider">Insured Express Delivery</p>
+              <p className="text-[0.625rem] text-text">Delivery charges applicable</p>
             </div>
             <div className="flex flex-col items-center gap-1.5">
-              <ShieldCheck size={18} className="text-gold" />
-              <p className="text-[11px] font-semibold text-heading uppercase tracking-wider">Secure Payment</p>
-              <p className="text-[10px] text-text">100% Encrypted transactions</p>
+              <ShieldCheck size="1.125rem" className="text-gold" />
+              <p className="text-[0.6875rem] font-semibold text-heading uppercase tracking-wider">Secure Payment</p>
+              <p className="text-[0.625rem] text-text">100% Encrypted transactions</p>
             </div>
             <div className="flex flex-col items-center gap-1.5">
-              <Scissors size={18} className="text-gold" />
-              <p className="text-[11px] font-semibold text-heading uppercase tracking-wider">Bespoke Tailoring</p>
-              <p className="text-[10px] text-text">Custom made-to-measure fit</p>
+              <Scissors size="1.125rem" className="text-gold" />
+              <p className="text-[0.6875rem] font-semibold text-heading uppercase tracking-wider">Bespoke Tailoring</p>
+              <p className="text-[0.625rem] text-text">Custom made-to-measure fit</p>
             </div>
             <div className="flex flex-col items-center gap-1.5">
-              <RotateCcw size={18} className="text-gold" />
-              <p className="text-[11px] font-semibold text-heading uppercase tracking-wider">7-Day Size Exchange</p>
-              <p className="text-[10px] text-text">Hassle-free boutique service</p>
+              <RotateCcw size="1.125rem" className="text-gold" />
+              <p className="text-[0.6875rem] font-semibold text-heading uppercase tracking-wider">7-Day Size Exchange</p>
+              <p className="text-[0.625rem] text-text">Hassle-free boutique service</p>
             </div>
           </div>
         </div>
@@ -604,7 +603,7 @@ export function ProductDetailClient({ product, related }: Props) {
             {/* Left Column: The Artisan Story & Detailed Specifications */}
             <div className="lg:col-span-7 space-y-6">
               <div>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-gold block mb-1.5">
+                <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.25em] text-gold-ink block mb-1.5">
                   Artisanal Heritage
                 </span>
                 <h2 className="font-serif text-2xl sm:text-3xl text-heading font-medium tracking-tight mb-3">
@@ -619,21 +618,21 @@ export function ProductDetailClient({ product, related }: Props) {
               {/* Garment Highlights Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
                 <div className="bg-[#FAF7F2] p-3.5 rounded-xl shadow-sm space-y-1">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-gold">Pure Fabric & Weave</p>
+                  <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-gold-ink">Pure Fabric & Weave</p>
                   <p className="text-xs text-heading font-medium">{product.fabric || 'Pure Raw Silk & Chanderi Lining'}</p>
                 </div>
                 <div className="bg-[#FAF7F2] p-3.5 rounded-xl shadow-sm space-y-1">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-gold">Embroidery & Workmanship</p>
+                  <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-gold-ink">Embroidery & Workmanship</p>
                   <p className="text-xs text-heading font-medium">{product.workType || 'Handcrafted Zardozi, Tilla & Gota Patti'}</p>
                 </div>
                 {product.occasion && product.occasion.length > 0 && (
                   <div className="bg-[#FAF7F2] p-3.5 rounded-xl shadow-sm space-y-1">
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gold">Ideal For</p>
+                    <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-gold-ink">Ideal For</p>
                     <p className="text-xs text-heading font-medium">{product.occasion.join(', ')}</p>
                   </div>
                 )}
                 <div className="bg-[#FAF7F2] p-3.5 rounded-xl shadow-sm space-y-1">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-gold">Fitting & Cut</p>
+                  <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-gold-ink">Fitting & Cut</p>
                   <p className="text-xs text-heading font-medium">Bespoke Custom Tailored / Standard Size</p>
                 </div>
               </div>
@@ -642,7 +641,7 @@ export function ProductDetailClient({ product, related }: Props) {
             {/* Right Column: Policies & Garment Care Accordions */}
             <div className="lg:col-span-5 space-y-3">
               <h2 className="sr-only">Garment Details, Care & Boutique Guarantee</h2>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-gold block mb-1">
+              <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.25em] text-gold-ink block mb-1">
                 Boutique Services
               </span>
               <h3 className="font-serif text-xl sm:text-2xl text-heading font-medium tracking-tight mb-3">
@@ -675,20 +674,17 @@ export function ProductDetailClient({ product, related }: Props) {
                   >
                     <span className="text-xs font-semibold tracking-wider text-heading uppercase">{label}</span>
                     {accordionOpen === key ? (
-                      <ChevronUp size={14} className="text-gold shrink-0 ml-2" />
+                      <ChevronUp size="0.875rem" className="text-gold shrink-0 ml-2" />
                     ) : (
-                      <ChevronDown size={14} className="text-text shrink-0 ml-2" />
+                      <ChevronDown size="0.875rem" className="text-text shrink-0 ml-2" />
                     )}
                   </button>
                   {accordionOpen === key && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="px-3.5 pb-3.5 pt-1 text-xs text-text leading-relaxed border-t border-border/50 bg-[#FAF7F2]/40"
+                    <div
+                      className="animate-in fade-in slide-in-from-top-1 duration-200 px-3.5 pb-3.5 pt-1 text-xs text-text leading-relaxed border-t border-border/50 bg-[#FAF7F2]/40"
                     >
                       {content}
-                    </motion.div>
+                    </div>
                   )}
                 </div>
               ))}
@@ -697,13 +693,13 @@ export function ProductDetailClient({ product, related }: Props) {
               <div className="mt-4 p-4 rounded-lg border border-gold/30 bg-gold/5 flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-semibold text-heading uppercase tracking-wider">Need Styling Advice?</p>
-                  <p className="text-[11px] text-text">Chat with our bridal & couture stylists directly</p>
+                  <p className="text-[0.6875rem] text-text">Chat with our bridal & couture stylists directly</p>
                 </div>
                 <a
                   href={`https://wa.me/${siteConfig.whatsapp}?text=Hi! I need styling consultation for ${encodeURIComponent(product.name)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="shrink-0 bg-gold text-white text-[11px] font-semibold uppercase tracking-wider px-3.5 py-2 rounded-lg hover:bg-gold/90 transition-colors shadow-xs"
+                  className="shrink-0 bg-gold text-heading text-[0.6875rem] font-semibold uppercase tracking-wider px-3.5 py-2 rounded-lg hover:bg-gold/90 transition-colors shadow-xs"
                 >
                   WhatsApp Us
                 </a>
@@ -746,7 +742,7 @@ export function ProductDetailClient({ product, related }: Props) {
                 {product.name}
               </h3>
               <span className="hidden sm:inline text-white/30">•</span>
-              <p className="text-[11px] text-white/70 tracking-wider">
+              <p className="text-[0.6875rem] text-white/70 tracking-wider">
                 Photo {selectedImage + 1} of {allImages.length} <span className="hidden md:inline text-gold/90 font-mono">(1800×3200 UHD Studio Capture)</span>
               </p>
             </div>
@@ -768,9 +764,9 @@ export function ProductDetailClient({ product, related }: Props) {
                   title="Zoom Out (-)"
                   aria-label="Zoom Out"
                 >
-                  <ZoomOut size={16} />
+                  <ZoomOut size="1rem" />
                 </button>
-                <span className="px-2.5 text-xs font-mono font-medium text-gold min-w-[50px] text-center">
+                <span className="px-2.5 text-xs font-mono font-medium text-gold-ink min-w-[3.125rem] text-center">
                   {Math.round(zoomScale * 100)}%
                 </span>
                 <button
@@ -783,7 +779,7 @@ export function ProductDetailClient({ product, related }: Props) {
                   title="Zoom In (+)"
                   aria-label="Zoom In"
                 >
-                  <ZoomIn size={16} />
+                  <ZoomIn size="1rem" />
                 </button>
               </div>
 
@@ -811,7 +807,7 @@ export function ProductDetailClient({ product, related }: Props) {
                 title="Close (Esc)"
                 aria-label="Close Lightbox"
               >
-                <X size={18} />
+                <X size="1.125rem" />
               </button>
             </div>
           </div>
@@ -871,7 +867,7 @@ export function ProductDetailClient({ product, related }: Props) {
                   title="Previous image (Left Arrow)"
                   aria-label="Previous image"
                 >
-                  <ChevronLeft size={24} />
+                  <ChevronLeft size="1.5rem" />
                 </button>
                 <button
                   type="button"
@@ -885,14 +881,14 @@ export function ProductDetailClient({ product, related }: Props) {
                   title="Next image (Right Arrow)"
                   aria-label="Next image"
                 >
-                  <ChevronRight size={24} />
+                  <ChevronRight size="1.5rem" />
                 </button>
               </>
             )}
 
             {/* The High-Resolution Image Container */}
             <div
-              className="relative w-full h-full max-w-[92vw] max-h-[82vh] transition-transform duration-100 ease-out flex items-center justify-center"
+              className="relative w-full h-full max-w-[92vw] max-h-[82dvh] transition-transform duration-100 ease-out flex items-center justify-center"
               style={{
                 transform: `translate(${panPosition.x}px, ${panPosition.y}px) scale(${zoomScale})`,
                 transformOrigin: 'center center',
@@ -909,7 +905,7 @@ export function ProductDetailClient({ product, related }: Props) {
             </div>
 
             {/* Inspection Helper Tooltip */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-[11px] text-white/80 pointer-events-none tracking-wide">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-[0.6875rem] text-white/80 pointer-events-none tracking-wide">
               {zoomScale > 1
                 ? 'Drag to inspect intricate embroidery • Double-click or click Reset to exit zoom'
                 : 'Double-click or scroll to zoom in up to 300% • Use arrows to switch photos'}

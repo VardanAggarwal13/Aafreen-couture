@@ -34,7 +34,7 @@ export default function ForgotPasswordPage() {
           <h1 className="font-serif text-2xl tracking-tight text-heading mb-2">
             Recover Access
           </h1>
-          <p className="text-[10.5px] uppercase tracking-[0.25em] text-gold font-semibold">
+          <p className="text-[0.65625rem] uppercase tracking-[0.25em] text-gold font-semibold">
             Atelier Password Recovery
           </p>
         </div>
@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
         {submitted ? (
           <div className="text-center py-4">
             <div className="w-12 h-12 rounded-full bg-background text-gold flex items-center justify-center mx-auto mb-4 border border-border">
-              <CheckCircle2 size={24} />
+              <CheckCircle2 size="1.5rem" />
             </div>
             <h2 className="font-serif text-xl text-heading mb-2">Check Your Email</h2>
             <p className="text-xs text-text leading-relaxed mb-6 font-sans">
@@ -52,7 +52,7 @@ export default function ForgotPasswordPage() {
               href={ROUTES.LOGIN}
               className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gold hover:text-heading transition-colors"
             >
-              <ArrowLeft size={14} /> Back to Sign In
+              <ArrowLeft size="0.875rem" /> Back to Sign In
             </Link>
           </div>
         ) : (
@@ -64,7 +64,7 @@ export default function ForgotPasswordPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5"
+                className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-heading mb-1.5"
               >
                 Email Address
               </label>
@@ -78,7 +78,7 @@ export default function ForgotPasswordPage() {
                   placeholder="name@example.com"
                   className="w-full px-3.5 py-2.5 pl-10 text-sm border border-border bg-background/50 text-heading rounded-lg focus:outline-none focus:border-gold placeholder:text-text/40 transition-colors"
                 />
-                <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text/50" />
+                <Mail size="0.9375rem" className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text/50" />
               </div>
             </div>
 
@@ -95,7 +95,7 @@ export default function ForgotPasswordPage() {
                 href={ROUTES.LOGIN}
                 className="inline-flex items-center gap-1.5 text-xs text-text hover:text-gold transition-colors font-sans"
               >
-                <ArrowLeft size={13} /> Back to Sign In
+                <ArrowLeft size="0.8125rem" /> Back to Sign In
               </Link>
             </div>
           </form>

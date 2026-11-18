@@ -198,7 +198,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
           onClick={() => setIsModalOpen(true)}
           className="inline-flex items-center justify-center gap-2 bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold tracking-wider uppercase px-3.5 py-2 transition-colors shadow-xs rounded-lg cursor-pointer"
         >
-          <Plus size={15} /> Add New Administrator
+          <Plus size="0.9375rem" /> Add New Administrator
         </button>
       </div>
 
@@ -207,28 +207,28 @@ export function AdminUsersClient({ initialUsers }: Props) {
         <div className="bg-white p-4 rounded-xl shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs text-[#8A6A55] uppercase tracking-wider font-semibold">Total Accounts</span>
-            <Users size={16} className="text-[#C9A86A]" />
+            <Users size="1rem" className="text-[#C9A86A]" />
           </div>
           <p className="text-2xl font-sans font-bold text-[#2E221C] mt-2 tabular-nums">{users.length}</p>
-          <p className="text-[11px] text-[#8A6A55]/80 mt-0.5">Registered in atelier database</p>
+          <p className="text-[0.6875rem] text-[#8A6A55]/80 mt-0.5">Registered in atelier database</p>
         </div>
 
         <div className="bg-white border border-[#C9A86A]/40 p-4 rounded-lg shadow-sm bg-gradient-to-br from-white to-[#FAF7F2]">
           <div className="flex items-center justify-between">
             <span className="text-xs text-[#9E7B3A] uppercase tracking-wider font-semibold">Administrators</span>
-            <ShieldCheck size={16} className="text-[#C9A86A]" />
+            <ShieldCheck size="1rem" className="text-[#C9A86A]" />
           </div>
           <p className="text-2xl font-sans font-bold text-[#2E221C] mt-2 tabular-nums">{totalAdmins}</p>
-          <p className="text-[11px] text-[#9E7B3A] mt-0.5 font-medium">Full dashboard &amp; catalog privileges</p>
+          <p className="text-[0.6875rem] text-[#9E7B3A] mt-0.5 font-medium">Full dashboard &amp; catalog privileges</p>
         </div>
 
         <div className="bg-white p-4 rounded-xl shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs text-[#8A6A55] uppercase tracking-wider font-semibold">Customers</span>
-            <Users size={16} className="text-[#8A6A55]" />
+            <Users size="1rem" className="text-[#8A6A55]" />
           </div>
           <p className="text-2xl font-sans font-bold text-[#2E221C] mt-2 tabular-nums">{totalCustomers}</p>
-          <p className="text-[11px] text-[#8A6A55]/80 mt-0.5">Boutique retail clients</p>
+          <p className="text-[0.6875rem] text-[#8A6A55]/80 mt-0.5">Boutique retail clients</p>
         </div>
       </div>
 
@@ -236,7 +236,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3 rounded-lg border border-[#DDD2C5]/70 shadow-xs">
         {/* Search */}
         <div className="relative flex-1 max-w-md">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
+          <Search size="0.875rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
           <input
             type="text"
             placeholder="Search by name, email, or phone…"
@@ -266,7 +266,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                 : 'text-[#8A6A55] hover:text-[#2E221C]'
             }`}
           >
-            <ShieldCheck size={12} /> Admins ({totalAdmins})
+            <ShieldCheck size="0.75rem" /> Admins ({totalAdmins})
           </button>
           <button
             onClick={() => handleRoleFilterChange('customer')}
@@ -286,7 +286,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-sans">
             <thead>
-              <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5] text-[#8A6A55] uppercase tracking-wider text-[10px] font-semibold">
+              <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5] text-[#8A6A55] uppercase tracking-wider text-[0.625rem] font-semibold">
                 <th className="px-5 py-2">User</th>
                 <th className="px-5 py-2">Contact Details</th>
                 <th className="px-5 py-2">Role</th>
@@ -331,10 +331,10 @@ export function AdminUsersClient({ initialUsers }: Props) {
                             <p className="font-medium text-[#2E221C] text-sm leading-tight flex items-center gap-1.5">
                               {user.name}
                                 <span title="Verified Account">
-                                  <CheckCircle2 size={13} className="text-emerald-600" />
+                                  <CheckCircle2 size="0.8125rem" className="text-emerald-600" />
                                 </span>
                             </p>
-                            <p className="text-[11px] text-[#8A6A55] font-mono mt-0.5">{user.email}</p>
+                            <p className="text-[0.6875rem] text-[#8A6A55] font-mono mt-0.5">{user.email}</p>
                           </div>
                         </div>
                       </td>
@@ -343,10 +343,10 @@ export function AdminUsersClient({ initialUsers }: Props) {
                       <td className="px-5 py-2.5 text-[#8A6A55]">
                         <div className="space-y-1">
                           <p className="flex items-center gap-1.5 text-xs text-[#2E221C]">
-                            <Mail size={12} className="text-[#C9A86A]" /> {user.email}
+                            <Mail size="0.75rem" className="text-[#C9A86A]" /> {user.email}
                           </p>
-                          <p className="flex items-center gap-1.5 text-[11px]">
-                            <Phone size={12} className="text-[#8A6A55]" /> {user.phone || 'No phone recorded'}
+                          <p className="flex items-center gap-1.5 text-[0.6875rem]">
+                            <Phone size="0.75rem" className="text-[#8A6A55]" /> {user.phone || 'No phone recorded'}
                           </p>
                         </div>
                       </td>
@@ -354,11 +354,11 @@ export function AdminUsersClient({ initialUsers }: Props) {
                       {/* Role */}
                       <td className="px-5 py-2.5">
                         {isAdmin ? (
-                          <span className="inline-flex items-center gap-1.5 bg-[#C9A86A]/15 text-[#9E7B3A] border border-[#C9A86A]/40 text-[10.5px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
-                            <ShieldCheck size={12} /> Administrator
+                          <span className="inline-flex items-center gap-1.5 bg-[#C9A86A]/15 text-[#9E7B3A] border border-[#C9A86A]/40 text-[0.65625rem] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
+                            <ShieldCheck size="0.75rem" /> Administrator
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 bg-[#EAE2D7]/60 text-[#8A6A55] border border-[#DDD2C5] text-[10.5px] font-medium uppercase tracking-wider px-2.5 py-1 rounded-full">
+                          <span className="inline-flex items-center gap-1 bg-[#EAE2D7]/60 text-[#8A6A55] border border-[#DDD2C5] text-[0.65625rem] font-medium uppercase tracking-wider px-2.5 py-1 rounded-full">
                             Customer
                           </span>
                         )}
@@ -367,7 +367,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                       {/* Joined Date */}
                       <td className="px-5 py-2.5 text-[#8A6A55] text-xs hidden md:table-cell">
                         <div className="flex items-center gap-1.5">
-                          <Calendar size={12} className="text-[#8A6A55]" />
+                          <Calendar size="0.75rem" className="text-[#8A6A55]" />
                           {user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-IN') : '—'}
                         </div>
                       </td>
@@ -380,13 +380,13 @@ export function AdminUsersClient({ initialUsers }: Props) {
                             className="p-1.5 text-[#8A6A55]/60 hover:text-[#2E221C] transition-colors cursor-pointer"
                             title="View Customer Profile"
                           >
-                            <Eye size={14} />
+                            <Eye size="0.875rem" />
                           </Link>
 
                           <button
                             onClick={() => handleToggleRole(user)}
                             disabled={actionLoading === user._id}
-                            className={`px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider rounded-lg border transition-colors cursor-pointer ${
+                            className={`px-3 py-1.5 text-[0.6875rem] font-semibold uppercase tracking-wider rounded-lg border transition-colors cursor-pointer ${
                               isAdmin
                                 ? 'border-[#DDD2C5] text-[#8A6A55] hover:border-red-400 hover:text-red-600 bg-white'
                                 : 'border-[#C9A86A] bg-[#C9A86A]/10 text-[#9E7B3A] hover:bg-[#C9A86A] hover:text-white'
@@ -401,7 +401,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                             className="p-1.5 text-[#8A6A55]/60 hover:text-red-600 transition-colors cursor-pointer"
                             title="Delete User Account"
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size="0.875rem" />
                           </button>
                         </div>
                       </td>
@@ -430,12 +430,12 @@ export function AdminUsersClient({ initialUsers }: Props) {
               onClick={() => setIsModalOpen(false)}
               className="absolute top-4 right-4 text-[#8A6A55] hover:text-[#2E221C] transition-colors cursor-pointer"
             >
-              <X size={18} />
+              <X size="1.125rem" />
             </button>
 
             <div className="mb-5">
               <div className="w-10 h-10 rounded-full bg-[#C9A86A]/15 text-[#9E7B3A] flex items-center justify-center mb-2">
-                <ShieldCheck size={20} />
+                <ShieldCheck size="1.25rem" />
               </div>
               <h2 className="text-lg font-sans font-semibold text-[#2E221C]">Add New Administrator</h2>
               <p className="text-xs text-[#8A6A55] mt-0.5">
@@ -445,7 +445,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
 
             <form onSubmit={handleCreateAdmin} className="space-y-4 text-xs font-sans">
               <div>
-                <label className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[10px] mb-1">
+                <label className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[0.625rem] mb-1">
                   Full Name *
                 </label>
                 <input
@@ -459,7 +459,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
               </div>
 
               <div>
-                <label className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[10px] mb-1">
+                <label className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[0.625rem] mb-1">
                   Admin Email *
                 </label>
                 <input
@@ -473,7 +473,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
               </div>
 
               <div>
-                <label className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[10px] mb-1">
+                <label className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[0.625rem] mb-1">
                   Password (min 6 characters) *
                 </label>
                 <div className="relative">
@@ -486,12 +486,12 @@ export function AdminUsersClient({ initialUsers }: Props) {
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
                   />
-                  <Lock size={13} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
+                  <Lock size="0.8125rem" className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[10px] mb-1">
+                <label className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[0.625rem] mb-1">
                   Phone Number (optional)
                 </label>
                 <input

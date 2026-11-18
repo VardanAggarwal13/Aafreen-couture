@@ -191,7 +191,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
           onClick={openCreateModal}
           className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm cursor-pointer"
         >
-          <Plus size={14} className="text-[#C9A86A]" /> Create Coupon
+          <Plus size="0.875rem" className="text-[#C9A86A]" /> Create Coupon
         </button>
       </div>
 
@@ -201,7 +201,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Code', 'Discount', 'Min Order', 'Redemptions', 'Valid Until', 'Status', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[0.625rem] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -214,7 +214,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
                   <tr key={coupon._id} className="hover:bg-[#FAF7F2]/60 transition-colors">
                     <td className="px-5 py-2.5 font-mono font-semibold text-[#2E221C] text-sm">
                       <span className="inline-flex items-center gap-2">
-                        <Ticket size={14} className="text-[#C9A86A]" /> {coupon.code}
+                        <Ticket size="0.875rem" className="text-[#C9A86A]" /> {coupon.code}
                       </span>
                     </td>
                     <td className="px-5 py-2.5 font-medium text-[#2E221C]">{discountLabel(coupon)}</td>
@@ -226,7 +226,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
                     <td className="px-5 py-2.5">
                       <button
                         onClick={() => toggleActive(coupon)}
-                        className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold transition-colors cursor-pointer ${
+                        className={`px-2.5 py-0.5 text-[0.625rem] rounded-full uppercase tracking-wider font-semibold transition-colors cursor-pointer ${
                           expired
                             ? 'bg-amber-50 text-amber-700 border border-amber-200'
                             : coupon.isActive
@@ -244,14 +244,14 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
                           className="p-1 rounded text-[#8A6A55] hover:text-[#2E221C] transition-colors cursor-pointer"
                           title="View Coupon"
                         >
-                          <Eye size={13} />
+                          <Eye size="0.8125rem" />
                         </button>
                         <button
                           onClick={() => openEditModal(coupon)}
                           className="p-1 rounded text-[#8A6A55] hover:text-[#2E221C] transition-colors cursor-pointer"
                           title="Edit Coupon"
                         >
-                          <Edit2 size={13} />
+                          <Edit2 size="0.8125rem" />
                         </button>
                         <button
                           onClick={() => handleDelete(coupon._id)}
@@ -259,7 +259,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
                           className="p-1 rounded text-[#8A6A55] hover:text-red-600 transition-colors disabled:opacity-40 cursor-pointer"
                           title="Delete Coupon"
                         >
-                          <Trash2 size={13} />
+                          <Trash2 size="0.8125rem" />
                         </button>
                       </div>
                     </td>
@@ -281,19 +281,19 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
       {/* Create / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-md p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white w-full max-w-md p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90dvh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base">
                 {editingId ? 'Edit Privilege Coupon' : 'Create New Privilege Coupon'}
               </h3>
               <button onClick={() => setIsModalOpen(false)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md cursor-pointer">
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
 
             <form onSubmit={handleSave} className="space-y-4 text-xs">
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Coupon Code *</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Coupon Code *</label>
                 <input
                   type="text"
                   required
@@ -307,7 +307,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Discount Type</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Discount Type</label>
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value as FormState['type'] })}
@@ -320,7 +320,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
                 </div>
                 {formData.type !== 'free_shipping' && (
                   <div>
-                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">
                       Discount Value {formData.type === 'percentage' ? '(%)' : '(₹)'}
                     </label>
                     <input
@@ -336,7 +336,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Min Order (₹)</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Min Order (₹)</label>
                   <input
                     type="number"
                     value={formData.minOrderValue}
@@ -346,7 +346,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
                 </div>
                 {formData.type === 'percentage' && (
                   <div>
-                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Max Discount Cap (₹)</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Max Discount Cap (₹)</label>
                     <input
                       type="number"
                       value={formData.maxDiscountAmount}
@@ -359,7 +359,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Usage Limit (blank = unlimited)</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Usage Limit (blank = unlimited)</label>
                   <input
                     type="number"
                     value={formData.usageLimit}
@@ -368,7 +368,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Per-Customer Limit</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Per-Customer Limit</label>
                   <input
                     type="number"
                     min={1}
@@ -381,7 +381,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Valid From</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Valid From</label>
                   <input
                     type="date"
                     value={formData.validFrom}
@@ -390,7 +390,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Valid Until</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Valid Until</label>
                   <input
                     type="date"
                     value={formData.validUntil}
@@ -401,7 +401,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Description (internal note)</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Description (internal note)</label>
                 <input
                   type="text"
                   value={formData.description}
@@ -434,7 +434,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
                   disabled={saving}
                   className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] text-xs rounded-lg shadow-sm transition-all disabled:opacity-50 cursor-pointer"
                 >
-                  <Check size={13} className="text-[#C9A86A]" /> {saving ? 'Saving…' : editingId ? 'Save Changes' : 'Create Coupon'}
+                  <Check size="0.8125rem" className="text-[#C9A86A]" /> {saving ? 'Saving…' : editingId ? 'Save Changes' : 'Create Coupon'}
                 </button>
               </div>
             </form>
@@ -449,7 +449,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base font-mono">{viewing.code}</h3>
               <button onClick={() => setViewing(null)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md cursor-pointer">
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
             <div className="space-y-3 text-[#2E221C]">

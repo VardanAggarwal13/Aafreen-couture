@@ -212,7 +212,6 @@ export const footerLinks = {
     { label: 'Profile Details', href: '/profile' },
     { label: 'Saved Addresses', href: '/addresses' },
     { label: 'Wishlist', href: '/wishlist' },
-    { label: 'Track Order', href: '/track-order' },
   ],
   info: [
     { label: 'About Us', href: '/about' },

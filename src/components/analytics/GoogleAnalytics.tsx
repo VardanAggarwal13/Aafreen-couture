@@ -3,12 +3,14 @@
 import { usePathname, useSearchParams } from 'next/navigation';
 import Script from 'next/script';
 import { useEffect, useRef } from 'react';
+import { useDeferredReady } from '@/hooks/use-deferred-ready';
 import * as gtag from '@/lib/gtag';
 
 export function GoogleAnalytics() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isFirstRender = useRef(true);
+  const ready = useDeferredReady();
 
   useEffect(() => {
     // Initial pageview is handled by the inline init script.
@@ -23,19 +25,20 @@ export function GoogleAnalytics() {
     gtag.pageview(url);
   }, [pathname, searchParams]);
 
-  if (!gtag.GA_MEASUREMENT_ID) {
+  // Third-party tags wait for the first interaction (or a short timeout) so they never delay hydration
+  if (!gtag.GA_MEASUREMENT_ID || !ready) {
     return null;
   }
 
   return (
     <>
       <Script
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_MEASUREMENT_ID}`}
       />
       <Script
         id="google-tag-init"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];

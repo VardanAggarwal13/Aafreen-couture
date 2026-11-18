@@ -9,7 +9,6 @@ export const ROUTES = {
   CART: '/cart',
   CHECKOUT: '/checkout',
   CHECKOUT_SUCCESS: '/checkout/success',
-  TRACK_ORDER: '/track-order',
   WISHLIST: '/wishlist',
   BLOG: '/blog',
   BLOG_POST: (slug: string) => `/blog/${slug}`,

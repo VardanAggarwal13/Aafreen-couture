@@ -1,13 +1,15 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { buttonVariants } from '@/components/ui/button';
 
+/**
+ * Server component: the hero is the page's largest paint, so it ships no client JavaScript.
+ * Entrance effects are CSS animations (never hiding the heading or the image), which keeps
+ * framer-motion out of the homepage's critical path.
+ */
 export function HeroSection() {
   return (
-    <section className="relative h-[88vh] sm:h-[90vh] lg:h-[92vh] overflow-hidden bg-[#0c0a08]">
+    <section className="relative h-[88svh] sm:h-[90svh] lg:h-[92svh] overflow-hidden bg-[#0c0a08]">
 
       {/* Background image — 100% full brightness and clarity */}
       <Image
@@ -15,6 +17,7 @@ export function HeroSection() {
         alt="Aafreen Couture — The Bridal Edit"
         fill
         priority
+        fetchPriority="high"
         className="object-cover object-[center_30%] opacity-100"
         sizes="100vw"
       />
@@ -24,44 +27,34 @@ export function HeroSection() {
 
       {/* Content — scoped to left column so it never overlaps the background bride or pillars */}
       <div className="relative h-full flex items-center">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20 w-full">
-          <div className="max-w-[340px] sm:max-w-[440px] lg:max-w-[480px] text-left">
+        <div className="max-w-[87.5rem] mx-auto px-5 sm:px-12 lg:px-20 w-full">
+          <div className="max-w-[21.25rem] sm:max-w-[27.5rem] lg:max-w-[30rem] text-left">
 
             {/* Tagline */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.6 }}
-              className="mb-4 sm:mb-5 lg:mb-6"
-            >
-              <span className="font-display text-[10px] sm:text-xs font-semibold uppercase tracking-[0.35em] sm:tracking-[0.45em] text-[#C49A5A]">
+            <div className="mb-4 sm:mb-5 lg:mb-6 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both">
+              <span className="font-display text-[0.625rem] sm:text-xs font-semibold uppercase tracking-[0.35em] sm:tracking-[0.45em] text-[#C49A5A]">
                 Bridal Collection 2026
               </span>
-            </motion.div>
+            </div>
 
             {/* Title — stacked 2 lines to stay on left column */}
-            <h1
-              className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal leading-[1.08] tracking-tight mb-5 sm:mb-6 lg:mb-7 drop-shadow-md"
-            >
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal leading-[1.08] tracking-tight mb-5 sm:mb-6 lg:mb-7 drop-shadow-md">
               <span className="sr-only">Aafreen Couture Bridal Lehengas &amp; Designer Suits — </span>
               The Bridal<br />Edit
             </h1>
 
             {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-xs sm:text-sm text-white/90 font-sans tracking-wide leading-relaxed max-w-[320px] mb-8 lg:mb-10"
+            <p
+              className="text-xs sm:text-sm text-white/90 font-sans tracking-wide leading-relaxed max-w-[20rem] mb-8 lg:mb-10 animate-in fade-in duration-500 fill-mode-both"
+              style={{ animationDelay: '150ms' }}
             >
               Handcrafted Lehengas & Regal Attire
-            </motion.p>
+            </p>
 
             {/* CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.58, duration: 0.5 }}
+            <div
+              className="animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both"
+              style={{ animationDelay: '250ms' }}
             >
               <Link
                 href="/collections/bridal-lehengas-suits"
@@ -69,25 +62,20 @@ export function HeroSection() {
               >
                 Discover Collection
               </Link>
-            </motion.div>
+            </div>
 
           </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
+      <div
+        className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 animate-in fade-in duration-700 fill-mode-both"
+        style={{ animationDelay: '600ms' }}
+        aria-hidden="true"
       >
-        <motion.div
-          className="w-px h-8 bg-white/30 origin-top"
-          animate={{ scaleY: [1, 0.3, 1] }}
-          transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-        />
-      </motion.div>
+        <div className="w-px h-8 bg-white/30 origin-top animate-pulse" />
+      </div>
     </section>
   );
 }

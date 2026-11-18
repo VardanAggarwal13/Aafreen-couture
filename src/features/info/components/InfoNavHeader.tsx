@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Sparkles,
-  PackageSearch,
   Truck,
   RefreshCw,
   HelpCircle,
@@ -15,7 +14,6 @@ import {
 
 const INFO_LINKS = [
   { href: '/about', label: 'Our Story', icon: Sparkles },
-  { href: '/track-order', label: 'Track Order', icon: PackageSearch },
   { href: '/shipping-policy', label: 'Shipping & Delivery', icon: Truck },
   { href: '/returns-policy', label: 'Exchange & Returns', icon: RefreshCw },
   { href: '/faq', label: 'Help & FAQs', icon: HelpCircle },
@@ -30,9 +28,9 @@ export function InfoNavHeader() {
   return (
     <nav
       aria-label="Atelier Client Care & Information Navigation"
-      className="sticky top-[72px] sm:top-[76px] lg:top-[84px] z-30 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#E8D8C8] shadow-[0_2px_8px_rgba(34,22,23,0.03)] transition-all"
+      className="sticky top-[var(--header-h)] z-30 bg-background/95 backdrop-blur-md border-b border-border shadow-[0_2px_8px_rgba(34,22,23,0.03)] transition-all"
     >
-      <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-10">
+      <div className="max-w-[90rem] mx-auto px-3 sm:px-6 lg:px-10">
         <div className="relative flex items-center">
           {/* Scrollable Nav Container with refined pills */}
           <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto py-2.5 sm:py-3 scrollbar-none w-full">
@@ -53,15 +51,15 @@ export function InfoNavHeader() {
                   key={item.href}
                   href={item.href}
                   prefetch={true}
-                  className={`inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full whitespace-nowrap transition-all duration-200 text-[10.5px] sm:text-[11px] font-semibold tracking-[0.14em] uppercase shrink-0 select-none ${
+                  className={`inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full whitespace-nowrap transition-all duration-200 text-[0.65625rem] sm:text-[0.6875rem] font-semibold tracking-[0.14em] uppercase shrink-0 select-none ${
                     isActive
-                      ? 'bg-[#221617] text-[#C49A5A] border border-[#C49A5A]/30 shadow-xs'
-                      : 'bg-white/80 border border-[#E8D8C8] text-[#6E6A66] hover:text-[#221617] hover:border-[#C49A5A]/50 hover:bg-[#FAF7F2]'
+                      ? 'bg-gold/20 text-heading border border-gold shadow-xs'
+                      : 'bg-white/80 border border-border text-text hover:text-heading hover:border-gold/50 hover:bg-background'
                   }`}
                 >
                   <Icon
-                    size={12}
-                    className={`shrink-0 ${isActive ? 'text-[#C49A5A]' : 'text-[#A67C52] opacity-80'}`}
+                    size="0.75rem"
+                    className={`shrink-0 ${isActive ? 'text-gold-ink' : 'text-gold-ink opacity-80'}`}
                   />
                   <span>{item.label}</span>
                 </Link>

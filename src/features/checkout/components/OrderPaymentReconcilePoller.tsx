@@ -116,19 +116,19 @@ export function OrderPaymentReconcilePoller({
       <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6 text-left flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0">
-            <CheckCircle2 size={16} />
+            <CheckCircle2 size="1rem" />
           </div>
           <div>
             <p className="text-xs font-semibold text-emerald-900 uppercase tracking-wider">
               Payment Confirmed & Verified
             </p>
-            <p className="text-[11px] text-emerald-800">
+            <p className="text-[0.6875rem] text-emerald-800">
               Your transaction was successfully authorized & captured via Razorpay.
             </p>
           </div>
         </div>
-        <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-white px-2.5 py-1 rounded-full border border-emerald-200 uppercase tracking-wider">
-          <ShieldCheck size={12} /> 100% Secured
+        <span className="hidden sm:inline-flex items-center gap-1 text-[0.625rem] font-bold text-emerald-700 bg-white px-2.5 py-1 rounded-full border border-emerald-200 uppercase tracking-wider">
+          <ShieldCheck size="0.75rem" /> 100% Secured
         </span>
       </div>
     );
@@ -140,11 +140,11 @@ export function OrderPaymentReconcilePoller({
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             {isPolling ? (
-              <RefreshCw size={15} className="animate-spin text-amber-700 shrink-0" />
+              <RefreshCw size="0.9375rem" className="animate-spin text-amber-700 shrink-0" />
             ) : (
-              <Clock size={15} className="text-amber-700 shrink-0" />
+              <Clock size="0.9375rem" className="text-amber-700 shrink-0" />
             )}
-            <p className="text-xs font-semibold text-amber-900 uppercase tracking-wider">
+            <p role="status" aria-live="polite" className="text-xs font-semibold text-amber-900 uppercase tracking-wider">
               {isPolling ? 'Verifying Live Bank Confirmation…' : 'Payment Status Pending Verification'}
             </p>
           </div>
@@ -152,14 +152,14 @@ export function OrderPaymentReconcilePoller({
             type="button"
             onClick={handleManualCheck}
             disabled={isPolling}
-            className="text-[11px] font-semibold text-amber-900 hover:text-gold uppercase tracking-wider transition-colors disabled:opacity-50 cursor-pointer flex items-center gap-1"
+            className="text-[0.6875rem] font-semibold text-amber-900 hover:text-gold uppercase tracking-wider transition-colors disabled:opacity-50 cursor-pointer flex items-center gap-1"
           >
-            <RefreshCw size={11} className={isPolling ? 'animate-spin' : ''} />
+            <RefreshCw size="0.6875rem" className={isPolling ? 'animate-spin' : ''} />
             <span>Check Bank Status</span>
           </button>
         </div>
 
-        <p className="text-[11px] text-amber-800 leading-relaxed">
+        <p className="text-[0.6875rem] text-amber-800 leading-relaxed">
           If your bank debited the amount, our system automatically synchronizes with Razorpay and confirms your reservation. You do not need to pay twice.
         </p>
       </div>

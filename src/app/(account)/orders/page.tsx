@@ -57,7 +57,7 @@ export default async function OrdersPage({ searchParams }: Props) {
 
       {orders.length === 0 ? (
         <div className="text-center py-16 bg-surface rounded-2xl shadow-sm">
-          <Package size={44} className="text-text/60 mx-auto mb-3" />
+          <Package size="2.75rem" className="text-text/60 mx-auto mb-3" />
           <p className="text-base text-heading font-semibold mb-1">No orders yet</p>
           <p className="text-xs text-text mb-4">Your placed orders and delivery trackers will appear here</p>
           <Link
@@ -81,23 +81,23 @@ export default async function OrdersPage({ searchParams }: Props) {
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-1.5">
                       <p className="text-sm font-semibold text-heading">#{order.orderNumber}</p>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium uppercase tracking-wider ${STATUS_COLORS[statusKey] ?? 'bg-stone-100 text-stone-700'}`}>
+                      <span className={`text-[0.625rem] px-2 py-0.5 rounded-full font-medium uppercase tracking-wider ${STATUS_COLORS[statusKey] ?? 'bg-stone-100 text-stone-700'}`}>
                         {getOrderStatusLabel(order.status || 'pending')}
                       </span>
                       {order.paymentStatus === 'paid' ? (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        <span className="text-[0.625rem] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
                           Paid
                         </span>
                       ) : order.paymentMethod === 'cod' ? (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full font-medium uppercase tracking-wider bg-gold/10 text-gold border border-gold/30">
+                        <span className="text-[0.625rem] px-2 py-0.5 rounded-full font-medium uppercase tracking-wider bg-gold/10 text-gold border border-gold/30">
                           Due on Delivery (COD)
                         </span>
                       ) : order.paymentStatus === 'failed' ? (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider bg-rose-50 text-rose-800 border border-rose-200">
+                        <span className="text-[0.625rem] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider bg-rose-50 text-rose-800 border border-rose-200">
                           Payment Declined
                         </span>
                       ) : (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-200 animate-pulse">
+                        <span className="text-[0.625rem] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-200 animate-pulse">
                           Verifying Payment
                         </span>
                       )}
@@ -107,7 +107,7 @@ export default async function OrdersPage({ searchParams }: Props) {
                     </p>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {order.items?.slice(0, 3).map((item: IOrderItem, i: number) => (
-                        <span key={i} className="text-xs text-text truncate max-w-[160px] bg-background px-2 py-0.5 rounded-lg border border-border">
+                        <span key={i} className="text-xs text-text truncate max-w-[10rem] bg-background px-2 py-0.5 rounded-lg border border-border">
                           {item.name}
                         </span>
                       ))}

@@ -32,20 +32,20 @@ export const metadata: Metadata = {
  */
 function ShopFallback({ products }: { products: IProduct[] }) {
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-dvh bg-[#FAF7F2]">
       {products.length > 0 && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLdString(buildItemListJsonLd('Shop All Couture', products)) }}
         />
       )}
-      <div className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-12">
+      <div className="mx-auto max-w-[90rem] px-4 py-10 sm:px-6 lg:px-12">
         <h1 className="mb-8 text-center font-serif text-3xl tracking-tight text-[#221617] sm:text-4xl">
           Luxury Bridal Lehengas, Suits &amp; Festive Wear
         </h1>
         <div className="grid grid-cols-2 gap-3.5 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
           {products.map((product) => (
-            <ProductCard key={String(product._id)} product={product} />
+            <ProductCard headingLevel="h2" key={String(product._id)} product={product} />
           ))}
         </div>
       </div>

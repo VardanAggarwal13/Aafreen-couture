@@ -22,7 +22,6 @@ const DISALLOW = [
   '/register',
   '/forgot-password',
   '/verify-email',
-  '/track-order',
 ];
 
 // AI assistants that fetch pages to answer a question or cite sources. Listed

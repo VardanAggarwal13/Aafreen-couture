@@ -144,14 +144,14 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
           href={ROUTES.ADMIN_PRODUCT_NEW}
           className="inline-flex items-center gap-2 bg-[#C9A86A] hover:bg-[#B58E52] text-white text-xs font-semibold uppercase tracking-wider px-3.5 py-2 rounded-lg transition-colors shadow-xs"
         >
-          <Plus size={14} /> Add New Ensemble
+          <Plus size="0.875rem" /> Add New Ensemble
         </Link>
       </div>
 
       {/* Search & Filters */}
       <div className="flex flex-wrap items-center gap-3 bg-white p-3.5 rounded-lg border border-[#DDD2C5]/80 shadow-xs">
-        <div className="relative flex-1 min-w-[220px]">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
+        <div className="relative flex-1 min-w-[13.75rem]">
+          <Search size="0.875rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
           <input
             type="text"
             placeholder="Search by ensemble name or slug…"
@@ -199,14 +199,14 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
                 <h2 className="text-xs font-semibold uppercase tracking-wider text-[#2E221C]">
                   {group.name}
                 </h2>
-                <span className="text-[10.5px] font-semibold text-[#9E7B3A] bg-[#C9A86A]/10 border border-[#C9A86A]/30 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                <span className="text-[0.65625rem] font-semibold text-[#9E7B3A] bg-[#C9A86A]/10 border border-[#C9A86A]/30 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                   {group.items.length} {group.items.length === 1 ? 'Piece' : 'Pieces'}
                 </span>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs font-sans">
                   <thead>
-                    <tr className="border-b border-[#DDD2C5] text-[#8A6A55] uppercase tracking-wider text-[10px] font-semibold">
+                    <tr className="border-b border-[#DDD2C5] text-[#8A6A55] uppercase tracking-wider text-[0.625rem] font-semibold">
                       <th className="px-3.5 py-2 whitespace-nowrap">Product</th>
                       <th className="px-3.5 py-2 whitespace-nowrap">Price</th>
                       <th className="px-3.5 py-2 whitespace-nowrap">Stock Units</th>
@@ -219,9 +219,9 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
                       const stock = product.variants?.reduce((s, v) => s + v.stock, 0) ?? 10;
                       return (
                         <tr key={String(product._id)} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                          <td className="px-3.5 py-2.5 max-w-[280px]">
+                          <td className="px-3.5 py-2.5 max-w-[17.5rem]">
                             <p className="font-semibold text-[#2E221C] truncate text-sm">{product.name}</p>
-                            <p className="text-[#8A6A55] text-[10.5px] font-mono mt-0.5 truncate">{product.slug}</p>
+                            <p className="text-[#8A6A55] text-[0.65625rem] font-mono mt-0.5 truncate">{product.slug}</p>
                           </td>
                           <td className="px-3.5 py-2.5 text-[#2E221C] font-semibold">
                             {formatPrice(product.basePrice)}
@@ -242,7 +242,7 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
                           <td className="px-3.5 py-2.5">
                             <button
                               onClick={() => toggleStatus(product._id)}
-                              className={`inline-block text-[10px] px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider border cursor-pointer transition-colors ${
+                              className={`inline-block text-[0.625rem] px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider border cursor-pointer transition-colors ${
                                 product.isActive
                                   ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
                                   : 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
@@ -258,7 +258,7 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
                                 className="p-1.5 text-[#8A6A55] hover:text-[#9E7B3A] hover:bg-[#FAF7F2] rounded-lg transition-colors"
                                 title="Edit Ensemble"
                               >
-                                <Edit2 size={14} />
+                                <Edit2 size="0.875rem" />
                               </Link>
                               <Link
                                 href={ROUTES.PRODUCT(product.slug)}
@@ -266,14 +266,14 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
                                 className="p-1.5 text-[#8A6A55] hover:text-[#2E221C] hover:bg-[#FAF7F2] rounded-lg transition-colors"
                                 title="View on Live Store"
                               >
-                                <ExternalLink size={14} />
+                                <ExternalLink size="0.875rem" />
                               </Link>
                               <button
                                 onClick={() => handleDelete(product._id, product.name)}
                                 className="p-1.5 text-[#8A6A55] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                                 title="Delete Ensemble"
                               >
-                                <Trash2 size={14} />
+                                <Trash2 size="0.875rem" />
                               </button>
                             </div>
                           </td>

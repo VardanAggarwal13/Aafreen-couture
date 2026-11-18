@@ -141,8 +141,8 @@ export function CheckoutClientPage() {
 
   if (isPending || !session?.user) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 font-sans bg-background">
-        <div className="w-9 h-9 border-2 border-gold border-t-transparent rounded-full animate-spin mb-4" />
+      <div role="status" aria-live="polite" className="min-h-[60dvh] flex flex-col items-center justify-center px-4 font-sans bg-background">
+        <div aria-hidden="true" className="w-9 h-9 border-2 border-gold border-t-transparent rounded-full animate-spin mb-4" />
         <p className="text-xs uppercase tracking-[0.2em] text-gold font-semibold">
           Verifying Your Account…
         </p>
@@ -314,7 +314,7 @@ export function CheckoutClientPage() {
                     : 'border border-border text-text/60 bg-surface'
                 }`}
               >
-                {isDone ? <Check size={12} strokeWidth={2.5} /> : i + 1}
+                {isDone ? <Check size="0.75rem" strokeWidth={2.5} /> : i + 1}
               </div>
               <span
                 className={`text-xs uppercase tracking-widest font-semibold ${
@@ -331,7 +331,7 @@ export function CheckoutClientPage() {
         })}
 
         <div className="ml-auto hidden sm:flex items-center gap-1.5 text-xs text-gold font-medium">
-          <Lock size={13} />
+          <Lock size="0.8125rem" />
           <span>256-Bit Encrypted Secure Checkout</span>
         </div>
       </div>
@@ -349,16 +349,16 @@ export function CheckoutClientPage() {
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-heading">{session.user.name}</p>
-                    <p className="text-[11px] text-text/80">{session.user.email}</p>
+                    <p className="text-[0.6875rem] text-text/80">{session.user.email}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex items-center gap-1 text-[11px] text-emerald-800 font-medium bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                    <CheckCircle2 size={12} /> Verified
+                  <span className="inline-flex items-center gap-1 text-[0.6875rem] text-emerald-800 font-medium bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                    <CheckCircle2 size="0.75rem" /> Verified
                   </span>
                   <Link
                     href={ROUTES.PROFILE}
-                    className="text-[11px] font-semibold text-gold hover:text-heading uppercase tracking-wider transition-colors"
+                    className="text-[0.6875rem] font-semibold text-gold hover:text-heading uppercase tracking-wider transition-colors"
                   >
                     Profile
                   </Link>
@@ -372,7 +372,7 @@ export function CheckoutClientPage() {
                     <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading">
                       Saved Delivery Addresses
                     </h3>
-                    <span className="text-[11px] text-gold font-medium">Click to select</span>
+                    <span className="text-[0.6875rem] text-gold font-medium">Click to select</span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {savedAddresses.map((addr) => (
@@ -389,13 +389,13 @@ export function CheckoutClientPage() {
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-xs font-semibold text-heading">{addr.name}</span>
                           {addr.isDefault && (
-                            <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 bg-surface text-gold border border-gold/30 font-bold rounded-lg">
+                            <span className="text-[0.5625rem] uppercase tracking-wider px-1.5 py-0.5 bg-surface text-gold border border-gold/30 font-bold rounded-lg">
                               Default
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-text/80 line-clamp-1">{addr.line1}</p>
-                        <p className="text-[11px] text-text/80">
+                        <p className="text-[0.6875rem] text-text/80 line-clamp-1">{addr.line1}</p>
+                        <p className="text-[0.6875rem] text-text/80">
                           {addr.city}, {addr.state} — {addr.pincode}
                         </p>
                       </button>
@@ -437,7 +437,7 @@ export function CheckoutClientPage() {
                       className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                       placeholder="Receiver's full name"
                     />
-                    {errors.name && <p className="text-[11px] text-rose-600 mt-1">{errors.name.message}</p>}
+                    {errors.name && <p className="text-[0.6875rem] text-rose-600 mt-1">{errors.name.message}</p>}
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-heading mb-1 uppercase tracking-wider">
@@ -449,7 +449,7 @@ export function CheckoutClientPage() {
                       className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                       placeholder="10-digit mobile number"
                     />
-                    {errors.phone && <p className="text-[11px] text-rose-600 mt-1">{errors.phone.message}</p>}
+                    {errors.phone && <p className="text-[0.6875rem] text-rose-600 mt-1">{errors.phone.message}</p>}
                   </div>
                 </div>
 
@@ -463,7 +463,7 @@ export function CheckoutClientPage() {
                     className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                     placeholder="name@example.com"
                   />
-                  {errors.email && <p className="text-[11px] text-rose-600 mt-1">{errors.email.message}</p>}
+                  {errors.email && <p className="text-[0.6875rem] text-rose-600 mt-1">{errors.email.message}</p>}
                 </div>
 
                 <div>
@@ -475,7 +475,7 @@ export function CheckoutClientPage() {
                     className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                     placeholder="House/Flat no., Street, Area"
                   />
-                  {errors.line1 && <p className="text-[11px] text-rose-600 mt-1">{errors.line1.message}</p>}
+                  {errors.line1 && <p className="text-[0.6875rem] text-rose-600 mt-1">{errors.line1.message}</p>}
                 </div>
 
                 <div>
@@ -499,7 +499,7 @@ export function CheckoutClientPage() {
                       className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                       placeholder="City"
                     />
-                    {errors.city && <p className="text-[11px] text-rose-600 mt-1">{errors.city.message}</p>}
+                    {errors.city && <p className="text-[0.6875rem] text-rose-600 mt-1">{errors.city.message}</p>}
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-heading mb-1 uppercase tracking-wider">
@@ -514,7 +514,7 @@ export function CheckoutClientPage() {
                         <option key={s} value={s}>{s}</option>
                       ))}
                     </select>
-                    {errors.state && <p className="text-[11px] text-rose-600 mt-1">{errors.state.message}</p>}
+                    {errors.state && <p className="text-[0.6875rem] text-rose-600 mt-1">{errors.state.message}</p>}
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-heading mb-1 uppercase tracking-wider">
@@ -526,7 +526,7 @@ export function CheckoutClientPage() {
                       placeholder="6-digit pincode"
                       maxLength={6}
                     />
-                    {errors.pincode && <p className="text-[11px] text-rose-600 mt-1">{errors.pincode.message}</p>}
+                    {errors.pincode && <p className="text-[0.6875rem] text-rose-600 mt-1">{errors.pincode.message}</p>}
                   </div>
                 </div>
 
@@ -553,7 +553,7 @@ export function CheckoutClientPage() {
                   <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-heading">
                     Select Payment Preference
                   </h3>
-                  <span className="text-[10px] text-gold font-bold uppercase tracking-wider bg-gold/10 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[0.625rem] text-gold font-bold uppercase tracking-wider bg-gold/10 px-2.5 py-0.5 rounded-full">
                     Buyer Protection
                   </span>
                 </div>
@@ -577,11 +577,11 @@ export function CheckoutClientPage() {
                     />
                     <div className="flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <Banknote size={15} className="text-gold" />
+                        <Banknote size="0.9375rem" className="text-gold" />
                         <p className="text-xs font-semibold text-heading uppercase tracking-wider">
                           Cash on Delivery (COD)
                         </p>
-                        <span className="text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-gold text-surface">
+                        <span className="text-[0.5625rem] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-gold text-surface">
                           Zero Advance
                         </span>
                       </div>
@@ -609,11 +609,11 @@ export function CheckoutClientPage() {
                     />
                     <div className="flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <CreditCard size={15} className="text-gold" />
+                        <CreditCard size="0.9375rem" className="text-gold" />
                         <p className="text-xs font-semibold text-heading uppercase tracking-wider">
                           Pay Online (UPI / Card / NetBanking)
                         </p>
-                        <span className="text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        <span className="text-[0.5625rem] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
                           Instant Verification
                         </span>
                       </div>
@@ -640,7 +640,7 @@ export function CheckoutClientPage() {
                 <div className="p-4 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-800 space-y-1">
                   <p className="font-semibold uppercase tracking-wider">Payment Interrupted</p>
                   <p>{paymentError}</p>
-                  <p className="text-[11px] text-rose-600 pt-1">
+                  <p className="text-[0.6875rem] text-rose-600 pt-1">
                     Your cart items are completely preserved. You can retry with a different card/UPI, or switch to Cash on Delivery below.
                   </p>
                 </div>
@@ -658,7 +658,7 @@ export function CheckoutClientPage() {
                       <p className="text-xs font-semibold text-heading uppercase tracking-wider">
                         Cash on Delivery Selected
                       </p>
-                      <span className="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full bg-gold text-surface ml-auto">
+                      <span className="text-[0.5625rem] uppercase font-bold px-2 py-0.5 rounded-full bg-gold text-surface ml-auto">
                         Zero Advance Required
                       </span>
                     </div>
@@ -673,7 +673,7 @@ export function CheckoutClientPage() {
                 ) : (
                   <div className="p-5 bg-background border border-gold/40 rounded-lg space-y-3">
                     <div className="flex items-center gap-2">
-                      <CreditCard size={15} className="text-gold" />
+                      <CreditCard size="0.9375rem" className="text-gold" />
                       <p className="text-xs font-semibold text-heading uppercase tracking-wider">
                         Online Payment via Razorpay
                       </p>
@@ -702,8 +702,8 @@ export function CheckoutClientPage() {
                 )}
 
                 <div className="flex items-center gap-2 text-xs text-text/80 pt-2">
-                  <ShieldCheck size={14} className="text-emerald-700 shrink-0" />
-                  <span>100% Insured Shipping · Complimentary Fit Alterations · Atelier Concierge Care</span>
+                  <ShieldCheck size="0.875rem" className="text-emerald-700 shrink-0" />
+                  <span>Secure Packaging · Atelier Concierge Care</span>
                 </div>
 
                 <div className="flex gap-3 pt-3 border-t border-border">
@@ -722,7 +722,7 @@ export function CheckoutClientPage() {
                   >
                     {isPlacing ? (
                       <>
-                        <RefreshCw size={13} className="animate-spin" />
+                        <RefreshCw size="0.8125rem" className="animate-spin" />
                         <span>Processing Order…</span>
                       </>
                     ) : paymentMethod === 'cod' ? (
@@ -782,9 +782,9 @@ export function CheckoutClientPage() {
               </div>
             </div>
 
-            <div className="p-3 bg-background border border-border rounded-lg space-y-1 text-[11px] text-text/80">
+            <div className="p-3 bg-background border border-border rounded-lg space-y-1 text-[0.6875rem] text-text/80">
               <div className="flex items-center gap-1.5 text-gold font-semibold">
-                <Lock size={12} />
+                <Lock size="0.75rem" />
                 <span>Atelier Guarantee</span>
               </div>
               <p>

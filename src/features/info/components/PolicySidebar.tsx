@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Share2, Printer, Check, ShieldCheck, MessageCircle } from 'lucide-react';
+import { Share2, Check, ShieldCheck, MessageCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { siteConfig } from '@/config/site.config';
 
@@ -59,28 +59,22 @@ export function PolicySidebar({ toc, title }: PolicySidebarProps) {
     }
   };
 
-  const handlePrint = () => {
-    if (typeof window !== 'undefined') {
-      window.print();
-    }
-  };
-
   return (
-    <aside aria-label={title || 'Policy navigation'} className="space-y-6">
-      {/* Table of Contents Card - offset below double sticky header */}
-      <div className="bg-white rounded-2xl p-5 shadow-sm sticky top-[136px] sm:top-[144px] lg:top-[152px] space-y-5">
+    <aside aria-label={title || 'Policy navigation'} className="space-y-6 sticky top-[8.5rem] sm:top-[9rem] lg:top-[9.5rem]">
+      {/* Whole sidebar sticks below the double sticky header and follows the reader */}
+      <div className="bg-white rounded-2xl p-5 shadow-sm space-y-5">
         <div>
-          <div className="flex items-center justify-between pb-3 border-b border-[#E8D8C8]">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#A67C52]">
+          <div className="flex items-center justify-between pb-3 border-b border-border">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-[0.25em] text-gold-ink">
               Table of Contents
             </p>
-            <span className="text-[10px] text-[#7D756C] font-mono">
+            <span className="text-[0.625rem] text-text font-mono">
               {toc.length} Sections
             </span>
           </div>
 
           {/* Quick links list */}
-          <nav className="mt-3 max-h-[44vh] overflow-y-auto space-y-1 pr-1 text-xs font-sans scrollbar-thin">
+          <nav className="mt-3 max-h-[30dvh] overflow-y-auto space-y-1 pr-1 text-xs font-sans scrollbar-thin">
             {toc.map((item) => {
               const isActive = activeId === item.id;
               return (
@@ -89,20 +83,20 @@ export function PolicySidebar({ toc, title }: PolicySidebarProps) {
                   onClick={() => scrollToSection(item.id)}
                   className={`w-full text-left py-1.5 px-2.5 rounded-lg flex items-start gap-2.5 transition-all group ${
                     isActive
-                      ? 'bg-[#221617] text-[#C49A5A] font-medium shadow-xs'
-                      : 'text-[#5C554E] hover:text-[#221617] hover:bg-[#FAF7F2]'
+                      ? 'bg-gold/15 text-heading font-semibold border border-gold/40'
+                      : 'text-text hover:text-heading hover:bg-background'
                   }`}
                 >
                   <span
-                    className={`text-[10px] font-mono px-1.5 py-0.5 rounded-2xs shrink-0 ${
+                    className={`text-[0.625rem] font-mono px-1.5 py-0.5 rounded-2xs shrink-0 ${
                       isActive
-                        ? 'bg-[#C49A5A] text-[#1A1011] font-bold'
-                        : 'bg-[#FAF7F2] text-[#A67C52] group-hover:bg-[#E8D8C8]'
+                        ? 'bg-gold text-heading font-bold'
+                        : 'bg-background text-gold-ink group-hover:bg-border'
                     }`}
                   >
                     {item.number}
                   </span>
-                  <span className="truncate text-[11.5px] leading-tight mt-0.5">
+                  <span className="truncate text-[0.71875rem] leading-tight mt-0.5">
                     {item.title}
                   </span>
                 </button>
@@ -112,50 +106,42 @@ export function PolicySidebar({ toc, title }: PolicySidebarProps) {
         </div>
 
         {/* Action Tools */}
-        <div className="pt-4 border-t border-[#E8D8C8] space-y-2">
+        <div className="pt-4 border-t border-border space-y-2">
           <button
             onClick={handleCopyLink}
-            className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-[#FAF7F2] hover:bg-[#E8D8C8]/60 text-[#221617] border border-[#E8D8C8] rounded-lg text-[11px] font-medium transition-colors"
+            className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-background hover:bg-border/60 text-heading border border-border rounded-lg text-[0.6875rem] font-medium transition-colors"
           >
-            {copied ? <Check size={13} className="text-emerald-600" /> : <Share2 size={13} />}
+            {copied ? <Check size="0.8125rem" className="text-emerald-600" /> : <Share2 size="0.8125rem" />}
             <span>{copied ? 'Link Copied!' : 'Copy Page Link'}</span>
-          </button>
-
-          <button
-            onClick={handlePrint}
-            className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-[#FAF7F2] hover:bg-[#E8D8C8]/60 text-[#221617] border border-[#E8D8C8] rounded-lg text-[11px] font-medium transition-colors"
-          >
-            <Printer size={13} />
-            <span>Print or Save PDF</span>
           </button>
         </div>
 
         {/* Trust & Payment Security Seal */}
-        <div className="bg-[#221617] text-white p-4 rounded-xl shadow-sm text-xs font-sans space-y-2">
-          <div className="flex items-center gap-1.5 text-[#C49A5A] font-semibold text-[11px] uppercase tracking-wider">
-            <ShieldCheck size={14} />
-            <span>100% Insured Delivery</span>
+        <div className="bg-navbar text-heading border border-border border-t-2 border-t-gold p-4 rounded-xl text-xs font-sans space-y-2">
+          <div className="flex items-center gap-1.5 text-gold-ink font-semibold text-[0.6875rem] uppercase tracking-wider">
+            <ShieldCheck size="0.875rem" />
+            <span>Secure Packaging</span>
           </div>
-          <p className="text-[11px] text-white/70 leading-relaxed">
-            All shipments are packed in tamper-proof luxury packaging and fully insured until doorstep delivery.
+          <p className="text-[0.6875rem] text-text leading-relaxed">
+            All shipments are packed in tamper-proof luxury packaging.
           </p>
         </div>
 
         {/* Boutique Concierge mini-box */}
-        <div className="bg-[#FAF7F2] rounded-xl shadow-sm p-4 text-xs font-sans space-y-2.5">
-          <p className="font-semibold text-[#1A1011] text-[11px] uppercase tracking-wide">
+        <div className="bg-background rounded-xl shadow-sm p-4 text-xs font-sans space-y-2.5">
+          <p className="font-semibold text-heading text-[0.6875rem] uppercase tracking-wide">
             Need Personal Guidance?
           </p>
-          <p className="text-[#6E6A66] text-[11px] leading-relaxed">
+          <p className="text-text text-[0.6875rem] leading-relaxed">
             Our atelier concierge is at your service regarding custom sizing, alterations, or dispatch updates.
           </p>
           <a
             href={`https://wa.me/${siteConfig.whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-1.5 w-full bg-[#221617] text-[#C49A5A] hover:bg-[#3D2628] font-semibold py-2.5 rounded-lg text-[11px] uppercase tracking-wider border border-[#C49A5A]/30 transition-all shadow-xs"
+            className="flex items-center justify-center gap-1.5 w-full bg-gold text-heading hover:bg-gold-hover font-semibold py-2.5 rounded-lg text-[0.6875rem] uppercase tracking-wider border border-gold/30 transition-all shadow-xs"
           >
-            <MessageCircle size={13} />
+            <MessageCircle size="0.8125rem" />
             <span>WhatsApp Concierge</span>
           </a>
         </div>

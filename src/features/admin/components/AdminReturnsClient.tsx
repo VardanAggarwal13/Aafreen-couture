@@ -126,7 +126,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
           onClick={() => { setFormData(EMPTY_FORM); setFieldErrors({}); setIsModalOpen(true); }}
           className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm cursor-pointer"
         >
-          <Plus size={14} className="text-[#C9A86A]" /> Log Return Request
+          <Plus size="0.875rem" className="text-[#C9A86A]" /> Log Return Request
         </button>
       </div>
 
@@ -136,7 +136,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Order #', 'Customer', 'Product', 'Refund Value', 'Reason', 'Status', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[0.625rem] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -147,11 +147,11 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
                 <tr key={ret._id} className="hover:bg-[#FAF7F2]/60 transition-colors">
                   <td className="px-5 py-2.5 font-mono font-medium text-[#8A6A55]">{ret.orderNumber}</td>
                   <td className="px-5 py-2.5 font-medium text-[#2E221C]">{ret.customerName}</td>
-                  <td className="px-5 py-2.5 font-sans text-[#2E221C] max-w-[200px] truncate">{ret.productName}</td>
+                  <td className="px-5 py-2.5 font-sans text-[#2E221C] max-w-[12.5rem] truncate">{ret.productName}</td>
                   <td className="px-5 py-2.5 font-semibold text-[#2E221C]">{formatPrice(ret.refundAmount)}</td>
-                  <td className="px-5 py-2.5 text-[#8A6A55] max-w-[220px] truncate">{ret.reason}</td>
+                  <td className="px-5 py-2.5 text-[#8A6A55] max-w-[13.75rem] truncate">{ret.reason}</td>
                   <td className="px-5 py-2.5">
-                    <span className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold ${
+                    <span className={`px-2.5 py-0.5 text-[0.625rem] rounded-full uppercase tracking-wider font-semibold ${
                       ret.status === 'approved'
                         ? 'bg-blue-50 text-blue-800 border border-blue-200'
                         : ret.status === 'refunded'
@@ -173,7 +173,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
                             className="p-1 text-blue-700 hover:bg-blue-50 rounded transition-colors disabled:opacity-40 cursor-pointer"
                             title="Approve Return"
                           >
-                            <Check size={15} />
+                            <Check size="0.9375rem" />
                           </button>
                           <button
                             onClick={() => updateStatus(ret._id, 'rejected')}
@@ -181,7 +181,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
                             className="p-1 text-rose-700 hover:bg-rose-50 rounded transition-colors disabled:opacity-40 cursor-pointer"
                             title="Reject Return"
                           >
-                            <X size={15} />
+                            <X size="0.9375rem" />
                           </button>
                         </>
                       )}
@@ -189,10 +189,10 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
                         <button
                           onClick={() => updateStatus(ret._id, 'refunded')}
                           disabled={busyId === ret._id}
-                          className="px-2 py-1 text-emerald-700 hover:bg-emerald-50 border border-emerald-200 rounded-md transition-colors flex items-center gap-1 text-[11px] font-semibold disabled:opacity-40 cursor-pointer"
+                          className="px-2 py-1 text-emerald-700 hover:bg-emerald-50 border border-emerald-200 rounded-md transition-colors flex items-center gap-1 text-[0.6875rem] font-semibold disabled:opacity-40 cursor-pointer"
                           title="Process Refund"
                         >
-                          <RefreshCw size={12} /> Refund
+                          <RefreshCw size="0.75rem" /> Refund
                         </button>
                       )}
                       <button
@@ -200,7 +200,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
                         className="p-1 text-[#8A6A55] hover:text-[#2E221C] rounded transition-colors cursor-pointer"
                         title="View Details"
                       >
-                        <Eye size={14} />
+                        <Eye size="0.875rem" />
                       </button>
                       <button
                         onClick={() => handleDelete(ret._id)}
@@ -208,7 +208,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
                         className="p-1 text-[#8A6A55] hover:text-red-600 rounded transition-colors disabled:opacity-40 cursor-pointer"
                         title="Delete Return"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size="0.875rem" />
                       </button>
                     </div>
                   </td>
@@ -229,20 +229,20 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
       {/* Log Return Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-md p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white w-full max-w-md p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90dvh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base">Log Return Request</h3>
               <button onClick={() => setIsModalOpen(false)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md cursor-pointer">
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
-            <p className="text-[11px] text-[#8A6A55]">
+            <p className="text-[0.6875rem] text-[#8A6A55]">
               Use this to record a return/exchange a customer requested by phone or email against an existing order.
             </p>
 
             <form onSubmit={handleLogReturn} className="space-y-4 text-xs">
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Order Number *</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Order Number *</label>
                 <input
                   type="text"
                   value={formData.orderNumber}
@@ -254,7 +254,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Product Name *</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Product Name *</label>
                 <input
                   type="text"
                   value={formData.productName}
@@ -267,7 +267,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Quantity</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Quantity</label>
                   <input
                     type="number"
                     min={1}
@@ -278,7 +278,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
                   {fieldErrors.quantity && <p className="text-xs text-red-600 mt-1">{fieldErrors.quantity}</p>}
                 </div>
                 <div>
-                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Refund Amount (₹)</label>
+                  <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Refund Amount (₹)</label>
                   <input
                     type="number"
                     min={0}
@@ -291,7 +291,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Reason *</label>
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Reason *</label>
                 <textarea
                   rows={3}
                   value={formData.reason}
@@ -330,7 +330,7 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base">Return Dossier</h3>
               <button onClick={() => setSelectedReturn(null)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md cursor-pointer">
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
 

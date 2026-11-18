@@ -225,12 +225,12 @@ export function Testimonials() {
       // Show 3 wide cards on desktop (>=1280px), 2 generous cards on tablet/small laptops (640-1279px), 1.08 on mobile
       if (w >= 1280) setVisibleCount(3);
       else if (w >= 640) setVisibleCount(2);
-      else setVisibleCount(1.08);
+      else setVisibleCount(1.04);
 
       if (containerRef.current && containerRef.current.clientWidth > 0) {
         const cs = window.getComputedStyle(containerRef.current);
         const padX = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
-        const innerW = Math.max(280, Math.floor(containerRef.current.clientWidth - padX));
+        const innerW = Math.max(200, Math.floor(containerRef.current.clientWidth - padX));
         setContainerWidth(innerW);
       }
     };
@@ -261,8 +261,8 @@ export function Testimonials() {
     };
   }, []);
 
-  const gap = visibleCount >= 3 ? 22 : visibleCount >= 2 ? 20 : 14;
-  const cardWidth = Math.floor(Math.max(280, (containerWidth - (visibleCount - 1) * gap) / visibleCount));
+  const gap = visibleCount >= 3 ? 18 : visibleCount >= 2 ? 16 : 12;
+  const cardWidth = Math.floor(Math.max(200, (containerWidth - (visibleCount - 1) * gap) / visibleCount));
   const step = cardWidth + gap;
 
   // Carousel State: start at middle set (index M)
@@ -445,13 +445,13 @@ export function Testimonials() {
         </div>
 
         {/* Carousel Container with optimized gutter padding to maximize card width */}
-        <div className="relative px-5 sm:px-7 lg:px-8">
+        <div className="relative px-0 min-[400px]:px-5 sm:px-0">
           {/* Left Arrow Button — floats cleanly in the side gutter */}
           <button
             type="button"
             onClick={handlePrev}
             aria-label="Previous testimonial"
-            className="absolute left-0 sm:-left-1 lg:-left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-[#2E221C] hover:text-[#C49A5A] border border-[#DDD2C5] shadow-[0_4px_16px_rgba(46,34,28,0.14)] hover:shadow-[0_6px_22px_rgba(46,34,28,0.22)] flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 hover:scale-105"
+            className="absolute left-0 sm:-translate-x-1/2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-[#2E221C] hover:text-[#C49A5A] border border-[#DDD2C5] shadow-[0_4px_16px_rgba(46,34,28,0.14)] hover:shadow-[0_6px_22px_rgba(46,34,28,0.22)] hidden min-[400px]:flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 hover:scale-105"
           >
             <ChevronLeft size={18} className="sm:w-4.5 sm:h-4.5 -translate-x-0.5 text-[#2E221C]" />
           </button>
@@ -461,7 +461,7 @@ export function Testimonials() {
             type="button"
             onClick={handleNext}
             aria-label="Next testimonial"
-            className="absolute right-0 sm:-right-1 lg:-right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-[#2E221C] hover:text-[#C49A5A] border border-[#DDD2C5] shadow-[0_4px_16px_rgba(46,34,28,0.14)] hover:shadow-[0_6px_22px_rgba(46,34,28,0.22)] flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 hover:scale-105"
+            className="absolute right-0 sm:translate-x-1/2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-[#2E221C] hover:text-[#C49A5A] border border-[#DDD2C5] shadow-[0_4px_16px_rgba(46,34,28,0.14)] hover:shadow-[0_6px_22px_rgba(46,34,28,0.22)] hidden min-[400px]:flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 hover:scale-105"
           >
             <ChevronRight size={18} className="sm:w-4.5 sm:h-4.5 translate-x-0.5 text-[#2E221C]" />
           </button>
@@ -469,7 +469,7 @@ export function Testimonials() {
           {/* Infinite Carousel Viewport with micro padding to preserve outer card radius and elevation */}
           <div
             ref={containerRef}
-            className="relative overflow-hidden w-full py-4 select-none touch-pan-y cursor-grab active:cursor-grabbing px-1"
+            className="relative overflow-hidden w-full py-4 select-none touch-pan-y cursor-grab active:cursor-grabbing"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => {
               setIsHovered(false);
@@ -541,7 +541,7 @@ export function Testimonials() {
                         </h3>
 
                         {/* Review Text */}
-                        <div className="relative">
+                        <div className="relative pb-3">
                           <Quote size={14} className="text-[#C49A5A]/35 absolute -left-1 -top-0.5 pointer-events-none" />
                           <p className="text-[12.5px] sm:text-[13px] text-[#554338] font-serif italic leading-[1.65] line-clamp-4 pl-3.5">
                             &ldquo;{t.text}&rdquo;

@@ -167,7 +167,7 @@ export class EmailService {
                 <!-- Footer -->
                 <tr>
                   <td align="center" style="padding: 25px 20px; background-color: #FAF8F5; border-top: 1px solid #E8E5DF; font-size: 11px; color: #7D756C;">
-                    <p style="margin: 0 0 6px;">Questions regarding your order? Contact our concierge team at <a href="mailto:support@aafreencouture.com" style="color: #C49A5A; text-decoration: none;">support@aafreencouture.com</a></p>
+                    <p style="margin: 0 0 6px;">Questions regarding your order? Contact our concierge team at <a href="mailto:aafreencouturebypearl@gmail.com" style="color: #C49A5A; text-decoration: none;">aafreencouturebypearl@gmail.com</a></p>
                     <p style="margin: 0;">&copy; ${new Date().getFullYear()} Aafreen Couture. All rights reserved.</p>
                   </td>
                 </tr>
@@ -206,7 +206,7 @@ export class EmailService {
         });
 
         // Also notify admin
-        const adminEmail = process.env.ADMIN_EMAIL || 'support@aafreencouture.com';
+        const adminEmail = process.env.ADMIN_EMAIL || 'aafreencouturebypearl@gmail.com';
         if (adminEmail && adminEmail !== recipient) {
           await resend.emails.create({
             from: FROM_EMAIL,
@@ -377,6 +377,59 @@ export class EmailService {
       return true;
     } catch (e) {
       console.error('[EmailService] Failed to send payment failed email:', e);
+      return false;
+    }
+  }
+
+  private escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  /**
+   * Forwards a message from the public contact form to the boutique inbox. Replies go straight to the visitor.
+   * Returns false when email isn't configured or sending fails, so the caller can tell the visitor honestly.
+   */
+  async sendContactEnquiry(input: {
+    name: string;
+    email: string;
+    phone?: string;
+    subject: string;
+    message: string;
+  }): Promise<boolean> {
+    if (!process.env.RESEND_API_KEY) {
+      console.error('[EmailService] RESEND_API_KEY is not set, contact enquiry was not sent.');
+      return false;
+    }
+
+    const esc = (v: string) => this.escapeHtml(v);
+    const html = `
+      <div style="font-family: sans-serif; padding: 20px; color: #2E221C;">
+        <h2 style="margin: 0 0 12px;">New website enquiry: ${esc(input.subject)}</h2>
+        <p style="margin: 0 0 4px;"><strong>Name:</strong> ${esc(input.name)}</p>
+        <p style="margin: 0 0 4px;"><strong>Email:</strong> ${esc(input.email)}</p>
+        ${input.phone ? `<p style="margin: 0 0 4px;"><strong>Phone:</strong> ${esc(input.phone)}</p>` : ''}
+        <p style="margin: 16px 0 4px;"><strong>Message:</strong></p>
+        <p style="margin: 0; white-space: pre-wrap;">${esc(input.message)}</p>
+      </div>
+    `;
+
+    try {
+      const { resend, FROM_EMAIL } = await import('@/lib/resend');
+      await resend.emails.create({
+        from: FROM_EMAIL,
+        to: [siteConfig.email],
+        replyTo: input.email,
+        subject: `Website enquiry: ${input.subject} (${input.name})`,
+        html,
+      });
+      return true;
+    } catch (e) {
+      console.error('[EmailService] Failed to send contact enquiry:', e);
       return false;
     }
   }

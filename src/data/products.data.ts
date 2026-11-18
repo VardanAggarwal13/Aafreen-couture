@@ -2358,7 +2358,7 @@ export const FALLBACK_PRODUCTS: IProduct[] = [
       isFeatured: true,
       isActive: true,
     },
-    images: ['https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/sitara-polki-choker.jpg', '/images/products/sitara-polki-choker.jpg'],
+    images: ['https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/sitara-polki-choker.jpg'],
     variants: [
       { _id: 'v-006-1', size: 'One Size', color: 'Gold Emerald', colorHex: '#C49A5A', sku: 'STR-JWL-OS', price: 2899900, comparePrice: 3500000, stock: 8, images: ['https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/sitara-polki-choker.jpg'], isActive: true },
     ],
@@ -2402,7 +2402,7 @@ export const FALLBACK_PRODUCTS: IProduct[] = [
       isFeatured: true,
       isActive: true,
     },
-    images: ['https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/begum-potli.jpg', '/images/products/begum-potli.jpg'],
+    images: ['https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/begum-potli.jpg'],
     variants: [
       { _id: 'v-008-1', size: 'One Size', color: 'Crimson Maroon', colorHex: '#8B1F1F', sku: 'BGM-PTL-OS', price: 1499900, comparePrice: 1899900, stock: 12, images: ['https://res.cloudinary.com/adzbklts/image/upload/v1791872430/aafreen-couture/products/begum-potli.jpg'], isActive: true },
     ],

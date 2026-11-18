@@ -1,5 +1,7 @@
 'use client';
 
+import { LoadingState } from '@/components/common/LoadingState';
+import { ProductGridSkeleton } from '@/components/product/ProductCardSkeleton';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -55,6 +57,7 @@ export function SearchPageClient() {
 
   return (
     <div>
+      <h1 className="sr-only">Search Aafreen Couture</h1>
       {/* Search bar */}
       <form onSubmit={handleSubmit} className="relative max-w-2xl mx-auto mb-10">
         <input
@@ -64,14 +67,14 @@ export function SearchPageClient() {
           placeholder="Search for lehengas, suits, accessories…"
           autoFocus
         />
-        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-stone" />
+        <Search size="1.125rem" className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-stone" />
         {query && (
           <button
             type="button"
             onClick={() => setQuery('')}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-stone hover:text-brand-black"
           >
-            <X size={16} />
+            <X size="1rem" />
           </button>
         )}
       </form>
@@ -88,15 +91,9 @@ export function SearchPageClient() {
           </p>
 
           {isFetching ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              {Array.from({ length: 8 }, (_, i) => (
-                <div key={i} className="flex flex-col gap-3">
-                  <div className="aspect-[4/5] bg-brand-cream/40 rounded-lg animate-pulse" />
-                  <div className="h-3.5 bg-brand-cream/60 rounded animate-pulse w-3/4" />
-                  <div className="h-3 bg-brand-cream/40 rounded animate-pulse w-1/3" />
-                </div>
-              ))}
-            </div>
+            <LoadingState label="Searching">
+              <ProductGridSkeleton count={8} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6" />
+            </LoadingState>
           ) : results.length > 0 ? (
             <>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -120,7 +117,7 @@ export function SearchPageClient() {
               <p className="text-brand-stone text-sm mb-6">Try a different search term or browse our collections.</p>
               <Link
                 href="/collections"
-                className="inline-block bg-brand-gold text-white text-[11px] font-semibold tracking-[0.22em] uppercase px-8 py-3.5 hover:bg-[#b8893f] transition-colors"
+                className="inline-block bg-brand-gold text-white text-[0.6875rem] font-semibold tracking-[0.22em] uppercase px-8 py-3.5 hover:bg-[#b8893f] transition-colors"
               >
                 Browse Collections
               </Link>

@@ -49,11 +49,11 @@ export function AccountSidebar({ user }: AccountSidebarProps) {
             className={cn(
               'flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs uppercase tracking-wider transition-colors',
               isActive
-                ? 'bg-gold text-white font-semibold shadow-xs'
+                ? 'bg-gold text-heading font-semibold shadow-xs'
                 : 'text-text hover:text-heading hover:bg-background'
             )}
           >
-            <Icon size={15} />
+            <Icon size="0.9375rem" />
             {label}
           </Link>
         );
@@ -64,7 +64,7 @@ export function AccountSidebar({ user }: AccountSidebarProps) {
           onClick={handleSignOut}
           className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-xs uppercase tracking-wider text-text hover:text-red-600 hover:bg-red-50/50 transition-colors cursor-pointer"
         >
-          <LogOut size={15} />
+          <LogOut size="0.9375rem" />
           Sign Out
         </button>
       </div>

@@ -95,7 +95,7 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Product', 'Client', 'Rating', 'Review', 'Date', 'Status', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[0.625rem] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -104,28 +104,28 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
             <tbody className="divide-y divide-[#EAE2D7]">
               {filtered.map((review) => (
                 <tr key={review._id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                  <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] max-w-[200px] truncate text-sm">
+                  <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] max-w-[12.5rem] truncate text-sm">
                     {review.productName}
                   </td>
                   <td className="px-5 py-2.5 text-[#2E221C] font-medium">
                     {review.authorName}
                     {review.isVerifiedPurchase && (
-                      <span className="ml-1.5 text-[9px] text-emerald-700 font-semibold uppercase">Verified</span>
+                      <span className="ml-1.5 text-[0.5625rem] text-emerald-700 font-semibold uppercase">Verified</span>
                     )}
                   </td>
                   <td className="px-5 py-2.5 text-[#C9A86A] flex items-center gap-0.5">
                     {Array.from({ length: review.rating }).map((_, i) => (
-                      <Star key={i} size={13} fill="currentColor" />
+                      <Star key={i} size="0.8125rem" fill="currentColor" />
                     ))}
                   </td>
-                  <td className="px-5 py-2.5 text-[#8A6A55] max-w-[300px] truncate italic">
+                  <td className="px-5 py-2.5 text-[#8A6A55] max-w-[18.75rem] truncate italic">
                     &ldquo;{review.title}&rdquo;
                   </td>
                   <td className="px-5 py-2.5 text-[#8A6A55]">
                     {review.createdAt ? new Date(review.createdAt).toLocaleDateString('en-IN') : '—'}
                   </td>
                   <td className="px-5 py-2.5">
-                    <span className={`px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold ${
+                    <span className={`px-2.5 py-0.5 text-[0.625rem] rounded-full uppercase tracking-wider font-semibold ${
                       review.isApproved
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                         : 'bg-amber-50 text-amber-700 border border-amber-200'
@@ -140,7 +140,7 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
                         className="p-1 text-[#8A6A55] hover:text-[#2E221C] rounded transition-colors cursor-pointer"
                         title="View Review"
                       >
-                        <Eye size={14} />
+                        <Eye size="0.875rem" />
                       </button>
                       {!review.isApproved ? (
                         <button
@@ -149,7 +149,7 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
                           className="p-1 text-emerald-700 hover:bg-emerald-50 rounded transition-colors disabled:opacity-40 cursor-pointer"
                           title="Approve Review"
                         >
-                          <Check size={15} />
+                          <Check size="0.9375rem" />
                         </button>
                       ) : (
                         <button
@@ -158,7 +158,7 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
                           className="p-1 text-rose-700 hover:bg-rose-50 rounded transition-colors disabled:opacity-40 cursor-pointer"
                           title="Unapprove Review"
                         >
-                          <X size={15} />
+                          <X size="0.9375rem" />
                         </button>
                       )}
                       <button
@@ -167,7 +167,7 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
                         className="p-1 text-[#8A6A55] hover:text-red-600 rounded transition-colors disabled:opacity-40 cursor-pointer"
                         title="Delete Review"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size="0.875rem" />
                       </button>
                     </div>
                   </td>
@@ -191,7 +191,7 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base">{viewing.title}</h3>
               <button onClick={() => setViewing(null)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md cursor-pointer">
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
             <div className="space-y-3 text-[#2E221C]">
@@ -207,7 +207,7 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
                 <span className="text-[#8A6A55]">Rating:</span>
                 <span className="flex items-center gap-0.5 text-[#C9A86A]">
                   {Array.from({ length: viewing.rating }).map((_, i) => (
-                    <Star key={i} size={13} fill="currentColor" />
+                    <Star key={i} size="0.8125rem" fill="currentColor" />
                   ))}
                 </span>
               </div>

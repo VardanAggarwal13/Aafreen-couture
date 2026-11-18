@@ -1,5 +1,7 @@
 'use client';
 
+import { LoadingState } from '@/components/common/LoadingState';
+import { ProductGridSkeleton } from '@/components/product/ProductCardSkeleton';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
@@ -168,7 +170,7 @@ export function CoutureCatalogView({
   ]);
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-dvh bg-[#FAF7F2]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumbJsonLd) }}
@@ -181,13 +183,13 @@ export function CoutureCatalogView({
       )}
       {/* 1. Refined Minimal Editorial Header */}
       <div className="w-full bg-[#FAF5EE] border-b border-[#E8D4BE]">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-10 text-center">
+        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-10 text-center">
           {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.2em] text-[#8C7A6B] mb-2.5">
+          <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-[0.625rem] uppercase tracking-[0.2em] text-[#6E5C4D] mb-2.5">
             <Link href="/" className="hover:text-[#A67C52] transition-colors">Home</Link>
             {breadcrumbs.map((b, idx) => (
               <span key={b.label} className="flex items-center gap-2">
-                <ChevronRight size={10} className="text-[#C49A5A]" />
+                <ChevronRight size="0.625rem" className="text-[#C49A5A]" />
                 {b.href && idx < breadcrumbs.length - 1 ? (
                   <Link href={b.href} className="hover:text-[#A67C52] transition-colors">{b.label}</Link>
                 ) : (
@@ -197,22 +199,22 @@ export function CoutureCatalogView({
             ))}
           </nav>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-serif text-[#221617] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-[2.625rem] font-serif text-[#221617] tracking-tight">
             {title}
           </h1>
 
-          <p className="text-xs sm:text-[13px] text-[#6E6A66] max-w-xl mx-auto font-sans leading-relaxed">
+          <p className="text-xs sm:text-[0.8125rem] text-[#6E6A66] max-w-xl mx-auto font-sans leading-relaxed">
             {subtitle || `Handcrafted couture designed for timeless elegance · ${total} designs available`}
           </p>
         </div>
       </div>
 
       {/* 2. Top Horizontal Luxury Filter Bar (Lookbook Style) */}
-      <div className="sticky top-[72px] sm:top-[76px] lg:top-[84px] z-30 bg-white/95 backdrop-blur-md border-b border-[#E8D8C8] shadow-2xs">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-2.5">
+      <div className="sticky top-[var(--header-h)] z-30 bg-white/95 backdrop-blur-md border-b border-[#E8D8C8] shadow-2xs">
+        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-12 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-2.5">
           {/* Left: Filter Buttons / Dropdowns */}
           <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
-            <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#8C7A6B] mr-1 hidden sm:inline">
+            <span className="text-[0.625rem] font-bold uppercase tracking-[0.22em] text-[#6E5C4D] mr-1 hidden sm:inline">
               Filter By:
             </span>
 
@@ -220,19 +222,19 @@ export function CoutureCatalogView({
             <div className="relative">
               <button
                 onClick={() => toggleDropdown('price')}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[11px] uppercase tracking-wider font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[0.6875rem] uppercase tracking-wider font-medium transition-all ${
                   priceIdx !== null
                     ? 'border-[#C49A5A] bg-[#FAF5EE] text-[#221617] font-semibold'
                     : 'border-[#E8D8C8] hover:border-[#C49A5A] bg-white text-[#5C554E]'
                 }`}
               >
                 <span>{priceIdx !== null ? PRICE_RANGES[priceIdx].label : 'Price'}</span>
-                <ChevronDown size={11} className={`transition-transform text-[#A67C52] ${activeDropdown === 'price' ? 'rotate-180' : ''}`} />
+                <ChevronDown size="0.6875rem" className={`transition-transform text-[#A67C52] ${activeDropdown === 'price' ? 'rotate-180' : ''}`} />
               </button>
 
               {activeDropdown === 'price' && (
                 <div className="absolute top-full left-0 mt-2 w-56 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
-                  <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
+                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Select Price Range
                   </p>
                   <div className="space-y-1.5">
@@ -260,19 +262,19 @@ export function CoutureCatalogView({
             <div className="relative">
               <button
                 onClick={() => toggleDropdown('color')}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[11px] uppercase tracking-wider font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[0.6875rem] uppercase tracking-wider font-medium transition-all ${
                   selectedColor
                     ? 'border-[#C49A5A] bg-[#FAF5EE] text-[#221617] font-semibold'
                     : 'border-[#E8D8C8] hover:border-[#C49A5A] bg-white text-[#5C554E]'
                 }`}
               >
                 <span>{selectedColor || 'Color'}</span>
-                <ChevronDown size={11} className={`transition-transform text-[#A67C52] ${activeDropdown === 'color' ? 'rotate-180' : ''}`} />
+                <ChevronDown size="0.6875rem" className={`transition-transform text-[#A67C52] ${activeDropdown === 'color' ? 'rotate-180' : ''}`} />
               </button>
 
               {activeDropdown === 'color' && (
                 <div className="absolute top-full left-0 mt-2 w-64 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
-                  <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
+                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Color Palette
                   </p>
                   <div className="grid grid-cols-3 gap-2">
@@ -286,7 +288,7 @@ export function CoutureCatalogView({
                       <button
                         key={c.label}
                         onClick={() => { setSelectedColor(selectedColor === c.label ? '' : c.label); setActiveDropdown(null); setPage(1); }}
-                        className={`flex items-center gap-2 p-1.5 rounded text-[11px] border transition-all ${selectedColor === c.label ? 'border-[#C49A5A] bg-[#FAF5EE]' : 'border-transparent hover:border-[#E8D8C8]'}`}
+                        className={`flex items-center gap-2 p-1.5 rounded text-[0.6875rem] border transition-all ${selectedColor === c.label ? 'border-[#C49A5A] bg-[#FAF5EE]' : 'border-transparent hover:border-[#E8D8C8]'}`}
                       >
                         <span className="w-3.5 h-3.5 rounded-full border border-black/10 shrink-0" style={{ backgroundColor: c.hex }} />
                         <span className="truncate">{c.label}</span>
@@ -301,19 +303,19 @@ export function CoutureCatalogView({
             <div className="relative">
               <button
                 onClick={() => toggleDropdown('size')}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[11px] uppercase tracking-wider font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[0.6875rem] uppercase tracking-wider font-medium transition-all ${
                   selectedSize
                     ? 'border-[#C49A5A] bg-[#FAF5EE] text-[#221617] font-semibold'
                     : 'border-[#E8D8C8] hover:border-[#C49A5A] bg-white text-[#5C554E]'
                 }`}
               >
                 <span>{selectedSize ? `Size: ${selectedSize}` : 'Size'}</span>
-                <ChevronDown size={11} className={`transition-transform text-[#A67C52] ${activeDropdown === 'size' ? 'rotate-180' : ''}`} />
+                <ChevronDown size="0.6875rem" className={`transition-transform text-[#A67C52] ${activeDropdown === 'size' ? 'rotate-180' : ''}`} />
               </button>
 
               {activeDropdown === 'size' && (
                 <div className="absolute top-full left-0 mt-2 w-48 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
-                  <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
+                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Select Size
                   </p>
                   <div className="grid grid-cols-3 gap-1.5">
@@ -339,19 +341,19 @@ export function CoutureCatalogView({
             <div className="relative">
               <button
                 onClick={() => toggleDropdown('fabric')}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[11px] uppercase tracking-wider font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[0.6875rem] uppercase tracking-wider font-medium transition-all ${
                   selectedFabric
                     ? 'border-[#C49A5A] bg-[#FAF5EE] text-[#221617] font-semibold'
                     : 'border-[#E8D8C8] hover:border-[#C49A5A] bg-white text-[#5C554E]'
                 }`}
               >
                 <span>{selectedFabric || 'Fabric'}</span>
-                <ChevronDown size={11} className={`transition-transform text-[#A67C52] ${activeDropdown === 'fabric' ? 'rotate-180' : ''}`} />
+                <ChevronDown size="0.6875rem" className={`transition-transform text-[#A67C52] ${activeDropdown === 'fabric' ? 'rotate-180' : ''}`} />
               </button>
 
               {activeDropdown === 'fabric' && (
                 <div className="absolute top-full left-0 mt-2 w-52 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
-                  <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
+                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Fabric Selection
                   </p>
                   <div className="space-y-1 max-h-48 overflow-y-auto no-scrollbar">
@@ -383,9 +385,9 @@ export function CoutureCatalogView({
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[10.5px] uppercase tracking-wider font-semibold text-[#8C1D2A] hover:bg-[#8C1D2A]/10 transition-colors"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[0.65625rem] uppercase tracking-wider font-semibold text-[#8C1D2A] hover:bg-[#8C1D2A]/10 transition-colors"
               >
-                <RotateCcw size={11} />
+                <RotateCcw size="0.6875rem" />
                 <span>Reset</span>
               </button>
             )}
@@ -393,12 +395,12 @@ export function CoutureCatalogView({
 
           {/* Right: Ensembles Count & Sorting Dropdown */}
           <div className="flex items-center gap-4 ml-auto">
-            <span className="text-xs text-[#8C7A6B] font-sans hidden md:inline">
+            <span className="text-xs text-[#6E5C4D] font-sans hidden md:inline">
               Showing <strong className="text-[#221617]">{total}</strong> Ensembles
             </span>
 
             <div className="flex items-center gap-2">
-              <span className="text-[11px] uppercase tracking-wider text-[#8C7A6B] font-medium hidden sm:inline">
+              <span className="text-[0.6875rem] uppercase tracking-wider text-[#6E5C4D] font-medium hidden sm:inline">
                 Sort:
               </span>
               <select
@@ -423,29 +425,29 @@ export function CoutureCatalogView({
         {/* Active Filter Badges Bar */}
         {hasActiveFilters && (
           <div className="bg-[#FAF5EE] border-t border-[#E8D8C8]/60 py-2 px-4 sm:px-6 lg:px-12 flex items-center gap-2 flex-wrap text-xs">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#8C7A6B] font-semibold">Active:</span>
+            <span className="text-[0.625rem] uppercase tracking-[0.2em] text-[#6E5C4D] font-semibold">Active:</span>
             {selectedColor && (
-              <span className="inline-flex items-center gap-1.5 bg-white border border-[#E8D4BE] px-2.5 py-0.5 rounded-full text-[10.5px] text-[#221617]">
+              <span className="inline-flex items-center gap-1.5 bg-white border border-[#E8D4BE] px-2.5 py-0.5 rounded-full text-[0.65625rem] text-[#221617]">
                 Color: {selectedColor}
-                <X size={10} className="cursor-pointer hover:text-red-500" onClick={() => setSelectedColor('')} />
+                <X size="0.625rem" className="cursor-pointer hover:text-red-500" onClick={() => setSelectedColor('')} />
               </span>
             )}
             {selectedSize && (
-              <span className="inline-flex items-center gap-1.5 bg-white border border-[#E8D4BE] px-2.5 py-0.5 rounded-full text-[10.5px] text-[#221617]">
+              <span className="inline-flex items-center gap-1.5 bg-white border border-[#E8D4BE] px-2.5 py-0.5 rounded-full text-[0.65625rem] text-[#221617]">
                 Size: {selectedSize}
-                <X size={10} className="cursor-pointer hover:text-red-500" onClick={() => setSelectedSize('')} />
+                <X size="0.625rem" className="cursor-pointer hover:text-red-500" onClick={() => setSelectedSize('')} />
               </span>
             )}
             {selectedFabric && (
-              <span className="inline-flex items-center gap-1.5 bg-white border border-[#E8D4BE] px-2.5 py-0.5 rounded-full text-[10.5px] text-[#221617]">
+              <span className="inline-flex items-center gap-1.5 bg-white border border-[#E8D4BE] px-2.5 py-0.5 rounded-full text-[0.65625rem] text-[#221617]">
                 Fabric: {selectedFabric}
-                <X size={10} className="cursor-pointer hover:text-red-500" onClick={() => setSelectedFabric('')} />
+                <X size="0.625rem" className="cursor-pointer hover:text-red-500" onClick={() => setSelectedFabric('')} />
               </span>
             )}
             {priceIdx !== null && (
-              <span className="inline-flex items-center gap-1.5 bg-white border border-[#E8D4BE] px-2.5 py-0.5 rounded-full text-[10.5px] text-[#221617]">
+              <span className="inline-flex items-center gap-1.5 bg-white border border-[#E8D4BE] px-2.5 py-0.5 rounded-full text-[0.65625rem] text-[#221617]">
                 {PRICE_RANGES[priceIdx].label}
-                <X size={10} className="cursor-pointer hover:text-red-500" onClick={() => setPriceIdx(null)} />
+                <X size="0.625rem" className="cursor-pointer hover:text-red-500" onClick={() => setPriceIdx(null)} />
               </span>
             )}
           </div>
@@ -453,19 +455,13 @@ export function CoutureCatalogView({
       </div>
 
       {/* 3. Full-Width High-Fashion Product Grid */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-10 lg:py-12">
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-10 lg:py-12">
         {isLoading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-6">
-            {Array.from({ length: 8 }, (_, i) => (
-              <div key={i} className="flex flex-col gap-3">
-                <div className="aspect-[4/5] bg-white rounded-xl shadow-sm animate-pulse" />
-                <div className="h-3.5 bg-[#E8D8C8]/70 rounded animate-pulse w-3/4" />
-                <div className="h-3 bg-[#E8D8C8]/40 rounded animate-pulse w-1/3" />
-              </div>
-            ))}
-          </div>
+          <LoadingState label="Loading products">
+            <ProductGridSkeleton count={8} />
+          </LoadingState>
         ) : products.length === 0 ? (
-          <div className="text-center py-12 sm:py-16 bg-white rounded-2xl p-8 max-w-lg mx-auto shadow-sm">
+          <div className="text-center py-12 sm:py-16 border border-[#E2D2C2] rounded-2xl p-8 max-w-lg mx-auto">
             <h2 className="text-xl font-serif text-[#221617] mb-2">No Ensembles Match The Selected Criteria</h2>
             <p className="text-xs sm:text-sm text-[#6E6A66] font-sans mb-5">
               Try adjusting or clearing your filters to explore our full handcrafted collection.
@@ -481,7 +477,7 @@ export function CoutureCatalogView({
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-6">
               {products.map((product, i) => (
-                <ProductCard key={product._id} product={product} priority={i < 4} />
+                <ProductCard headingLevel="h2" key={product._id} product={product} priority={i < 4} />
               ))}
             </div>
 

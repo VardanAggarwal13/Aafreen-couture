@@ -1,6 +1,7 @@
 import { CategoryHubView, type CategoryHubProps } from '@/components/shop/CategoryHubView';
 import { productService } from '@/server/services/product.service';
 import { CatalogSeoContent } from '@/components/shop/CatalogSeoContent';
+import { HUB_SEO } from '@/config/catalog-seo.config';
 import type { IProduct } from '@/types';
 import type { PaginatedResponse } from '@/types/api.types';
 
@@ -28,9 +29,12 @@ export async function CategoryHubServer({ hubKey, ...props }: CategoryHubProps &
     })
   );
   return (
-    <>
-      <CategoryHubView {...props} chapters={chapters} />
-      <CatalogSeoContent hubKey={hubKey} title={props.title} />
-    </>
+    <CategoryHubView
+      {...props}
+      chapters={chapters}
+      seoContent={
+        hubKey && HUB_SEO[hubKey] ? <CatalogSeoContent hubKey={hubKey} title={props.title} variant="column" /> : undefined
+      }
+    />
   );
 }

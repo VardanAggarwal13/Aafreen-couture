@@ -17,7 +17,7 @@ export function CustomerPaymentReconcileButton({ orderId, paymentStatus }: Props
   if (paymentStatus === 'paid') {
     return (
       <div className="inline-flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
-        <CheckCircle2 size={13} />
+        <CheckCircle2 size="0.8125rem" />
         <span>Payment Verified & Confirmed</span>
       </div>
     );
@@ -56,7 +56,7 @@ export function CustomerPaymentReconcileButton({ orderId, paymentStatus }: Props
   return (
     <div className="mt-3 pt-3 border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-sans">
       <div className="flex items-center gap-1.5 text-xs text-text/80">
-        <ShieldAlert size={14} className="text-gold shrink-0" />
+        <ShieldAlert size="0.875rem" className="text-gold shrink-0" />
         <span>Money debited from your bank but status shows pending?</span>
       </div>
       <button
@@ -65,9 +65,9 @@ export function CustomerPaymentReconcileButton({ orderId, paymentStatus }: Props
         className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-gold border border-gold/40 hover:bg-gold/10 transition-colors rounded-lg disabled:opacity-50 cursor-pointer"
       >
         {loading ? (
-          <RefreshCw size={12} className="animate-spin text-gold" />
+          <RefreshCw size="0.75rem" className="animate-spin text-gold" />
         ) : (
-          <RefreshCw size={12} className="text-gold" />
+          <RefreshCw size="0.75rem" className="text-gold" />
         )}
         <span>{loading ? 'Checking with Bank…' : 'Verify Bank Status'}</span>
       </button>

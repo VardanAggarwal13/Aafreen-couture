@@ -64,9 +64,9 @@ export function AdminPaymentStatusUpdater({ orderId, currentPaymentStatus }: Pro
       <button
         onClick={handleUpdate}
         disabled={loading || paymentStatus === currentPaymentStatus}
-        className="bg-[#2E221C] hover:bg-[#1A1410] text-[#F8F5F1] text-[11px] font-semibold px-3.5 py-2 transition-all rounded-lg shadow-sm disabled:opacity-40 cursor-pointer flex items-center gap-1.5 shrink-0"
+        className="bg-[#2E221C] hover:bg-[#1A1410] text-[#F8F5F1] text-[0.6875rem] font-semibold px-3.5 py-2 transition-all rounded-lg shadow-sm disabled:opacity-40 cursor-pointer flex items-center gap-1.5 shrink-0"
       >
-        {loading ? <RefreshCw size={11} className="animate-spin text-[#C9A86A]" /> : <CheckCircle2 size={11} className="text-[#C9A86A]" />}
+        {loading ? <RefreshCw size="0.6875rem" className="animate-spin text-[#C9A86A]" /> : <CheckCircle2 size="0.6875rem" className="text-[#C9A86A]" />}
         <span>Save</span>
       </button>
     </div>

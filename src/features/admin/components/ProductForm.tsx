@@ -380,7 +380,7 @@ export function ProductForm({ product }: Props) {
   };
 
   const inputClass = 'w-full bg-[#FAF7F2] border border-[#DDD2C5] text-[#2E221C] px-3.5 py-2 text-xs focus:outline-none focus:border-[#C9A86A] transition-colors placeholder:text-[#8A6A55]/50 rounded-lg';
-  const labelClass = 'block text-[10.5px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5';
+  const labelClass = 'block text-[0.65625rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5';
   const errorClass = 'text-xs text-red-600 mt-1 font-medium';
   const fieldClass = (hasError: boolean | undefined) => (hasError ? `${inputClass} ${FIELD_ERROR_CLASS}` : inputClass);
 
@@ -462,7 +462,7 @@ export function ProductForm({ product }: Props) {
           <h2 className="text-xs font-sans font-bold text-[#2E221C] uppercase tracking-[0.15em]">
             Occasions (Shop By Occasion)
           </h2>
-          <p className="text-[11px] text-[#8A6A55] mt-1">
+          <p className="text-[0.6875rem] text-[#8A6A55] mt-1">
             Tagging an occasion automatically displays this ensemble on that occasion&apos;s dedicated page (e.g. /occasions/haldi).
           </p>
         </div>
@@ -552,14 +552,14 @@ export function ProductForm({ product }: Props) {
               }}
               className="accent-[#C9A86A] w-4 h-4 rounded cursor-pointer"
             />
-            <span className="text-[#2E221C] font-semibold text-[11px]">
+            <span className="text-[#2E221C] font-semibold text-[0.6875rem]">
               Automatically sync this price across all sizes / variants
             </span>
           </label>
           <button
             type="button"
             onClick={() => applyPriceToAllVariants()}
-            className="text-[11px] font-semibold text-[#9E7B3A] hover:text-[#2E221C] bg-white border border-[#C9A86A]/50 px-3 py-1 rounded-md transition-colors cursor-pointer shadow-2xs hover:bg-[#C9A86A]/10"
+            className="text-[0.6875rem] font-semibold text-[#9E7B3A] hover:text-[#2E221C] bg-white border border-[#C9A86A]/50 px-3 py-1 rounded-md transition-colors cursor-pointer shadow-2xs hover:bg-[#C9A86A]/10"
           >
             ⚡ Apply to All Sizes
           </button>
@@ -600,7 +600,7 @@ export function ProductForm({ product }: Props) {
                     <X className="w-3 h-3" />
                   </button>
                   {index === 0 && (
-                    <span className="absolute bottom-0 inset-x-0 bg-[#C9A86A] text-white text-[8px] uppercase tracking-wider text-center py-0.5">
+                    <span className="absolute bottom-0 inset-x-0 bg-[#C9A86A] text-white text-[0.5rem] uppercase tracking-wider text-center py-0.5">
                       Primary
                     </span>
                   )}
@@ -630,7 +630,7 @@ export function ProductForm({ product }: Props) {
 
           <input {...register('images')} className={fieldClass(!!errors.images)} placeholder="https://res.cloudinary.com/adzbklts/image/upload/v1791872411/aafreen-couture/products/noorani-moonstone-lilac-silk-suit-1.webp, https://res.cloudinary.com/adzbklts/image/upload/v1791872411/aafreen-couture/products/noorani-moonstone-lilac-silk-suit-2.webp" />
           {errors.images && <p className={errorClass}>{errors.images.message}</p>}
-          <p className="text-[10px] text-[#8A6A55] mt-1">Upload directly to Cloudinary, or paste image URLs / static paths above (comma separated). First image is used as the primary showcase hero image.</p>
+          <p className="text-[0.625rem] text-[#8A6A55] mt-1">Upload directly to Cloudinary, or paste image URLs / static paths above (comma separated). First image is used as the primary showcase hero image.</p>
         </div>
 
         <div>
@@ -647,7 +647,7 @@ export function ProductForm({ product }: Props) {
             <h2 className="text-xs font-sans font-bold text-[#2E221C] uppercase tracking-[0.15em]">
               Sizes &amp; Stock *
             </h2>
-            <p className="text-[11px] text-[#8A6A55] mt-1">
+            <p className="text-[0.6875rem] text-[#8A6A55] mt-1">
               Every ensemble needs at least one size/variant with its own SKU, price, and stock quantity.
             </p>
           </div>
@@ -656,9 +656,9 @@ export function ProductForm({ product }: Props) {
             onClick={() =>
               appendVariant({ size: '', color: '', sku: '', price: 0, stock: 0, isActive: true })
             }
-            className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider px-3 py-1.5 border border-[#C9A86A] text-[#9E7B3A] rounded-lg hover:bg-[#C9A86A]/10 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-[0.6875rem] font-semibold uppercase tracking-wider px-3 py-1.5 border border-[#C9A86A] text-[#9E7B3A] rounded-lg hover:bg-[#C9A86A]/10 transition-colors cursor-pointer"
           >
-            <Plus size={13} /> Add Size
+            <Plus size="0.8125rem" /> Add Size
           </button>
         </div>
 
@@ -703,7 +703,7 @@ export function ProductForm({ product }: Props) {
               <div className="flex items-end justify-between gap-2">
                 <label className="flex items-center gap-1.5 cursor-pointer pb-2">
                   <input {...register(`variants.${index}.isActive`)} type="checkbox" defaultChecked className="accent-[#C9A86A] w-3.5 h-3.5" />
-                  <span className="text-[10.5px] text-[#2E221C] font-medium">Active</span>
+                  <span className="text-[0.65625rem] text-[#2E221C] font-medium">Active</span>
                 </label>
                 <button
                   type="button"
@@ -712,7 +712,7 @@ export function ProductForm({ product }: Props) {
                   className="p-1.5 text-[#8A6A55] hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                   aria-label="Remove size"
                 >
-                  <Trash2 size={14} />
+                  <Trash2 size="0.875rem" />
                 </button>
               </div>
             </div>
@@ -753,7 +753,7 @@ export function ProductForm({ product }: Props) {
         <div>
           <div className="flex items-center justify-between mb-1.5">
             <label className={labelClass}>Meta Title</label>
-            <span className={`text-[10px] ${seoTitleWatch.length > 70 ? 'text-[#C9A86A] font-semibold' : 'text-[#8A6A55]'}`}>
+            <span className={`text-[0.625rem] ${seoTitleWatch.length > 70 ? 'text-[#C9A86A] font-semibold' : 'text-[#8A6A55]'}`}>
               {seoTitleWatch.length}/160 chars {seoTitleWatch.length > 70 && '(>70 chars may truncate in search previews)'}
             </span>
           </div>
@@ -763,7 +763,7 @@ export function ProductForm({ product }: Props) {
         <div>
           <div className="flex items-center justify-between mb-1.5">
             <label className={labelClass}>Meta Description</label>
-            <span className={`text-[10px] ${seoDescWatch.length > 160 ? 'text-[#C9A86A] font-semibold' : 'text-[#8A6A55]'}`}>
+            <span className={`text-[0.625rem] ${seoDescWatch.length > 160 ? 'text-[#C9A86A] font-semibold' : 'text-[#8A6A55]'}`}>
               {seoDescWatch.length}/500 chars {seoDescWatch.length > 160 && '(>160 chars may truncate in search previews)'}
             </span>
           </div>

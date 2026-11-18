@@ -63,7 +63,7 @@ export function AdminSettingsClient() {
                     : 'bg-white text-[#8A6A55] hover:text-[#2E221C] border border-[#DDD2C5]'
                 }`}
               >
-                <Icon size={16} className={activeTab === t.id ? 'text-[#C9A86A]' : 'text-[#8A6A55]'} />
+                <Icon size="1rem" className={activeTab === t.id ? 'text-[#C9A86A]' : 'text-[#8A6A55]'} />
                 {t.label}
               </button>
             );
@@ -78,7 +78,7 @@ export function AdminSettingsClient() {
                 <h2 className="text-base font-sans font-semibold text-[#2E221C] pb-2 border-b border-[#DDD2C5]">Store Identity</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div>
-                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Store Brand Name</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Store Brand Name</label>
                     <input
                       type="text"
                       value={settings.storeName}
@@ -87,7 +87,7 @@ export function AdminSettingsClient() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Base Currency</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Base Currency</label>
                     <input
                       type="text"
                       disabled
@@ -96,7 +96,7 @@ export function AdminSettingsClient() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Support & Concierge Email</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Support & Concierge Email</label>
                     <input
                       type="email"
                       value={settings.supportEmail}
@@ -105,7 +105,7 @@ export function AdminSettingsClient() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Atelier Support Phone</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Atelier Support Phone</label>
                     <input
                       type="text"
                       value={settings.supportPhone}
@@ -136,7 +136,7 @@ export function AdminSettingsClient() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Razorpay Key ID</label>
+                      <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Razorpay Key ID</label>
                       <input
                         type="text"
                         value={settings.razorpayKeyId}
@@ -145,7 +145,7 @@ export function AdminSettingsClient() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Razorpay Secret</label>
+                      <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Razorpay Secret</label>
                       <input
                         type="password"
                         value={settings.razorpayKeySecret}
@@ -176,7 +176,7 @@ export function AdminSettingsClient() {
                 <h2 className="text-base font-sans font-semibold text-[#2E221C] pb-2 border-b border-[#DDD2C5]">Logistics & Shipping Rules</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div>
-                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Free Shipping Threshold (₹)</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Free Shipping Threshold (₹)</label>
                     <input
                       type="number"
                       value={settings.freeShippingThreshold}
@@ -185,7 +185,7 @@ export function AdminSettingsClient() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Flat Standard Shipping Fee (₹)</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Flat Standard Shipping Fee (₹)</label>
                     <input
                       type="number"
                       value={settings.flatShippingRate}
@@ -202,7 +202,7 @@ export function AdminSettingsClient() {
                 <h2 className="text-base font-sans font-semibold text-[#2E221C] pb-2 border-b border-[#DDD2C5]">WhatsApp Concierge Integration</h2>
                 <div className="space-y-4 text-xs">
                   <div>
-                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">WhatsApp Official Line Number</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">WhatsApp Official Line Number</label>
                     <input
                       type="text"
                       value={settings.whatsappNumber}
@@ -212,7 +212,7 @@ export function AdminSettingsClient() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[10px]">Default Concierge Greeting Message</label>
+                    <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Default Concierge Greeting Message</label>
                     <textarea
                       rows={3}
                       value={settings.whatsappDefaultMessage}
@@ -234,7 +234,7 @@ export function AdminSettingsClient() {
                   'Saving Configuration…'
                 ) : (
                   <>
-                    <Save size={14} className="text-[#C9A86A]" /> Save Store Configuration
+                    <Save size="0.875rem" className="text-[#C9A86A]" /> Save Store Configuration
                   </>
                 )}
               </button>

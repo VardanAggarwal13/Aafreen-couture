@@ -69,20 +69,20 @@ export function AdminPagination({
     if (disabled) {
       return (
         <span className={`${btnBase} ${disabledCls}`} aria-hidden="true">
-          <Icon size={14} />
+          <Icon size="0.875rem" />
         </span>
       );
     }
     if (hrefForPage) {
       return (
         <Link href={hrefForPage(target)} className={`${btnBase} ${idleCls}`} aria-label={label}>
-          <Icon size={14} />
+          <Icon size="0.875rem" />
         </Link>
       );
     }
     return (
       <button type="button" onClick={() => onPageChange?.(target)} className={`${btnBase} ${idleCls} cursor-pointer`} aria-label={label}>
-        <Icon size={14} />
+        <Icon size="0.875rem" />
       </button>
     );
   }
@@ -90,11 +90,11 @@ export function AdminPagination({
   return (
     <nav className="flex items-center justify-between gap-3 px-3.5 py-2.5 border-t border-[#DDD2C5] flex-wrap" aria-label="Pagination">
       <div className="flex items-center gap-3">
-        <p className="text-[11px] text-[#8A6A55] font-sans">
+        <p className="text-[0.6875rem] text-[#8A6A55] font-sans">
           Page {page} of {totalPages}
         </p>
         {showPageSize && (
-          <label className="flex items-center gap-1.5 text-[11px] text-[#8A6A55] font-sans">
+          <label className="flex items-center gap-1.5 text-[0.6875rem] text-[#8A6A55] font-sans">
             <span className="hidden sm:inline">Show</span>
             <AdminPageSizeSelect
               pageSize={pageSize!}

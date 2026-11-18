@@ -63,7 +63,7 @@ export default function BridalPage() {
       badge="Aafreen Atelier · Royal Heritage"
       heroSubtitle="An ode to the timeless majesty of royal Indian weddings. Each masterpiece is individually hand-embroidered by master artisans in pure silks, velvets, and heirloom organza, adorned with authentic zardozi, dabka, cutdana, and micro-pearl craftsmanship."
       heroImage="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/bridal-hero-wide.webp"
-      heroObjectPosition="object-bottom"
+      heroObjectPosition="object-[60%_85%]"
       heroHighlights={[
         '200+ hours of painstaking hand embroidery per ensemble',
         'Pure raw silks, heritage velvets & sheer organza dupattas',

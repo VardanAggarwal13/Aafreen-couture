@@ -1,46 +1,42 @@
+import { LoadingState } from '@/components/common/LoadingState';
+import { Skeleton } from '@/components/ui/skeleton';
+import { AUTH_WRAP, AUTH_CARD, AUTH_PANEL, AUTH_FORM_WIDTH } from './auth-styles';
+
+/** Sign-in / register loading screen: same full-width split as the real page (brand panel + form). */
 export default function AuthLoading() {
   return (
-    <div className="flex-1 flex items-center justify-center px-4 py-8 sm:py-12 animate-pulse">
-      <div className="w-full max-w-5xl bg-surface border border-border shadow-lg rounded-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[620px]">
-        {/* Left Side Skeleton */}
-        <div className="lg:col-span-5 hidden lg:flex flex-col justify-between p-8 xl:p-10 bg-background/80 border-r border-border">
-          <div className="h-6 w-32 bg-border/60 rounded-lg" />
-          <div className="space-y-4 my-auto py-6">
-            <div className="h-8 w-3/4 bg-border/80 rounded-lg" />
-            <div className="h-4 w-full bg-border/40 rounded-lg" />
-            <div className="h-4 w-5/6 bg-border/40 rounded-lg" />
-            <div className="pt-4 space-y-3">
-              <div className="h-4 w-2/3 bg-border/50 rounded-lg" />
-              <div className="h-4 w-3/4 bg-border/50 rounded-lg" />
-              <div className="h-4 w-1/2 bg-border/50 rounded-lg" />
-            </div>
+    <LoadingState label="Loading sign in" className={AUTH_WRAP}>
+      <div className={AUTH_CARD}>
+        <div className="hidden lg:flex lg:col-span-5 flex-col items-center justify-center gap-5 border-r border-border bg-[#F5EFE6] p-8 xl:p-12">
+          <Skeleton className="h-24 w-60 xl:w-72" />
+          <Skeleton className="h-px w-14" />
+          <Skeleton className="h-3 w-28" />
+          <Skeleton className="h-8 w-64" />
+          <div className="space-y-3 pt-2">
+            <Skeleton className="h-3.5 w-64" />
+            <Skeleton className="h-3.5 w-56" />
+            <Skeleton className="h-3.5 w-60" />
           </div>
-          <div className="h-4 w-40 bg-gold/30 rounded-lg" />
         </div>
 
-        {/* Right Side Skeleton */}
-        <div className="lg:col-span-7 p-6 sm:p-10 xl:p-12 flex flex-col justify-center bg-surface">
-          <div className="max-w-md w-full mx-auto space-y-5">
-            <div className="flex gap-8 border-b border-border/80 pb-3">
-              <div className="h-6 w-24 bg-border/80 rounded-lg" />
-              <div className="h-6 w-28 bg-border/40 rounded-lg" />
-            </div>
-            <div className="h-3.5 w-64 bg-border/40 rounded-lg" />
+        <div className={AUTH_PANEL}>
+          <div className={`${AUTH_FORM_WIDTH} space-y-5`}>
+            <Skeleton className="h-10 w-64 rounded-full" />
+            <Skeleton className="h-8 w-52" />
+            <Skeleton className="h-3.5 w-72 max-w-full" />
             <div className="space-y-4 pt-2">
-              <div>
-                <div className="h-3 w-20 bg-border/70 rounded-lg mb-2" />
-                <div className="h-10 w-full bg-background border border-border rounded-lg" />
-              </div>
-              <div>
-                <div className="h-3 w-20 bg-border/70 rounded-lg mb-2" />
-                <div className="h-10 w-full bg-background border border-border rounded-lg" />
-              </div>
-              <div className="h-11 w-full bg-heading/70 rounded-lg mt-4" />
+              {Array.from({ length: 2 }, (_, i) => (
+                <div key={i} className="space-y-2">
+                  <Skeleton className="h-3 w-24" />
+                  <Skeleton className="h-11 w-full rounded-xl" />
+                </div>
+              ))}
+              <Skeleton className="h-12 w-full rounded-xl" />
             </div>
-            <div className="h-10 w-full bg-background border border-border rounded-lg" />
+            <Skeleton className="h-11 w-full rounded-xl" />
           </div>
         </div>
       </div>
-    </div>
+    </LoadingState>
   );
 }

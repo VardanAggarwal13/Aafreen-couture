@@ -20,7 +20,7 @@ export default async function AdminAuditLogsPage() {
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Timestamp', 'User', 'Action', 'Event Details', 'IP Address'].map((h) => (
-                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[0.625rem] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -35,20 +35,20 @@ export default async function AdminAuditLogsPage() {
                   <td className="px-5 py-2.5 font-medium text-[#2E221C] whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded-full bg-[#FAF7F2] border border-[#DDD2C5] flex items-center justify-center shrink-0">
-                        <User size={12} className="text-[#C9A86A]" />
+                        <User size="0.75rem" className="text-[#C9A86A]" />
                       </div>
                       <div className="flex flex-col">
                         <span>{log.userName}</span>
-                        <span className="text-[10px] text-[#8A6A55] font-normal">{log.userEmail}</span>
+                        <span className="text-[0.625rem] text-[#8A6A55] font-normal">{log.userEmail}</span>
                       </div>
                     </div>
                   </td>
                   <td className="px-5 py-2.5">
-                    <span className="px-2.5 py-1 text-[10px] font-mono font-semibold uppercase bg-[#FAF7F2] text-[#2E221C] border border-[#DDD2C5] rounded-md inline-flex items-center gap-1">
-                      <ShieldCheck size={11} className="text-[#C9A86A]" /> {log.action}
+                    <span className="px-2.5 py-1 text-[0.625rem] font-mono font-semibold uppercase bg-[#FAF7F2] text-[#2E221C] border border-[#DDD2C5] rounded-md inline-flex items-center gap-1">
+                      <ShieldCheck size="0.6875rem" className="text-[#C9A86A]" /> {log.action}
                     </span>
                   </td>
-                  <td className="px-5 py-2.5 text-[#8A6A55] max-w-[340px] truncate font-medium">{log.details}</td>
+                  <td className="px-5 py-2.5 text-[#8A6A55] max-w-[21.25rem] truncate font-medium">{log.details}</td>
                   <td className="px-5 py-2.5 font-mono text-[#8A6A55] text-xs">{log.ip}</td>
                 </tr>
               ))}

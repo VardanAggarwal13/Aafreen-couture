@@ -18,7 +18,7 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
     return (
       <div className="space-y-4 max-w-4xl mx-auto">
         <Link href="/admin/customers" className="inline-flex items-center gap-1.5 text-xs text-[#8A6A55] hover:text-[#2E221C] transition-colors font-medium">
-          <ArrowLeft size={13} /> Back to Customer Directory
+          <ArrowLeft size="0.8125rem" /> Back to Customer Directory
         </Link>
         <div className="bg-white p-4 rounded-xl shadow-sm">
           <h1 className="text-xl font-serif text-[#2E221C]">Customer Record</h1>
@@ -36,7 +36,7 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
   return (
     <div className="space-y-4 max-w-5xl mx-auto">
       <Link href="/admin/customers" className="inline-flex items-center gap-1.5 text-xs text-[#8A6A55] hover:text-[#2E221C] transition-colors font-medium">
-        <ArrowLeft size={13} /> Back to Customer Directory
+        <ArrowLeft size="0.8125rem" /> Back to Customer Directory
       </Link>
 
       <div className="bg-white p-4 sm:p-5 rounded-xl shadow-sm space-y-4">
@@ -47,7 +47,7 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
             </div>
             <div>
               <h1 className="text-2xl font-serif text-[#2E221C]">{user.name}</h1>
-              <span className={`inline-block text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold mt-1.5 ${
+              <span className={`inline-block text-[0.625rem] px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold mt-1.5 ${
                 user.role === 'admin'
                   ? 'bg-amber-50 text-amber-800 border border-amber-200'
                   : 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5]'
@@ -61,21 +61,21 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <div className="p-4 bg-[#FAF7F2] border border-[#DDD2C5] rounded-xl space-y-1">
             <div className="flex items-center gap-1.5 text-[#8A6A55]">
-              <Mail size={14} /> Email Address
+              <Mail size="0.875rem" /> Email Address
             </div>
             <p className="text-[#2E221C] font-semibold text-sm truncate">{user.email}</p>
           </div>
 
           <div className="p-4 bg-[#FAF7F2] border border-[#DDD2C5] rounded-xl space-y-1">
             <div className="flex items-center gap-1.5 text-[#8A6A55]">
-              <Phone size={14} /> Phone Number
+              <Phone size="0.875rem" /> Phone Number
             </div>
             <p className="text-[#2E221C] font-semibold text-sm">{user.phone || 'Not provided'}</p>
           </div>
 
           <div className="p-4 bg-[#FAF7F2] border border-[#DDD2C5] rounded-xl space-y-1">
             <div className="flex items-center gap-1.5 text-[#8A6A55]">
-              <Calendar size={14} /> Member Since
+              <Calendar size="0.875rem" /> Member Since
             </div>
             <p className="text-[#2E221C] font-semibold text-sm">{new Date(user.createdAt).toLocaleDateString('en-IN')}</p>
           </div>
@@ -84,7 +84,7 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
         {/* Orders */}
         <div className="space-y-4 pt-2">
           <h2 className="text-sm font-serif font-semibold text-[#2E221C] flex items-center gap-2">
-            <ShoppingBag size={15} className="text-[#C9A86A]" /> Client Order Portfolio ({orders.length})
+            <ShoppingBag size="0.9375rem" className="text-[#C9A86A]" /> Client Order Portfolio ({orders.length})
           </h2>
 
           {orders.length === 0 ? (
@@ -95,7 +95,7 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
             <div className="border border-[#DDD2C5] overflow-hidden rounded-xl">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5] text-[#8A6A55] text-[10px] uppercase tracking-wider font-semibold">
+                  <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5] text-[#8A6A55] text-[0.625rem] uppercase tracking-wider font-semibold">
                     <th className="text-left px-5 py-2.5">Order #</th>
                     <th className="text-left px-5 py-2.5">Date</th>
                     <th className="text-left px-5 py-2.5">Total Amount</th>
@@ -110,7 +110,7 @@ export default async function AdminCustomerDetailPage({ params }: Props) {
                       <td className="px-5 py-2.5 text-[#8A6A55]">{new Date(order.createdAt).toLocaleDateString('en-IN')}</td>
                       <td className="px-5 py-2.5 text-[#2E221C] font-semibold">{formatPrice(order.total)}</td>
                       <td className="px-5 py-2.5">
-                        <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span className="text-[0.625rem] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                           {getOrderStatusLabel(order.status)}
                         </span>
                       </td>

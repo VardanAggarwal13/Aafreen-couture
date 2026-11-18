@@ -16,10 +16,10 @@ export default async function BlogPage() {
   const [featured, ...rest] = posts;
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-dvh bg-[#FAF7F2]">
       {/* Header */}
       <div className="bg-white border-b border-[#E8D8C8] py-14 text-center">
-        <p className="text-[10.5px] font-semibold uppercase tracking-[0.4em] text-[#A67C52] mb-3">
+        <p className="text-[0.65625rem] font-semibold uppercase tracking-[0.4em] text-[#A67C52] mb-3">
           The Bridal Journal
         </p>
         <h1 className="text-3xl sm:text-4xl font-serif text-[#221617] tracking-tight">
@@ -43,12 +43,12 @@ export default async function BlogPage() {
                 alt={featured.title}
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 55vw"
+                sizes="(max-width: 64em) 100vw, 55vw"
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
             <div className="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-center">
-              <span className="text-[10px] text-[#A67C52] font-semibold uppercase tracking-[0.25em] mb-2">
+              <span className="text-[0.625rem] text-[#A67C52] font-semibold uppercase tracking-[0.25em] mb-2">
                 {featured.category}
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl text-[#221617] leading-snug mb-4 group-hover:text-[#A67C52] transition-colors">
@@ -59,7 +59,7 @@ export default async function BlogPage() {
               </p>
               <div className="flex items-center justify-between text-xs text-[#6E6A66] pt-4 border-t border-[#E8D8C8]/60">
                 <span>By {featured.author}</span>
-                <span className="flex items-center gap-1.5"><Clock size={13} /> {featured.readTime}</span>
+                <span className="flex items-center gap-1.5"><Clock size="0.8125rem" /> {featured.readTime}</span>
               </div>
             </div>
           </Link>
@@ -78,12 +78,12 @@ export default async function BlogPage() {
                   src={post.image}
                   alt={post.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  sizes="(max-width: 48em) 100vw, (max-width: 64em) 50vw, 33vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
               <div className="p-6 flex flex-col flex-1">
-                <span className="text-[9.5px] text-[#A67C52] font-semibold uppercase tracking-[0.25em] mb-1.5">
+                <span className="text-[0.59375rem] text-[#A67C52] font-semibold uppercase tracking-[0.25em] mb-1.5">
                   {post.category}
                 </span>
                 <h3 className="font-serif text-lg text-[#221617] leading-snug mb-3 group-hover:text-[#A67C52] transition-colors">
@@ -92,10 +92,10 @@ export default async function BlogPage() {
                 <p className="text-xs text-[#6E6A66] line-clamp-2 leading-relaxed font-sans mb-5">
                   {post.excerpt}
                 </p>
-                <div className="mt-auto flex items-center justify-between text-[11px] text-[#6E6A66] pt-3 border-t border-[#E8D8C8]/50">
+                <div className="mt-auto flex items-center justify-between text-[0.6875rem] text-[#6E6A66] pt-3 border-t border-[#E8D8C8]/50">
                   <span>{post.publishedAt}</span>
                   <span className="text-[#A67C52] font-semibold uppercase tracking-wider flex items-center gap-1">
-                    Read <ArrowRight size={12} />
+                    Read <ArrowRight size="0.75rem" />
                   </span>
                 </div>
               </div>

@@ -115,7 +115,7 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
 
         <div className="flex items-center gap-3">
           <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
+            <Search size="0.875rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
             <input
               type="text"
               placeholder="Search SKU or product..."
@@ -129,7 +129,7 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
             disabled={saving}
             className="flex items-center gap-1.5 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-5 py-2 hover:bg-[#1A1410] transition-all rounded-lg shadow-sm disabled:opacity-50 cursor-pointer"
           >
-            <Save size={13} className="text-[#C9A86A]" /> {saving ? 'Saving…' : dirtyIds.size > 0 ? `Save Stock (${dirtyIds.size})` : 'Save Stock'}
+            <Save size="0.8125rem" className="text-[#C9A86A]" /> {saving ? 'Saving…' : dirtyIds.size > 0 ? `Save Stock (${dirtyIds.size})` : 'Save Stock'}
           </button>
         </div>
       </div>
@@ -156,7 +156,7 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
                 {['Product Name', 'SKU', 'Variant', 'Price', 'Stock Level', 'Adjust Stock', 'Status'].map((h) => (
-                  <th key={h} className="text-left px-5 py-2 text-[10px] font-semibold text-[#8A6A55] uppercase tracking-wider">
+                  <th key={h} className="text-left px-5 py-2 text-[0.625rem] font-semibold text-[#8A6A55] uppercase tracking-wider">
                     {h}
                   </th>
                 ))}
@@ -165,7 +165,7 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
             <tbody className="divide-y divide-[#EAE2D7]">
               {paged.map((item) => (
                 <tr key={item.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                  <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] text-sm max-w-[240px] truncate">
+                  <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] text-sm max-w-[15rem] truncate">
                     {item.name}
                   </td>
                   <td className="px-5 py-2.5 font-mono text-[#8A6A55] text-xs">
@@ -191,7 +191,7 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
                         className="w-7 h-7 bg-[#FAF7F2] border border-[#DDD2C5] hover:bg-[#EAE2D7] flex items-center justify-center rounded-md text-[#2E221C] transition-colors"
                         title="Decrease Stock"
                       >
-                        <Minus size={12} />
+                        <Minus size="0.75rem" />
                       </button>
                       <input
                         type="number"
@@ -205,12 +205,12 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
                         className="w-7 h-7 bg-[#FAF7F2] border border-[#DDD2C5] hover:bg-[#EAE2D7] flex items-center justify-center rounded-md text-[#2E221C] transition-colors"
                         title="Increase Stock"
                       >
-                        <Plus size={12} />
+                        <Plus size="0.75rem" />
                       </button>
                     </div>
                   </td>
                   <td className="px-5 py-2.5">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-medium ${
+                    <span className={`inline-flex items-center px-2.5 py-0.5 text-[0.625rem] rounded-full uppercase tracking-wider font-medium ${
                       item.stock === 0
                         ? 'bg-red-50 text-red-700 border border-red-200'
                         : item.stock <= 5

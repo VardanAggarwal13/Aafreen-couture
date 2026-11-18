@@ -7,10 +7,33 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
-import { Eye, EyeOff, ArrowRight, ShoppingBag, Check } from 'lucide-react';
+import { Eye, EyeOff, ArrowRight, ShoppingBag, Mail, Lock, User, Loader2 } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import { siteConfig } from '@/config/site.config';
 import { ROUTES } from '@/constants/routes';
+import { AuthShowcase } from '../AuthShowcase';
+import {
+  AUTH_WRAP,
+  AUTH_CARD,
+  AUTH_PANEL,
+  AUTH_FORM_WIDTH,
+  AUTH_MODE_SWITCH,
+  AUTH_MODE_ACTIVE,
+  AUTH_MODE_LINK,
+  AUTH_TITLE,
+  AUTH_SUBTITLE,
+  AUTH_LABEL,
+  AUTH_INPUT,
+  AUTH_INPUT_OK,
+  AUTH_INPUT_ERR,
+  AUTH_FIELD_ICON,
+  AUTH_ERROR,
+  AUTH_SUBMIT,
+  AUTH_DIVIDER,
+  AUTH_GOOGLE,
+  AUTH_SWITCH_NOTE,
+  AUTH_SWITCH_LINK,
+} from '../auth-styles';
 
 const registerSchema = z
   .object({
@@ -125,260 +148,229 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
       ? `${ROUTES.LOGIN}?redirect=${encodeURIComponent(redirect)}`
       : ROUTES.LOGIN;
 
+  const inputClass = (hasError: boolean) => `${AUTH_INPUT} ${hasError ? AUTH_INPUT_ERR : AUTH_INPUT_OK}`;
+
   return (
-    <div className="flex-1 flex items-center justify-center px-4 py-8 sm:py-12">
-      <div className="w-full max-w-5xl bg-surface border border-border shadow-lg rounded-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[640px]">
-        {/* Left Side: Brand Panel (Desktop) */}
-        <div className="relative lg:col-span-5 hidden lg:flex flex-col justify-between p-8 xl:p-10 text-white overflow-hidden bg-heading">
-          {/* Subtle geometric texture */}
-          <div
-            className="absolute inset-0 opacity-[0.05] pointer-events-none"
-            style={{
-              backgroundImage:
-                'radial-gradient(#FAF5ED 1px, transparent 1px)',
-              backgroundSize: '28px 28px',
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+    <div className={AUTH_WRAP}>
+      <div className={AUTH_CARD}>
+        <AuthShowcase variant="register" />
 
-          {/* Brand Lockup */}
-          <div className="relative z-10">
-            <p className="font-serif text-3xl xl:text-4xl text-[#FAF5ED] tracking-tight">Aafreen</p>
-            <p className="text-[10px] tracking-[0.4em] text-gold uppercase font-semibold mt-1.5">
-              Couture &middot; Since 2010
-            </p>
-          </div>
-
-          {/* Middle Editorial Typography & Privileges */}
-          <div className="relative z-10 space-y-4 my-auto py-6">
-            <div className="w-9 h-px bg-gold/60" />
-            <h2 className="font-serif text-2xl xl:text-3xl font-medium leading-tight text-[#FAF5ED]">
-              Begin Your Bespoke Couture Journey
-            </h2>
-            <p className="text-xs text-stone-300 leading-relaxed font-sans">
-              Create your atelier account to archive bespoke bridal measurements, track hand-embroidery progress, and unlock personalized stylist appointments.
-            </p>
-
-            <div className="pt-2 space-y-2.5">
-              <div className="flex items-center gap-2.5 text-xs text-stone-200">
-                <Check size={13} className="text-gold shrink-0" />
-                <span>Archive Sizing & Custom Blouse Measurements</span>
-              </div>
-              <div className="flex items-center gap-2.5 text-xs text-stone-200">
-                <Check size={13} className="text-gold shrink-0" />
-                <span>Multiple Saved Delivery Addresses & Expedited Checkout</span>
-              </div>
-              <div className="flex items-center gap-2.5 text-xs text-stone-200">
-                <Check size={13} className="text-gold shrink-0" />
-                <span>Early Invitations to New Collection Unveilings</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Quote */}
-          <div className="relative z-10 pt-4 border-t border-white/15">
-            <p className="font-serif italic text-xs text-[#E0C088]">
-              &ldquo;Crafted with devotion for your most memorable occasions.&rdquo;
-            </p>
-          </div>
-        </div>
-
-        {/* Right Side: Exclusive Registration Portal */}
-        <div className="lg:col-span-7 p-6 sm:p-10 xl:p-12 flex flex-col justify-center bg-surface">
-          <div className="max-w-md w-full mx-auto">
-            {/* Tab Navigation Header */}
-            <div className="flex items-center gap-8 border-b border-border/80 pb-3 mb-6">
-              <Link
-                href={loginHref}
-                className="font-serif text-lg sm:text-xl text-text/60 hover:text-heading transition-colors tracking-wide"
-              >
+        <div className={AUTH_PANEL}>
+          <div className={AUTH_FORM_WIDTH}>
+            {/* Mode switch */}
+            <div className={AUTH_MODE_SWITCH}>
+              <Link href={loginHref} className={AUTH_MODE_LINK}>
                 Sign In
               </Link>
-              <div className="relative">
-                <span className="font-serif text-lg sm:text-xl font-semibold text-heading tracking-wide">
-                  Create Account
-                </span>
-                <span className="absolute -bottom-3.5 left-0 right-0 h-[2.5px] bg-gold" />
-              </div>
+              <span aria-current="page" className={AUTH_MODE_ACTIVE}>
+                Create Account
+              </span>
             </div>
 
-            <p className="text-xs text-text mb-6 font-sans">
+            <h1 className={AUTH_TITLE}>Create your account</h1>
+            <p className={AUTH_SUBTITLE}>
               Join Aafreen Couture to enjoy personalized bridal consultations and effortless ordering.
             </p>
 
-            {/* Checkout Notification */}
             {isCheckoutRedirect && (
-              <div className="mb-6 p-3.5 bg-background border border-gold/50 rounded-lg flex items-center gap-3">
-                <ShoppingBag size={18} className="text-gold shrink-0" />
-                <div className="text-left">
-                  <p className="text-xs font-semibold text-heading">Complete Your Couture Order</p>
-                  <p className="text-[11px] text-text leading-tight mt-0.5">
-                    Create your account to proceed to checkout and secure your selected couture items.
+              <div className="mb-6 flex items-start gap-3 rounded-xl border border-gold/50 bg-surface/60 p-3.5">
+                <ShoppingBag size="1.125rem" className="mt-0.5 shrink-0 text-gold-ink" />
+                <div>
+                  <p className="text-xs font-semibold text-heading">Complete your couture order</p>
+                  <p className="mt-0.5 text-xs leading-snug text-text">
+                    Create your account to continue to checkout and reserve your selected pieces.
                   </p>
                 </div>
               </div>
             )}
 
-            {/* Registration Form */}
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* Full Name */}
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              noValidate
+              className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 [@media(max-height:48rem)]:gap-2 [@media(max-height:48rem)]:mt-2"
+            >
+              {/* Full name */}
               <div>
-                <label
-                  htmlFor="name"
-                  className="block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5"
-                >
-                  Full Name *
+                <label htmlFor="name" className={AUTH_LABEL}>
+                  Full name
                 </label>
-                <input
-                  id="name"
-                  type="text"
-                  autoComplete="name"
-                  {...register('name')}
-                  className="w-full border border-border px-3.5 py-2.5 text-sm text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg"
-                  placeholder="e.g. Priya Sharma"
-                />
-                {errors.name && <p className="text-[11px] text-red-600 mt-1">{errors.name.message}</p>}
-              </div>
-
-              {/* Email */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5"
-                >
-                  Email Address *
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  autoComplete="email"
-                  {...register('email')}
-                  className="w-full border border-border px-3.5 py-2.5 text-sm text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg"
-                  placeholder="you@example.com"
-                />
-                {errors.email && <p className="text-[11px] text-red-600 mt-1">{errors.email.message}</p>}
-              </div>
-
-              {/* Phone */}
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label htmlFor="phone" className="text-[11px] font-semibold uppercase tracking-wider text-heading">
-                    Contact Number
-                  </label>
-                  <span className="text-[10px] text-gold font-medium">For Courier & Dispatch</span>
-                </div>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-text font-medium border-r border-border pr-2">
+                  <User size="1.0625rem" aria-hidden="true" className={AUTH_FIELD_ICON} />
+                  <input
+                    id="name"
+                    type="text"
+                    autoComplete="name"
+                    placeholder="e.g. Priya Sharma"
+                    aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? 'name-error' : undefined}
+                    {...register('name')}
+                    className={inputClass(!!errors.name)}
+                  />
+                </div>
+                {errors.name && (
+                  <p id="name-error" role="alert" className={AUTH_ERROR}>
+                    {errors.name.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Contact number */}
+              <div>
+                <label htmlFor="phone" className={AUTH_LABEL}>
+                  Contact number <span className="font-normal text-text">(optional)</span>
+                </label>
+                <div className="relative">
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 border-r border-border pr-2.5 text-sm text-text"
+                  >
                     +91
                   </span>
                   <input
                     id="phone"
                     type="tel"
-                    autoComplete="tel"
+                    inputMode="numeric"
+                    autoComplete="tel-national"
                     maxLength={10}
-                    {...register('phone')}
-                    className="w-full border border-border pl-14 pr-3.5 py-2.5 text-xs text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg"
                     placeholder="9876543210"
+                    aria-invalid={!!errors.phone}
+                    aria-describedby={errors.phone ? 'phone-error' : undefined}
+                    {...register('phone')}
+                    className={`${inputClass(!!errors.phone)} !pl-16`}
                   />
                 </div>
-                {errors.phone && <p className="text-[11px] text-red-600 mt-1">{errors.phone.message}</p>}
+                {errors.phone && (
+                  <p id="phone-error" role="alert" className={AUTH_ERROR}>
+                    {errors.phone.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Email */}
+              <div className="sm:col-span-2">
+                <label htmlFor="email" className={AUTH_LABEL}>
+                  Email address
+                </label>
+                <div className="relative">
+                  <Mail size="1.0625rem" aria-hidden="true" className={AUTH_FIELD_ICON} />
+                  <input
+                    id="email"
+                    type="email"
+                    inputMode="email"
+                    autoComplete="email"
+                    autoCapitalize="none"
+                    spellCheck={false}
+                    placeholder="name@example.com"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? 'email-error' : undefined}
+                    {...register('email')}
+                    className={inputClass(!!errors.email)}
+                  />
+                </div>
+                {errors.email && (
+                  <p id="email-error" role="alert" className={AUTH_ERROR}>
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
 
               {/* Password */}
               <div>
-                <label
-                  htmlFor="password"
-                  className="block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5"
-                >
-                  Password *
+                <label htmlFor="password" className={AUTH_LABEL}>
+                  Password
                 </label>
                 <div className="relative">
+                  <Lock size="1.0625rem" aria-hidden="true" className={AUTH_FIELD_ICON} />
                   <input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
-                    {...register('password')}
-                    className="w-full border border-border px-3.5 py-2.5 pr-10 text-sm text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg"
                     placeholder="At least 6 characters"
+                    aria-invalid={!!errors.password}
+                    aria-describedby={errors.password ? 'password-error' : undefined}
+                    {...register('password')}
+                    className={`${inputClass(!!errors.password)} pr-12`}
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text/60 hover:text-heading transition-colors cursor-pointer"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg text-text transition-colors hover:text-heading"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-pressed={showPassword}
                   >
-                    {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                    {showPassword ? <EyeOff size="1.0625rem" /> : <Eye size="1.0625rem" />}
                   </button>
                 </div>
-                {errors.password && <p className="text-[11px] text-red-600 mt-1">{errors.password.message}</p>}
+                {errors.password && (
+                  <p id="password-error" role="alert" className={AUTH_ERROR}>
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
 
-              {/* Confirm Password */}
+              {/* Confirm password */}
               <div>
-                <label
-                  htmlFor="confirmPassword"
-                  className="block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5"
-                >
-                  Confirm Password *
+                <label htmlFor="confirmPassword" className={AUTH_LABEL}>
+                  Confirm password
                 </label>
                 <div className="relative">
+                  <Lock size="1.0625rem" aria-hidden="true" className={AUTH_FIELD_ICON} />
                   <input
                     id="confirmPassword"
                     type={showConfirmPassword ? 'text' : 'password'}
                     autoComplete="new-password"
+                    placeholder="Re-enter password"
+                    aria-invalid={!!errors.confirmPassword}
+                    aria-describedby={errors.confirmPassword ? 'confirm-error' : undefined}
                     {...register('confirmPassword')}
-                    className="w-full border border-border px-3.5 py-2.5 pr-10 text-sm text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg"
-                    placeholder="Re-enter your password"
+                    className={`${inputClass(!!errors.confirmPassword)} pr-12`}
                   />
                   <button
                     type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text/60 hover:text-heading transition-colors cursor-pointer"
+                    onClick={() => setShowConfirmPassword((v) => !v)}
+                    className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg text-text transition-colors hover:text-heading"
                     aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                    aria-pressed={showConfirmPassword}
                   >
-                    {showConfirmPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                    {showConfirmPassword ? <EyeOff size="1.0625rem" /> : <Eye size="1.0625rem" />}
                   </button>
                 </div>
                 {errors.confirmPassword && (
-                  <p className="text-[11px] text-red-600 mt-1">{errors.confirmPassword.message}</p>
+                  <p id="confirm-error" role="alert" className={AUTH_ERROR}>
+                    {errors.confirmPassword.message}
+                  </p>
                 )}
               </div>
 
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-heading text-surface py-3.5 text-xs font-semibold uppercase tracking-[0.2em] hover:bg-gold transition-colors duration-300 disabled:opacity-50 rounded-lg shadow-xs flex items-center justify-center gap-2 group cursor-pointer"
-                >
-                  {isLoading ? (
-                    <span>Creating Atelier Account…</span>
-                  ) : (
-                    <>
-                      <span>Create Account</span>
-                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform text-gold" />
-                    </>
-                  )}
-                </button>
-              </div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                aria-busy={isLoading}
+                className={`${AUTH_SUBMIT} mt-1 sm:col-span-2`}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 size="1rem" className="animate-spin" aria-hidden="true" />
+                    <span>Creating your account…</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Create Account</span>
+                    <ArrowRight size="0.9375rem" className="text-[#C49A5A] transition-transform group-hover:translate-x-1" />
+                  </>
+                )}
+              </button>
             </form>
 
-            {/* Social Divider */}
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border" />
-              </div>
-              <div className="relative flex justify-center text-[10px] uppercase tracking-wider">
-                <span className="bg-surface px-3 text-text/70">Or continue with</span>
-              </div>
+            {/* Divider */}
+            <div className={AUTH_DIVIDER}>
+              <span className="h-px flex-1 bg-border" />
+              or
+              <span className="h-px flex-1 bg-border" />
             </div>
 
-            {/* Google Social Button */}
-            <button
-              type="button"
-              onClick={signInWithGoogle}
-              className="w-full border border-border py-2.5 text-xs text-heading hover:border-gold hover:bg-background/50 transition-colors flex items-center justify-center gap-2 rounded-lg font-medium cursor-pointer"
-            >
-              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+            <button type="button" onClick={signInWithGoogle} disabled={isLoading} className={AUTH_GOOGLE}>
+              <svg className="h-[1.0625rem] w-[1.0625rem] shrink-0" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
@@ -387,24 +379,17 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
               <span>Continue with Google</span>
             </button>
 
-            {/* Bottom Switch Note */}
-            <div className="mt-6 pt-5 border-t border-border/80 text-center">
-              <p className="text-xs text-text">
-                Already have an Atelier account?{' '}
-                <Link
-                  href={loginHref}
-                  className="text-gold font-semibold hover:text-heading transition-colors uppercase tracking-wider text-[11px]"
-                >
-                  Sign In
-                </Link>
-              </p>
-            </div>
+            <p className={AUTH_SWITCH_NOTE}>
+              Already have an account?{' '}
+              <Link href={loginHref} className={AUTH_SWITCH_LINK}>
+                Sign in
+              </Link>
+            </p>
 
-            {/* Terms notice */}
-            <p className="text-center text-[10px] text-text/70 mt-3 font-sans">
+            <p className="mt-3 [@media(max-height:48rem)]:mt-2.5 text-center text-xs text-text/80">
               By registering, you agree to our{' '}
-              <Link href="/terms" className="hover:underline text-heading">Terms & Conditions</Link> and{' '}
-              <Link href="/privacy-policy" className="hover:underline text-heading">Privacy Policy</Link>.
+              <Link href="/terms" className="text-heading hover:underline">Terms &amp; Conditions</Link> and{' '}
+              <Link href="/privacy-policy" className="text-heading hover:underline">Privacy Policy</Link>.
             </p>
           </div>
         </div>

@@ -3,12 +3,14 @@
 import { usePathname, useSearchParams } from 'next/navigation';
 import Script from 'next/script';
 import { useEffect, useRef } from 'react';
+import { useDeferredReady } from '@/hooks/use-deferred-ready';
 import * as fpixel from '@/lib/fpixel';
 
 export function MetaPixel() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isFirstRender = useRef(true);
+  const ready = useDeferredReady();
 
   useEffect(() => {
     // Initial pageview is handled by the inline init script.
@@ -20,7 +22,8 @@ export function MetaPixel() {
     fpixel.pageview();
   }, [pathname, searchParams]);
 
-  if (!fpixel.FB_PIXEL_ID) {
+  // Third-party tags wait for the first interaction (or a short timeout) so they never delay hydration
+  if (!fpixel.FB_PIXEL_ID || !ready) {
     return null;
   }
 
@@ -28,7 +31,7 @@ export function MetaPixel() {
     <>
       <Script
         id="meta-pixel"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             !function(f,b,e,v,n,t,s)

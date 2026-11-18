@@ -1,5 +1,7 @@
 'use client';
 
+import { LoadingState } from '@/components/common/LoadingState';
+import { ProductGridSkeleton } from '@/components/product/ProductCardSkeleton';
 import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -165,17 +167,17 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
   const isBridalCategory = category === 'bridal-lehengas' || category === 'bridal';
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-dvh bg-[#FAF7F2]">
       {/* Full-Width Bridal Hero (Edge-to-edge, NOT wrapped in any section card) */}
       {isBridalCategory && (
         <section className="w-full bg-gradient-to-r from-[#FBF8F3] via-[#FAF5EE] to-[#F5ECE1] border-b border-[#E8D4BE]">
-          <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 py-12 lg:py-16">
+          <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-14 py-12 lg:py-16">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
               {/* Left Column: Royal Narrative & Atelier Pillars */}
               <div className="lg:col-span-6 text-left order-2 lg:order-1 flex flex-col justify-center">
                 <div className="flex items-center gap-2.5 mb-3">
                   <span className="w-8 h-px bg-[#C49A5A]" />
-                  <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-[#A67C52] font-semibold">
+                  <span className="text-[0.625rem] sm:text-[0.6875rem] uppercase tracking-[0.35em] text-[#A67C52] font-semibold">
                     Aafreen Atelier · Royal Heritage
                   </span>
                 </div>
@@ -210,12 +212,12 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
                     href="https://wa.me/919517901117?text=Hello%20Aafreen%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20the%20Royal%20Bridal%20Collection."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#221617] hover:bg-[#3D2628] text-[#F9F5EF] text-[11px] uppercase tracking-[0.2em] font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
+                    className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#221617] hover:bg-[#3D2628] text-[#F9F5EF] text-[0.6875rem] uppercase tracking-[0.2em] font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
                   >
                     <span>Book Bridal Consultation</span>
                     <span className="text-[#C49A5A]">→</span>
                   </a>
-                  <span className="text-xs text-[#8C7A6B] font-sans">
+                  <span className="text-xs text-[#6E5C4D] font-sans">
                     {pagination?.total ?? products.length} Ensembles Curated
                   </span>
                 </div>
@@ -223,17 +225,17 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
 
               {/* Right Column: Complete Un-cropped Photograph */}
               <div className="lg:col-span-6 order-1 lg:order-2 flex justify-center lg:justify-end">
-                <div className="relative w-full max-w-[460px] aspect-[2/3] max-h-[600px] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(34,22,23,0.14)] bg-[#1A0E0C]">
+                <div className="relative w-full max-w-[28.75rem] aspect-[2/3] max-h-[37.5rem] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(34,22,23,0.14)] bg-[#1A0E0C]">
                   <Image
                     src="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/bridal-hero.webp"
                     alt="Aafreen Couture Royal Bridal Lehengas"
                     fill
                     priority
-                    sizes="(max-width: 1024px) 100vw, 460px"
+                    sizes="(max-width: 64em) 100vw, 460px"
                     className="object-contain sm:object-cover object-center"
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#1A0E0C]/90 via-[#1A0E0C]/40 to-transparent py-2.5 text-center">
-                    <p className="text-[10px] uppercase tracking-[0.25em] text-[#E8D4BE] font-sans">
+                    <p className="text-[0.625rem] uppercase tracking-[0.25em] text-[#E8D4BE] font-sans">
                       The Grand Palace Showcase · Amritsar Atelier
                     </p>
                   </div>
@@ -261,9 +263,9 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider font-semibold text-[#221617] border border-[#E8D8C8] px-3.5 py-1.5 hover:border-[#A67C52] transition-colors lg:hidden"
+            className="flex items-center gap-1.5 text-[0.6875rem] uppercase tracking-wider font-semibold text-[#221617] border border-[#E8D8C8] px-3.5 py-1.5 hover:border-[#A67C52] transition-colors lg:hidden"
           >
-            <SlidersHorizontal size={13} />
+            <SlidersHorizontal size="0.8125rem" />
             Filters
           </button>
           <div className="flex items-center gap-2">
@@ -294,16 +296,16 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
               {(category || occasion || selectedColor || selectedSize || selectedFabric || minPrice || maxPrice) && (
                 <button
                   onClick={() => router.push('/shop')}
-                  className="flex items-center gap-1 text-[10px] text-[#A67C52] font-semibold uppercase tracking-wider hover:underline"
+                  className="flex items-center gap-1 text-[0.625rem] text-[#A67C52] font-semibold uppercase tracking-wider hover:underline"
                 >
-                  <X size={12} /> Clear All
+                  <X size="0.75rem" /> Clear All
                 </button>
               )}
             </div>
 
             {/* Category filter */}
             <div>
-              <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
+              <h3 className="text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
                 Category
               </h3>
               <div className="space-y-1.5">
@@ -340,7 +342,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
 
             {/* Price Range */}
             <div className="pt-3 border-t border-[#E8D8C8]">
-              <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
+              <h3 className="text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
                 Price
               </h3>
               <div className="space-y-1.5">
@@ -364,7 +366,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
 
             {/* Color filter swatches */}
             <div className="pt-3 border-t border-[#E8D8C8]">
-              <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
+              <h3 className="text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
                 Color
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -384,7 +386,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
 
             {/* Size filter */}
             <div className="pt-3 border-t border-[#E8D8C8]">
-              <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
+              <h3 className="text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
                 Size
               </h3>
               <div className="flex flex-wrap gap-1.5">
@@ -392,7 +394,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
                   <button
                     key={sz}
                     onClick={() => setParam('size', sz)}
-                    className={`px-2.5 py-1 text-[10px] font-semibold border uppercase transition-colors ${
+                    className={`px-2.5 py-1 text-[0.625rem] font-semibold border uppercase transition-colors ${
                       selectedSize === sz
                         ? 'border-[#221617] bg-[#221617] text-white'
                         : 'border-[#E8D8C8] text-[#221617] hover:border-[#A67C52]'
@@ -406,7 +408,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
 
             {/* Fabric filter */}
             <div className="pt-3 border-t border-[#E8D8C8]">
-              <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
+              <h3 className="text-[0.6875rem] font-semibold uppercase tracking-wider text-[#221617] mb-2.5">
                 Fabric
               </h3>
               <div className="space-y-1.5">
@@ -429,19 +431,11 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
         {/* Product grid */}
         <div className="flex-1 min-w-0">
           {isLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4 lg:gap-5">
-              {Array.from({ length: 9 }, (_, i) => (
-                <div key={i} className="flex flex-col gap-3">
-                  <div className="aspect-[4/5] bg-[#FAF7F2] border border-[#E8D8C8] rounded-lg animate-pulse" />
-                  <div className="space-y-1.5">
-                    <div className="h-3.5 bg-[#FAF7F2] rounded animate-pulse w-3/4" />
-                    <div className="h-3 bg-[#FAF7F2] rounded animate-pulse w-1/3" />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <LoadingState label="Loading products">
+              <ProductGridSkeleton count={9} className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4 lg:gap-5" />
+            </LoadingState>
           ) : products.length === 0 ? (
-            <div className="text-center py-12 sm:py-16 bg-white shadow-sm rounded-2xl p-6 sm:p-8">
+            <div className="text-center py-12 sm:py-16 border border-[#E2D2C2] rounded-2xl p-6 sm:p-8">
               <p className="text-[#6E6A66] text-base font-serif">No products found for this filter selection.</p>
               <button
                 onClick={() => router.push('/shop')}
@@ -454,7 +448,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
             <>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4 lg:gap-5">
                 {products.map((product, i) => (
-                  <ProductCard key={product._id} product={product} priority={i < 4} />
+                  <ProductCard headingLevel="h2" key={product._id} product={product} priority={i < 4} />
                 ))}
               </div>
 

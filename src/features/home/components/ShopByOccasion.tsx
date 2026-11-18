@@ -1,15 +1,10 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
 import { Sparkles, ArrowRight } from 'lucide-react';
-import { buttonVariants } from '@/components/ui/button';
 
 import { cn } from '@/lib/utils';
 
 export interface OccasionItem {
-  num: string;
   label: string;
   href: string;
   image: string;
@@ -18,49 +13,42 @@ export interface OccasionItem {
 
 const OCCASIONS_DATA: OccasionItem[] = [
   {
-    num: '01',
     label: 'Engagement',
     href: '/occasions/engagement',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/engagement.webp',
     tone: 'Cocktail & Rings',
   },
   {
-    num: '02',
     label: 'Haldi',
     href: '/occasions/haldi',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/haldi.webp',
     tone: 'Sunlit Yellows',
   },
   {
-    num: '03',
     label: 'Mehendi',
     href: '/occasions/mehendi',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/mehendi.webp',
     tone: 'Festive Flora',
   },
   {
-    num: '04',
     label: 'Sangeet',
     href: '/occasions/sangeet',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/occasions/sangeet.webp',
     tone: 'High-Glitz Glamour',
   },
   {
-    num: '05',
     label: 'Jago Edit',
     href: '/occasions/jago',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872421/aafreen-couture/products/heer-jago-salwar-suit-1413.webp',
     tone: 'Midnight Revelry',
   },
   {
-    num: '06',
     label: 'Wedding',
     href: '/occasions/wedding',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872395/aafreen-couture/occasions/wedding.webp',
     tone: 'Sacred Pheras',
   },
   {
-    num: '07',
     label: 'Reception',
     href: '/occasions/reception',
     image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/reception.webp',
@@ -69,46 +57,31 @@ const OCCASIONS_DATA: OccasionItem[] = [
 ];
 
 function OccasionCard({ occ, isLast }: { occ: OccasionItem; isLast?: boolean }) {
-  const [err, setErr] = useState(false);
-
   return (
     <Link
       href={occ.href}
-      prefetch={true}
       className={cn(
         'group relative flex flex-col justify-end overflow-hidden aspect-[3/4.6] rounded-xl border border-[#E8D4BE]/60 bg-[#1A0E0C] shadow-sm hover:shadow-xl hover:border-[#C49A5A] transition-all duration-500',
         isLast &&
-          'col-span-2 justify-self-center w-full max-w-[calc(50%-6px)] sm:max-w-none sm:col-span-1 sm:col-start-2 md:col-start-auto lg:col-start-auto'
+          'col-span-2 justify-self-center w-full max-w-[calc(50%-0.375rem)] sm:max-w-none sm:col-span-1 sm:col-start-2 md:col-start-auto lg:col-start-auto'
       )}
     >
       {/* Background Image */}
-      {!err ? (
-        <Image
+      <Image
           src={occ.image}
           alt={occ.label}
           fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 14vw"
+          sizes="(max-width: 40em) 50vw, (max-width: 64em) 33vw, 14vw"
           className="object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100"
-          onError={() => setErr(true)}
         />
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-b from-[#2C1510] to-[#140B0A]" />
-      )}
 
       {/* Cinematic Vignette Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#140B0A]/95 via-[#140B0A]/35 to-transparent pointer-events-none transition-opacity duration-500 group-hover:from-[#140B0A]/90" />
 
-      {/* Ceremony Order Index Chip */}
-      <div className="absolute top-2.5 left-2.5 z-10">
-        <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-black/45 backdrop-blur-md border border-white/20 text-[9px] font-mono tracking-widest text-white/90">
-          {occ.num}
-        </span>
-      </div>
-
       {/* Card Content Plaque */}
       <div className="relative z-10 p-3 sm:p-3.5 text-center flex flex-col items-center">
         {/* Mood Tagline */}
-        <span className="text-[9px] uppercase font-bold tracking-[0.22em] text-[#E8C06A] block mb-1">
+        <span className="text-[0.5625rem] uppercase font-bold tracking-[0.22em] text-[#E8C06A] block mb-1">
           {occ.tone}
         </span>
 
@@ -118,9 +91,9 @@ function OccasionCard({ occ, isLast }: { occ: OccasionItem; isLast?: boolean }) 
         </h3>
 
         {/* Micro Action Button */}
-        <div className="mt-1.5 inline-flex items-center gap-1 text-[9px] uppercase tracking-[0.2em] font-semibold text-white/70 group-hover:text-white border-b border-[#C49A5A]/50 group-hover:border-[#C49A5A] pb-0.5 transition-all">
+        <div className="mt-1.5 inline-flex items-center gap-1 text-[0.5625rem] uppercase tracking-[0.2em] font-semibold text-white/70 group-hover:text-white border-b border-[#C49A5A]/50 group-hover:border-[#C49A5A] pb-0.5 transition-all">
           <span>Explore</span>
-          <ArrowRight size={10} className="text-[#C49A5A] group-hover:translate-x-0.5 transition-transform" />
+          <ArrowRight size="0.625rem" className="text-[#C49A5A] group-hover:translate-x-0.5 transition-transform" />
         </div>
       </div>
     </Link>
@@ -132,17 +105,17 @@ export function ShopByOccasion() {
 
   return (
     <section className="py-10 sm:py-14 lg:py-16 bg-[#FAF7F2] border-b border-[#E8D8C8]">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-10">
         {/* Header with Couture Breadth */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-7 sm:mb-9 pb-4 border-b border-[#E8D4BE]/70 gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Sparkles size={12} className="text-[#C49A5A]" />
-              <span className="text-[10px] uppercase font-bold tracking-[0.35em] text-[#C49A5A]">
+            <div className="flex flex-nowrap items-center gap-1.5 min-[380px]:gap-2 mb-3 sm:mb-2">
+              <Sparkles className="shrink-0 size-2.5 min-[380px]:size-3 text-[#C49A5A]" />
+              <span className="whitespace-nowrap text-[0.5rem] min-[380px]:text-[0.5625rem] sm:text-[0.625rem] uppercase font-bold tracking-[0.18em] min-[380px]:tracking-[0.24em] sm:tracking-[0.35em] text-gold-ink">
                 Ceremonial Edit
               </span>
-              <span className="w-8 h-px bg-[#C49A5A]/60" />
-              <span className="text-[10px] uppercase tracking-[0.25em] text-[#8C7A6B]">
+              <span className="shrink-0 w-3 min-[380px]:w-5 sm:w-8 h-px bg-[#C49A5A]/60" />
+              <span className="whitespace-nowrap text-[0.5rem] min-[380px]:text-[0.5625rem] sm:text-[0.625rem] uppercase font-normal min-[380px]:font-medium tracking-[0.15em] min-[380px]:tracking-[0.2em] sm:tracking-[0.25em] text-[#6E5C4D]">
                 Milestone Occasions
               </span>
             </div>
@@ -159,14 +132,9 @@ export function ShopByOccasion() {
           <Link
             href="/occasions"
             prefetch={true}
-            className={buttonVariants({
-              variant: 'couture-outline',
-              size: 'couture-sm',
-              className: 'group shrink-0 self-start md:self-end',
-            })}
+            className="hidden md:inline-flex md:self-end items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
           >
-            <span>Explore All 7 Occasions</span>
-            <ArrowRight size={12} className="text-[#C49A5A] group-hover:translate-x-1 transition-transform" />
+            View All Occasions <ArrowRight size="0.8125rem" />
           </Link>
         </div>
 
@@ -179,6 +147,15 @@ export function ShopByOccasion() {
               isLast={isOdd && idx === OCCASIONS_DATA.length - 1}
             />
           ))}
+        </div>
+
+        <div className="mt-8 text-center md:hidden">
+          <Link
+            href="/occasions"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
+          >
+            View All Occasions <ArrowRight size="0.8125rem" />
+          </Link>
         </div>
       </div>
     </section>

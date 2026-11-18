@@ -171,7 +171,7 @@ export const CATALOG_SEO: Record<string, CatalogSeo> = {
       'The wedding day outfit is the one that is kept for a lifetime. Deep reds and rich jewel shades, embroidered by hand with zardozi, dabka and cutdana on velvet and raw silk, are the foundation of our bridal work.',
     faq: {
       q: 'Can the lehenga be customised to my measurements?',
-      a: 'Yes. Bridal pieces are made to your measurements, including blouse neckline, sleeve length and skirt flare, and we offer complimentary fit alterations within 10 days of delivery.',
+      a: 'Yes. Bridal pieces are made to your measurements, including blouse neckline, sleeve length and skirt flare.',
     },
   },
   'occasions/reception': {
@@ -395,18 +395,24 @@ export const HUB_SEO: Record<string, { heading: string; paragraphs: string[] }> 
     heading: 'Designer suits, kurta sets and co-ords',
     paragraphs: [
       'From breathable cotton and Chanderi kurta sets to handcrafted zardozi suits and unstitched partywear fabrics, this edit covers festive wear for every kind of day. Pieces are made at our Amritsar atelier.',
+      'Cotton and Chanderi kurta sets and light pastel suits are made for daytime functions, signature co-ord sets work for soirees and wedding-week events, and indo-western pieces pair traditional embroidery with modern cuts. Our handcrafted luxury suits carry zardozi, gota patti and resham worked by hand on silks and velvets.',
+      'Unstitched partywear sets give you the fabric and embroidery to take to your own tailor. Ready-to-ship styles are dispatched within 1–2 business days of confirmed payment, and our stylists can help you choose a fabric and colour for your occasion on WhatsApp.',
     ],
   },
   'ready-to-wear': {
     heading: 'Ready-to-wear dresses, co-ords and shararas',
     paragraphs: [
       'Ready-to-wear pieces are dispatched within 1–2 business days of confirmed payment, so they work well when an event date is close. Eligible pieces can be exchanged for size within 7 days of delivery.',
+      'The edit includes dresses and gowns, signature co-ord sets, sharara sets and occasion lehengas, all hand-finished and made in standard sizes. They suit cocktail evenings, mehendi and sangeet, engagements and receptions, without the wait of a made-to-measure order.',
+      'Domestic delivery takes 5–7 business days after dispatch, and we ship to 50+ countries worldwide. If you are unsure of your size, check the size details on the product page or message our stylists on WhatsApp.',
     ],
   },
   bags: {
     heading: 'Bags and potlis for festive and bridal wear',
     paragraphs: [
       'Handbags, potlis, clutches, totes and shoulder bags chosen to sit alongside embroidered lehengas and suits.',
+      'Choose a potli for the traditional wedding look, a clutch for receptions and cocktail evenings, a shoulder bag for indo-western and contemporary festive outfits, or a tote for wedding-week travel. Each product page lists the dimensions, so you can check what fits.',
+      'Not sure what to pair with your outfit? Send us a photo on WhatsApp and our stylists will suggest bags that complement its colour and embroidery.',
     ],
   },
 };

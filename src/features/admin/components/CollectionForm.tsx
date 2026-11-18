@@ -96,20 +96,20 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
           href="/admin/collections"
           className="inline-flex items-center gap-1.5 text-xs text-[#8A6A55] hover:text-[#2E221C] transition-colors font-medium"
         >
-          <ArrowLeft size={14} /> Back to Collections
+          <ArrowLeft size="0.875rem" /> Back to Collections
         </Link>
         <button
           type="submit"
           disabled={saving}
           className="flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-xs font-semibold uppercase tracking-wider px-6 py-2 rounded-lg hover:bg-[#1A1410] shadow-sm transition-all disabled:opacity-50"
         >
-          <Save size={14} className="text-[#C9A86A]" /> {saving ? 'Saving…' : 'Save Collection'}
+          <Save size="0.875rem" className="text-[#C9A86A]" /> {saving ? 'Saving…' : 'Save Collection'}
         </button>
       </div>
 
       <div className="bg-white rounded-xl p-4 sm:p-4 shadow-sm space-y-4">
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+          <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
             Collection Name *
           </label>
           <input
@@ -124,7 +124,7 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
         </div>
 
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+          <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
             Slug (URL Identifier)
           </label>
           <input
@@ -138,7 +138,7 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
         </div>
 
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+          <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
             Description
           </label>
           <textarea
@@ -152,7 +152,7 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+            <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
               Tile Image Path / URL
             </label>
             <input
@@ -165,7 +165,7 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+            <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
               Hero Banner Image Path / URL
             </label>
             <input
@@ -180,7 +180,7 @@ export function CollectionForm({ collection }: { collection?: CollectionData }) 
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
+            <label className="block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#8A6A55] mb-1.5">
               Display Sort Order
             </label>
             <input

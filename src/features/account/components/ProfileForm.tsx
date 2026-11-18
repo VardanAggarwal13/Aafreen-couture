@@ -67,7 +67,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
   const fieldCls =
     'w-full border border-border px-3.5 py-2.5 text-sm text-heading placeholder:text-text/40 focus:outline-none focus:border-gold transition-colors bg-background/50 rounded-lg';
-  const labelCls = 'block text-[11px] font-semibold uppercase tracking-wider text-heading mb-1.5';
+  const labelCls = 'block text-[0.6875rem] font-semibold uppercase tracking-wider text-heading mb-1.5';
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-surface rounded-xl p-6 sm:p-7 space-y-6 shadow-sm">
@@ -75,7 +75,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
         <div>
           <label className={labelCls}>Full Name *</label>
           <input {...register('name')} className={fieldCls} placeholder="Your full name" />
-          {errors.name && <p className="text-[11px] text-red-600 mt-1">{errors.name.message}</p>}
+          {errors.name && <p className="text-[0.6875rem] text-red-600 mt-1">{errors.name.message}</p>}
         </div>
 
         <div>
@@ -85,7 +85,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
             disabled
             className={`${fieldCls} bg-background/70 text-text/70 cursor-not-allowed`}
           />
-          <p className="text-[10px] text-text/70 mt-1">Verified account address</p>
+          <p className="text-[0.625rem] text-text/70 mt-1">Verified account address</p>
         </div>
 
         <div>
@@ -104,12 +104,12 @@ export function ProfileForm({ user }: ProfileFormProps) {
               placeholder="9876543210"
             />
           </div>
-          {errors.phone && <p className="text-[11px] text-red-600 mt-1">{errors.phone.message}</p>}
+          {errors.phone && <p className="text-[0.6875rem] text-red-600 mt-1">{errors.phone.message}</p>}
         </div>
       </div>
 
       <div className="pt-2 border-t border-border/60 flex items-center justify-between">
-        <p className="text-[11px] text-text">
+        <p className="text-[0.6875rem] text-text">
           Changes will apply across all future couture orders and receipts.
         </p>
         <button
@@ -121,7 +121,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
             <span>Saving…</span>
           ) : (
             <>
-              <Check size={13} />
+              <Check size="0.8125rem" />
               <span>Save Profile</span>
             </>
           )}

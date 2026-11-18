@@ -45,10 +45,10 @@ const COLLECTION_GRADIENTS: Record<string, string> = {
 
 export default function CollectionsPage() {
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-dvh bg-[#FAF7F2]">
       {/* Page header */}
       <div className="bg-white border-b border-[#E8D8C8] py-14 text-center">
-        <p className="text-[10.5px] font-semibold uppercase tracking-[0.4em] text-[#A67C52] mb-3">
+        <p className="text-[0.65625rem] font-semibold uppercase tracking-[0.4em] text-[#A67C52] mb-3">
           Curated For You
         </p>
         <h1 className="text-3xl sm:text-4xl font-serif text-[#221617] tracking-tight">All Collections</h1>
@@ -75,7 +75,7 @@ export default function CollectionsPage() {
                     src={imgSrc}
                     alt={col.label}
                     fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    sizes="(max-width: 40em) 50vw, (max-width: 64em) 33vw, 25vw"
                     className="object-cover group-hover:scale-108 transition-transform duration-700"
                   />
                 ) : (
@@ -86,7 +86,7 @@ export default function CollectionsPage() {
                 <div className="absolute inset-0 bg-linear-to-t from-[#221617]/90 via-[#221617]/25 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h2 className="text-white font-serif text-base leading-snug">{col.label}</h2>
-                  <span className="inline-block mt-2 text-[10px] text-[#A67C52] font-semibold tracking-wider uppercase border-b border-[#A67C52]/40 pb-0.5 opacity-90 group-hover:text-white transition-colors">
+                  <span className="inline-block mt-2 text-[0.625rem] text-[#A67C52] font-semibold tracking-wider uppercase border-b border-[#A67C52]/40 pb-0.5 opacity-90 group-hover:text-white transition-colors">
                     Explore →
                   </span>
                 </div>

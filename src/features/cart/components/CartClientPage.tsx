@@ -182,15 +182,15 @@ export function CartClientPage() {
   // =========================================================================
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-[#FAF7F2] py-16 sm:py-24 text-[#221617]">
+      <div className="min-h-dvh bg-[#FAF7F2] py-16 sm:py-24 text-[#221617]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           <div className="bg-white border border-[#EADCC9] rounded-3xl p-10 sm:p-16 max-w-xl mx-auto text-center shadow-[0_12px_40px_rgba(46,34,28,0.06)] space-y-6">
             <div className="w-20 h-20 rounded-full bg-[#FAF5EC] border border-[#E0D0BC] flex items-center justify-center mx-auto text-[#C49A5A] shadow-xs">
-              <ShoppingBag size={34} strokeWidth={1.2} />
+              <ShoppingBag size="2.125rem" strokeWidth={1.2} />
             </div>
 
             <div className="space-y-3">
-              <span className="inline-block text-[11px] font-semibold tracking-[0.25em] text-[#C49A5A] uppercase">
+              <span className="inline-block text-[0.6875rem] font-semibold tracking-[0.25em] text-[#C49A5A] uppercase">
                 Atelier Shopping Bag
               </span>
               <h1 className="text-2xl sm:text-4xl font-serif text-[#221617]">
@@ -207,7 +207,7 @@ export function CartClientPage() {
                 className="bg-[#221617] hover:bg-[#C49A5A] text-white text-xs font-semibold uppercase tracking-[0.18em] px-6 py-3.5 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center gap-2"
               >
                 <span>Bridal Lehengas</span>
-                <ArrowRight size={13} />
+                <ArrowRight size="0.8125rem" />
               </Link>
               <Link
                 href="/suits"
@@ -221,7 +221,7 @@ export function CartClientPage() {
           {/* Coveted Masterpieces Section */}
           <section className="space-y-8">
             <div className="text-center space-y-1">
-              <p className="text-[11px] font-semibold tracking-[0.25em] text-[#C49A5A] uppercase">
+              <p className="text-[0.6875rem] font-semibold tracking-[0.25em] text-[#C49A5A] uppercase">
                 Atelier Highlights
               </p>
               <h2 className="text-2xl sm:text-3xl font-serif text-[#221617]">
@@ -243,7 +243,7 @@ export function CartClientPage() {
                       src={p.images[0] ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791872431/aafreen-couture/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
                       alt={p.name}
                       fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
+                      sizes="(max-width: 40em) 50vw, 25vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     {p.images[1] && (
@@ -251,7 +251,7 @@ export function CartClientPage() {
                         src={p.images[1]}
                         alt={`${p.name} alternate view`}
                         fill
-                        sizes="(max-width: 640px) 50vw, 25vw"
+                        sizes="(max-width: 40em) 50vw, 25vw"
                         className="object-cover opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
                       />
                     )}
@@ -269,9 +269,9 @@ export function CartClientPage() {
 
                   <button
                     onClick={() => handleQuickAdd(p)}
-                    className="mt-3 w-full py-2.5 bg-[#221617] hover:bg-[#C49A5A] text-white text-[10px] font-semibold tracking-wider uppercase transition-colors rounded-lg flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="mt-3 w-full py-2.5 bg-[#221617] hover:bg-[#C49A5A] text-white text-[0.625rem] font-semibold tracking-wider uppercase transition-colors rounded-lg flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <Plus size={12} />
+                    <Plus size="0.75rem" />
                     <span>Quick Add</span>
                   </button>
                 </div>
@@ -287,20 +287,20 @@ export function CartClientPage() {
   // ACTIVE CART STATE (Full Luxury Editorial Architecture)
   // =========================================================================
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#221617] py-6 sm:py-10">
+    <div className="min-h-dvh bg-[#FAF7F2] text-[#221617] py-6 sm:py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Breadcrumbs & Atelier Status Header */}
         <div className="space-y-4">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[11px] uppercase tracking-wider text-[#8A6A55]">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[0.6875rem] uppercase tracking-wider text-[#8A6A55]">
             <Link href="/" className="hover:text-[#C49A5A] transition-colors">Home</Link>
-            <ChevronRight size={11} className="text-[#C49A5A]" />
+            <ChevronRight size="0.6875rem" className="text-[#C49A5A]" />
             <span className="text-[#221617] font-semibold">Atelier Bag ({items.length})</span>
           </nav>
 
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5 border-b border-[#EADCC9]">
             <div className="space-y-1">
-              <div className="flex items-center gap-2 text-[#C49A5A] text-[10.5px] font-semibold tracking-[0.25em] uppercase">
-                <Crown size={13} className="text-[#C49A5A]" />
+              <div className="flex items-center gap-2 text-[#C49A5A] text-[0.65625rem] font-semibold tracking-[0.25em] uppercase">
+                <Crown size="0.8125rem" className="text-[#C49A5A]" />
                 <span>Atelier Registry &amp; Selection</span>
               </div>
               <h1 className="text-3xl sm:text-4xl font-serif text-[#221617] flex items-baseline gap-3">
@@ -316,7 +316,7 @@ export function CartClientPage() {
               className="text-xs font-semibold text-[#8A6A55] hover:text-[#C49A5A] uppercase tracking-[0.18em] transition-colors inline-flex items-center gap-1.5 shrink-0 underline underline-offset-4"
             >
               <span>Continue Shopping</span>
-              <ArrowRight size={12} />
+              <ArrowRight size="0.75rem" />
             </Link>
           </div>
         </div>
@@ -358,7 +358,7 @@ export function CartClientPage() {
                         className="object-cover opacity-0 group-hover/img:opacity-100 transition-all duration-700 group-hover/img:scale-105"
                       />
                     )}
-                    <div className="absolute top-2 left-2 bg-[#221617]/85 backdrop-blur-xs text-[9px] font-semibold text-white px-2 py-0.5 rounded tracking-widest uppercase">
+                    <div className="absolute top-2 left-2 bg-[#221617]/85 backdrop-blur-xs text-[0.5625rem] font-semibold text-white px-2 py-0.5 rounded tracking-widest uppercase">
                       Couture
                     </div>
                   </Link>
@@ -368,7 +368,7 @@ export function CartClientPage() {
                     <div className="space-y-2">
                       <div className="flex justify-between items-start gap-4">
                         <div>
-                          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C49A5A]">
+                          <span className="text-[0.625rem] font-semibold uppercase tracking-[0.2em] text-[#C49A5A]">
                             Atelier Made-To-Order
                           </span>
                           <Link
@@ -392,7 +392,7 @@ export function CartClientPage() {
                             title="Save for Later / Wishlist"
                             aria-label="Save for later"
                           >
-                            <Heart size={14} className={isWishlisted ? 'fill-current' : ''} />
+                            <Heart size="0.875rem" className={isWishlisted ? 'fill-current' : ''} />
                           </button>
                           <button
                             type="button"
@@ -404,7 +404,7 @@ export function CartClientPage() {
                             title="Remove from bag"
                             aria-label="Remove item"
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size="0.875rem" />
                           </button>
                         </div>
                       </div>
@@ -412,22 +412,22 @@ export function CartClientPage() {
                       {/* Specification Chips */}
                       <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
                         {item.color && (
-                          <span className="bg-[#FAF5EC] border border-[#E5D7C3] text-[#735A4A] px-2.5 py-0.5 rounded-md text-[11px] font-medium">
+                          <span className="bg-[#FAF5EC] border border-[#E5D7C3] text-[#735A4A] px-2.5 py-0.5 rounded-md text-[0.6875rem] font-medium">
                             {item.color}
                           </span>
                         )}
                         {item.size && (
-                          <span className="bg-[#FAF5EC] border border-[#E5D7C3] text-[#735A4A] px-2.5 py-0.5 rounded-md text-[11px] font-medium">
+                          <span className="bg-[#FAF5EC] border border-[#E5D7C3] text-[#735A4A] px-2.5 py-0.5 rounded-md text-[0.6875rem] font-medium">
                             Size: {item.size}
                           </span>
                         )}
                         {fabric && (
-                          <span className="bg-[#FAF5EC] border border-[#E5D7C3] text-[#735A4A] px-2.5 py-0.5 rounded-md text-[11px] font-medium truncate max-w-[220px]">
+                          <span className="bg-[#FAF5EC] border border-[#E5D7C3] text-[#735A4A] px-2.5 py-0.5 rounded-md text-[0.6875rem] font-medium truncate max-w-[13.75rem]">
                             {fabric}
                           </span>
                         )}
                         {workType && (
-                          <span className="bg-[#FAF5EC] border border-[#E5D7C3] text-[#735A4A] px-2.5 py-0.5 rounded-md text-[11px] font-medium truncate max-w-[220px]">
+                          <span className="bg-[#FAF5EC] border border-[#E5D7C3] text-[#735A4A] px-2.5 py-0.5 rounded-md text-[0.6875rem] font-medium truncate max-w-[13.75rem]">
                             {workType}
                           </span>
                         )}
@@ -441,8 +441,8 @@ export function CartClientPage() {
                       )}
 
                       {/* Bridal Reassurance Pill */}
-                      <div className="flex items-center gap-2 text-[11px] text-[#8A6A55] bg-[#FAF7F2] border border-[#EADCC9] px-3 py-1.5 rounded-lg mt-1">
-                        <Scissors size={12} className="text-[#C49A5A] shrink-0" />
+                      <div className="flex items-center gap-2 text-[0.6875rem] text-[#8A6A55] bg-[#FAF7F2] border border-[#EADCC9] px-3 py-1.5 rounded-lg mt-1">
+                        <Scissors size="0.75rem" className="text-[#C49A5A] shrink-0" />
                         <span>Includes matching dupatta &amp; cancan · Complimentary master blouse fitting consultation</span>
                       </div>
                     </div>
@@ -457,7 +457,7 @@ export function CartClientPage() {
                             className="px-3 py-1.5 text-[#221617] hover:bg-[#C49A5A] hover:text-white transition-colors cursor-pointer"
                             aria-label="Decrease quantity"
                           >
-                            <Minus size={11} />
+                            <Minus size="0.6875rem" />
                           </button>
                           <span className="px-3.5 text-xs font-semibold text-[#221617] min-w-[2rem] text-center">
                             {item.quantity}
@@ -468,11 +468,11 @@ export function CartClientPage() {
                             className="px-3 py-1.5 text-[#221617] hover:bg-[#C49A5A] hover:text-white transition-colors cursor-pointer"
                             aria-label="Increase quantity"
                           >
-                            <Plus size={11} />
+                            <Plus size="0.6875rem" />
                           </button>
                         </div>
 
-                        <span className="text-[11px] text-[#8A6A55] hidden sm:inline">
+                        <span className="text-[0.6875rem] text-[#8A6A55] hidden sm:inline">
                           Qty: {item.quantity}
                         </span>
                       </div>
@@ -481,7 +481,7 @@ export function CartClientPage() {
                         <p className="font-serif text-lg sm:text-xl font-bold text-[#221617]">
                           {formatPrice(item.price * item.quantity)}
                         </p>
-                        <p className="text-[10px] text-[#8A6A55]">
+                        <p className="text-[0.625rem] text-[#8A6A55]">
                           (Incl. all taxes &amp; duties)
                         </p>
                       </div>
@@ -494,34 +494,34 @@ export function CartClientPage() {
             {/* 4-Pillar Luxury Reassurance Bar */}
             <div className="bg-white border border-[#EADCC9] rounded-2xl p-5 sm:p-6 shadow-xs grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
               <div className="flex items-start gap-2.5">
-                <Crown size={18} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                <Crown size="1.125rem" className="text-[#C49A5A] shrink-0 mt-0.5" />
                 <div className="text-xs">
                   <p className="font-semibold text-[#221617]">Authentic Karigari</p>
-                  <p className="text-[11px] text-[#735A4A] mt-0.5">Certified pure silks &amp; real zardozi.</p>
+                  <p className="text-[0.6875rem] text-[#735A4A] mt-0.5">Certified pure silks &amp; real zardozi.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-2.5">
-                <Scissors size={18} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                <Scissors size="1.125rem" className="text-[#C49A5A] shrink-0 mt-0.5" />
                 <div className="text-xs">
                   <p className="font-semibold text-[#221617]">Custom Fitting</p>
-                  <p className="text-[11px] text-[#735A4A] mt-0.5">Virtual trial with master couturiers.</p>
+                  <p className="text-[0.6875rem] text-[#735A4A] mt-0.5">Virtual trial with master couturiers.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-2.5">
-                <Truck size={18} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                <Truck size="1.125rem" className="text-[#C49A5A] shrink-0 mt-0.5" />
                 <div className="text-xs">
                   <p className="font-semibold text-[#221617]">Insured Transit</p>
-                  <p className="text-[11px] text-[#735A4A] mt-0.5">Sealed bridal box delivered safely.</p>
+                  <p className="text-[0.6875rem] text-[#735A4A] mt-0.5">Sealed bridal box delivered safely.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-2.5">
-                <RefreshCw size={18} className="text-[#C49A5A] shrink-0 mt-0.5" />
+                <RefreshCw size="1.125rem" className="text-[#C49A5A] shrink-0 mt-0.5" />
                 <div className="text-xs">
                   <p className="font-semibold text-[#221617]">7-Day Exchange</p>
-                  <p className="text-[11px] text-[#735A4A] mt-0.5">Hassle-free size adjustment care.</p>
+                  <p className="text-[0.6875rem] text-[#735A4A] mt-0.5">Hassle-free size adjustment care.</p>
                 </div>
               </div>
             </div>
@@ -532,12 +532,12 @@ export function CartClientPage() {
             <div className="bg-white border border-[#EADCC9] rounded-3xl p-6 sm:p-7 shadow-[0_8px_30px_rgba(46,34,28,0.06)] sticky top-24 space-y-6">
               <div className="flex items-center justify-between pb-4 border-b border-[#EADCC9]">
                 <div className="flex items-center gap-2">
-                  <Lock size={14} className="text-[#C49A5A]" />
+                  <Lock size="0.875rem" className="text-[#C49A5A]" />
                   <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#221617]">
                     Atelier Summary
                   </h2>
                 </div>
-                <span className="text-[10px] text-emerald-800 font-semibold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                <span className="text-[0.625rem] text-emerald-800 font-semibold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
                   SSL Secured
                 </span>
               </div>
@@ -564,7 +564,7 @@ export function CartClientPage() {
                 {appliedCoupon && (
                   <div className="flex justify-between items-center text-emerald-800 bg-emerald-50/80 border border-emerald-200 p-2.5 rounded-xl font-medium">
                     <div className="flex items-center gap-1.5">
-                      <Sparkles size={12} className="text-emerald-700" />
+                      <Sparkles size="0.75rem" className="text-emerald-700" />
                       <span>Privilege ({appliedCoupon.code})</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -572,7 +572,7 @@ export function CartClientPage() {
                       <button
                         type="button"
                         onClick={handleRemoveCoupon}
-                        className="text-[10px] text-emerald-900 underline hover:text-red-700 cursor-pointer"
+                        className="text-[0.625rem] text-emerald-900 underline hover:text-red-700 cursor-pointer"
                       >
                         Remove
                       </button>
@@ -591,13 +591,13 @@ export function CartClientPage() {
                     />
                     <div className="text-xs">
                       <span className="font-semibold text-[#221617] flex items-center gap-1.5">
-                        <Gift size={13} className="text-[#C49A5A]" />
+                        <Gift size="0.8125rem" className="text-[#C49A5A]" />
                         <span>Royal Trousseau Box &amp; Note</span>
-                        <span className="text-[10px] font-normal text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded">
+                        <span className="text-[0.625rem] font-normal text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded">
                           Free
                         </span>
                       </span>
-                      <p className="text-[11px] text-[#735A4A] mt-0.5 leading-tight">
+                      <p className="text-[0.6875rem] text-[#735A4A] mt-0.5 leading-tight">
                         Presented in heirloom velvet-lined box with handwritten calligraphy card.
                       </p>
                     </div>
@@ -624,7 +624,7 @@ export function CartClientPage() {
                       onClick={() => setShowPromoInput(true)}
                       className="text-xs text-[#C49A5A] hover:text-[#221617] underline underline-offset-4 cursor-pointer transition-colors flex items-center gap-1.5"
                     >
-                      <Sparkles size={12} />
+                      <Sparkles size="0.75rem" />
                       <span>Have an atelier privilege or coupon code?</span>
                     </button>
                   ) : !appliedCoupon ? (
@@ -653,7 +653,7 @@ export function CartClientPage() {
                     <span className="font-serif text-base font-semibold text-[#221617]">
                       Grand Total
                     </span>
-                    <p className="text-[10px] text-[#735A4A]">All duties &amp; express courier included</p>
+                    <p className="text-[0.625rem] text-[#735A4A]">All duties &amp; express courier included</p>
                   </div>
                   <span className="font-serif text-2xl sm:text-3xl font-bold text-[#221617]">
                     {formatPrice(total)}
@@ -668,13 +668,13 @@ export function CartClientPage() {
                   onClick={handleProceedToCheckout}
                   className="w-full bg-[#221617] hover:bg-[#C49A5A] text-white py-4 px-6 text-xs font-semibold uppercase tracking-[0.22em] rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 group/btn"
                 >
-                  <Lock size={13} className="text-[#C49A5A] group-hover/btn:text-white transition-colors" />
+                  <Lock size="0.8125rem" className="text-[#C49A5A] group-hover/btn:text-white transition-colors" />
                   <span>Proceed to Checkout</span>
-                  <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                  <ArrowRight size="0.875rem" className="group-hover/btn:translate-x-1 transition-transform" />
                 </button>
 
                 {!session?.user && (
-                  <p className="text-[11px] text-[#8A6A55] text-center font-normal">
+                  <p className="text-[0.6875rem] text-[#8A6A55] text-center font-normal">
                     Guest checkout supported · Sign in to earn bridal loyalty privileges
                   </p>
                 )}
@@ -688,8 +688,8 @@ export function CartClientPage() {
           <section className="pt-12 border-t border-[#EADCC9] space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
               <div>
-                <div className="flex items-center gap-2 text-[#C49A5A] text-[10.5px] font-semibold tracking-[0.25em] uppercase">
-                  <Sparkles size={13} />
+                <div className="flex items-center gap-2 text-[#C49A5A] text-[0.65625rem] font-semibold tracking-[0.25em] uppercase">
+                  <Sparkles size="0.8125rem" />
                   <span>Atelier Styling Pairing</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-serif text-[#221617] mt-1">
@@ -705,7 +705,7 @@ export function CartClientPage() {
                 className="text-xs font-semibold text-[#8A6A55] hover:text-[#C49A5A] uppercase tracking-[0.18em] transition-colors inline-flex items-center gap-1.5 shrink-0"
               >
                 <span>Browse All Accessories</span>
-                <ArrowRight size={12} />
+                <ArrowRight size="0.75rem" />
               </Link>
             </div>
 
@@ -717,7 +717,7 @@ export function CartClientPage() {
                     key={p._id}
                     className="bg-white border border-[#EADCC9] rounded-2xl p-3 sm:p-4 flex flex-col justify-between group shadow-sm hover:shadow-md transition-all relative"
                   >
-                    <span className="absolute top-5 left-5 z-10 bg-[#221617]/80 backdrop-blur-xs text-[9px] font-semibold text-white px-2 py-0.5 rounded tracking-widest uppercase">
+                    <span className="absolute top-5 left-5 z-10 bg-[#221617]/80 backdrop-blur-xs text-[0.5625rem] font-semibold text-white px-2 py-0.5 rounded tracking-widest uppercase">
                       Pairing
                     </span>
 
@@ -729,7 +729,7 @@ export function CartClientPage() {
                         src={p.images[0] ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791872431/aafreen-couture/products/shahi-sindoori-red-bridal-lehenga-0929.webp'}
                         alt={p.name}
                         fill
-                        sizes="(max-width: 640px) 50vw, 25vw"
+                        sizes="(max-width: 40em) 50vw, 25vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                       {p.images[1] && (
@@ -737,7 +737,7 @@ export function CartClientPage() {
                           src={p.images[1]}
                           alt={`${p.name} alternate view`}
                           fill
-                          sizes="(max-width: 640px) 50vw, 25vw"
+                          sizes="(max-width: 40em) 50vw, 25vw"
                           className="object-cover opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
                         />
                       )}
@@ -751,7 +751,7 @@ export function CartClientPage() {
                         {p.name}
                       </Link>
                       {fabric && (
-                        <p className="text-[10px] text-[#8A6A55] uppercase tracking-wider truncate">
+                        <p className="text-[0.625rem] text-[#8A6A55] uppercase tracking-wider truncate">
                           {fabric}
                         </p>
                       )}
@@ -762,9 +762,9 @@ export function CartClientPage() {
 
                     <button
                       onClick={() => handleQuickAdd(p)}
-                      className="mt-3 w-full py-2.5 bg-[#221617] hover:bg-[#C49A5A] text-white text-[10px] font-semibold tracking-wider uppercase transition-colors rounded-xl flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                      className="mt-3 w-full py-2.5 bg-[#221617] hover:bg-[#C49A5A] text-white text-[0.625rem] font-semibold tracking-wider uppercase transition-colors rounded-xl flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
                     >
-                      <Plus size={12} />
+                      <Plus size="0.75rem" />
                       <span>Quick Add</span>
                     </button>
                   </div>
@@ -779,7 +779,7 @@ export function CartClientPage() {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#EADCC9] p-4 shadow-[0_-8px_24px_rgba(46,34,28,0.08)]">
         <div className="max-w-md mx-auto flex items-center justify-between gap-4">
           <div>
-            <span className="text-[10px] text-[#8A6A55] uppercase tracking-wider block">Total</span>
+            <span className="text-[0.625rem] text-[#8A6A55] uppercase tracking-wider block">Total</span>
             <span className="font-serif text-lg font-bold text-[#221617]">{formatPrice(total)}</span>
           </div>
 
@@ -788,9 +788,9 @@ export function CartClientPage() {
             onClick={handleProceedToCheckout}
             className="flex-1 bg-[#221617] hover:bg-[#C49A5A] text-white py-3 px-5 text-xs font-semibold uppercase tracking-[0.18em] rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm"
           >
-            <Lock size={12} className="text-[#C49A5A]" />
+            <Lock size="0.75rem" className="text-[#C49A5A]" />
             <span>Proceed to Checkout</span>
-            <ArrowRight size={12} />
+            <ArrowRight size="0.75rem" />
           </button>
         </div>
       </div>

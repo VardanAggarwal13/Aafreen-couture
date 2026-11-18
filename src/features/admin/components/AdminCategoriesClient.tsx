@@ -48,9 +48,9 @@ export function AdminCategoriesClient({ categories }: { categories: Category[] }
         <p className="text-sm text-[#8A6A55] font-medium">{categories.length} categories registered</p>
         <Link
           href="/admin/categories/new"
-          className="inline-flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-[11px] font-semibold tracking-wider uppercase px-5 py-2 rounded-lg hover:bg-[#1A1410] shadow-sm transition-all"
+          className="inline-flex items-center gap-2 bg-[#2E221C] text-[#F8F5F1] text-[0.6875rem] font-semibold tracking-wider uppercase px-5 py-2 rounded-lg hover:bg-[#1A1410] shadow-sm transition-all"
         >
-          <Plus size={14} className="text-[#C9A86A]" /> Add Category
+          <Plus size="0.875rem" className="text-[#C9A86A]" /> Add Category
         </Link>
       </div>
 
@@ -58,7 +58,7 @@ export function AdminCategoriesClient({ categories }: { categories: Category[] }
         <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5] text-[#8A6A55] text-[11px] uppercase tracking-wider font-semibold">
+            <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5] text-[#8A6A55] text-[0.6875rem] uppercase tracking-wider font-semibold">
               <th className="text-left px-6 py-2.5">Name</th>
               <th className="text-left px-6 py-2.5 hidden sm:table-cell">Slug</th>
               <th className="text-left px-6 py-2.5 hidden md:table-cell">Display Order</th>
@@ -74,7 +74,7 @@ export function AdminCategoriesClient({ categories }: { categories: Category[] }
                 <td className="px-6 py-2.5 text-[#8A6A55] font-medium hidden md:table-cell">{cat.sortOrder}</td>
                 <td className="px-6 py-2.5">
                   <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wide ${
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[0.6875rem] font-medium tracking-wide ${
                       cat.isActive
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                         : 'bg-[#FAF7F2] text-[#8A6A55] border border-[#DDD2C5]'
@@ -90,14 +90,14 @@ export function AdminCategoriesClient({ categories }: { categories: Category[] }
                       className="p-1.5 rounded-md text-[#8A6A55] hover:text-[#2E221C] hover:bg-[#FAF7F2] transition-colors"
                       title="View Category"
                     >
-                      <Eye size={14} />
+                      <Eye size="0.875rem" />
                     </button>
                     <Link
                       href={`/admin/categories/${cat._id}`}
                       className="p-1.5 rounded-md text-[#8A6A55] hover:text-[#2E221C] hover:bg-[#FAF7F2] transition-colors"
                       title="Edit Category"
                     >
-                      <Pencil size={14} />
+                      <Pencil size="0.875rem" />
                     </Link>
                     <button
                       onClick={() => handleDelete(cat._id)}
@@ -105,7 +105,7 @@ export function AdminCategoriesClient({ categories }: { categories: Category[] }
                       className="p-1.5 rounded-md text-[#8A6A55] hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-40"
                       title="Delete Category"
                     >
-                      <Trash2 size={14} />
+                      <Trash2 size="0.875rem" />
                     </button>
                   </div>
                 </td>
@@ -129,7 +129,7 @@ export function AdminCategoriesClient({ categories }: { categories: Category[] }
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base">{viewing.name}</h3>
               <button onClick={() => setViewing(null)} className="text-[#8A6A55] hover:text-[#2E221C] p-1 rounded-md">
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
 

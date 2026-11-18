@@ -40,7 +40,7 @@ export async function BestSellers() {
 
   return (
     <section className="py-10 sm:py-12 lg:py-14 bg-white border-b border-[#E8D8C8]">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="max-w-[87.5rem] mx-auto px-4 sm:px-6 lg:px-10">
         <div className="flex items-center justify-between mb-6 sm:mb-8 lg:mb-10">
           <div>
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-tight text-[#221617]">
@@ -54,7 +54,7 @@ export async function BestSellers() {
             href={`${ROUTES.SHOP}?sort=best-selling`}
             className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
           >
-            View All <ArrowRight size={13} />
+            View All <ArrowRight size="0.8125rem" />
           </Link>
         </div>
 
@@ -74,7 +74,7 @@ export async function BestSellers() {
             className="inline-flex items-center justify-center gap-1.5 w-full py-3 px-4 text-xs font-semibold tracking-[0.16em] uppercase text-heading border border-border rounded-lg bg-surface hover:bg-gold hover:text-white transition-colors"
           >
             <span>View All Best Sellers</span>
-            <ArrowRight size={13} />
+            <ArrowRight size="0.8125rem" />
           </Link>
         </div>
       </div>

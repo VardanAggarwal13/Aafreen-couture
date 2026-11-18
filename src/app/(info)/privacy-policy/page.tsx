@@ -27,7 +27,7 @@ const TOC: TocItem[] = [
 export default async function PrivacyPolicyPage() {
   const cms = await cmsRepository.findBySlug('privacy-policy');
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#221617]">
+    <div className="min-h-dvh bg-background text-heading">
       {/* Luxury Editorial Hero */}
       <InfoHeroBanner
         badge={cms?.heroBadge ?? 'Data Protection & Security'}
@@ -41,20 +41,20 @@ export default async function PrivacyPolicyPage() {
       />
 
       {/* Main Container with 2-Column Responsive Layout */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-12 sm:py-16">
+      <div className="max-w-[87.5rem] mx-auto px-4 sm:px-6 lg:px-10 py-12 sm:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
           {/* Main Article Content */}
-          <article className="lg:col-span-8 space-y-8 font-sans text-sm sm:text-base text-[#5C554E] leading-relaxed">
+          <article className="lg:col-span-8 space-y-8 font-sans text-sm sm:text-base text-text leading-relaxed">
             
             {/* Section 1: Privacy Commitment */}
-            <section id="sec-privacy-commitment" className="bg-white border-l-4 border-l-[#C49A5A] p-6 sm:p-7 rounded-2xl shadow-sm scroll-mt-24">
+            <section id="sec-privacy-commitment" className="bg-white border-l-4 border-l-gold p-6 sm:p-7 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-[#C49A5A]/30 flex items-center justify-center text-[#C49A5A] shrink-0">
-                  <Shield size={20} />
+                <div className="w-10 h-10 rounded-full bg-background border border-gold/30 flex items-center justify-center text-gold-ink shrink-0">
+                  <Shield size="1.25rem" />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
+                  <h2 className="text-lg sm:text-xl font-serif font-semibold text-heading">
                     01. Our Privacy Commitment
                   </h2>
                   <p>
@@ -67,15 +67,15 @@ export default async function PrivacyPolicyPage() {
             {/* Section 2: Info Collected */}
             <section id="sec-info-collected" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">02</span>
-                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
+                <span className="w-7 h-7 rounded-full bg-gold/15 border border-gold/40 text-gold-ink text-xs flex items-center justify-center font-bold font-mono">02</span>
+                <h2 className="text-lg sm:text-xl font-serif font-semibold text-heading">
                   Information We Collect
                 </h2>
               </div>
               <p className="mb-3">
                 We collect personal information that you provide when creating an account, ordering a bridal ensemble, or connecting with our boutique concierge:
               </p>
-              <ul className="list-disc pl-5 space-y-2 marker:text-[#C49A5A]">
+              <ul className="list-disc pl-5 space-y-2 marker:text-gold-ink">
                 <li><strong>Identity &amp; Contact Information:</strong> Full name, email address, mobile number, billing address, and courier delivery destination.</li>
                 <li><strong>Bespoke Couture Details:</strong> Sizing measurements, bespoke design preferences, custom color choices, and tailoring instructions.</li>
                 <li><strong>Order &amp; Transaction Information:</strong> Products purchased, payment mode, transaction IDs, invoice records, and delivery status.</li>
@@ -86,16 +86,16 @@ export default async function PrivacyPolicyPage() {
             {/* Section 3: Usage */}
             <section id="sec-usage" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">03</span>
-                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
+                <span className="w-7 h-7 rounded-full bg-gold/15 border border-gold/40 text-gold-ink text-xs flex items-center justify-center font-bold font-mono">03</span>
+                <h2 className="text-lg sm:text-xl font-serif font-semibold text-heading">
                   How We Use Your Information
                 </h2>
               </div>
               <p className="mb-3">We use your information exclusively for legitimate business and fulfillment purposes:</p>
-              <ul className="list-disc pl-5 space-y-1.5 marker:text-[#C49A5A]">
+              <ul className="list-disc pl-5 space-y-1.5 marker:text-gold-ink">
                 <li>To tailor, pack, insure, and dispatch your luxury apparel orders</li>
                 <li>To transmit automated order confirmations, AWB tracking links, and delivery updates via Email, SMS, and WhatsApp</li>
-                <li>To coordinate bridal trials, virtual sizing consultations, and complimentary alterations</li>
+                <li>To coordinate bridal trials, virtual sizing consultations, and alterations</li>
                 <li>To execute eligible size exchanges and 100% refund requests on verified refused parcels</li>
                 <li>To maintain account security and prevent fraudulent transactions</li>
               </ul>
@@ -104,23 +104,23 @@ export default async function PrivacyPolicyPage() {
             {/* Section 4: Payment Security (Razorpay) */}
             <section id="sec-payment-security" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">04</span>
-                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
+                <span className="w-7 h-7 rounded-full bg-gold/15 border border-gold/40 text-gold-ink text-xs flex items-center justify-center font-bold font-mono">04</span>
+                <h2 className="text-lg sm:text-xl font-serif font-semibold text-heading">
                   Payment Security Standards (Razorpay Integration)
                 </h2>
               </div>
-              <div className="bg-[#FAF7F2] p-4 border border-[#C49A5A]/30 rounded-lg mb-4 flex items-start gap-3.5">
-                <Lock className="text-[#C49A5A] shrink-0 mt-0.5" size={20} />
+              <div className="bg-background p-4 border border-gold/30 rounded-lg mb-4 flex items-start gap-3.5">
+                <Lock className="text-gold-ink shrink-0 mt-0.5" size="1.25rem" />
                 <div>
-                  <p className="font-semibold text-[#1A1011] text-xs uppercase tracking-wider mb-1">
+                  <p className="font-semibold text-heading text-xs uppercase tracking-wider mb-1">
                     PCI-DSS Level 1 Encrypted Payment Flow
                   </p>
-                  <p className="text-xs text-[#5C554E] leading-relaxed">
+                  <p className="text-xs text-text leading-relaxed">
                     All payment transactions on Aafreen Couture are securely routed through <strong>Razorpay</strong>, an RBI-regulated payment aggregator. Sensitive payment data is encrypted using 256-bit SSL technology.
                   </p>
                 </div>
               </div>
-              <p className="text-xs text-[#7D756C]">
+              <p className="text-xs text-text">
                 Aafreen Couture <strong>does not capture, store, or view</strong> full credit/debit card numbers, CVVs, or online banking passwords on our servers.
               </p>
             </section>
@@ -128,15 +128,15 @@ export default async function PrivacyPolicyPage() {
             {/* Section 5: Sharing */}
             <section id="sec-sharing" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">05</span>
-                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
+                <span className="w-7 h-7 rounded-full bg-gold/15 border border-gold/40 text-gold-ink text-xs flex items-center justify-center font-bold font-mono">05</span>
+                <h2 className="text-lg sm:text-xl font-serif font-semibold text-heading">
                   Sharing with Trusted Third Parties
                 </h2>
               </div>
               <p className="mb-3">
                 We strictly <strong>never sell, lease, or rent</strong> your personal data. We share relevant data only with vetted partners necessary for fulfilling our services:
               </p>
-              <ul className="list-disc pl-5 space-y-1.5 marker:text-[#C49A5A]">
+              <ul className="list-disc pl-5 space-y-1.5 marker:text-gold-ink">
                 <li><strong>Courier &amp; Logistics Partners:</strong> Blue Dart, Delhivery, DHL Express, and FedEx to deliver your garments safely.</li>
                 <li><strong>Payment Aggregators:</strong> Razorpay for card, UPI, and netbanking processing.</li>
                 <li><strong>Communication APIs:</strong> Official WhatsApp and SMS gateways for dispatch tracking.</li>
@@ -147,8 +147,8 @@ export default async function PrivacyPolicyPage() {
             {/* Section 6: Cookies */}
             <section id="sec-cookies" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">06</span>
-                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
+                <span className="w-7 h-7 rounded-full bg-gold/15 border border-gold/40 text-gold-ink text-xs flex items-center justify-center font-bold font-mono">06</span>
+                <h2 className="text-lg sm:text-xl font-serif font-semibold text-heading">
                   Cookies &amp; Tracking Technologies
                 </h2>
               </div>
@@ -160,16 +160,16 @@ export default async function PrivacyPolicyPage() {
             {/* Section 7: Retention & Rights */}
             <section id="sec-retention-rights" className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#1A1011] text-[#C49A5A] text-xs flex items-center justify-center font-bold font-mono">07</span>
-                <h2 className="text-base sm:text-lg font-sans font-bold text-[#1A1011]">
+                <span className="w-7 h-7 rounded-full bg-gold/15 border border-gold/40 text-gold-ink text-xs flex items-center justify-center font-bold font-mono">07</span>
+                <h2 className="text-lg sm:text-xl font-serif font-semibold text-heading">
                   Data Retention &amp; Your Legal Rights
                 </h2>
               </div>
               <p className="mb-3">
                 We retain personal records only for the period required to fulfill orders, provide lifetime alteration assistance, satisfy GST auditing regulations, and resolve disputes.
               </p>
-              <p className="font-semibold text-[#1A1011] mb-2">You hold the right to:</p>
-              <ul className="list-disc pl-5 space-y-1.5 marker:text-[#C49A5A]">
+              <p className="font-semibold text-heading mb-2">You hold the right to:</p>
+              <ul className="list-disc pl-5 space-y-1.5 marker:text-gold-ink">
                 <li>Request access to your stored personal information</li>
                 <li>Request correction or updating of outdated details</li>
                 <li>Request deletion of your account and personal history (subject to legal compliance)</li>
@@ -178,42 +178,42 @@ export default async function PrivacyPolicyPage() {
             </section>
 
             {/* Section 8: Grievance Officer */}
-            <section id="sec-grievance" className="bg-[#221617] text-white p-6 sm:p-8 rounded-2xl shadow-md scroll-mt-24">
+            <section id="sec-grievance" className="bg-navbar text-heading border border-border border-t-2 border-t-gold p-6 sm:p-8 rounded-2xl scroll-mt-24">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-[#C49A5A] text-[#1A1011] text-xs flex items-center justify-center font-bold font-mono">08</span>
-                <h2 className="text-base sm:text-lg font-sans font-bold text-[#C49A5A]">
+                <span className="w-7 h-7 rounded-full bg-gold text-heading text-xs flex items-center justify-center font-bold font-mono">08</span>
+                <h2 className="text-lg sm:text-xl font-serif font-semibold text-gold-ink">
                   Grievance Officer &amp; Privacy Desk
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-white/80 leading-relaxed mb-6 font-sans">
+              <p className="text-xs sm:text-sm text-text leading-relaxed mb-6 font-sans">
                 In compliance with the <em>Information Technology Act, 2000</em>, if you have any questions or grievances regarding our privacy practices:
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
-                <div className="bg-[#2C1A1C] p-4 rounded-lg border border-[#C49A5A]/20">
-                  <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                    <Mail size={13} /> Privacy Officer Email
+                <div className="bg-surface p-4 rounded-lg border border-border">
+                  <p className="text-gold-ink font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <Mail size="0.8125rem" /> Privacy Officer Email
                   </p>
-                  <a href={`mailto:${siteConfig.email}`} className="text-white hover:text-[#C49A5A] transition-colors">
+                  <a href={`mailto:${siteConfig.email}`} className="text-heading hover:text-gold-ink transition-colors">
                     {siteConfig.email}
                   </a>
                 </div>
 
-                <div className="bg-[#2C1A1C] p-4 rounded-lg border border-[#C49A5A]/20">
-                  <p className="text-[#C49A5A] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                    <Phone size={13} /> Grievance Helpline
+                <div className="bg-surface p-4 rounded-lg border border-border">
+                  <p className="text-gold-ink font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <Phone size="0.8125rem" /> Grievance Helpline
                   </p>
-                  <a href={`tel:${siteConfig.phone}`} className="text-white hover:text-[#C49A5A] transition-colors">
+                  <a href={`tel:${siteConfig.phone}`} className="text-heading hover:text-gold-ink transition-colors">
                     {siteConfig.phone}
                   </a>
                 </div>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-[#C49A5A]/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60 font-sans">
+              <div className="mt-6 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text/80 font-sans">
                 <p>Aafreen Couture By Pearl · SCO No. 43, 1st Floor, B-Block Market, New Amritsar, Amritsar, Punjab — 143001</p>
                 <Link
                   href="/contact"
-                  className="bg-[#C49A5A] text-[#1A1011] hover:bg-white text-[10.5px] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-colors rounded-lg"
+                  className="bg-gold text-heading hover:bg-gold-hover whitespace-nowrap shrink-0 text-[0.65625rem] font-semibold uppercase tracking-[0.2em] px-5 py-2 transition-colors rounded-lg"
                 >
                   Contact Desk →
                 </Link>

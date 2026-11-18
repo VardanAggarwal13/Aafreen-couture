@@ -6,6 +6,7 @@ import { ShopByOccasion } from '@/features/home/components/ShopByOccasion';
 import { FeaturedCollections } from '@/features/home/components/FeaturedCollections';
 import { BestSellers } from '@/features/home/components/BestSellers';
 import { CustomerReviews } from '@/features/home/components/CustomerReviews';
+import { Testimonials } from '@/features/home/components/Testimonials';
 import { siteConfig } from '@/config/site.config';
 import type { Metadata } from 'next';
 
@@ -43,26 +44,14 @@ export default function HomePage() {
       {/* 1. Full-screen hero */}
       <HeroSection />
 
-      {/* 2. Trust strip */}
-      <TrustBadges />
-
-      {/* 3. Category circles */}
-      <CategoryGrid />
-
-      {/* 4. New arrivals grid */}
-      <NewArrivals />
-
-      {/* 5. Shop by occasion */}
-      <ShopByOccasion />
-
-      {/* 6. Featured collections editorial tiles */}
-      <FeaturedCollections />
-
-      {/* 7. Best sellers */}
-      <BestSellers />
-
-      {/* 8. Testimonials */}
-      <CustomerReviews />
+      {/* Everything below the hero skips layout/paint until it nears the viewport */}
+      <div className="cv-auto"><TrustBadges /></div>
+      <div className="cv-auto"><CategoryGrid /></div>
+      <div className="cv-auto"><NewArrivals /></div>
+      <div className="cv-auto"><ShopByOccasion /></div>
+      <div className="cv-auto"><FeaturedCollections /></div>
+      <div className="cv-auto"><BestSellers /></div>
+      <div className="cv-auto"><CustomerReviews fallback={<Testimonials />} /></div>
     </>
   );
 }

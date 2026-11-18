@@ -82,7 +82,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-start justify-center px-4 pt-[9vh] sm:pt-[11vh] pb-6">
+    <div className="fixed inset-0 z-[70] flex items-start justify-center px-4 pt-[9dvh] sm:pt-[11dvh] pb-6">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/45 backdrop-blur-xs animate-in fade-in duration-200"
@@ -91,10 +91,10 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-2xl bg-surface rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[74vh] animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-2xl bg-surface rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[74dvh] animate-in fade-in zoom-in-95 duration-200">
         {/* Search input row */}
-        <form onSubmit={handleSubmit} className="flex items-center gap-3 px-5 sm:px-6 h-16 sm:h-[68px] shrink-0">
-          <Search size={19} className={cn('shrink-0 transition-colors', focused ? 'text-gold' : 'text-text/50')} />
+        <form onSubmit={handleSubmit} className="flex items-center gap-3 px-5 sm:px-6 h-16 sm:h-[4.25rem] shrink-0">
+          <Search size="1.1875rem" className={cn('shrink-0 transition-colors', focused ? 'text-gold' : 'text-text/50')} />
           <input
             aria-label="Search products"
             ref={inputRef}
@@ -105,7 +105,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             placeholder="What are you looking for?"
             className="flex-1 bg-transparent text-base sm:text-lg text-heading placeholder:text-text/45 outline-none min-w-0"
           />
-          <span className="hidden sm:inline-flex items-center px-2 py-1 rounded-md border border-border text-[10px] font-mono text-text/50 bg-background shrink-0">
+          <span className="hidden sm:inline-flex items-center px-2 py-1 rounded-md border border-border text-[0.625rem] font-mono text-text/50 bg-background shrink-0">
             esc
           </span>
           <button
@@ -114,7 +114,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             aria-label="Close search"
             className="p-1.5 rounded-full text-text/60 hover:text-heading hover:bg-background transition-colors cursor-pointer shrink-0"
           >
-            <X size={18} />
+            <X size="1.125rem" />
           </button>
         </form>
         <div className="border-t border-border" />
@@ -126,12 +126,13 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               Start typing to search our full catalogue…
             </p>
           ) : isFetching ? (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3.5 sm:gap-4">
+            <div role="status" aria-live="polite" aria-busy="true" className="grid grid-cols-3 sm:grid-cols-4 gap-3.5 sm:gap-4">
+              <span className="sr-only">Searching…</span>
               {Array.from({ length: RESULT_LIMIT }, (_, i) => (
                 <div key={i} className="flex flex-col gap-2">
-                  <div className="aspect-[4/5] rounded-lg bg-background animate-pulse" />
-                  <div className="h-2.5 bg-background rounded-full animate-pulse w-4/5" />
-                  <div className="h-2.5 bg-background rounded-full animate-pulse w-1/3" />
+                  <div aria-hidden="true" className="skeleton aspect-[4/5] rounded-lg" />
+                  <div aria-hidden="true" className="skeleton h-2.5 rounded-full w-4/5" />
+                  <div aria-hidden="true" className="skeleton h-2.5 rounded-full w-1/3" />
                 </div>
               ))}
             </div>
@@ -146,15 +147,15 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               <Link
                 href={ROUTES.COLLECTIONS}
                 onClick={onClose}
-                className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold hover:text-heading transition-colors"
+                className="inline-flex items-center gap-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-gold hover:text-heading transition-colors"
               >
                 Browse Collections
-                <ArrowRight size={12} />
+                <ArrowRight size="0.75rem" />
               </Link>
             </div>
           ) : (
             <>
-              <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-text/50 pb-2.5">
+              <p className="text-[0.65625rem] font-semibold uppercase tracking-[0.18em] text-text/50 pb-2.5">
                 {results.length} Result{results.length !== 1 ? 's' : ''}
               </p>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-3.5 sm:gap-4">
@@ -171,7 +172,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                           src={product.images[0]}
                           alt={product.name}
                           fill
-                          sizes="(max-width: 640px) 30vw, 22vw"
+                          sizes="(max-width: 40em) 30vw, 22vw"
                           className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
                         />
                       )}
@@ -193,10 +194,10 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
         {trimmed.length >= 2 && results.length > 0 && (
           <button
             onClick={goToFullResults}
-            className="group w-full flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-heading hover:text-gold transition-colors py-3.5 border-t border-border shrink-0 cursor-pointer"
+            className="group w-full flex items-center justify-center gap-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-heading hover:text-gold transition-colors py-3.5 border-t border-border shrink-0 cursor-pointer"
           >
             <span>View All Results</span>
-            <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight size="0.8125rem" className="transition-transform group-hover:translate-x-0.5" />
           </button>
         )}
       </div>

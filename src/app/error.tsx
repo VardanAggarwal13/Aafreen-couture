@@ -2,8 +2,9 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
 
-export default function GlobalError({
+export default function RouteError({
   error,
   reset,
 }: {
@@ -11,29 +12,25 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error('[GlobalError]', error);
+    console.error('[RouteError]', error);
   }, [error]);
 
   return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 text-center">
-      <h1 className="text-2xl font-serif text-brand-black mb-3">Something went wrong</h1>
-      <p className="text-brand-stone text-sm max-w-sm mb-8">
-        An unexpected error occurred. Please try again or contact us if the issue persists.
+    <div role="alert" className="min-h-[70dvh] flex flex-col items-center justify-center px-4 text-center bg-background">
+      <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.3em] text-gold-ink mb-3">Something went wrong</p>
+      <h1 className="text-3xl sm:text-4xl font-serif text-heading mb-3">We couldn&apos;t load this page</h1>
+      <p className="text-text text-sm max-w-sm mb-8 leading-relaxed">
+        An unexpected error occurred. Please try again, or contact us if the problem continues.
       </p>
-      <div className="flex gap-3">
-        <button
-          onClick={reset}
-          className="bg-brand-gold text-white px-6 py-2.5 text-sm font-medium hover:bg-brand-gold/90 transition-colors"
-        >
+      <div className="flex flex-wrap justify-center gap-3">
+        <button type="button" onClick={reset} className={buttonVariants({ variant: 'couture-gold', size: 'couture' })}>
           Try Again
         </button>
-        <Link
-          href="/"
-          className="border border-brand-cream text-brand-black px-6 py-2.5 text-sm font-medium hover:border-brand-gold transition-colors"
-        >
+        <Link href="/" className={buttonVariants({ variant: 'couture-outline', size: 'couture' })}>
           Go Home
         </Link>
       </div>
+      {error.digest && <p className="mt-8 text-[0.6875rem] text-text/80">Reference: {error.digest}</p>}
     </div>
   );
 }

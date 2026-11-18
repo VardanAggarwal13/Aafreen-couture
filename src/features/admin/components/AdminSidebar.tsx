@@ -90,7 +90,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
   return (
     <aside
       className={cn(
-        'fixed inset-y-0 left-0 z-50 w-[230px] shrink-0 bg-[#F4EFEA] flex flex-col h-full overflow-hidden border-r border-[#DDD2C5] select-none transition-transform duration-200 ease-out',
+        'fixed inset-y-0 left-0 z-50 w-[14.375rem] shrink-0 bg-[#F4EFEA] flex flex-col h-full overflow-hidden border-r border-[#DDD2C5] select-none transition-transform duration-200 ease-out',
         'lg:static lg:translate-x-0',
         isOpen ? 'translate-x-0' : '-translate-x-full'
       )}
@@ -102,7 +102,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
             <p className="font-sans text-base tracking-tight text-[#2E221C] font-semibold">
               Aafreen
             </p>
-            <p className="text-[8.5px] tracking-[0.35em] text-[#C9A86A] uppercase font-semibold mt-0.5">
+            <p className="text-[0.53125rem] tracking-[0.35em] text-[#C9A86A] uppercase font-semibold mt-0.5">
               Couture · Admin
             </p>
           </Link>
@@ -115,7 +115,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
             title="View live storefront"
             className="p-1.5 rounded-full hover:bg-white text-[#8A6A55] hover:text-[#C9A86A] transition-colors"
           >
-            <ExternalLink size={13} />
+            <ExternalLink size="0.8125rem" />
           </Link>
           <button
             type="button"
@@ -123,7 +123,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
             aria-label="Close menu"
             className="p-1.5 rounded-full hover:bg-white text-[#8A6A55] hover:text-[#2E221C] transition-colors lg:hidden cursor-pointer"
           >
-            <X size={15} />
+            <X size="0.9375rem" />
           </button>
         </div>
       </div>
@@ -132,7 +132,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
       <nav className="flex-1 overflow-y-auto py-2.5 space-y-4 px-2.5">
         {NAV_GROUPS.map(({ label, items }) => (
           <div key={label}>
-            <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#8A6A55] px-2 mb-1 font-sans">
+            <p className="text-[0.5625rem] font-semibold uppercase tracking-[0.22em] text-[#8A6A55] px-2 mb-1 font-sans">
               {label}
             </p>
             <div className="space-y-0.5">
@@ -146,19 +146,19 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
                     href={href}
                     onClick={onClose}
                     className={cn(
-                      'flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[12.5px] font-medium transition-all group font-sans',
+                      'flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[0.78125rem] font-medium transition-all group font-sans',
                       active
                         ? 'bg-[#C9A86A]/20 text-[#9E7B3A] font-semibold shadow-xs border-l-2 border-[#C9A86A]'
                         : 'text-[#2E221C]/80 hover:text-[#2E221C] hover:bg-white/70'
                     )}
                   >
                     <Icon
-                      size={14}
+                      size="0.875rem"
                       strokeWidth={active ? 2.2 : 1.6}
                       className={active ? 'text-[#C9A86A]' : 'text-[#8A6A55] group-hover:text-[#2E221C]'}
                     />
                     <span className="flex-1 truncate">{itemLabel}</span>
-                    {active && <ChevronRight size={11} className="text-[#C9A86A]" />}
+                    {active && <ChevronRight size="0.6875rem" className="text-[#C9A86A]" />}
                   </Link>
                 );
               })}
@@ -172,9 +172,9 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[10px] text-[#8A6A55] font-medium">Atelier Live · Secure</span>
+            <span className="text-[0.625rem] text-[#8A6A55] font-medium">Atelier Live · Secure</span>
           </div>
-          <span className="text-[9px] font-mono text-[#8A6A55]/70">v2.4</span>
+          <span className="text-[0.5625rem] font-mono text-[#8A6A55]/70">v2.4</span>
         </div>
       </div>
     </aside>
