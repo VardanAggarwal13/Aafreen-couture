@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { CategoryHubServer } from '@/components/shop/CategoryHubServer';
+import { getHero } from '@/server/services/hero-image.service';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
@@ -54,7 +55,8 @@ const RTW_CHAPTERS = [
   },
 ];
 
-export default function ReadyToWearPage() {
+export default async function ReadyToWearPage() {
+  const hero = await getHero('ready-to-wear');
   return (
     <CategoryHubServer
       hubKey="ready-to-wear"
@@ -62,8 +64,8 @@ export default function ReadyToWearPage() {
       italicTitle="Ready To Wear"
       badge="Aafreen Atelier · Instant Couture"
       heroSubtitle="Effortless luxury ready for your grandest moments. High-impact designer creations finished to perfection and ready for immediate shipping worldwide."
-      heroImage="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/rtw-hero.webp"
-      heroObjectPosition="object-[center_20%]"
+      heroImage={hero.image}
+      heroObjectPosition={hero.objectPosition}
       heroHighlights={[
         'Immediate dispatch on all ready-to-wear pieces',
         'Flawlessly proportioned contemporary silhouettes',

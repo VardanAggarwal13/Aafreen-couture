@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import {
   Trash2, Plus, Minus, ShoppingBag, ArrowRight, Sparkles, Heart,
   Lock, Gift, Truck, Scissors, RefreshCw,
-  ChevronRight, Check, Crown
+  ChevronRight, Crown
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';

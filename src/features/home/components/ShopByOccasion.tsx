@@ -132,7 +132,7 @@ export function ShopByOccasion() {
           <Link
             href="/occasions"
             prefetch={true}
-            className="hidden md:inline-flex md:self-end items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
+            className="hidden md:inline-flex md:self-end items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#8A6240] transition-colors underline underline-offset-4"
           >
             View All Occasions <ArrowRight size="0.8125rem" />
           </Link>
@@ -152,7 +152,7 @@ export function ShopByOccasion() {
         <div className="mt-8 text-center md:hidden">
           <Link
             href="/occasions"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#8A6240] transition-colors underline underline-offset-4"
           >
             View All Occasions <ArrowRight size="0.8125rem" />
           </Link>

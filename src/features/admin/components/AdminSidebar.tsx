@@ -10,13 +10,11 @@ import {
   Tag,
   Layers,
   Archive,
-  Ticket,
   ImageIcon,
   FileText,
   Star,
   RotateCcw,
   Settings,
-  Shield,
   ClipboardList,
   ChevronRight,
   ExternalLink,
@@ -46,14 +44,12 @@ const NAV_GROUPS = [
     items: [
       { href: ROUTES.ADMIN_ORDERS, label: 'Orders', icon: ShoppingCart },
       { href: ROUTES.ADMIN_RETURNS, label: 'Returns', icon: RotateCcw },
-      { href: ROUTES.ADMIN_COUPONS, label: 'Coupons', icon: Ticket },
     ],
   },
   {
     label: 'Team & Clients',
     items: [
       { href: ROUTES.ADMIN_CUSTOMERS, label: 'Users & Admins', icon: Users },
-      { href: ROUTES.ADMIN_ROLES, label: 'Staff Roles', icon: Shield },
       { href: ROUTES.ADMIN_REVIEWS, label: 'Reviews', icon: Star },
     ],
   },
@@ -61,6 +57,7 @@ const NAV_GROUPS = [
     label: 'Content & Visuals',
     items: [
       { href: ROUTES.ADMIN_BANNERS, label: 'Banners', icon: ImageIcon },
+      { href: ROUTES.ADMIN_HERO_IMAGES, label: 'Hero Images', icon: ImageIcon },
       { href: ROUTES.ADMIN_BLOG, label: 'Blog Articles', icon: FileText },
       { href: ROUTES.ADMIN_CMS, label: 'CMS Pages', icon: FileText },
     ],

@@ -3,7 +3,7 @@ import { orderRepository } from '@/server/repositories/order.repository';
 import { handleApiError } from '@/lib/api-errors';
 import { requireAdmin } from '@/server/auth';
 import { logAdminAction } from '@/server/services/audit-log.service';
-import type { PaymentStatus } from '@/models/Order';
+import { UpdatePaymentStatusSchema } from '@/validators/order.validators';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -13,15 +13,9 @@ export async function PATCH(req: NextRequest, { params }: Props) {
   try {
     const session = await requireAdmin(req);
     const { id } = await params;
-    const { paymentStatus, note } = await req.json();
+    const { paymentStatus, note } = UpdatePaymentStatusSchema.parse(await req.json());
 
-    if (!paymentStatus) {
-      return NextResponse.json({ error: 'paymentStatus is required' }, { status: 400 });
-    }
-
-    const updated = await orderRepository.updatePayment(id, {
-      paymentStatus: paymentStatus as PaymentStatus,
-    });
+    const updated = await orderRepository.updatePayment(id, { paymentStatus });
 
     if (!updated) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });

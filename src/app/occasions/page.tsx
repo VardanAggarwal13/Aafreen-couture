@@ -7,6 +7,7 @@ import { productRepository } from '@/server/repositories/product.repository';
 import { ProductCard } from '@/components/product/ProductCard';
 import type { IProduct } from '@/types';
 import { siteConfig } from '@/config/site.config';
+import { getHero } from '@/server/services/hero-image.service';
 
 export const metadata: Metadata = {
   title: 'Wedding & Festive Occasions Edit',
@@ -73,6 +74,7 @@ const OCCASIONS_MAIN_CELEBRATION = [
 ];
 
 export default async function OccasionsPage() {
+  const hero = await getHero('occasions');
   // Fetch spotlight products for 3 key ceremonies
   const [jagoData, haldiData, weddingData] = await Promise.all([
     productRepository.findMany({ occasion: 'jago' }, { page: 1, limit: 4 }),
@@ -90,7 +92,7 @@ export default async function OccasionsPage() {
       <div className="w-full bg-[#FAF7F2] border-b border-[#E8D8C8]/70">
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[0.65625rem] uppercase tracking-[0.2em] text-[#6E5C4D]">
-            <Link href="/" className="hover:text-[#A67C52] transition-colors">Home</Link>
+            <Link href="/" className="hover:text-[#8A6240] transition-colors">Home</Link>
             <ChevronRight size="0.625rem" className="text-[#C49A5A]" />
             <span className="text-[#221617] font-semibold">Occasions</span>
           </nav>
@@ -108,7 +110,7 @@ export default async function OccasionsPage() {
 
             <h1 className="text-4xl sm:text-[2.625rem] lg:text-[2.875rem] font-serif text-[#221617] tracking-tight leading-[1.05] mb-2.5">
               The Milestone{' '}
-              <span className="italic font-light text-[#A67C52]">Occasions</span>
+              <span className="italic font-light text-[#8A6240]">Occasions</span>
             </h1>
 
             <p className="text-sm text-[#4A433C] font-sans leading-relaxed mb-4">
@@ -148,12 +150,13 @@ export default async function OccasionsPage() {
           <div className="order-1 lg:order-2 mx-auto w-full max-w-[34rem]">
             <div className="relative aspect-[4/3] lg:aspect-[34/25] overflow-hidden rounded-2xl bg-[#E8D8C8] shadow-[0_18px_40px_-24px_rgba(46,34,28,0.45)]">
               <Image
-                src="https://res.cloudinary.com/adzbklts/image/upload/v1791872396/aafreen-couture/occasions/occasions-hero-stable.webp"
+                src={hero.image}
                 alt="Aafreen Couture Milestone Occasions - Royal Wedding Seated Grandeur"
                 fill
                 priority
                 sizes="(max-width: 64em) 100vw, 544px"
-                className="object-cover object-center"
+                className="object-cover"
+                style={{ objectPosition: hero.objectPosition }}
               />
             </div>
           </div>
@@ -184,7 +187,7 @@ export default async function OccasionsPage() {
         {/* Tier 1: Pre-Wedding Celebrations (4 columns) */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-3.5 pb-2 border-b border-[#E8D8C8]">
-            <span className="text-[0.625rem] uppercase font-bold tracking-[0.25em] text-[#A67C52]">
+            <span className="text-[0.625rem] uppercase font-bold tracking-[0.25em] text-[#8A6240]">
               Part I · Pre-Wedding Celebrations
             </span>
           </div>
@@ -227,7 +230,7 @@ export default async function OccasionsPage() {
         {/* Tier 2: Grand Wedding Festivities (3 featured wide columns) */}
         <div>
           <div className="flex items-center gap-2 mb-3.5 pb-2 border-b border-[#E8D8C8]">
-            <span className="text-[0.625rem] uppercase font-bold tracking-[0.25em] text-[#A67C52]">
+            <span className="text-[0.625rem] uppercase font-bold tracking-[0.25em] text-[#8A6240]">
               Part II · Grand Wedding Celebrations
             </span>
           </div>
@@ -380,7 +383,7 @@ export default async function OccasionsPage() {
             <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#FAF5EE] border border-[#C49A5A]/50 text-[#C49A5A] mb-3.5 mx-auto">
               <Sparkles size="1.125rem" />
             </div>
-            <span className="text-[0.625rem] uppercase font-bold tracking-[0.35em] text-[#A67C52] block mb-1">
+            <span className="text-[0.625rem] uppercase font-bold tracking-[0.35em] text-[#8A6240] block mb-1">
               Bespoke Styling Service
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#221617] tracking-tight mb-2.5">

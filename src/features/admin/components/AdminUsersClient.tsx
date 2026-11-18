@@ -15,6 +15,7 @@ import {
   Mail,
   Calendar,
   Lock,
+  Pencil,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { AdminPagination } from '@/features/admin/components/AdminPagination';
@@ -35,14 +36,22 @@ interface Props {
   initialUsers: UserItem[];
 }
 
+// Accounts that must never be listed in this screen (owner/developer account).
+const HIDDEN_USER_EMAILS = ['vardanaggarwal13@gmail.com'];
+
 export function AdminUsersClient({ initialUsers }: Props) {
-  const [users, setUsers] = useState<UserItem[]>(initialUsers);
+  const [users, setUsers] = useState<UserItem[]>(() => initialUsers.filter((u) => !HIDDEN_USER_EMAILS.includes(u.email.toLowerCase())));
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<'all' | 'admin' | 'customer'>('all');
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  // Edit-details modal state
+  const [editing, setEditing] = useState<UserItem | null>(null);
+  const [editForm, setEditForm] = useState({ name: '', phone: '' });
+  const [savingEdit, setSavingEdit] = useState(false);
 
   // New admin form state
   const [formData, setFormData] = useState({
@@ -117,6 +126,43 @@ export function AdminUsersClient({ initialUsers }: Props) {
     }
   }
 
+  function openEdit(user: UserItem) {
+    setEditing(user);
+    setEditForm({ name: user.name ?? '', phone: user.phone ?? '' });
+  }
+
+  async function handleSaveEdit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editing) return;
+    if (editForm.name.trim().length < 2) {
+      toast.error('Please enter a name (at least 2 characters)');
+      return;
+    }
+
+    setSavingEdit(true);
+    try {
+      const res = await fetch(`/api/admin/users/${editing._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: editForm.name.trim(), phone: editForm.phone.trim() }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? 'Failed to update details');
+
+      setUsers((prev) =>
+        prev.map((u) =>
+          u._id === editing._id ? { ...u, name: editForm.name.trim(), phone: editForm.phone.trim() } : u
+        )
+      );
+      toast.success('Details updated');
+      setEditing(null);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Failed to update details');
+    } finally {
+      setSavingEdit(false);
+    }
+  }
+
   async function handleDeleteUser(user: UserItem) {
     if (!confirm(`Permanently delete user "${user.name}" (${user.email})? This action cannot be undone.`)) {
       return;
@@ -168,6 +214,7 @@ export function AdminUsersClient({ initialUsers }: Props) {
                 : u
             );
           }
+          if (HIDDEN_USER_EMAILS.includes(String(json.data.email).toLowerCase())) return prev;
           return [json.data, ...prev];
         });
       }
@@ -384,6 +431,15 @@ export function AdminUsersClient({ initialUsers }: Props) {
                           </Link>
 
                           <button
+                            onClick={() => openEdit(user)}
+                            className="p-1.5 text-[#8A6A55]/60 hover:text-[#2E221C] transition-colors cursor-pointer"
+                            title="Edit Details"
+                            aria-label={`Edit details for ${user.name}`}
+                          >
+                            <Pencil size="0.875rem" />
+                          </button>
+
+                          <button
                             onClick={() => handleToggleRole(user)}
                             disabled={actionLoading === user._id}
                             className={`px-3 py-1.5 text-[0.6875rem] font-semibold uppercase tracking-wider rounded-lg border transition-colors cursor-pointer ${
@@ -421,6 +477,89 @@ export function AdminUsersClient({ initialUsers }: Props) {
           onPageSizeChange={handlePageSizeChange}
         />
       </div>
+
+      {/* Edit Details Modal */}
+      {editing && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-4 relative">
+            <button
+              onClick={() => setEditing(null)}
+              className="absolute top-4 right-4 text-[#8A6A55] hover:text-[#2E221C] transition-colors cursor-pointer"
+              aria-label="Close"
+            >
+              <X size="1.125rem" />
+            </button>
+
+            <div className="mb-5">
+              <div className="w-10 h-10 rounded-full bg-[#C9A86A]/15 text-[#9E7B3A] flex items-center justify-center mb-2">
+                <Pencil size="1.125rem" />
+              </div>
+              <h2 className="text-lg font-sans font-semibold text-[#2E221C]">Edit Details</h2>
+              <p className="text-xs text-[#8A6A55] mt-0.5">Update the name and phone number for this account.</p>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="space-y-4 text-xs font-sans">
+              <div>
+                <label htmlFor="edit-name" className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[0.625rem] mb-1">
+                  Full Name *
+                </label>
+                <input
+                  id="edit-name"
+                  type="text"
+                  required
+                  value={editForm.name}
+                  onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="edit-email" className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[0.625rem] mb-1">
+                  Email (login, cannot be changed)
+                </label>
+                <input
+                  id="edit-email"
+                  type="email"
+                  value={editing.email}
+                  readOnly
+                  className="w-full bg-[#EAE2D7]/50 border border-[#DDD2C5] px-3 py-2 text-[#8A6A55] rounded-lg outline-none cursor-not-allowed"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="edit-phone" className="block text-[#2E221C] font-semibold uppercase tracking-wider text-[0.625rem] mb-1">
+                  Phone
+                </label>
+                <input
+                  id="edit-phone"
+                  type="tel"
+                  placeholder="+91 98765 43210"
+                  value={editForm.phone}
+                  onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                  className="w-full bg-[#FAF7F2] border border-[#DDD2C5] px-3 py-2 text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A]"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setEditing(null)}
+                  className="px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg border border-[#DDD2C5] text-[#8A6A55] hover:text-[#2E221C] cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingEdit}
+                  className="px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg bg-[#C9A86A] hover:bg-[#B58E52] text-white disabled:opacity-60 cursor-pointer"
+                >
+                  {savingEdit ? 'Saving…' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Add New Administrator Modal */}
       {isModalOpen && (

@@ -49,11 +49,11 @@ export const ROUTES = {
   ADMIN_INVENTORY: '/admin/inventory',
   ADMIN_COUPONS: '/admin/coupons',
   ADMIN_BANNERS: '/admin/banners',
+  ADMIN_HERO_IMAGES: '/admin/hero-images',
   ADMIN_CMS: '/admin/cms',
   ADMIN_BLOG: '/admin/blog',
   ADMIN_REVIEWS: '/admin/reviews',
   ADMIN_RETURNS: '/admin/returns',
   ADMIN_SETTINGS: '/admin/settings',
-  ADMIN_ROLES: '/admin/roles',
   ADMIN_AUDIT_LOGS: '/admin/audit-logs',
 } as const;

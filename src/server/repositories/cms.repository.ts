@@ -1,3 +1,4 @@
+import { ADMIN_LIST_CAP } from './list-limits';
 import mongoose from 'mongoose';
 import { connectDB } from '@/lib/db';
 import CmsPage from '@/models/CmsPage';
@@ -6,7 +7,7 @@ import type { ICmsPage } from '@/models/CmsPage';
 export class CmsRepository {
   async findAll(): Promise<ICmsPage[]> {
     await connectDB();
-    return CmsPage.find({}).sort({ title: 1 }).lean<ICmsPage[]>();
+    return CmsPage.find({}).sort({ title: 1 }).limit(ADMIN_LIST_CAP).lean<ICmsPage[]>();
   }
 
   async findById(id: string): Promise<ICmsPage | null> {

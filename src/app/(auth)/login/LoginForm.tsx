@@ -165,7 +165,7 @@ export function LoginForm({ initialRedirect }: LoginFormProps = {}) {
 
             <h1 className={AUTH_TITLE}>Welcome back</h1>
             <p className={AUTH_SUBTITLE}>
-              Sign in to see your orders and saved addresses.
+              Sign in to view your orders, wishlist and saved addresses.
             </p>
 
             {isCheckoutRedirect && (

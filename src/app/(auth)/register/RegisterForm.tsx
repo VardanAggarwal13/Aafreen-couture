@@ -139,7 +139,7 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
     try {
       await authClient.signIn.social({ provider: 'google', callbackURL: redirect });
     } catch {
-      toast.info('Google registration is undergoing scheduled verification. Please sign up with email.');
+      toast.info('Google sign-up is not available right now. Please create your account with email and password.');
     }
   }
 
@@ -169,7 +169,7 @@ export function RegisterForm({ initialRedirect }: RegisterFormProps = {}) {
 
             <h1 className={AUTH_TITLE}>Create your account</h1>
             <p className={AUTH_SUBTITLE}>
-              Join Aafreen Couture to enjoy personalized bridal consultations and effortless ordering.
+              Save your favourites, check out faster and get personal styling help.
             </p>
 
             {isCheckoutRedirect && (

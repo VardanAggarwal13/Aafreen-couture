@@ -184,7 +184,7 @@ export function AddressBookClient() {
         </div>
       ) : addresses.length === 0 ? (
         <div className="bg-white p-10 text-center rounded-2xl shadow-sm">
-          <div className="w-12 h-12 rounded-full bg-[#FAF7F2] border border-[#E8D8C8] text-[#A67C52] flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 rounded-full bg-[#FAF7F2] border border-[#E8D8C8] text-[#8A6240] flex items-center justify-center mx-auto mb-4">
             <MapPin size="1.375rem" />
           </div>
           <h3 className="text-base font-serif text-[#221617] mb-2">No Saved Addresses</h3>
@@ -215,7 +215,7 @@ export function AddressBookClient() {
                     {addr.name}
                   </h3>
                   {addr.isDefault && (
-                    <span className="inline-flex items-center gap-1 text-[0.59375rem] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#FAF7F2] text-[#A67C52] border border-[#E8D8C8] rounded-lg">
+                    <span className="inline-flex items-center gap-1 text-[0.59375rem] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#FAF7F2] text-[#8A6240] border border-[#E8D8C8] rounded-lg">
                       <CheckCircle2 size="0.625rem" /> Default
                     </span>
                   )}
@@ -252,7 +252,7 @@ export function AddressBookClient() {
               {!addr.isDefault && (
                 <button
                   onClick={() => handleSetDefault(addr._id)}
-                  className="text-[0.6875rem] font-semibold text-[#A67C52] hover:text-[#221617] transition-colors border-t border-[#E8D8C8] pt-2 w-full text-left uppercase tracking-wider"
+                  className="text-[0.6875rem] font-semibold text-[#8A6240] hover:text-[#221617] transition-colors border-t border-[#E8D8C8] pt-2 w-full text-left uppercase tracking-wider"
                 >
                   Set as Default Address
                 </button>
@@ -356,6 +356,7 @@ export function AddressBookClient() {
                     State *
                   </label>
                   <select
+                    aria-label="State"
                     value={formData.state}
                     onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                     className="w-full px-2.5 py-2 border border-[#E8D8C8] rounded-lg focus:outline-none focus:border-[#A67C52] bg-white text-[#221617]"
@@ -388,7 +389,7 @@ export function AddressBookClient() {
                   id="isDefault"
                   checked={formData.isDefault}
                   onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
-                  className="rounded-lg border-[#E8D8C8] text-[#A67C52] focus:ring-[#A67C52]"
+                  className="rounded-lg border-[#E8D8C8] text-[#8A6240] focus:ring-[#A67C52]"
                 />
                 <label htmlFor="isDefault" className="text-xs text-[#221617] cursor-pointer">
                   Make this my default shipping address

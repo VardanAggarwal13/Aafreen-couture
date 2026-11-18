@@ -3,6 +3,7 @@ import { requireAdmin } from '@/server/auth';
 import { userRepository } from '@/server/repositories/user.repository';
 import { auth } from '@/lib/auth';
 import { handleApiError } from '@/lib/api-errors';
+import { adminUserCreateSchema } from '@/validators/admin-user.schema';
 import { logAdminAction } from '@/server/services/audit-log.service';
 import { connectDB } from '@/lib/db';
 import mongoose from 'mongoose';
@@ -24,14 +25,9 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await requireAdmin(request);
-    const body = await request.json();
-    const { name, email, password, phone, role = 'admin' } = body;
+    const { name, email, password, phone, role } = adminUserCreateSchema.parse(await request.json());
 
-    if (!email || !name) {
-      return NextResponse.json({ error: 'Name and email are required' }, { status: 400 });
-    }
-
-    const normalizedEmail = email.toLowerCase().trim();
+    const normalizedEmail = email;
 
     // Check if user already exists
     const existing = await userRepository.findByEmail(normalizedEmail);
@@ -46,16 +42,16 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    if (!password || password.length < 6) {
-      return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
+    if (!password) {
+      return NextResponse.json({ success: false, error: 'A password is required to create a new account' }, { status: 400 });
     }
 
     // Create via Better Auth API
     const authRes = await auth.api.signUpEmail({
       body: {
-        name: name.trim(),
+        name,
         email: normalizedEmail,
-        password: password.trim(),
+        password,
       },
     });
 

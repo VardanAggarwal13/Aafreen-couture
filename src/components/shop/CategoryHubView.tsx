@@ -125,7 +125,7 @@ function ChapterShelf({
             </p>
             <Link
               href={chapter.viewAllHref}
-              className="mt-4 inline-block text-xs uppercase tracking-[0.2em] font-semibold text-[#A67C52] hover:text-[#221617] border-b border-[#A67C52] pb-0.5 transition-colors"
+              className="mt-4 inline-block text-xs uppercase tracking-[0.2em] font-semibold text-[#8A6240] hover:text-[#221617] border-b border-[#A67C52] pb-0.5 transition-colors"
             >
               View Full Collection →
             </Link>
@@ -148,7 +148,7 @@ export function CategoryHubView({
   badge = 'Aafreen Atelier · Royal Heritage',
   heroSubtitle,
   heroImage,
-  heroObjectPosition = 'object-center',
+  heroObjectPosition = '50% 50%',
   heroHighlights = [
     '200+ hours of painstaking hand embroidery per ensemble',
     'Pure raw silks, heritage velvets & sheer organza dupattas',
@@ -175,7 +175,7 @@ export function CategoryHubView({
       <div className="w-full bg-[#FAF7F2] border-b border-[#E8D8C8]/70">
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[0.65625rem] uppercase tracking-[0.2em] text-[#6E5C4D]">
-            <Link href="/" className="hover:text-[#A67C52] transition-colors">Home</Link>
+            <Link href="/" className="hover:text-[#8A6240] transition-colors">Home</Link>
             <ChevronRight size="0.625rem" className="text-[#C49A5A]" />
             <span className="text-[#221617] font-semibold">{title}</span>
           </nav>
@@ -193,7 +193,7 @@ export function CategoryHubView({
 
             <h1 className="text-4xl sm:text-[2.625rem] lg:text-[2.875rem] font-serif text-[#221617] tracking-tight leading-[1.05] mb-2.5">
               {title}{' '}
-              {italicTitle && <span className="italic font-light text-[#A67C52]">{italicTitle}</span>}
+              {italicTitle && <span className="italic font-light text-[#8A6240]">{italicTitle}</span>}
             </h1>
 
             <p className="text-sm text-[#4A433C] font-sans leading-relaxed mb-4">{heroSubtitle}</p>
@@ -232,7 +232,8 @@ export function CategoryHubView({
                 fill
                 priority
                 sizes="(max-width: 64em) 100vw, 544px"
-                className={`object-cover ${heroObjectPosition}`}
+                className="object-cover"
+                style={{ objectPosition: heroObjectPosition }}
               />
             </div>
           </div>
@@ -315,7 +316,7 @@ export function CategoryHubView({
                       />
                     </div>
                     <div className="pt-3 text-center">
-                      <h3 className="text-[#221617] font-sans font-semibold text-sm group-hover:text-[#A67C52] transition-colors">
+                      <h3 className="text-[#221617] font-sans font-semibold text-sm group-hover:text-[#8A6240] transition-colors">
                         {occ.label}
                       </h3>
                       <p className="text-[0.625rem] text-gold-ink uppercase tracking-widest mt-0.5 font-semibold">{occ.tone}</p>

@@ -189,7 +189,6 @@ export default async function AdminDashboardPage() {
                 { label: 'Users & Staff Permissions', href: '/admin/customers' },
                 { label: 'Inventory & Stock Levels', href: '/admin/inventory' },
                 { label: 'Banners & Hero Visuals', href: '/admin/banners' },
-                { label: 'Discount Codes & Coupons', href: '/admin/coupons' },
                 { label: 'Store & Payment Settings', href: '/admin/settings' },
               ].map(({ label, href }) => (
                 <Link

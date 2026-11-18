@@ -506,6 +506,7 @@ export function CheckoutClientPage() {
                       State *
                     </label>
                     <select
+                      aria-label="State"
                       {...register('state')}
                       className="w-full border border-border px-3.5 py-2.5 text-sm text-heading bg-background focus:outline-none focus:border-gold transition-colors rounded-lg"
                     >

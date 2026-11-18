@@ -142,6 +142,13 @@ OrderSchema.index({ user: 1, createdAt: -1 });
 OrderSchema.index({ status: 1 });
 OrderSchema.index({ paymentStatus: 1 });
 OrderSchema.index({ razorpayOrderId: 1 });
+// Admin order list: newest first, optionally filtered by status (the sort is served by the index).
+OrderSchema.index({ createdAt: -1 });
+OrderSchema.index({ status: 1, createdAt: -1 });
+// "My orders" for customers who ordered with the same e-mail before having an account. The collation
+// makes the match case-insensitive while still using the index.
+export const ORDER_EMAIL_COLLATION = { locale: 'en', strength: 2 } as const;
+OrderSchema.index({ 'shippingAddress.email': 1 }, { collation: ORDER_EMAIL_COLLATION });
 
 const Order = models.Order ?? model<IOrder>('Order', OrderSchema);
 export default Order;

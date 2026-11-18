@@ -34,7 +34,10 @@ const ReviewSchema = new Schema<IReview>(
   { timestamps: true }
 );
 
-ReviewSchema.index({ product: 1, isApproved: 1 });
+ReviewSchema.index({ product: 1, isApproved: 1, createdAt: -1 });
+// Latest approved reviews across the site (homepage testimonials) and the admin moderation list.
+ReviewSchema.index({ isApproved: 1, createdAt: -1 });
+ReviewSchema.index({ createdAt: -1 });
 ReviewSchema.index({ user: 1 });
 ReviewSchema.index({ product: 1, user: 1, order: 1 }, { unique: true });
 

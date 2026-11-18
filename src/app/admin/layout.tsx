@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
+import { isAdminUser } from '@/lib/admin-access';
 import { AdminShell } from '@/features/admin/components/AdminShell';
 
 export const dynamic = 'force-dynamic';
@@ -13,17 +14,7 @@ export const metadata = {
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth.api.getSession({ headers: await headers() });
-  const userRole = (session?.user as Record<string, unknown> | undefined)?.role;
-  const userEmail = session?.user?.email?.toLowerCase();
-  const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
-
-  const isAdmin =
-    userRole === 'admin' ||
-    (userEmail && (
-      userEmail === adminEmail ||
-      userEmail === 'support@aafreencouture.com' ||
-      userEmail === 'vardanaggarwal13@gmail.com'
-    ));
+  const isAdmin = isAdminUser(session?.user);
 
   // Strictly enforce login in both development and production
   if (!session || !isAdmin) {

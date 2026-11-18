@@ -4,6 +4,7 @@ import { ArrowLeft, Package, User, MapPin, CreditCard } from 'lucide-react';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
+import { AdminDeleteButton } from '@/features/admin/components/AdminDeleteButton';
 import { AdminOrderStatusUpdater } from '@/features/admin/components/AdminOrderStatusUpdater';
 import { AdminPaymentReconcileButton } from '@/features/admin/components/AdminPaymentReconcileButton';
 import { AdminPaymentStatusUpdater } from '@/features/admin/components/AdminPaymentStatusUpdater';
@@ -177,7 +178,22 @@ export default async function AdminOrderDetailPage({ params }: Props) {
         </div>
 
         {/* Status update buttons */}
-        <AdminOrderStatusUpdater orderId={order._id} currentStatus={order.status} />
+        <div className="flex flex-wrap items-center gap-2">
+          <AdminOrderStatusUpdater
+            orderId={order._id}
+            currentStatus={order.status}
+            paymentMethod={String(order.paymentMethod)}
+            paymentStatus={String(order.paymentStatus)}
+          />
+          <AdminDeleteButton
+            variant="text"
+            endpoint={`/api/admin/orders/${order._id}`}
+            label={`order #${order.orderNumber}`}
+            typeToConfirm={order.paymentStatus === 'paid' || order.paymentStatus === 'partially_refunded' ? order.orderNumber : undefined}
+            body={{ confirmPaid: true }}
+            redirectTo={ROUTES.ADMIN_ORDERS}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

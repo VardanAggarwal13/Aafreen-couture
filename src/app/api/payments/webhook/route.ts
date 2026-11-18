@@ -20,6 +20,11 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
+    } else if (process.env.NODE_ENV === 'production') {
+      // Never accept unsigned payment events on a live site: anyone could forge a "payment captured"
+      // message. Payments are still confirmed by the checkout verification and the reconcile endpoint.
+      console.error('[Razorpay Webhook] RAZORPAY_WEBHOOK_SECRET is not set; rejecting webhook call.');
+      return NextResponse.json({ success: false, error: 'Webhook is not configured' }, { status: 503 });
     } else {
       console.warn('[Razorpay Webhook] RAZORPAY_WEBHOOK_SECRET not set in env. Allowing request in development.');
     }

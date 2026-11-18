@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+// Registers the User model so populate('user') works everywhere a connection is used.
+import '@/models/User';
 
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -22,8 +24,8 @@ export async function connectDB(): Promise<typeof mongoose> {
     cached.promise = mongoose.connect(uri, {
       bufferCommands: false,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 2500,
-      connectTimeoutMS: 2500,
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
     }).catch((err) => {
       cached.promise = null;
       throw err;

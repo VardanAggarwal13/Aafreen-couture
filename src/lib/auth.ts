@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { MongoClient } from 'mongodb';
+import { isAdminUser } from '@/lib/admin-access';
 
 declare global {
   var _betterAuthMongoClient: MongoClient | undefined;
@@ -26,9 +27,18 @@ if (process.env.NODE_ENV === 'development') {
 
 const db = client.db('aafreen-couture');
 
+// The fallback below exists only so local development works without configuration. A production
+// server running on a key that is visible in the source code could have its sessions forged, so it
+// refuses to start instead (the build step itself is exempt: it never serves requests).
+const DEV_ONLY_SECRET = 'f7e5fc0a77f634b9e52e6d1fb69e5736833b401612cb4cabce8a9257af82fefd';
+const authSecret = process.env.BETTER_AUTH_SECRET;
+if (!authSecret && process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE !== 'phase-production-build') {
+  throw new Error('BETTER_AUTH_SECRET is not set. Refusing to run in production with the built-in development key.');
+}
+
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-  secret: process.env.BETTER_AUTH_SECRET || 'f7e5fc0a77f634b9e52e6d1fb69e5736833b401612cb4cabce8a9257af82fefd',
+  secret: authSecret || DEV_ONLY_SECRET,
 
   trustedOrigins: [
     'http://localhost:3000',
@@ -79,12 +89,10 @@ export const auth = betterAuth({
     user: {
       create: {
         before: async (user) => {
-          const email = user.email.toLowerCase();
-          const adminEmail = (process.env.ADMIN_EMAIL || 'vardanaggarwal13@gmail.com').toLowerCase();
+          // Owner addresses become admin only once the address is verified (e.g. Google sign-in);
+          // an unverified e-mail/password sign-up must never be able to claim one.
           if (
-            email === adminEmail ||
-            email === 'vardanaggarwal13@gmail.com' ||
-            email === 'support@aafreencouture.com'
+            isAdminUser({ email: user.email, emailVerified: user.emailVerified })
           ) {
             return {
               data: {

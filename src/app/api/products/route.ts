@@ -11,29 +11,60 @@ import type { IProduct } from '@/models/Product';
 
 export const dynamic = 'force-dynamic';
 
+const MAX_IDS = 50;
+const SORTS = ['newest', 'price-asc', 'price-desc', 'popular', 'rating'] as const;
+
+/** Trimmed, length-capped text filter; empty becomes undefined. */
+function text(value: string | null): string | undefined {
+  const v = value?.trim().slice(0, 100);
+  return v ? v : undefined;
+}
+
+/** A non-negative finite number, or undefined (never NaN, which would break the database query). */
+function price(value: string | null): number | undefined {
+  if (!value) return undefined;
+  const n = Number(value);
+  return Number.isFinite(n) && n >= 0 ? n : undefined;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
 
     const idsParam = searchParams.get('ids');
-    const ids = idsParam ? idsParam.split(',').map((s) => s.trim()).filter(Boolean) : undefined;
+    const ids = idsParam
+      ? idsParam.split(',').map((s) => s.trim()).filter(Boolean).slice(0, MAX_IDS)
+      : undefined;
 
     const isActiveParam = searchParams.get('isActive');
-    const isActive = isActiveParam === 'false' ? false : isActiveParam === 'true' ? true : undefined;
-    const includeInactive = searchParams.get('all') === 'true' || searchParams.get('includeInactive') === 'true';
+    let isActive = isActiveParam === 'false' ? false : isActiveParam === 'true' ? true : undefined;
+    let includeInactive = searchParams.get('all') === 'true' || searchParams.get('includeInactive') === 'true';
+
+    // Unpublished / inactive products are private. Only an admin may see them; for anyone else the
+    // request quietly falls back to the public catalogue.
+    let wantsPrivate = includeInactive || isActive === false;
+    if (wantsPrivate) {
+      try {
+        await requireAdmin(request);
+      } catch {
+        includeInactive = false;
+        if (isActive === false) isActive = undefined;
+        wantsPrivate = false;
+      }
+    }
 
     const filters: ProductFilters = {
       ids,
-      category: searchParams.get('category') ?? undefined,
-      collectionRef: searchParams.get('collection') ?? undefined,
-      occasion: searchParams.get('occasion') ?? undefined,
-      color: searchParams.get('color') ?? undefined,
-      size: searchParams.get('size') ?? undefined,
-      fabric: searchParams.get('fabric') ?? undefined,
-      minPrice: searchParams.get('minPrice') ? Number(searchParams.get('minPrice')) : undefined,
-      maxPrice: searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : undefined,
-      sort: (searchParams.get('sort') as ProductFilters['sort']) ?? undefined,
-      search: searchParams.get('q') ?? undefined,
+      category: text(searchParams.get('category')),
+      collectionRef: text(searchParams.get('collection')),
+      occasion: text(searchParams.get('occasion')),
+      color: text(searchParams.get('color')),
+      size: text(searchParams.get('size')),
+      fabric: text(searchParams.get('fabric')),
+      minPrice: price(searchParams.get('minPrice')),
+      maxPrice: price(searchParams.get('maxPrice')),
+      sort: SORTS.includes(searchParams.get('sort') as never) ? (searchParams.get('sort') as ProductFilters['sort']) : undefined,
+      search: text(searchParams.get('q')),
       isActive,
       includeInactive,
       isFeatured: searchParams.get('featured') === 'true' ? true : undefined,
@@ -48,9 +79,13 @@ export async function GET(request: NextRequest) {
 
     const result = await productService.getProducts(filters, pagination);
 
+    // Public catalogue reads may be shared by the CDN for a minute (matching the 2-minute page
+    // cache); anything private to the admin is never cached.
     return NextResponse.json(result, {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Cache-Control': wantsPrivate
+          ? 'private, no-store'
+          : 'public, s-maxage=60, stale-while-revalidate=300',
       },
     });
   } catch (error) {

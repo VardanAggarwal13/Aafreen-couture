@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { AdminDeleteButton } from '@/features/admin/components/AdminDeleteButton';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
@@ -105,12 +106,20 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
                     </td>
                     <td className="px-5 py-2.5 text-[#8A6A55] whitespace-nowrap">{formatDate(order.createdAt)}</td>
                     <td className="px-5 py-2.5">
-                      <Link
-                        href={ROUTES.ADMIN_ORDER(String(order._id))}
-                        className="inline-flex items-center text-xs font-semibold text-[#C9A86A] hover:text-[#B89350] hover:underline"
-                      >
-                        Manage &rarr;
-                      </Link>
+                      <div className="flex items-center gap-2 whitespace-nowrap">
+                        <Link
+                          href={ROUTES.ADMIN_ORDER(String(order._id))}
+                          className="inline-flex items-center text-xs font-semibold text-[#C9A86A] hover:text-[#B89350] hover:underline"
+                        >
+                          View / Edit &rarr;
+                        </Link>
+                        <AdminDeleteButton
+                          endpoint={`/api/admin/orders/${String(order._id)}`}
+                          label={`order #${order.orderNumber}`}
+                          typeToConfirm={order.paymentStatus === 'paid' || order.paymentStatus === 'partially_refunded' ? order.orderNumber : undefined}
+                          body={{ confirmPaid: true }}
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))

@@ -1,3 +1,4 @@
+import { ADMIN_LIST_CAP } from './list-limits';
 import { connectDB } from '@/lib/db';
 import Review from '@/models/Review';
 import Product from '@/models/Product';
@@ -120,6 +121,7 @@ export class ReviewRepository {
     await connectDB();
     const reviews = await Review.find({})
       .sort({ createdAt: -1 })
+      .limit(ADMIN_LIST_CAP)
       .populate('product', 'name')
       .lean<(IReview & { product: { name?: string } | null })[]>();
 
@@ -156,12 +158,16 @@ export class ReviewRepository {
   }
 
   private async syncProductRating(productId: string): Promise<void> {
-    const approved = await Review.find({ product: productId, isApproved: true }).lean<IReview[]>();
-    const reviewCount = approved.length;
-    const averageRating = reviewCount > 0
-      ? approved.reduce((sum, r) => sum + r.rating, 0) / reviewCount
-      : 0;
-    await Product.findByIdAndUpdate(productId, { averageRating, reviewCount });
+    // Computed inside MongoDB ($match first, so the index is used) instead of loading every review.
+    if (!mongoose.isValidObjectId(productId)) return;
+    const [row] = await Review.aggregate<{ count: number; average: number }>([
+      { $match: { product: new mongoose.Types.ObjectId(productId), isApproved: true } },
+      { $group: { _id: null, count: { $sum: 1 }, average: { $avg: '$rating' } } },
+    ]);
+    await Product.findByIdAndUpdate(productId, {
+      averageRating: row ? row.average : 0,
+      reviewCount: row ? row.count : 0,
+    });
   }
 }
 

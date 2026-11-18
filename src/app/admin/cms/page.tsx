@@ -1,5 +1,6 @@
 import { Plus, FileText, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import { AdminDeleteButton } from '@/features/admin/components/AdminDeleteButton';
 import { cmsRepository } from '@/server/repositories/cms.repository';
 import { formatDate } from '@/utils/format';
 
@@ -72,6 +73,7 @@ export default async function AdminCmsPage() {
                         <Link href={`/admin/cms/${page._id}`} className="text-[#C9A86A] hover:text-[#B89350] hover:underline font-semibold text-[0.6875rem]">
                           Edit Content
                         </Link>
+                        <AdminDeleteButton endpoint={`/api/cms/${String(page._id)}`} label={`the page "${page.title}"`} />
                       </div>
                     </td>
                   </tr>

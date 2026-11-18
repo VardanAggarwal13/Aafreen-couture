@@ -25,7 +25,7 @@ function CategoryCircle({ label, href, image }: { label: string; href: string; i
             sizes="(max-width: 40em) 88px, (max-width: 64em) 116px, 136px"
         />
       </div>
-      <span className="text-[0.6875rem] sm:text-xs font-semibold text-[#221617] tracking-[0.06em] sm:tracking-[0.08em] text-center leading-tight group-hover:text-[#A67C52] transition-colors uppercase max-w-[5.3125rem] xs:max-w-[5.9375rem] sm:max-w-[6.875rem]">
+      <span className="text-[0.6875rem] sm:text-xs font-semibold text-[#221617] tracking-[0.06em] sm:tracking-[0.08em] text-center leading-tight group-hover:text-[#8A6240] transition-colors uppercase max-w-[5.3125rem] xs:max-w-[5.9375rem] sm:max-w-[6.875rem]">
         {label}
       </span>
     </Link>

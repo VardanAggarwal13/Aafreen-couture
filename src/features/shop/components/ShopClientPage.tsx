@@ -177,13 +177,13 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
               <div className="lg:col-span-6 text-left order-2 lg:order-1 flex flex-col justify-center">
                 <div className="flex items-center gap-2.5 mb-3">
                   <span className="w-8 h-px bg-[#C49A5A]" />
-                  <span className="text-[0.625rem] sm:text-[0.6875rem] uppercase tracking-[0.35em] text-[#A67C52] font-semibold">
+                  <span className="text-[0.625rem] sm:text-[0.6875rem] uppercase tracking-[0.35em] text-[#8A6240] font-semibold">
                     Aafreen Atelier · Royal Heritage
                   </span>
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-[#221617] tracking-tight leading-[1.15] mb-3">
-                  The Royal <span className="italic font-light text-[#A67C52]">Bridal</span> Edit
+                  The Royal <span className="italic font-light text-[#8A6240]">Bridal</span> Edit
                 </h1>
 
                 <p className="text-sm sm:text-base text-[#5C554E] font-sans leading-relaxed mb-6 max-w-lg">
@@ -271,6 +271,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
           <div className="flex items-center gap-2">
             <span className="text-xs text-[#6E6A66] hidden sm:inline">Sort by:</span>
             <select
+              aria-label="Sort products"
               value={sort}
               onChange={(e) => setParam('sort', e.target.value)}
               className="text-xs border border-[#E8D8C8] px-2.5 py-1.5 bg-white text-[#221617] uppercase tracking-wider focus:outline-none focus:border-[#A67C52]"
@@ -296,7 +297,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
               {(category || occasion || selectedColor || selectedSize || selectedFabric || minPrice || maxPrice) && (
                 <button
                   onClick={() => router.push('/shop')}
-                  className="flex items-center gap-1 text-[0.625rem] text-[#A67C52] font-semibold uppercase tracking-wider hover:underline"
+                  className="flex items-center gap-1 text-[0.625rem] text-[#8A6240] font-semibold uppercase tracking-wider hover:underline"
                 >
                   <X size="0.75rem" /> Clear All
                 </button>
@@ -330,7 +331,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
                         router.push(`/shop?${params.toString()}`, { scroll: false });
                       }}
                       className={`block w-full text-left text-xs transition-colors ${
-                        isSelected ? 'text-[#A67C52] font-semibold' : 'text-[#6E6A66] hover:text-[#221617]'
+                        isSelected ? 'text-[#8A6240] font-semibold' : 'text-[#6E6A66] hover:text-[#221617]'
                       }`}
                     >
                       • {cat.label}
@@ -349,7 +350,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
                 {PRICE_RANGES.map(({ label, min, max }) => (
                   <button
                     key={label}
-                    className="block w-full text-left text-xs text-[#6E6A66] hover:text-[#A67C52] transition-colors"
+                    className="block w-full text-left text-xs text-[#6E6A66] hover:text-[#8A6240] transition-colors"
                     onClick={() => {
                       const params = new URLSearchParams(searchParams.toString());
                       params.set('minPrice', String(min));
@@ -439,7 +440,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
               <p className="text-[#6E6A66] text-base font-serif">No products found for this filter selection.</p>
               <button
                 onClick={() => router.push('/shop')}
-                className="mt-3 text-[#A67C52] hover:underline text-xs uppercase tracking-wider font-semibold"
+                className="mt-3 text-[#8A6240] hover:underline text-xs uppercase tracking-wider font-semibold"
               >
                 Clear all filters
               </button>

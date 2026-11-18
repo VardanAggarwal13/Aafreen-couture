@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { connectDB } from '@/lib/db';
-import OrderModel from '@/models/Order';
+import OrderModel, { ORDER_EMAIL_COLLATION as EMAIL_COLLATION } from '@/models/Order';
 import type { IOrder, OrderStatus } from '@/models/Order';
 
 // Resilient memory backup store for orders placed when MongoDB connection is establishing or offline
@@ -57,13 +57,34 @@ export class OrderRepository {
         : { orderNumber: cleanId };
       const doc = await OrderModel.findOne(query).populate('user', 'name email').lean<IOrder>();
       if (doc) return doc;
-    } catch {
-      // Fallback
+    } catch (err) {
+      console.error('[order.repository] findById failed, using fallback store:', cleanId, err);
     }
     const found = getBackupStore().find(
       (o) => String(o._id) === cleanId || o.orderNumber.toLowerCase() === cleanId.toLowerCase()
     );
     return found || null;
+  }
+
+  /**
+   * The id of the account that owns the order, or null for a guest order. Read straight from the
+   * stored reference: findById() populates "user" into a document, so comparing that against a
+   * session user id never matches, and a populate that finds no user record would look like a guest.
+   */
+  async getOwnerId(id: string): Promise<string | null> {
+    const cleanId = id.replace(/^#/, '').trim();
+    try {
+      await connectDB();
+      const query = mongoose.Types.ObjectId.isValid(cleanId) ? { _id: cleanId } : { orderNumber: cleanId };
+      const doc = await OrderModel.findOne(query).select('user').lean<{ user?: unknown }>();
+      if (doc) return doc.user ? String(doc.user) : null;
+    } catch (err) {
+      console.error('[order.repository] getOwnerId failed, using fallback store:', cleanId, err);
+    }
+    const found = getBackupStore().find((o) => String(o._id) === cleanId || o.orderNumber.toLowerCase() === cleanId.toLowerCase());
+    const owner = found?.user as { _id?: unknown } | string | undefined;
+    if (!owner) return null;
+    return typeof owner === 'string' ? owner : String(owner._id ?? owner);
   }
 
   async findByOrderNumber(orderNumber: string): Promise<IOrder | null> {
@@ -95,20 +116,21 @@ export class OrderRepository {
         userConditions.push({ user: new mongoose.Types.ObjectId(userId) });
       }
       if (userEmail && userEmail.trim()) {
-        userConditions.push({
-          'shippingAddress.email': { $regex: new RegExp(`^${userEmail.trim()}$`, 'i') },
-        });
+        // Exact match; case-insensitivity comes from the collation below so the e-mail index is used
+        // (a case-insensitive regex cannot use an index and would scan every order).
+        userConditions.push({ 'shippingAddress.email': userEmail.trim() });
       }
 
       const query = { $or: userConditions };
 
       const [items, total] = await Promise.all([
         OrderModel.find(query)
+          .collation(EMAIL_COLLATION)
           .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit)
           .lean<IOrder[]>(),
-        OrderModel.countDocuments(query),
+        OrderModel.countDocuments(query).collation(EMAIL_COLLATION),
       ]);
       return { items, total };
     } catch {
@@ -124,6 +146,12 @@ export class OrderRepository {
         total: filtered.length,
       };
     }
+  }
+
+  async delete(id: string): Promise<boolean> {
+    await connectDB();
+    const res = await OrderModel.findByIdAndDelete(id);
+    return !!res;
   }
 
   async updateStatus(id: string, status: OrderStatus, note?: string): Promise<IOrder | null> {
@@ -261,7 +289,8 @@ export class OrderRepository {
         { $group: { _id: null, totalRevenue: { $sum: '$total' } } },
       ]);
       return { totalRevenue: result?.totalRevenue ?? 0 };
-    } catch {
+    } catch (err) {
+      console.error('[order.repository] getRevenueStats failed, using fallback store:', err);
       const store = getBackupStore();
       const totalRevenue = store
         .filter((o) => o.paymentStatus === 'paid')
@@ -294,7 +323,8 @@ export class OrderRepository {
         OrderModel.countDocuments(query),
       ]);
       return { items, total };
-    } catch {
+    } catch (err) {
+      console.error('[order.repository] findAll failed, using fallback store:', err);
       const store = getBackupStore();
       const filtered = filters.status ? store.filter((o) => o.status === filters.status) : store;
       const page = filters.page ?? 1;

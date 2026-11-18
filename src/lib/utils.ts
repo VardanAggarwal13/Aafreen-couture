@@ -37,6 +37,11 @@ export function generateOrderNumber(): string {
   return `AC-${timestamp}-${random}`;
 }
 
+/** Escapes user text so it can be placed inside a RegExp as a literal (prevents crashes and ReDoS). */
+export function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 export function truncate(str: string, length: number): string {
   if (str.length <= length) return str;
   return `${str.slice(0, length).trim()}…`;

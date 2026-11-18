@@ -19,6 +19,18 @@ export class PaymentService {
     const order = await orderRepository.findById(orderId);
     if (!order) throw new NotFoundError('Order');
 
+    // A payment session may only be opened for an online order that is still awaiting payment.
+    // Without this, calling it again on a paid order would reset its payment status to "pending".
+    if (order.paymentMethod !== 'razorpay') {
+      throw new BusinessError('This order is not set up for online payment.');
+    }
+    if (order.paymentStatus === 'paid') {
+      throw new BusinessError('This order has already been paid.');
+    }
+    if (order.status === 'cancelled') {
+      throw new BusinessError('This order has been cancelled.');
+    }
+
     if (!order.total || order.total < 100) {
       throw new ValidationError('Order amount must be at least 100 paise (₹1.00).');
     }
@@ -105,6 +117,13 @@ export class PaymentService {
     // Idempotency: if already confirmed/paid, return order immediately
     if (order.paymentStatus === 'paid') return order;
 
+    // The signature only proves that Razorpay took money for *that* Razorpay order. It must be the
+    // Razorpay order we opened for *this* order, otherwise a small genuine payment could be replayed
+    // to mark a much larger order as paid.
+    if (!skipSignatureCheck && (!order.razorpayOrderId || order.razorpayOrderId !== razorpayOrderId)) {
+      throw new ValidationError('Payment verification failed. This payment does not belong to this order.');
+    }
+
     // Update payment details and status
     const updated = await orderRepository.updatePayment(orderId, {
       paymentStatus: 'paid',
@@ -118,13 +137,13 @@ export class PaymentService {
 
     // Real-time stock decrement for all purchased items
     try {
-      for (const item of order.items) {
-        const pId = item.product ? item.product.toString() : '';
-        const vId = item.variant ? item.variant.toString() : undefined;
-        if (pId) {
-          await productRepository.decrementStock(pId, vId, item.quantity);
-        }
-      }
+      await productRepository.decrementStockBulk(
+        order.items.map((item) => ({
+          productId: item.product ? item.product.toString() : '',
+          variantId: item.variant ? item.variant.toString() : undefined,
+          quantity: item.quantity,
+        }))
+      );
     } catch (stockErr) {
       console.error('[PaymentService] Error updating product stock:', stockErr);
     }
@@ -262,7 +281,9 @@ export class PaymentService {
       .createHmac('sha256', secret)
       .update(rawBody)
       .digest('hex');
-    return expectedSignature === signature;
+    const expBuf = Buffer.from(expectedSignature, 'utf-8');
+    const sigBuf = Buffer.from(signature, 'utf-8');
+    return expBuf.length === sigBuf.length && crypto.timingSafeEqual(expBuf, sigBuf);
   }
 }
 

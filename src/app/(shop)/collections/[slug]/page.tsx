@@ -15,6 +15,12 @@ interface Props { params: Promise<{ slug: string }> }
 
 export const revalidate = 120;
 
+// Declaring params (none pre-rendered) opts this dynamic route into ISR: each page is rendered once on
+// first visit, then served from the cache and refreshed in the background every 120s.
+export function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   let collection;
@@ -116,9 +122,9 @@ export default async function CollectionPage({ params }: Props) {
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3">
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-[#6E5C4D]">
-          <Link href="/" className="hover:text-[#A67C52] transition-colors">Home</Link>
+          <Link href="/" className="hover:text-[#8A6240] transition-colors">Home</Link>
           <ChevronRight size="0.75rem" className="text-[#C49A5A]" />
-          <Link href="/collections" className="hover:text-[#A67C52] transition-colors">Collections</Link>
+          <Link href="/collections" className="hover:text-[#8A6240] transition-colors">Collections</Link>
           <ChevronRight size="0.75rem" className="text-[#C49A5A]" />
           <span className="text-[#221617] font-medium">{collection.name}</span>
         </nav>
@@ -136,13 +142,13 @@ export default async function CollectionPage({ params }: Props) {
               <div className="lg:col-span-6 text-left order-2 lg:order-1 flex flex-col justify-center">
                 <div className="flex items-center gap-2.5 mb-3">
                   <span className="w-8 h-px bg-[#C49A5A]" />
-                  <span className="text-[0.625rem] sm:text-[0.6875rem] uppercase tracking-[0.35em] text-[#A67C52] font-semibold">
+                  <span className="text-[0.625rem] sm:text-[0.6875rem] uppercase tracking-[0.35em] text-[#8A6240] font-semibold">
                     Aafreen Atelier · Royal Heritage
                   </span>
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-[#221617] tracking-tight leading-[1.15] mb-3">
-                  The Royal <span className="italic font-light text-[#A67C52]">Bridal</span> Edit
+                  The Royal <span className="italic font-light text-[#8A6240]">Bridal</span> Edit
                 </h1>
 
                 {/* Ornamental Filigree Divider */}
@@ -211,7 +217,7 @@ export default async function CollectionPage({ params }: Props) {
           <div className="max-w-[97.5rem] mx-auto grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[26.25rem] lg:min-h-[28.75rem]">
             {/* Left Side: Editorial Text Canvas */}
             <div className="lg:col-span-6 xl:col-span-5 flex flex-col justify-center px-6 sm:px-8 lg:px-8 xl:px-12 py-6 sm:py-8 lg:py-9 bg-[#FAF5EE] text-[#221617] z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-[#E8D4BE]/40 border border-[#C49A5A]/50 text-[0.59375rem] sm:text-[0.625rem] uppercase tracking-[0.3em] text-[#A67C52] font-semibold w-fit mb-2.5">
+              <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-[#E8D4BE]/40 border border-[#C49A5A]/50 text-[0.59375rem] sm:text-[0.625rem] uppercase tracking-[0.3em] text-[#8A6240] font-semibold w-fit mb-2.5">
                 <span>Aafreen Atelier · Curated Collection</span>
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-[2.375rem] xl:text-[2.625rem] font-serif text-[#221617] tracking-tight leading-[1.12] mb-1.5">
@@ -221,7 +227,7 @@ export default async function CollectionPage({ params }: Props) {
                 {collection.description || 'Explore our exclusive handcrafted couture archive, individually tailored with heritage embroidery techniques and fine silks.'}
               </p>
               <div className="flex items-center gap-3">
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#A67C52]">
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#8A6240]">
                   {products.length} Designs in Collection
                 </span>
               </div>

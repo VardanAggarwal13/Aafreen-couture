@@ -1,3 +1,4 @@
+import { ADMIN_LIST_CAP } from './list-limits';
 import { connectDB } from '@/lib/db';
 import Coupon from '@/models/Coupon';
 import type { ICoupon } from '@/models/Coupon';
@@ -5,7 +6,7 @@ import type { ICoupon } from '@/models/Coupon';
 export class CouponRepository {
   async findAll(): Promise<ICoupon[]> {
     await connectDB();
-    return Coupon.find({}).sort({ createdAt: -1 }).lean<ICoupon[]>();
+    return Coupon.find({}).sort({ createdAt: -1 }).limit(ADMIN_LIST_CAP).lean<ICoupon[]>();
   }
 
   async findById(id: string): Promise<ICoupon | null> {

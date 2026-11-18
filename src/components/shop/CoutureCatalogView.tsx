@@ -186,12 +186,12 @@ export function CoutureCatalogView({
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-10 text-center">
           {/* Breadcrumbs */}
           <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-[0.625rem] uppercase tracking-[0.2em] text-[#6E5C4D] mb-2.5">
-            <Link href="/" className="hover:text-[#A67C52] transition-colors">Home</Link>
+            <Link href="/" className="hover:text-[#8A6240] transition-colors">Home</Link>
             {breadcrumbs.map((b, idx) => (
               <span key={b.label} className="flex items-center gap-2">
                 <ChevronRight size="0.625rem" className="text-[#C49A5A]" />
                 {b.href && idx < breadcrumbs.length - 1 ? (
-                  <Link href={b.href} className="hover:text-[#A67C52] transition-colors">{b.label}</Link>
+                  <Link href={b.href} className="hover:text-[#8A6240] transition-colors">{b.label}</Link>
                 ) : (
                   <span className="text-[#221617] font-semibold">{b.label}</span>
                 )}
@@ -229,12 +229,12 @@ export function CoutureCatalogView({
                 }`}
               >
                 <span>{priceIdx !== null ? PRICE_RANGES[priceIdx].label : 'Price'}</span>
-                <ChevronDown size="0.6875rem" className={`transition-transform text-[#A67C52] ${activeDropdown === 'price' ? 'rotate-180' : ''}`} />
+                <ChevronDown size="0.6875rem" className={`transition-transform text-[#8A6240] ${activeDropdown === 'price' ? 'rotate-180' : ''}`} />
               </button>
 
               {activeDropdown === 'price' && (
                 <div className="absolute top-full left-0 mt-2 w-56 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
-                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
+                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#8A6240] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Select Price Range
                   </p>
                   <div className="space-y-1.5">
@@ -269,12 +269,12 @@ export function CoutureCatalogView({
                 }`}
               >
                 <span>{selectedColor || 'Color'}</span>
-                <ChevronDown size="0.6875rem" className={`transition-transform text-[#A67C52] ${activeDropdown === 'color' ? 'rotate-180' : ''}`} />
+                <ChevronDown size="0.6875rem" className={`transition-transform text-[#8A6240] ${activeDropdown === 'color' ? 'rotate-180' : ''}`} />
               </button>
 
               {activeDropdown === 'color' && (
                 <div className="absolute top-full left-0 mt-2 w-64 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
-                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
+                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#8A6240] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Color Palette
                   </p>
                   <div className="grid grid-cols-3 gap-2">
@@ -310,12 +310,12 @@ export function CoutureCatalogView({
                 }`}
               >
                 <span>{selectedSize ? `Size: ${selectedSize}` : 'Size'}</span>
-                <ChevronDown size="0.6875rem" className={`transition-transform text-[#A67C52] ${activeDropdown === 'size' ? 'rotate-180' : ''}`} />
+                <ChevronDown size="0.6875rem" className={`transition-transform text-[#8A6240] ${activeDropdown === 'size' ? 'rotate-180' : ''}`} />
               </button>
 
               {activeDropdown === 'size' && (
                 <div className="absolute top-full left-0 mt-2 w-48 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
-                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
+                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#8A6240] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Select Size
                   </p>
                   <div className="grid grid-cols-3 gap-1.5">
@@ -348,12 +348,12 @@ export function CoutureCatalogView({
                 }`}
               >
                 <span>{selectedFabric || 'Fabric'}</span>
-                <ChevronDown size="0.6875rem" className={`transition-transform text-[#A67C52] ${activeDropdown === 'fabric' ? 'rotate-180' : ''}`} />
+                <ChevronDown size="0.6875rem" className={`transition-transform text-[#8A6240] ${activeDropdown === 'fabric' ? 'rotate-180' : ''}`} />
               </button>
 
               {activeDropdown === 'fabric' && (
                 <div className="absolute top-full left-0 mt-2 w-52 max-w-[calc(100vw-2rem)] bg-white border border-[#E8D4BE] shadow-xl rounded-lg p-3 z-40">
-                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#A67C52] mb-2 pb-1 border-b border-[#F0E8DC]">
+                  <p className="text-[0.625rem] uppercase tracking-[0.2em] font-bold text-[#8A6240] mb-2 pb-1 border-b border-[#F0E8DC]">
                     Fabric Selection
                   </p>
                   <div className="space-y-1 max-h-48 overflow-y-auto no-scrollbar">

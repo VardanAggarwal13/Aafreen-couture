@@ -6,35 +6,12 @@ import { couponService } from '@/server/services/coupon.service';
 import { NotFoundError, BusinessError } from '@/lib/api-errors';
 import { generateOrderNumber } from '@/lib/utils';
 import { siteConfig } from '@/config/site.config';
-import { getOrderStatusLabel } from '@/constants/order.constants';
+import { getOrderStatusLabel, ORDER_STATUS_TRANSITIONS, STATUSES_REQUIRING_PAYMENT } from '@/constants/order.constants';
 import type { IOrder, OrderStatus } from '@/models/Order';
 import type { CreateOrderInput } from '@/validators/order.validators';
 
 const SHIPPING_CHARGE = 0; // ₹0 for now as requested (complimentary shipping)
 
-// Legal forward-only fulfillment transitions. `delivered → return_requested → returned → refunded`
-// is the return path; every other terminal state (cancelled/refunded) has no way out.
-const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
-  pending: ['confirmed', 'processing', 'cancelled'],
-  confirmed: ['processing', 'cancelled'],
-  processing: ['shipped', 'cancelled'],
-  shipped: ['out_for_delivery', 'cancelled'],
-  out_for_delivery: ['delivered', 'cancelled'],
-  delivered: ['return_requested'],
-  cancelled: [],
-  return_requested: ['returned', 'delivered'],
-  returned: ['refunded'],
-  refunded: [],
-};
-
-// Online-payment orders may not advance past "confirmed" until Razorpay has actually captured
-// the payment — the admin's authority to move an order forward is gated on the payment being paid.
-const STATUSES_REQUIRING_PAYMENT: OrderStatus[] = [
-  'processing',
-  'shipped',
-  'out_for_delivery',
-  'delivered',
-];
 
 export class OrderService {
   async createOrder(userId: string | undefined, input: CreateOrderInput): Promise<IOrder> {
@@ -42,8 +19,11 @@ export class OrderService {
     const orderItems: IOrder['items'] = [];
     let subtotal = 0;
 
-    for (const item of input.items) {
-      const product = await productRepository.findById(item.productId);
+    // Look every product up at once (the cart size is capped by validation), then check them in order.
+    const products = await Promise.all(input.items.map((item) => productRepository.findById(item.productId)));
+
+    for (const [index, item] of input.items.entries()) {
+      const product = products[index];
       if (!product) throw new NotFoundError(`Product ${item.productId}`);
       if (!product.isActive) throw new BusinessError(`${product.name} is no longer available`);
 
@@ -144,6 +124,22 @@ export class OrderService {
   }
 
   /**
+   * Permanently removes an order. Orders with money received (paid / partly refunded) are protected
+   * and need an explicit confirmPaid flag, so a stray click cannot erase a financial record.
+   */
+  async deleteOrder(orderId: string, confirmPaid = false): Promise<{ orderNumber: string }> {
+    const order = await orderRepository.findById(orderId);
+    if (!order) throw new NotFoundError('Order not found');
+    const hasPayment = order.paymentStatus === 'paid' || order.paymentStatus === 'partially_refunded';
+    if (hasPayment && !confirmPaid) {
+      throw new BusinessError('This order has a payment on record. Confirm explicitly to delete it.');
+    }
+    const deleted = await orderRepository.delete(orderId);
+    if (!deleted) throw new NotFoundError('Order not found');
+    return { orderNumber: order.orderNumber };
+  }
+
+  /**
    * Admin-driven fulfillment status change. Validates the transition is legal for the order's
    * current status, and — for online-payment orders — that payment has actually been captured
    * before the order can move past "confirmed". Fires customer notification emails on the
@@ -155,7 +151,7 @@ export class OrderService {
 
     if (order.status === newStatus) return order;
 
-    const allowedNext = ALLOWED_TRANSITIONS[order.status] ?? [];
+    const allowedNext = ORDER_STATUS_TRANSITIONS[order.status] ?? [];
     if (!allowedNext.includes(newStatus)) {
       throw new BusinessError(
         `Cannot move order from "${getOrderStatusLabel(order.status)}" to "${getOrderStatusLabel(newStatus)}".`
@@ -193,7 +189,8 @@ export class OrderService {
   async getOrderById(orderId: string, userId: string, userEmail?: string): Promise<IOrder> {
     const order = await orderRepository.findById(orderId);
     if (!order) throw new NotFoundError('Order');
-    const matchesUser = order.user && String(order.user) === userId;
+    const ownerId = await orderRepository.getOwnerId(orderId);
+    const matchesUser = Boolean(ownerId && ownerId === userId);
     const matchesEmail =
       Boolean(userEmail && order.shippingAddress?.email?.toLowerCase() === userEmail.toLowerCase());
     if (!matchesUser && !matchesEmail) throw new NotFoundError('Order');
@@ -208,16 +205,29 @@ export class OrderService {
     const order = await orderRepository.findById(orderId);
     if (!order) throw new NotFoundError('Order');
 
+    const ownerId = await orderRepository.getOwnerId(orderId);
     if (userId) {
-      const matchesUser = order.user && String(order.user) === userId;
+      const matchesUser = Boolean(ownerId && ownerId === userId);
       const matchesEmail =
         Boolean(userEmail && order.shippingAddress?.email?.toLowerCase() === userEmail.toLowerCase());
       if (!matchesUser && !matchesEmail) throw new NotFoundError('Order');
+    } else if (ownerId) {
+      // An order that belongs to an account can only be confirmed by that signed-in account.
+      throw new NotFoundError('Order');
+    }
+
+    // Only a Cash on Delivery order may be confirmed here. Online-payment orders move forward only
+    // once Razorpay has confirmed the money, never through this shortcut.
+    if (order.paymentMethod !== 'cod') {
+      throw new BusinessError('This order requires online payment.');
     }
 
     // Idempotency: If already placed via COD, return immediately
-    if (order.status === 'processing' && order.paymentMethod === 'cod') {
+    if (order.status === 'processing') {
       return order;
+    }
+    if (order.status !== 'pending') {
+      throw new BusinessError('This order can no longer be confirmed.');
     }
 
     // COD orders skip "confirmed" (nothing to confirm — no payment happened) and go straight to
@@ -236,13 +246,13 @@ export class OrderService {
 
     // Real-time stock decrement for all purchased items
     try {
-      for (const item of order.items) {
-        const pId = item.product ? item.product.toString() : '';
-        const vId = item.variant ? item.variant.toString() : undefined;
-        if (pId) {
-          await productRepository.decrementStock(pId, vId, item.quantity);
-        }
-      }
+      await productRepository.decrementStockBulk(
+        order.items.map((item) => ({
+          productId: item.product ? item.product.toString() : '',
+          variantId: item.variant ? item.variant.toString() : undefined,
+          quantity: item.quantity,
+        }))
+      );
     } catch (stockErr) {
       console.error('[OrderService] Error updating product stock for COD order:', stockErr);
     }

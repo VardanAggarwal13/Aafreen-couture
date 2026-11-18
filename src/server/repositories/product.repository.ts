@@ -1,3 +1,4 @@
+import { escapeRegex } from '@/lib/utils';
 import { connectDB } from '@/lib/db';
 import mongoose from 'mongoose';
 import Product from '@/models/Product';
@@ -298,9 +299,9 @@ export class ProductRepository {
           } else {
             query.$or = [
               { tags: filters.category.toLowerCase() },
-              { occasion: { $regex: new RegExp(`^${filters.category}$`, 'i') } },
-              { fabric: { $regex: new RegExp(`^${filters.category}$`, 'i') } },
-              { name: { $regex: new RegExp(filters.category.replace(/-/g, ' '), 'i') } },
+              { occasion: { $regex: new RegExp(`^${escapeRegex(filters.category)}$`, 'i') } },
+              { fabric: { $regex: new RegExp(`^${escapeRegex(filters.category)}$`, 'i') } },
+              { name: { $regex: new RegExp(escapeRegex(filters.category.replace(/-/g, ' ')), 'i') } },
             ];
           }
         }
@@ -317,7 +318,7 @@ export class ProductRepository {
           }
         }
       }
-      if (filters.occasion) query.occasion = { $regex: new RegExp(`^${filters.occasion}$`, 'i') };
+      if (filters.occasion) query.occasion = { $regex: new RegExp(`^${escapeRegex(filters.occasion)}$`, 'i') };
       if (filters.isFeatured !== undefined) query.isFeatured = filters.isFeatured;
       if (filters.isNewArrival !== undefined) query.isNewArrival = filters.isNewArrival;
       if (filters.isBestSeller !== undefined) query.isBestSeller = filters.isBestSeller;
@@ -557,6 +558,62 @@ export class ProductRepository {
       { $set: { 'variants.$.stock': stock } }
     );
     return result.matchedCount > 0;
+  }
+
+  /** Sets many variants' stock in one round trip. Returns the SKUs that matched no product. */
+  async updateVariantStockBulk(
+    updates: { productId: string; sku: string; stock: number }[]
+  ): Promise<{ updated: number; failed: { productId: string; sku: string }[] }> {
+    await connectDB();
+    const valid = updates.filter((u) => mongoose.isValidObjectId(u.productId));
+    const failed = updates
+      .filter((u) => !mongoose.isValidObjectId(u.productId))
+      .map((u) => ({ productId: u.productId, sku: u.sku }));
+    if (valid.length === 0) return { updated: 0, failed };
+
+    const result = await Product.bulkWrite(
+      valid.map((u) => ({
+        updateOne: {
+          filter: { _id: new mongoose.Types.ObjectId(u.productId), 'variants.sku': u.sku },
+          update: { $set: { 'variants.$.stock': u.stock } },
+        },
+      })),
+      { ordered: false }
+    );
+
+    if (result.matchedCount < valid.length) {
+      // Some rows matched nothing: look the products up once to say exactly which ones.
+      const products = await Product.find({ _id: { $in: valid.map((u) => u.productId) } })
+        .select('variants.sku')
+        .lean<{ _id: mongoose.Types.ObjectId; variants?: { sku?: string }[] }[]>();
+      const skusByProduct = new Map(products.map((p) => [String(p._id), new Set((p.variants ?? []).map((v) => v.sku))]));
+      for (const u of valid) {
+        if (!skusByProduct.get(u.productId)?.has(u.sku)) failed.push({ productId: u.productId, sku: u.sku });
+      }
+    }
+    return { updated: updates.length - failed.length, failed };
+  }
+
+  /** Deducts stock and counts the sale for every purchased line in one round trip. */
+  async decrementStockBulk(
+    items: { productId: string; variantId?: string; quantity: number }[]
+  ): Promise<void> {
+    await connectDB();
+    const ops = items
+      .filter((i) => i.productId && mongoose.isValidObjectId(i.productId))
+      .map((i) => {
+        const _id = new mongoose.Types.ObjectId(i.productId);
+        if (i.variantId && mongoose.isValidObjectId(i.variantId)) {
+          return {
+            updateOne: {
+              filter: { _id, 'variants._id': new mongoose.Types.ObjectId(i.variantId) },
+              update: { $inc: { 'variants.$.stock': -i.quantity, soldCount: i.quantity } },
+            },
+          };
+        }
+        return { updateOne: { filter: { _id }, update: { $inc: { soldCount: i.quantity } } } };
+      });
+    if (ops.length > 0) await Product.bulkWrite(ops, { ordered: false });
   }
 
   async decrementStock(

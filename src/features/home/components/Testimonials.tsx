@@ -411,7 +411,7 @@ export function Testimonials() {
 
         {/* Section Header */}
         <div className="mb-5 sm:mb-7 text-center sm:text-left">
-          <p className="font-display text-[10.5px] sm:text-[11px] uppercase font-bold tracking-[0.35em] text-[#C49A5A] mb-1.5">
+          <p className="font-display text-[10.5px] sm:text-[11px] uppercase font-bold tracking-[0.35em] text-gold-ink mb-1.5">
             Client Testimonials
           </p>
           <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#221617] tracking-tight">
@@ -533,7 +533,7 @@ export function Testimonials() {
                         </div>
 
                         {/* Outfit Mention */}
-                        <p className="text-[10.5px] uppercase font-bold tracking-[0.25em] text-[#C49A5A] line-clamp-1 mb-1 font-sans">
+                        <p className="text-[10.5px] uppercase font-bold tracking-[0.25em] text-gold-ink line-clamp-1 mb-1 font-sans">
                           {t.categoryLabel}
                         </p>
                         <h3 className="font-serif text-sm sm:text-base font-semibold text-[#221617] line-clamp-2 mb-3 tracking-tight">
@@ -558,7 +558,7 @@ export function Testimonials() {
                           <p className="text-xs sm:text-sm font-serif font-semibold text-[#221617] tracking-wide truncate">
                             {t.name}
                           </p>
-                          <p className="text-[11px] text-[#8C7362] font-sans truncate mt-0.5">
+                          <p className="text-[11px] text-[#7A6150] font-sans truncate mt-0.5">
                             {t.location} · {t.date}
                           </p>
                         </div>
@@ -572,7 +572,7 @@ export function Testimonials() {
         </div>
 
         {/* Pagination Indicators — Minimal ivory dots and one elongated royal espresso active pill */}
-        <div className="flex items-center justify-center gap-2 mt-5 sm:mt-7">
+        <div className="flex items-center justify-center mt-4 sm:mt-6">
           {baseItems.map((_, i) => {
             const isActive = i === activeDotIndex;
             return (
@@ -581,13 +581,18 @@ export function Testimonials() {
                 type="button"
                 onClick={() => handleDotClick(i)}
                 aria-label={`Go to testimonial ${i + 1}`}
-                className={cn(
-                  'transition-all duration-300 cursor-pointer h-2',
-                  isActive
-                    ? 'w-7 sm:w-8 rounded-full bg-[#2E221C] shadow-xs'
-                    : 'w-2 rounded-full bg-[#DDD2C5] hover:bg-[#C49A5A]/60'
-                )}
-              />
+                aria-current={isActive ? 'true' : undefined}
+                className="group flex h-6 min-w-6 items-center justify-center px-1 cursor-pointer"
+              >
+                <span
+                  className={cn(
+                    'block h-2 transition-all duration-300',
+                    isActive
+                      ? 'w-7 sm:w-8 rounded-full bg-[#2E221C] shadow-xs'
+                      : 'w-2 rounded-full bg-[#DDD2C5] group-hover:bg-[#C49A5A]/60'
+                  )}
+                />
+              </button>
             );
           })}
         </div>

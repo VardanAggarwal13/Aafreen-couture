@@ -91,6 +91,9 @@ ProductSchema.index({ collectionRef: 1, isActive: 1 });
 ProductSchema.index({ isFeatured: 1, isActive: 1 });
 ProductSchema.index({ isNewArrival: 1, isActive: 1 });
 ProductSchema.index({ isBestSeller: 1, isActive: 1 });
+// Default catalogue sorts ("newest" and "popular") over active products.
+ProductSchema.index({ isActive: 1, createdAt: -1 });
+ProductSchema.index({ isActive: 1, soldCount: -1 });
 ProductSchema.index({ basePrice: 1 });
 ProductSchema.index({ tags: 1 });
 ProductSchema.index({ name: 'text', description: 'text', tags: 'text' });

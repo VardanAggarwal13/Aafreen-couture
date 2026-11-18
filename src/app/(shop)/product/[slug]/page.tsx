@@ -18,6 +18,12 @@ interface Props {
 
 export const revalidate = 120;
 
+// Declaring params (none pre-rendered) opts this dynamic route into ISR: each page is rendered once on
+// first visit, then served from the cache and refreshed in the background every 120s.
+export function generateStaticParams() {
+  return [];
+}
+
 const getProduct = cache(async (slug: string) => {
   const raw = await productService.getProductBySlug(slug);
   return JSON.parse(JSON.stringify(raw)) as IProduct;

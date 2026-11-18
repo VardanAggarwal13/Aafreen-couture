@@ -3,6 +3,7 @@ import { paymentService } from '@/server/services/payment.service';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { handleApiError, UnauthorizedError, ForbiddenError, NotFoundError } from '@/lib/api-errors';
 import { auth } from '@/lib/auth';
+import { isAdminUser } from '@/lib/admin-access';
 
 interface Context {
   params: Promise<{ id: string }>;
@@ -24,12 +25,11 @@ export async function POST(request: NextRequest, { params }: Context) {
     const order = await orderRepository.findById(id);
     if (!order) throw new NotFoundError('Order');
 
-    const role = (session.user as Record<string, unknown>).role as string | undefined;
-    const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
     const userEmail = session.user.email?.toLowerCase();
-    const isAdmin = role === 'admin' || userEmail === adminEmail || userEmail === 'support@aafreencouture.com';
+    const isAdmin = isAdminUser(session.user);
+    const ownerId = await orderRepository.getOwnerId(id);
     const isOwner =
-      (order.user && String(order.user) === session.user.id) ||
+      (ownerId !== null && ownerId === session.user.id) ||
       Boolean(userEmail && order.shippingAddress?.email?.toLowerCase() === userEmail);
 
     if (!isAdmin && !isOwner) throw new ForbiddenError();

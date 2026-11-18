@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ORDER_STATUS_LABELS, type OrderStatus } from '@/constants/order.constants';
 
 export const AddressSchema = z.object({
   name: z.string().min(2).max(100),
@@ -19,10 +20,22 @@ export const CreateOrderSchema = z.object({
       variantId: z.string().optional(),
       quantity: z.number().int().min(1).max(10),
     })
-  ).min(1),
+  ).min(1).max(30),
   shippingAddress: AddressSchema,
   paymentMethod: z.enum(['razorpay', 'cod']),
-  couponCode: z.string().optional(),
+  couponCode: z.string().max(40).optional(),
+});
+
+const ORDER_STATUS_VALUES = Object.keys(ORDER_STATUS_LABELS) as [OrderStatus, ...OrderStatus[]];
+
+export const UpdateOrderStatusSchema = z.object({
+  status: z.enum(ORDER_STATUS_VALUES),
+  note: z.string().trim().max(500).optional(),
+});
+
+export const UpdatePaymentStatusSchema = z.object({
+  paymentStatus: z.enum(['pending', 'paid', 'failed', 'refunded', 'partially_refunded']),
+  note: z.string().trim().max(500).optional(),
 });
 
 export const VerifyPaymentSchema = z.object({

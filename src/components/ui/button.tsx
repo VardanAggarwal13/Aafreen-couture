@@ -18,7 +18,7 @@ const buttonVariants = cva(
         "couture-light-outline":
           "border border-white/40 bg-transparent hover:bg-white hover:text-[#140B0A] hover:border-white text-white uppercase tracking-[0.2em] font-semibold text-xs rounded-lg transition-all duration-300 active:scale-[0.98]",
         "couture-ghost":
-          "bg-transparent hover:bg-[#E8D4BE]/30 text-[#221617] hover:text-[#A67C52] uppercase tracking-[0.2em] font-semibold text-xs transition-colors",
+          "bg-transparent hover:bg-[#E8D4BE]/30 text-[#221617] hover:text-[#8A6240] uppercase tracking-[0.2em] font-semibold text-xs transition-colors",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
         secondary:

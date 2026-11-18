@@ -1,3 +1,4 @@
+import { ADMIN_LIST_CAP } from './list-limits';
 import { connectDB } from '@/lib/db';
 import Banner from '@/models/Banner';
 import type { IBanner } from '@/models/Banner';
@@ -5,7 +6,7 @@ import type { IBanner } from '@/models/Banner';
 export class BannerRepository {
   async findAll(): Promise<IBanner[]> {
     await connectDB();
-    return Banner.find({}).sort({ position: 1, sortOrder: 1 }).lean<IBanner[]>();
+    return Banner.find({}).sort({ position: 1, sortOrder: 1 }).limit(ADMIN_LIST_CAP).lean<IBanner[]>();
   }
 
   async findById(id: string): Promise<IBanner | null> {

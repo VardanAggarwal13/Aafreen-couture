@@ -1,3 +1,4 @@
+import { ADMIN_LIST_CAP } from './list-limits';
 import { connectDB } from '@/lib/db';
 import BlogPost from '@/models/BlogPost';
 import type { IBlogPost } from '@/models/BlogPost';
@@ -7,7 +8,7 @@ export class BlogRepository {
   async findAllPublished(): Promise<IBlogPost[]> {
     try {
       await connectDB();
-      const docs = await BlogPost.find({ status: 'published' }).sort({ createdAt: -1 }).lean<IBlogPost[]>();
+      const docs = await BlogPost.find({ status: 'published' }).sort({ createdAt: -1 }).limit(ADMIN_LIST_CAP).lean<IBlogPost[]>();
       if (docs.length > 0) return docs;
     } catch {
       // Fallback
@@ -22,7 +23,7 @@ export class BlogRepository {
    */
   async findAllForAdmin(): Promise<IBlogPost[]> {
     await connectDB();
-    return BlogPost.find({}).sort({ createdAt: -1 }).lean<IBlogPost[]>();
+    return BlogPost.find({}).sort({ createdAt: -1 }).limit(ADMIN_LIST_CAP).lean<IBlogPost[]>();
   }
 
   async findBySlug(slug: string): Promise<IBlogPost | null> {

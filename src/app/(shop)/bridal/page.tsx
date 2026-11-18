@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { CategoryHubServer } from '@/components/shop/CategoryHubServer';
+import { getHero } from '@/server/services/hero-image.service';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
@@ -54,7 +55,8 @@ const BRIDAL_CHAPTERS = [
   },
 ];
 
-export default function BridalPage() {
+export default async function BridalPage() {
+  const hero = await getHero('bridal');
   return (
     <CategoryHubServer
       hubKey="bridal"
@@ -62,8 +64,8 @@ export default function BridalPage() {
       italicTitle="Bridal Edit"
       badge="Aafreen Atelier · Royal Heritage"
       heroSubtitle="An ode to the timeless majesty of royal Indian weddings. Each masterpiece is individually hand-embroidered by master artisans in pure silks, velvets, and heirloom organza, adorned with authentic zardozi, dabka, cutdana, and micro-pearl craftsmanship."
-      heroImage="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/bridal-hero-wide.webp"
-      heroObjectPosition="object-[60%_85%]"
+      heroImage={hero.image}
+      heroObjectPosition={hero.objectPosition}
       heroHighlights={[
         '200+ hours of painstaking hand embroidery per ensemble',
         'Pure raw silks, heritage velvets & sheer organza dupattas',

@@ -52,7 +52,7 @@ export async function NewArrivals() {
           </div>
           <Link
             href={`${ROUTES.SHOP}?filter=new`}
-            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#8A6240] transition-colors underline underline-offset-4"
           >
             View All <ArrowRight size="0.8125rem" />
           </Link>
@@ -60,7 +60,7 @@ export async function NewArrivals() {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
           {products.length > 0
-            ? products.map((product, i) => (
+            ? products.map((product) => (
                 <ProductCard key={product._id} product={product} priority={false} />
               ))
             : Array.from({ length: 8 }, (_, i) => (
@@ -71,7 +71,7 @@ export async function NewArrivals() {
         <div className="mt-8 text-center sm:hidden">
           <Link
             href={`${ROUTES.SHOP}?filter=new`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#8A6240] transition-colors underline underline-offset-4"
           >
             View All New Arrivals <ArrowRight size="0.8125rem" />
           </Link>

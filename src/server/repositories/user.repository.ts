@@ -1,5 +1,7 @@
+import { escapeRegex } from '@/lib/utils';
 import { connectDB } from '@/lib/db';
 import mongoose from 'mongoose';
+import User from '@/models/User';
 
 export interface IUser {
   _id: string;
@@ -15,22 +17,9 @@ export interface IUser {
 
 type UserDoc = IUser & mongoose.Document;
 
+/** The one shared User model (see src/models/User.ts): reads the real "user" collection. */
 function getUserModel(): mongoose.Model<UserDoc> {
-  if (mongoose.models['user']) {
-    return mongoose.models['user'] as mongoose.Model<UserDoc>;
-  }
-  const UserSchema = new mongoose.Schema<UserDoc>(
-    {
-      name: String,
-      email: { type: String, unique: true },
-      emailVerified: Boolean,
-      role: { type: String, default: 'customer' },
-      phone: String,
-      image: String,
-    },
-    { timestamps: true }
-  );
-  return mongoose.model<UserDoc>('user', UserSchema);
+  return User as unknown as mongoose.Model<UserDoc>;
 }
 
 export class UserRepository {
@@ -45,7 +34,7 @@ export class UserRepository {
       query['role'] = filter.role;
     }
     if (filter.search) {
-      const s = filter.search.trim();
+      const s = escapeRegex(filter.search.trim());
       query['$or'] = [
         { name: { $regex: s, $options: 'i' } },
         { email: { $regex: s, $options: 'i' } },
@@ -82,6 +71,12 @@ export class UserRepository {
     await connectDB();
     const UserModel = getUserModel();
     return UserModel.findByIdAndUpdate(id, { role, updatedAt: new Date() }, { new: true }).lean() as Promise<IUser | null>;
+  }
+
+  async updateDetails(id: string, details: { name?: string; phone?: string }): Promise<IUser | null> {
+    await connectDB();
+    const UserModel = getUserModel();
+    return UserModel.findByIdAndUpdate(id, { ...details, updatedAt: new Date() }, { new: true }).lean() as Promise<IUser | null>;
   }
 
   async delete(id: string): Promise<boolean> {

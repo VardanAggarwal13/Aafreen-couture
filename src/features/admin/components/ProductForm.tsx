@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { X, Plus, Trash2 } from 'lucide-react';
 import { extractFieldErrors, FIELD_ERROR_CLASS } from '@/utils/form-errors';
+import { shrinkImage } from '@/features/admin/lib/cloudinary-upload';
 import type { IProduct } from '@/types';
 
 const FIELD_LABELS: Record<string, string> = {
@@ -220,27 +221,6 @@ export function ProductForm({ product }: Props) {
   function removeImageAt(index: number) {
     const next = imageList.filter((_, i) => i !== index);
     setValue('images', next.join(', '));
-  }
-
-  /** Downscale big images (max 2400px, WebP) before upload. Returns the original file if anything fails. */
-  async function shrinkImage(file: File): Promise<File> {
-    const MAX_BYTES = 1.5 * 1024 * 1024;
-    const MAX_EDGE = 2400;
-    if (!file.type.startsWith('image/') || file.size <= MAX_BYTES) return file;
-    try {
-      const bitmap = await createImageBitmap(file);
-      const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.round(bitmap.width * scale);
-      canvas.height = Math.round(bitmap.height * scale);
-      canvas.getContext('2d')?.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-      bitmap.close();
-      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/webp', 0.86));
-      if (!blob || blob.size >= file.size) return file;
-      return new File([blob], file.name.replace(/\.[^.]+$/, '') + '.webp', { type: 'image/webp' });
-    } catch {
-      return file;
-    }
   }
 
   async function handleFilesSelected(files: FileList | null) {

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { CategoryHubServer } from '@/components/shop/CategoryHubServer';
+import { getHero } from '@/server/services/hero-image.service';
 import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
@@ -70,7 +71,8 @@ const SUITS_CHAPTERS = [
   },
 ];
 
-export default function SuitsPage() {
+export default async function SuitsPage() {
+  const hero = await getHero('suits');
   return (
     <CategoryHubServer
       hubKey="suits"
@@ -78,8 +80,8 @@ export default function SuitsPage() {
       italicTitle="Suit Atelier"
       badge="Aafreen Atelier · Fine Tailoring"
       heroSubtitle="Elegantly tailored suits, handcrafted anarkalis, and ceremonial silhouettes crafted in pure silks, fine mulmul, and breathable cottons. Adorned with delicate gotta patti, mirror embellishments, and artisanal threadwork."
-      heroImage="https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/suits-hero.webp"
-      heroObjectPosition="object-[center_18%]"
+      heroImage={hero.image}
+      heroObjectPosition={hero.objectPosition}
       heroHighlights={[
         'Pure Mulmul, Chanderi, and Raw Silk fabrics',
         'Handcrafted gotta patti, resham and zardozi detailing',

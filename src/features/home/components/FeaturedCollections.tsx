@@ -48,7 +48,7 @@ export function FeaturedCollections() {
           </div>
           <Link
             href="/collections"
-            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#A67C52] transition-colors underline underline-offset-4"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.16em] uppercase text-[#221617] hover:text-[#8A6240] transition-colors underline underline-offset-4"
           >
             View All Collections <ArrowRight size="0.8125rem" />
           </Link>
@@ -71,12 +71,12 @@ export function FeaturedCollections() {
               {/* Text overlay */}
               <div className="absolute inset-0 bg-linear-to-t from-[#221617]/90 via-[#221617]/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-3.5 xs:p-4 sm:p-6">
-                <p className="text-[0.59375rem] sm:text-[0.625rem] text-[#A67C52] uppercase tracking-[0.2em] mb-0.5 sm:mb-1 font-semibold">
+                <p className="text-[0.59375rem] sm:text-[0.625rem] text-[#8A6240] uppercase tracking-[0.2em] mb-0.5 sm:mb-1 font-semibold">
                   {col.itemCount}
                 </p>
                 <h3 className="text-white font-serif text-base sm:text-xl leading-snug">{col.name}</h3>
                 <p className="text-white/70 text-xs mt-1.5 hidden sm:block leading-relaxed font-sans">{col.description}</p>
-                <span className="inline-block mt-2 sm:mt-3 text-[0.625rem] sm:text-[0.6875rem] text-[#A67C52] tracking-wider uppercase border-b border-[#A67C52]/40 pb-0.5 group-hover:text-white transition-colors font-semibold">
+                <span className="inline-block mt-2 sm:mt-3 text-[0.625rem] sm:text-[0.6875rem] text-[#8A6240] tracking-wider uppercase border-b border-[#A67C52]/40 pb-0.5 group-hover:text-white transition-colors font-semibold">
                   Explore Collection →
                 </span>
               </div>

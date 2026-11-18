@@ -14,7 +14,7 @@ export function TrustBadges() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-0 lg:divide-x lg:divide-[#E8D8C8]">
           {BADGES.map(({ icon: Icon, label, sub }) => (
             <div key={label} className="flex items-center justify-start sm:justify-center gap-2 sm:gap-2.5 py-1 px-2 sm:px-4">
-              <Icon size="1.125rem" className="text-[#A67C52] shrink-0" strokeWidth={1.5} />
+              <Icon size="1.125rem" className="text-[#8A6240] shrink-0" strokeWidth={1.5} />
               <div className="min-w-0">
                 <p className="text-[0.6875rem] sm:text-xs font-semibold text-[#221617] uppercase tracking-wider leading-tight truncate">{label}</p>
                 <p className="text-[0.625rem] sm:text-[0.65625rem] text-[#6E6A66] leading-tight mt-0.5 truncate">{sub}</p>
