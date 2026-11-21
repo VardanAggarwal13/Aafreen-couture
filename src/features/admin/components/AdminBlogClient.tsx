@@ -1,11 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Plus, Trash2, Edit2, Eye, X, Check, BookOpen } from 'lucide-react';
 import { toast } from 'sonner';
+import { AdminPagination } from '@/features/admin/components/AdminPagination';
 import { extractFieldErrors, FIELD_ERROR_CLASS } from '@/utils/form-errors';
+import { estimateReadTime, isEmptyHtml, paragraphsToHtml } from '@/utils/blog-content';
+
+// The editor is only needed when the article form is open, so it is loaded on demand (keeps the list page light).
+const RichTextEditor = dynamic(() => import('@/features/admin/components/RichTextEditor').then((m) => m.RichTextEditor), {
+  ssr: false,
+  loading: () => <div className="h-64 animate-pulse rounded-lg border border-[#DDD2C5] bg-[#FAF7F2]" aria-hidden="true" />,
+});
 
 export interface BlogPostItem {
   _id: string;
@@ -13,6 +22,8 @@ export interface BlogPostItem {
   title: string;
   excerpt: string;
   content: string[];
+  /** Formatted body (already cleaned on the server). Older articles only have `content`. */
+  contentHtml?: string;
   image: string;
   author: string;
   authorRole: string;
@@ -32,12 +43,21 @@ const EMPTY_FORM = {
   image: 'https://res.cloudinary.com/adzbklts/image/upload/v1791872394/aafreen-couture/banners/hero-banner.webp',
   author: 'Aafreen Style Studio',
   authorRole: 'Head Curator',
-  content: '',
+  contentHtml: '',
+  contentText: '',
   status: 'published' as 'published' | 'draft',
 };
 
+const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
+
 export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
   const router = useRouter();
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
+  // After deleting the last item of the last page, fall back to the new last page.
+  const safePage = Math.min(page, totalPages);
+  const pagedPosts = posts.slice((safePage - 1) * pageSize, safePage * pageSize);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [viewing, setViewing] = useState<BlogPostItem | null>(null);
@@ -45,11 +65,17 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
   const [deleting, setDeleting] = useState<string | null>(null);
   const [formData, setFormData] = useState(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  // A new editor instance per opened article, so it always starts from that article's content.
+  const [editorKey, setEditorKey] = useState(0);
+  // The read time follows the article length until the admin types their own.
+  const readTimeEdited = useRef(false);
 
   function openCreateModal() {
     setEditingId(null);
     setFormData(EMPTY_FORM);
     setFieldErrors({});
+    readTimeEdited.current = false;
+    setEditorKey((k) => k + 1);
     setIsModalOpen(true);
   }
 
@@ -66,9 +92,13 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
       image: post.image,
       author: post.author,
       authorRole: post.authorRole,
-      content: post.content.join('\n\n'),
+      // Articles written before the editor existed have plain paragraphs only; the editor opens them as text.
+      contentHtml: post.contentHtml || paragraphsToHtml(post.content),
+      contentText: post.content.join('\n\n'),
       status: post.status,
     });
+    readTimeEdited.current = true; // keep the read time this article already has
+    setEditorKey((k) => k + 1);
     setIsModalOpen(true);
   }
 
@@ -84,19 +114,26 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
     setSaving(true);
     try {
       const slug = formData.slug || formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      const contentParagraphs = formData.content.split('\n\n').map((p) => p.trim()).filter(Boolean);
+      if (isEmptyHtml(formData.contentHtml)) {
+        setFieldErrors({ contentHtml: 'Add some content for the article' });
+        toast.error('The article has no content yet');
+        return;
+      }
+      // A summary is required for the article card; if left blank, use the opening of the article.
+      const plain = formData.contentText.replace(/\s+/g, ' ').trim();
+      const summary = formData.excerpt.trim() || (plain.length > 180 ? plain.slice(0, 180).replace(/\s+\S*$/, '') + '…' : plain);
 
       const payload = {
         title: formData.title,
         slug,
         category: formData.category,
-        excerpt: formData.excerpt,
+        excerpt: summary,
         readTime: formData.readTime,
         publishedAt: formData.publishedAt,
         image: formData.image,
         author: formData.author,
         authorRole: formData.authorRole,
-        content: contentParagraphs.length > 0 ? contentParagraphs : [formData.excerpt],
+        contentHtml: formData.contentHtml,
         status: formData.status,
       };
 
@@ -177,7 +214,7 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#EAE2D7]">
-              {posts.map((post) => (
+              {pagedPosts.map((post) => (
                 <tr key={post._id} className="hover:bg-[#FAF7F2]/60 transition-colors">
                   <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] text-sm">
                     <div className="flex items-center gap-3">
@@ -246,12 +283,24 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
             </tbody>
           </table>
         </div>
+        <AdminPagination
+          page={safePage}
+          totalPages={totalPages}
+          totalItems={posts.length}
+          onPageChange={setPage}
+          pageSize={pageSize}
+          pageSizeOptions={PAGE_SIZE_OPTIONS}
+          onPageSizeChange={(size) => {
+            setPageSize(size);
+            setPage(1);
+          }}
+        />
       </div>
 
       {/* Create / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-2xl p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90dvh] overflow-y-auto">
+          <div className="bg-white w-full max-w-3xl p-4 sm:p-7 rounded-2xl shadow-2xl space-y-4 max-h-[90dvh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-[#DDD2C5]">
               <h3 className="font-sans font-semibold text-[#2E221C] text-base">
                 {editingId ? 'Edit Editorial Story' : 'Write New Editorial Story'}
@@ -291,7 +340,10 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
                   <input
                     type="text"
                     value={formData.readTime}
-                    onChange={(e) => setFormData({ ...formData, readTime: e.target.value })}
+                    onChange={(e) => {
+                      readTimeEdited.current = true;
+                      setFormData({ ...formData, readTime: e.target.value });
+                    }}
                     placeholder="4 min read"
                     className={fieldClass('readTime')}
                   />
@@ -323,14 +375,23 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
               </div>
 
               <div>
-                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Full Content (Separate paragraphs with double Enter)</label>
-                <textarea
-                  rows={6}
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  placeholder="Write the full editorial story here..."
-                  className={fieldClass('content')}
+                <label className="block text-[#8A6A55] mb-1.5 font-semibold uppercase tracking-wider text-[0.625rem]">Full Content</label>
+                <RichTextEditor
+                  key={editorKey}
+                  initialHtml={formData.contentHtml}
+                  invalid={Boolean(fieldErrors.contentHtml || fieldErrors.content)}
+                  onChange={(html, text) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      contentHtml: html,
+                      contentText: text,
+                      readTime: readTimeEdited.current || !text.trim() ? prev.readTime : estimateReadTime(text),
+                    }))
+                  }
                 />
+                {(fieldErrors.contentHtml || fieldErrors.content) && (
+                  <p className="text-xs text-red-600 mt-1">{fieldErrors.contentHtml || fieldErrors.content}</p>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -404,11 +465,15 @@ export function AdminBlogClient({ posts }: { posts: BlogPostItem[] }) {
                 <span className="font-mono">{viewing.slug}</span>
               </div>
               <p className="italic text-[#8A6A55]">{viewing.excerpt}</p>
-              <div className="space-y-2 pt-2">
-                {viewing.content.map((p, i) => (
-                  <p key={i} className="text-[#2E221C] leading-relaxed">{p}</p>
-                ))}
-              </div>
+              {viewing.contentHtml ? (
+                <div className="blog-prose max-h-72 overflow-y-auto pt-2 pr-1 text-sm" dangerouslySetInnerHTML={{ __html: viewing.contentHtml }} />
+              ) : (
+                <div className="space-y-2 pt-2">
+                  {viewing.content.map((p, i) => (
+                    <p key={i} className="text-[#2E221C] leading-relaxed">{p}</p>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="flex justify-end pt-4 border-t border-[#DDD2C5]">
               <button

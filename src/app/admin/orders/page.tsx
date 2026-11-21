@@ -1,10 +1,13 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { AdminDeleteButton } from '@/features/admin/components/AdminDeleteButton';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { formatPrice, formatDate } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
 import { AdminPagination } from '@/features/admin/components/AdminPagination';
-import { getOrderStatusLabel } from '@/constants/order.constants';
+import { getOrderStatusLabel, ORDER_STATUS_LABELS, type OrderStatus } from '@/constants/order.constants';
+import { AdminUrlSelect } from '@/features/admin/components/AdminUrlFilters';
+import { pageHref, readPageParams } from '@/features/admin/lib/pagination';
 
 export const metadata = { title: 'Orders | Admin' };
 
@@ -12,7 +15,7 @@ const DEFAULT_PAGE_SIZE = 20;
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
 interface Props {
-  searchParams: Promise<{ page?: string; limit?: string }>;
+  searchParams: Promise<{ page?: string; limit?: string; status?: string }>;
 }
 
 const STATUS_BADGE: Record<string, string> = {
@@ -30,28 +33,33 @@ const STATUS_BADGE: Record<string, string> = {
 
 export default async function AdminOrdersPage({ searchParams }: Props) {
   const params = await searchParams;
-  const page = Math.max(1, Number(params.page) || 1);
-  const limit = PAGE_SIZE_OPTIONS.includes(Number(params.limit)) ? Number(params.limit) : DEFAULT_PAGE_SIZE;
-  const { items: orders, total } = await orderRepository.findAll({ limit, page });
+  const { page, limit } = readPageParams(params, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS);
+  // Only a real status is accepted; anything else in the URL means "all orders".
+  const status = (Object.keys(ORDER_STATUS_LABELS) as OrderStatus[]).find((s) => s === params.status);
+  const { items: orders, total } = await orderRepository.findAll({ limit, page, status });
   const totalPages = Math.max(1, Math.ceil(total / limit));
+  const listParams = { status, limit: limit === DEFAULT_PAGE_SIZE ? undefined : limit };
+  if (page > totalPages) redirect(pageHref('/admin/orders', listParams, totalPages));
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Client Orders</h1>
-          <p className="text-sm text-[#8A6A55] mt-1 font-sans">{total} registered haute couture orders</p>
+          <p className="text-sm text-[#8A6A55] mt-1 font-sans">
+            {total} {status ? `${getOrderStatusLabel(status).toLowerCase()} ` : 'registered haute couture '}order{total === 1 ? '' : 's'}
+          </p>
         </div>
         <div className="flex items-center gap-2">
-          <select className="bg-white border border-[#DDD2C5] rounded-lg px-3.5 py-2 text-xs text-[#2E221C] outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] shadow-xs">
-            <option value="">All Fulfillment Statuses</option>
-            <option value="pending">Pending Verification</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="processing">In Tailoring</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+          <AdminUrlSelect
+            param="status"
+            value={status ?? ''}
+            ariaLabel="Filter orders by status"
+            options={[
+              { value: '', label: 'All Fulfillment Statuses' },
+              ...(Object.keys(ORDER_STATUS_LABELS) as OrderStatus[]).map((s) => ({ value: s, label: ORDER_STATUS_LABELS[s] })),
+            ]}
+          />
         </div>
       </div>
 
@@ -70,7 +78,7 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
             <tbody className="divide-y divide-[#EAE2D7]">
               {orders.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-5 py-12 text-center text-[#8A6A55]">No client orders placed yet.</td>
+                  <td colSpan={9} className="px-5 py-12 text-center text-[#8A6A55]">{status ? 'No orders with this status.' : 'No client orders placed yet.'}</td>
                 </tr>
               ) : (
                 orders.map((order) => (
@@ -130,7 +138,8 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
         <AdminPagination
           page={page}
           totalPages={totalPages}
-          hrefForPage={(p) => `/admin/orders?page=${p}&limit=${limit}`}
+          totalItems={total}
+          hrefForPage={(p) => pageHref('/admin/orders', listParams, p)}
           pageSize={limit}
           pageSizeOptions={PAGE_SIZE_OPTIONS}
         />

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ArrowRight, Clock } from 'lucide-react';
 import { blogRepository } from '@/server/repositories/blog.repository';
 import { siteConfig } from '@/config/site.config';
+import { BLOG_AUTHOR } from '@/data/blog.data';
 
 export const metadata: Metadata = {
   title: 'The Journal — Bridal Styling Guides & Craft Stories',
@@ -58,7 +59,7 @@ export default async function BlogPage() {
                 {featured.excerpt}
               </p>
               <div className="flex items-center justify-between text-xs text-[#6E6A66] pt-4 border-t border-[#E8D8C8]/60">
-                <span>By {featured.author}</span>
+                <span>By {BLOG_AUTHOR}</span>
                 <span className="flex items-center gap-1.5"><Clock size="0.8125rem" /> {featured.readTime}</span>
               </div>
             </div>

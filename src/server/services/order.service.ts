@@ -3,12 +3,22 @@ import { orderRepository } from '@/server/repositories/order.repository';
 import { productRepository } from '@/server/repositories/product.repository';
 import { emailService } from '@/server/services/email.service';
 import { couponService } from '@/server/services/coupon.service';
+import { notificationService } from '@/server/services/notification.service';
+import type { NotificationType } from '@/constants/notification.constants';
 import { NotFoundError, BusinessError } from '@/lib/api-errors';
 import { generateOrderNumber } from '@/lib/utils';
 import { siteConfig } from '@/config/site.config';
 import { getOrderStatusLabel, ORDER_STATUS_TRANSITIONS, STATUSES_REQUIRING_PAYMENT } from '@/constants/order.constants';
 import type { IOrder, OrderStatus } from '@/models/Order';
 import type { CreateOrderInput } from '@/validators/order.validators';
+
+/** Order status changes that produce a customer notification. */
+const ORDER_STATUS_NOTIFICATIONS: Partial<Record<OrderStatus, NotificationType>> = {
+  shipped: 'order_shipped',
+  out_for_delivery: 'order_out_for_delivery',
+  delivered: 'order_delivered',
+  cancelled: 'order_cancelled',
+};
 
 const SHIPPING_CHARGE = 0; // ₹0 for now as requested (complimentary shipping)
 
@@ -183,6 +193,13 @@ export class OrderService {
       });
     }
 
+    // Customer-facing notification for the milestones a customer cares about (awaited, but it never
+    // throws: it is only a few indexed writes and must finish before a serverless function stops).
+    const statusEvent = ORDER_STATUS_NOTIFICATIONS[newStatus];
+    if (statusEvent) {
+      await notificationService.notifyOrder(orderId, statusEvent, { orderNumber: updated.orderNumber });
+    }
+
     return updated;
   }
 
@@ -260,6 +277,10 @@ export class OrderService {
     // Real-time email notification to customer & atelier
     emailService.sendOrderConfirmation(updated).catch((emailErr) => {
       console.error('[OrderService] Error dispatching COD confirmation email:', emailErr);
+    });
+    await notificationService.notifyOrder(orderId, 'order_placed', {
+      orderNumber: updated.orderNumber,
+      paymentMethod: 'cod',
     });
 
     return updated;

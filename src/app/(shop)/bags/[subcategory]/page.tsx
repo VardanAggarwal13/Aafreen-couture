@@ -38,7 +38,9 @@ const BAGS_SUB_INFO: Record<string, { title: string; subtitle: string; categoryS
   },
 };
 
-export const dynamicParams = false;
+// dynamicParams is deliberately left on: with it off, Next.js loses these pre-built pages whenever an admin
+// action refreshes the site cache and serves 404 until the next deploy. Unknown names are handled by
+// notFound() in the page and in generateMetadata below.
 
 export function generateStaticParams() {
   return Object.keys(BAGS_SUB_INFO).map((subcategory) => ({ subcategory }));

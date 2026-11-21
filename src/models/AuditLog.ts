@@ -1,4 +1,8 @@
 import { Schema, model, models, type Document } from 'mongoose';
+import {
+  AUDIT_LOG_RETENTION_SECONDS,
+  AUDIT_LOG_TTL_INDEX_NAME,
+} from '@/constants/audit.constants';
 
 export interface IAuditLog extends Document {
   userName: string;
@@ -20,7 +24,12 @@ const AuditLogSchema = new Schema<IAuditLog>(
   { timestamps: { createdAt: true, updatedAt: false } }
 );
 
-AuditLogSchema.index({ createdAt: -1 });
+// Retention: MongoDB itself deletes each record AUDIT_LOG_RETENTION_DAYS after createdAt. This single
+// index also serves the newest-first listing. (The audit-log repository re-checks it at runtime.)
+AuditLogSchema.index(
+  { createdAt: 1 },
+  { expireAfterSeconds: AUDIT_LOG_RETENTION_SECONDS, name: AUDIT_LOG_TTL_INDEX_NAME }
+);
 
 const AuditLog = models.AuditLog ?? model<IAuditLog>('AuditLog', AuditLogSchema);
 export default AuditLog;

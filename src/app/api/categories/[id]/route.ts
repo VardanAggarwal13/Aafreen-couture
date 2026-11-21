@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { CATALOG_NAV_TAG } from '@/server/services/catalog-nav.service';
 import { categoryRepository } from '@/server/repositories/category.repository';
 import { categoryService } from '@/server/services/category.service';
 import { handleApiError } from '@/lib/api-errors';
@@ -40,7 +41,9 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     logAdminAction(session, req, 'CATEGORY_UPDATE', `Updated category "${updated.name}"`);
 
     try {
+      revalidateTag(CATALOG_NAV_TAG);
       revalidatePath('/', 'layout');
+      revalidatePath('/collections');
       revalidatePath('/admin/categories');
       revalidatePath('/admin/products');
       revalidatePath('/shop');
@@ -62,7 +65,9 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     logAdminAction(session, req, 'CATEGORY_DELETE', `Deleted category ${id}`);
 
     try {
+      revalidateTag(CATALOG_NAV_TAG);
       revalidatePath('/', 'layout');
+      revalidatePath('/collections');
       revalidatePath('/admin/categories');
       revalidatePath('/admin/products');
       revalidatePath('/shop');

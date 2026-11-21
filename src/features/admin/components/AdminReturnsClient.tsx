@@ -6,6 +6,8 @@ import { Check, X, Eye, RefreshCw, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatPrice } from '@/utils/format';
 import { extractFieldErrors, FIELD_ERROR_CLASS } from '@/utils/form-errors';
+import { AdminPagination } from '@/features/admin/components/AdminPagination';
+import { ADMIN_PAGE_SIZES, pageHref } from '@/features/admin/lib/pagination';
 
 export interface ReturnRequestItem {
   _id: string;
@@ -28,8 +30,17 @@ const EMPTY_FORM = {
   reason: '',
 };
 
-export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }) {
+interface Props {
+  /** Only the return requests of the current page. */
+  returns: ReturnRequestItem[];
+  page: number;
+  limit: number;
+  total: number;
+}
+
+export function AdminReturnsClient({ returns, page, limit, total }: Props) {
   const router = useRouter();
+  const totalPages = Math.max(1, Math.ceil(total / limit));
   const [selectedReturn, setSelectedReturn] = useState<ReturnRequestItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState(EMPTY_FORM);
@@ -224,6 +235,14 @@ export function AdminReturnsClient({ returns }: { returns: ReturnRequestItem[] }
             </tbody>
           </table>
         </div>
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          totalItems={total}
+          hrefForPage={(p) => pageHref('/admin/returns', { limit: limit === 20 ? undefined : limit }, p)}
+          pageSize={limit}
+          pageSizeOptions={ADMIN_PAGE_SIZES}
+        />
       </div>
 
       {/* Log Return Modal */}

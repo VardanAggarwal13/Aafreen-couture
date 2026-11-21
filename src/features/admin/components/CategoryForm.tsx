@@ -15,6 +15,7 @@ interface CategoryData {
   image?: string;
   sortOrder?: number;
   isActive?: boolean;
+  showInMenu?: boolean;
 }
 
 export function CategoryForm({ category }: { category?: CategoryData }) {
@@ -27,9 +28,11 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
     name: category?.name ?? '',
     slug: category?.slug ?? '',
     description: category?.description ?? '',
-    image: category?.image ?? 'https://res.cloudinary.com/adzbklts/image/upload/v1791872397/aafreen-couture/categories/bridal.webp',
+    image: category?.image ?? '',
     sortOrder: category?.sortOrder ?? 1,
     isActive: category?.isActive ?? true,
+    // New categories appear in the menu and shop filters by default; existing ones keep their layout.
+    showInMenu: category?.showInMenu ?? !isEdit,
   });
 
   async function handleSubmit(e: React.FormEvent) {
@@ -178,6 +181,23 @@ export function CategoryForm({ category }: { category?: CategoryData }) {
                 className="accent-[#C9A86A] w-4 h-4 rounded border-[#DDD2C5]"
               />
               Active in Store
+            </label>
+          </div>
+
+          <div className="sm:col-span-2">
+            <label className="flex items-start gap-2.5 text-sm text-[#2E221C] font-medium cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={formData.showInMenu}
+                onChange={(e) => setFormData({ ...formData, showInMenu: e.target.checked })}
+                className="accent-[#C9A86A] w-4 h-4 mt-0.5 rounded border-[#DDD2C5]"
+              />
+              <span>
+                Show in the site menu and shop filters
+                <span className="block text-xs font-normal text-[#8A6A55] mt-0.5">
+                  The category always gets its own page. Tick this to also list it in the top menu (under &ldquo;More&rdquo;) and in the shop&rsquo;s Category filter.
+                </span>
+              </span>
             </label>
           </div>
         </div>

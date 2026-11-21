@@ -1,9 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Star, Check, X, Trash2, Eye } from 'lucide-react';
 import { toast } from 'sonner';
+import { AdminPagination } from '@/features/admin/components/AdminPagination';
+import { ADMIN_PAGE_SIZES, pageHref } from '@/features/admin/lib/pagination';
+
+export type ReviewStatusFilter = 'all' | 'pending' | 'approved';
 
 export interface ReviewItem {
   _id: string;
@@ -17,17 +22,22 @@ export interface ReviewItem {
   createdAt: string;
 }
 
-export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
+interface Props {
+  /** Only the reviews of the current page (already filtered by the server). */
+  reviews: ReviewItem[];
+  status: ReviewStatusFilter;
+  counts: { all: number; pending: number; approved: number };
+  page: number;
+  limit: number;
+  total: number;
+}
+
+export function AdminReviewsClient({ reviews, status, counts, page, limit, total }: Props) {
   const router = useRouter();
-  const [filter, setFilter] = useState<'all' | 'pending' | 'approved'>('all');
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+  const listParams = { status: status === 'all' ? undefined : status, limit: limit === 20 ? undefined : limit };
   const [viewing, setViewing] = useState<ReviewItem | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
-
-  const filtered = reviews.filter((r) => {
-    if (filter === 'pending') return !r.isApproved;
-    if (filter === 'approved') return r.isApproved;
-    return true;
-  });
 
   async function updateApproval(id: string, isApproved: boolean) {
     setBusyId(id);
@@ -74,17 +84,18 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
 
         <div className="flex items-center gap-2">
           {(['all', 'pending', 'approved'] as const).map((tab) => (
-            <button
+            <Link
               key={tab}
-              onClick={() => setFilter(tab)}
-              className={`px-3.5 py-1.5 text-xs rounded-lg capitalize font-medium transition-all cursor-pointer ${
-                filter === tab
+              href={pageHref('/admin/reviews', { status: tab === 'all' ? undefined : tab, limit: listParams.limit }, 1)}
+              aria-current={status === tab ? 'page' : undefined}
+              className={`px-3.5 py-1.5 text-xs rounded-lg capitalize font-medium transition-all ${
+                status === tab
                   ? 'bg-[#2E221C] text-[#F8F5F1] shadow-sm'
                   : 'bg-white text-[#8A6A55] hover:text-[#2E221C] border border-[#DDD2C5]'
               }`}
             >
-              {tab}
-            </button>
+              {tab} <span className="opacity-70">({counts[tab]})</span>
+            </Link>
           ))}
         </div>
       </div>
@@ -102,7 +113,7 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#EAE2D7]">
-              {filtered.map((review) => (
+              {reviews.map((review) => (
                 <tr key={review._id} className="hover:bg-[#FAF7F2]/60 transition-colors">
                   <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] max-w-[12.5rem] truncate text-sm">
                     {review.productName}
@@ -173,7 +184,7 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
                   </td>
                 </tr>
               ))}
-              {filtered.length === 0 && (
+              {reviews.length === 0 && (
                 <tr>
                   <td colSpan={7} className="px-5 py-12 text-center text-[#8A6A55]">
                     No client reviews found in this filter category.
@@ -183,6 +194,14 @@ export function AdminReviewsClient({ reviews }: { reviews: ReviewItem[] }) {
             </tbody>
           </table>
         </div>
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          totalItems={total}
+          hrefForPage={(p) => pageHref('/admin/reviews', listParams, p)}
+          pageSize={limit}
+          pageSizeOptions={ADMIN_PAGE_SIZES}
+        />
       </div>
 
       {viewing && (

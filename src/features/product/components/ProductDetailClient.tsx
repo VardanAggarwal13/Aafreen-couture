@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { categoryCrumbHref } from '@/config/catalog-seo.config';
@@ -12,7 +12,6 @@ import {
   ChevronUp,
   ChevronLeft,
   ChevronRight,
-  Star,
   Truck,
   ShieldCheck,
   RotateCcw,
@@ -38,6 +37,12 @@ interface Props {
 
 export function ProductDetailClient({ product, related }: Props) {
   const [selectedImage, setSelectedImage] = useState(0);
+  const swipeStartX = useRef<number | null>(null);
+  // Gallery loading state, keyed by photo URL: which photos are mounted, which have finished
+  // loading, and which one is currently on screen (see the effects below allImages).
+  const [viewedImages, setViewedImages] = useState<ReadonlySet<string>>(() => new Set());
+  const [loadedImages, setLoadedImages] = useState<ReadonlySet<string>>(() => new Set());
+  const [shownSrc, setShownSrc] = useState<string | null>(null);
   const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [accordionOpen, setAccordionOpen] = useState<string | null>('details');
@@ -72,7 +77,49 @@ export function ProductDetailClient({ product, related }: Props) {
     }
     return ['https://res.cloudinary.com/adzbklts/image/upload/v1791873581/aafreen-couture/products/noor-e-ishq.webp'];
   })();
- 
+
+  const selectedSrc = allImages[selectedImage] ?? allImages[0] ?? '';
+  // The photo on screen. It only changes once the newly chosen photo has finished loading, so the
+  // previous one stays visible meanwhile (never a blank frame) and then cross-fades to the new one.
+  const visibleSrc = shownSrc && allImages.includes(shownSrc) ? shownSrc : selectedSrc;
+  const firstSrc = allImages[0] ?? '';
+  const firstLoaded = loadedImages.has(firstSrc);
+  const photoKey = allImages.join('|');
+
+  useEffect(() => {
+    setViewedImages((prev) => (prev.has(selectedSrc) ? prev : new Set(prev).add(selectedSrc)));
+  }, [selectedSrc]);
+
+  // The photo present at page load is on screen from the start. (It is rendered by the server and may
+  // finish loading before the page is interactive, so no "loaded" event can be relied on for it.)
+  useEffect(() => {
+    setShownSrc((prev) => prev ?? selectedSrc);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (loadedImages.has(selectedSrc)) {
+      setShownSrc(selectedSrc);
+      return;
+    }
+    // Safety net: if the chosen photo hasn't arrived after a while (or failed), show it anyway rather
+    // than keeping the previous one on screen indefinitely.
+    const giveUp = window.setTimeout(() => setShownSrc(selectedSrc), 8000);
+    return () => window.clearTimeout(giveUp);
+  }, [selectedSrc, loadedImages]);
+
+  // Once the first photo is on screen, quietly fetch the rest (at low priority) so Next/Previous
+  // is instant. If the first photo's load signal never arrives, start anyway after a few seconds.
+  useEffect(() => {
+    const urls = photoKey.split('|');
+    if (urls.length < 2) return;
+    const timer = window.setTimeout(
+      () => setViewedImages((prev) => new Set([...prev, ...urls])),
+      firstLoaded ? 150 : 3000
+    );
+    return () => window.clearTimeout(timer);
+  }, [photoKey, firstLoaded]);
+
   useEffect(() => {
     if (!isZoomOpen) return;
     const originalOverflow = document.body.style.overflow;
@@ -234,28 +281,53 @@ export function ProductDetailClient({ product, related }: Props) {
                 {/* Main Stage Image — 9:16 aspect ratio matching high-fashion full-length photography */}
                 <div
                   className={cn(
-                    'flex-1 w-full relative aspect-[9/16] max-h-[48.75rem] lg:max-h-[55rem] rounded-2xl overflow-hidden shadow-md group flex items-center justify-center',
+                    'flex-1 w-full relative aspect-[9/16] max-h-[48.75rem] lg:max-h-[55rem] [@media(max-height:32rem)]:aspect-auto [@media(max-height:32rem)]:h-[calc(100svh-5rem)] rounded-2xl overflow-hidden shadow-md group flex items-center justify-center touch-pan-y',
                     galleryBg
                   )}
+                  onTouchStart={(e) => {
+                    swipeStartX.current = e.touches[0]?.clientX ?? null;
+                  }}
+                  onTouchEnd={(e) => {
+                    const start = swipeStartX.current;
+                    swipeStartX.current = null;
+                    const end = e.changedTouches[0]?.clientX;
+                    if (start === null || end === undefined || allImages.length < 2) return;
+                    const delta = end - start;
+                    if (Math.abs(delta) < 50) return; // a tap or a tiny drag, not a swipe
+                    setSelectedImage((prev) =>
+                      delta < 0 ? (prev === allImages.length - 1 ? 0 : prev + 1) : prev === 0 ? allImages.length - 1 : prev - 1
+                    );
+                  }}
                 >
                   {allImages.length > 0 ? (
-                    allImages.map((img, i) => (
-                      <Image
-                        key={img}
-                        src={img}
-                        alt={i === 0 ? product.name : `${product.name} — photo ${i + 1}`}
-                        fill
-                        priority={i === 0}
-                        quality={90}
-                        sizes="(max-width: 64em) 100vw, 55vw"
-                        className={cn(
-                          'object-contain object-center transition-opacity duration-300 ease-out',
-                          i === selectedImage
-                            ? 'opacity-100 group-hover:scale-[1.02] transition-[opacity,transform] duration-300'
-                            : 'opacity-0 pointer-events-none'
-                        )}
-                      />
-                    ))
+                    allImages.map((img, i) => {
+                      // Only the photo being shown (plus any already viewed, so switching back is
+                      // instant) is rendered. Stacking every photo at once made the browser download
+                      // them all in full size before the page felt ready.
+                      if (img !== selectedSrc && img !== visibleSrc && !viewedImages.has(img)) return null;
+                      return (
+                        <Image
+                          key={img}
+                          src={img}
+                          alt={i === 0 ? product.name : `${product.name} — photo ${i + 1}`}
+                          fill
+                          priority={i === 0}
+                          loading={i === 0 ? undefined : 'eager'}
+                          fetchPriority={i === 0 ? 'high' : 'low'}
+                          quality={80}
+                          sizes="(max-width: 64em) 100vw, 55vw"
+                          onLoad={() =>
+                            setLoadedImages((prev) => (prev.has(img) ? prev : new Set(prev).add(img)))
+                          }
+                          className={cn(
+                            'object-contain object-center transition-opacity duration-300 ease-out',
+                            img === visibleSrc
+                              ? 'opacity-100 group-hover:scale-[1.02] transition-[opacity,transform] duration-300'
+                              : 'opacity-0 pointer-events-none'
+                          )}
+                        />
+                      );
+                    })
                   ) : (
                     <div className="w-full h-full bg-background" />
                   )}
@@ -313,7 +385,7 @@ export function ProductDetailClient({ product, related }: Props) {
                           e.stopPropagation();
                           setSelectedImage((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
                         }}
-                        className="absolute left-2.5 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-white/90 hover:bg-white text-heading hover:text-gold opacity-0 group-hover:opacity-100 transition-all shadow-md cursor-pointer z-20"
+                        className="absolute left-0 sm:left-2.5 top-1/2 -translate-y-1/2 py-3 pl-1.5 pr-2 sm:p-2.5 rounded-full max-sm:rounded-l-none max-sm:border-l-0 bg-black/25 hover:bg-black/45 backdrop-blur-sm border border-white/30 text-white opacity-100 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 transition-all cursor-pointer z-20"
                         title="Previous photo"
                         aria-label="Previous photo"
                       >
@@ -325,7 +397,7 @@ export function ProductDetailClient({ product, related }: Props) {
                           e.stopPropagation();
                           setSelectedImage((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
                         }}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-white/90 hover:bg-white text-heading hover:text-gold opacity-0 group-hover:opacity-100 transition-all shadow-md cursor-pointer z-20"
+                        className="absolute right-0 sm:right-2.5 top-1/2 -translate-y-1/2 py-3 pr-1.5 pl-2 sm:p-2.5 rounded-full max-sm:rounded-r-none max-sm:border-r-0 bg-black/25 hover:bg-black/45 backdrop-blur-sm border border-white/30 text-white opacity-100 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 transition-all cursor-pointer z-20"
                         title="Next photo"
                         aria-label="Next photo"
                       >
@@ -359,21 +431,7 @@ export function ProductDetailClient({ product, related }: Props) {
                 {product.name}
               </h1>
 
-              {/* Rating & Social Proof */}
-              <div className="flex items-center gap-2.5 mb-3 text-xs text-text">
-                <div className="flex gap-0.5">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <Star
-                      key={i}
-                      size="0.8125rem"
-                      className={i < Math.round(product.averageRating || 0) ? 'text-gold fill-gold' : 'text-border fill-border'}
-                    />
-                  ))}
-                </div>
-                <span className="font-medium text-heading">{product.reviewCount > 0 ? product.averageRating.toFixed(1) : null}</span>
-                <span className="text-border">·</span>
-                <a href="#reviews" className="hover:text-gold transition-colors">{product.reviewCount > 0 ? `${product.reviewCount} client reviews` : "Be the first to review"}</a>
-                <span className="text-border">·</span>
+              <div className="mb-3 text-xs text-text">
                 <span className="text-gold-ink font-medium">Bespoke Couture</span>
               </div>
 

@@ -5,6 +5,8 @@ export interface IBlogPost extends Document {
   title: string;
   excerpt: string;
   content: string[];
+  /** Formatted article body (sanitized HTML). Older articles only have `content`. */
+  contentHtml?: string;
   image: string;
   author: string;
   authorRole: string;
@@ -22,6 +24,7 @@ const BlogPostSchema = new Schema<IBlogPost>(
     title: { type: String, required: true, trim: true },
     excerpt: { type: String, required: true },
     content: [{ type: String, required: true }],
+    contentHtml: { type: String },
     image: { type: String, required: true },
     author: { type: String, required: true },
     authorRole: { type: String, required: true },

@@ -1,11 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Package, User, MapPin, RotateCcw, Bell, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { authClient } from '@/lib/auth-client';
 import { ROUTES } from '@/constants/routes';
+import { useNotificationStore } from '@/store/notification.store';
 
 interface AccountSidebarProps {
   user: {
@@ -14,6 +16,8 @@ interface AccountSidebarProps {
     email?: string;
     role?: string;
   };
+  /** Number of unread notifications, shown as a badge on the Notifications link. */
+  unreadNotifications?: number;
 }
 
 const NAV = [
@@ -24,8 +28,15 @@ const NAV = [
   { href: ROUTES.NOTIFICATIONS, label: 'Notifications', icon: Bell },
 ];
 
-export function AccountSidebar({ user }: AccountSidebarProps) {
+export function AccountSidebar({ user, unreadNotifications: serverUnread = 0 }: AccountSidebarProps) {
   const pathname = usePathname();
+  // The live count (kept current by the Notifications screen) wins over the count rendered by the server.
+  const liveUnread = useNotificationStore((s) => s.unread);
+  const setUnread = useNotificationStore((s) => s.setUnread);
+  const unreadNotifications = liveUnread ?? serverUnread;
+  useEffect(() => {
+    setUnread(serverUnread); // adopt a fresher server value (page load, or a refresh elsewhere)
+  }, [serverUnread, setUnread]);
 
   async function handleSignOut() {
     await authClient.signOut();
@@ -55,6 +66,17 @@ export function AccountSidebar({ user }: AccountSidebarProps) {
           >
             <Icon size="0.9375rem" />
             {label}
+            {href === ROUTES.NOTIFICATIONS && unreadNotifications > 0 && (
+              <span
+                className={cn(
+                  'ml-auto min-w-5 rounded-full px-1.5 py-0.5 text-center text-[0.625rem] font-semibold leading-none',
+                  isActive ? 'bg-heading text-white' : 'bg-gold text-heading'
+                )}
+                aria-label={`${unreadNotifications} unread notifications`}
+              >
+                {unreadNotifications > 99 ? '99+' : unreadNotifications}
+              </span>
+            )}
           </Link>
         );
       })}

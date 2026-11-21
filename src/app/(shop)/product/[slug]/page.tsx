@@ -4,9 +4,7 @@ import type { Metadata } from 'next';
 import { productService } from '@/server/services/product.service';
 import { NotFoundError } from '@/lib/api-errors';
 import { categoryCrumbHref } from '@/config/catalog-seo.config';
-import { reviewService } from '@/server/services/review.service';
-import { ProductReviews } from '@/features/product/components/ProductReviews';
-import type { PublicReview } from '@/server/repositories/review.repository';
+import { productRepository } from '@/server/repositories/product.repository';
 import { ProductDetailClient } from '@/features/product/components/ProductDetailClient';
 import { siteConfig } from '@/config/site.config';
 import { buildProductJsonLd, buildBreadcrumbJsonLd, jsonLdString } from '@/utils/seo';
@@ -18,10 +16,16 @@ interface Props {
 
 export const revalidate = 120;
 
-// Declaring params (none pre-rendered) opts this dynamic route into ISR: each page is rendered once on
-// first visit, then served from the cache and refreshed in the background every 120s.
-export function generateStaticParams() {
-  return [];
+// Every active product page is built ahead of time, so opening one is served instantly from the CDN
+// instead of being rendered on the first visitor's click. Pages refresh in the background every 120s,
+// and a product added later is rendered on its first visit (dynamicParams stays on).
+export async function generateStaticParams() {
+  try {
+    const slugs = await productRepository.findAllActiveSlugs();
+    return slugs.map((slug) => ({ slug }));
+  } catch {
+    return [];
+  }
 }
 
 const getProduct = cache(async (slug: string) => {
@@ -82,7 +86,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         images: [firstImage],
       },
     };
-  } catch {
+  } catch (err) {
+    // An unknown product is a real 404; any other failure (e.g. a database hiccup) keeps a generic title.
+    if (err instanceof NotFoundError) notFound();
     return { title: 'Product' };
   }
 }
@@ -96,23 +102,20 @@ export default async function ProductPage({ params }: Props) {
       ? product.category
       : (product.category as IProduct['category'] & { _id: string })._id;
 
-    let related: IProduct[] = [];
-    try {
-      const rawRelated = await productService.getRelatedProducts(product._id, categoryId);
-      related = JSON.parse(JSON.stringify(rawRelated)) as IProduct[];
-    } catch {
-      related = [];
-    }
-
-    if (related.length === 0) {
-      try {
-        const fallbackRelated = await productService.getFeaturedProducts(6);
-        related = JSON.parse(
-          JSON.stringify(fallbackRelated.filter((p) => String(p._id) !== String(product._id)).slice(0, 4))
-        ) as IProduct[];
-      } catch {
-        related = [];
-      }
+    // Both lookups start together: the featured fallback costs nothing extra when it is not needed,
+    // and waiting for the first one before starting the second used to add a full database round trip.
+    const [relatedResult, featuredResult] = await Promise.allSettled([
+      productService.getRelatedProducts(product._id, categoryId),
+      productService.getFeaturedProducts(6),
+    ]);
+    let related: IProduct[] =
+      relatedResult.status === 'fulfilled'
+        ? (JSON.parse(JSON.stringify(relatedResult.value)) as IProduct[])
+        : [];
+    if (related.length === 0 && featuredResult.status === 'fulfilled') {
+      related = JSON.parse(
+        JSON.stringify(featuredResult.value.filter((p) => String(p._id) !== String(product._id)).slice(0, 4))
+      ) as IProduct[];
     }
 
     const hasCategoryCrumb = typeof product.category === 'object' && !!product.category?.name;
@@ -125,22 +128,11 @@ export default async function ProductPage({ params }: Props) {
       { label: product.name },
     ]);
 
-    let reviews: PublicReview[] = [];
-    let stats = { count: 0, average: 0 };
-    try {
-      [reviews, stats] = await Promise.all([
-        reviewService.getPublicReviews(product._id),
-        reviewService.getRatingStats(product._id),
-      ]);
-    } catch {
-      reviews = [];
-    }
+    // Product pages show no ratings or reviews (many pieces are one-offs), so the stored placeholder
+    // rating fields are cleared here and never reach the screen or the search-engine data.
+    const displayProduct: IProduct = { ...product, averageRating: 0, reviewCount: 0 };
 
-    // Ratings shown to shoppers and search engines come only from approved reviews, never from
-    // the stored product fields (which seed data may have filled with placeholder numbers).
-    const ratedProduct: IProduct = { ...product, averageRating: stats.average, reviewCount: stats.count };
-
-    const productJsonLd = buildProductJsonLd(ratedProduct, reviews);
+    const productJsonLd = buildProductJsonLd(displayProduct, []);
 
     return (
       <>
@@ -153,15 +145,7 @@ export default async function ProductPage({ params }: Props) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumbJsonLd) }}
         />
-        <ProductDetailClient product={ratedProduct} related={related} />
-        <ProductReviews
-          productId={product._id}
-          productSlug={product.slug}
-          productName={product.name}
-          reviews={reviews}
-          reviewCount={stats.count}
-          averageRating={stats.average}
-        />
+        <ProductDetailClient product={displayProduct} related={related} />
       </>
     );
   } catch (err) {

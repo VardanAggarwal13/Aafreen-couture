@@ -4,6 +4,7 @@ import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
 import { Providers } from '@/providers/Providers';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { getMenuExtras } from '@/server/services/catalog-nav.service';
 import { NavigationProgress } from '@/components/common/NavigationProgress';
 import { MetaPixel } from '@/components/analytics/MetaPixel';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
@@ -99,11 +100,13 @@ const jsonLd = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Cached (refreshed on every admin category change), so this does not make pages dynamic.
+  const extraNavLinks = await getMenuExtras();
   return (
     <html
       lang="en-IN"
@@ -131,7 +134,7 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <NavigationProgress />
           </Suspense>
-          <Navbar />
+          <Navbar extraNavLinks={extraNavLinks} />
           <main className="flex-1">
             {children}
           </main>

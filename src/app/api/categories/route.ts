@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { CATALOG_NAV_TAG } from '@/server/services/catalog-nav.service';
 import { categoryRepository } from '@/server/repositories/category.repository';
 import { handleApiError } from '@/lib/api-errors';
 import { requireAdmin } from '@/server/auth';
@@ -45,7 +46,9 @@ export async function POST(req: NextRequest) {
     logAdminAction(session, req, 'CATEGORY_CREATE', `Created category "${created.name}"`);
 
     try {
+      revalidateTag(CATALOG_NAV_TAG);
       revalidatePath('/', 'layout');
+      revalidatePath('/collections');
       revalidatePath('/admin/categories');
       revalidatePath('/admin/products');
       revalidatePath('/shop');

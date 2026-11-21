@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus, Ticket, Trash2, Edit2, Eye, X, Check } from 'lucide-react';
 import { toast } from 'sonner';
+import { AdminPagination } from '@/features/admin/components/AdminPagination';
 import { formatPrice } from '@/utils/format';
 import { extractFieldErrors, FIELD_ERROR_CLASS } from '@/utils/form-errors';
 
@@ -55,8 +56,16 @@ function isExpired(coupon: CouponItem): boolean {
   return new Date(coupon.validUntil) < new Date();
 }
 
+const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
+
 export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
   const router = useRouter();
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const totalPages = Math.max(1, Math.ceil(coupons.length / pageSize));
+  // After deleting the last item of the last page, fall back to the new last page.
+  const safePage = Math.min(page, totalPages);
+  const pagedCoupons = coupons.slice((safePage - 1) * pageSize, safePage * pageSize);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [viewing, setViewing] = useState<CouponItem | null>(null);
@@ -208,7 +217,7 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#EAE2D7]">
-              {coupons.map((coupon) => {
+              {pagedCoupons.map((coupon) => {
                 const expired = isExpired(coupon);
                 return (
                   <tr key={coupon._id} className="hover:bg-[#FAF7F2]/60 transition-colors">
@@ -276,6 +285,18 @@ export function AdminCouponsClient({ coupons }: { coupons: CouponItem[] }) {
             </tbody>
           </table>
         </div>
+        <AdminPagination
+          page={safePage}
+          totalPages={totalPages}
+          totalItems={coupons.length}
+          onPageChange={setPage}
+          pageSize={pageSize}
+          pageSizeOptions={PAGE_SIZE_OPTIONS}
+          onPageSizeChange={(size) => {
+            setPageSize(size);
+            setPage(1);
+          }}
+        />
       </div>
 
       {/* Create / Edit Modal */}

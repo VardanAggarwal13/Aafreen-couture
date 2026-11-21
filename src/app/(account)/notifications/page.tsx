@@ -1,34 +1,35 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { Bell } from 'lucide-react';
 import { auth } from '@/lib/auth';
+import { notificationService } from '@/server/services/notification.service';
+import { NotificationsClient } from '@/features/account/components/NotificationsClient';
+import { NOTIFICATION_PAGE_SIZE } from '@/constants/notification.constants';
 
 export const metadata: Metadata = { title: 'Notifications | Aafreen Couture' };
+export const dynamic = 'force-dynamic';
 
 export default async function NotificationsPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect('/login?redirect=%2Fnotifications');
 
+  // Only this signed-in customer's notifications are ever loaded.
+  const { items, unread, pagination } = await notificationService.list(session.user.id, 1, NOTIFICATION_PAGE_SIZE);
+
   return (
     <div className="space-y-6 font-sans">
       <div>
         <h1 className="text-2xl font-serif text-heading">Notifications & Alerts</h1>
-        <p className="text-xs sm:text-sm text-text mt-1">Updates regarding your orders, bespoke fittings, and account activity</p>
+        <p className="text-xs sm:text-sm text-text mt-1">Updates regarding your orders and payments</p>
       </div>
 
-      <div className="space-y-3">
-        {/* Empty state */}
-        <div className="bg-surface p-10 text-center rounded-2xl shadow-sm">
-          <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-4">
-            <Bell size="1.375rem" className="text-gold" />
-          </div>
-          <h3 className="text-base font-serif text-heading mb-1.5">No notifications yet</h3>
-          <p className="text-xs sm:text-sm text-text">
-            Dispatch milestones, delivery notifications, and atelier alerts will appear here.
-          </p>
-        </div>
-      </div>
+      <NotificationsClient
+        initialItems={items}
+        initialUnread={unread}
+        initialTotal={pagination.total}
+        initialHasNext={pagination.hasNextPage}
+        pageSize={NOTIFICATION_PAGE_SIZE}
+      />
     </div>
   );
 }

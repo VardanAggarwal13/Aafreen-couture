@@ -419,5 +419,6 @@ export const HUB_SEO: Record<string, { heading: string; paragraphs: string[] }> 
 
 /** Real landing page for a product category, falling back to the filtered shop view. */
 export function categoryCrumbHref(slug: string): string {
-  return CATEGORY_HUB_PATH[slug]?.href ?? `/shop?category=${slug}`;
+  // Categories without a built-in landing page (e.g. ones added in the admin) have their own page.
+  return CATEGORY_HUB_PATH[slug]?.href ?? `/category/${slug}`;
 }

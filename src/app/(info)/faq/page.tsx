@@ -60,7 +60,7 @@ const FAQS: FaqCategory[] = [
       },
       {
         q: 'How can I track my shipment?',
-        a: 'Once your order is handed over to the courier partner, an automated email and WhatsApp notification with your AWB tracking link will be sent.',
+        a: 'Once your order is handed over to the courier partner, we send you an email and add an update to the Notifications section of your account. For courier tracking details, contact us with your order number and our team will share them.',
       },
     ],
   },

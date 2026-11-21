@@ -6,6 +6,8 @@ import { ArrowLeft, Clock, Calendar, User } from 'lucide-react';
 import { blogRepository } from '@/server/repositories/blog.repository';
 import { siteConfig } from '@/config/site.config';
 import { buildBreadcrumbJsonLd, jsonLdString } from '@/utils/seo';
+import { sanitizeBlogHtml } from '@/lib/blog-html';
+import { BLOG_AUTHOR } from '@/data/blog.data';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -14,7 +16,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await blogRepository.findBySlug(slug);
-  if (!post) return { title: 'Article Not Found | Aafreen Couture' };
+  if (!post) notFound(); // a real 404 status, not a 200 page that says "not found"
 
   return {
     title: post.title,
@@ -52,7 +54,7 @@ export default async function BlogPostPage({ params }: Props) {
     image: post.image.startsWith('http') ? post.image : `${siteConfig.url}${post.image}`,
     datePublished: publishedIso,
     dateModified: post.updatedAt ? new Date(post.updatedAt).toISOString() : publishedIso,
-    author: { '@type': 'Person', name: post.author },
+    author: { '@type': 'Organization', name: BLOG_AUTHOR },
     publisher: {
       '@type': 'Organization',
       name: siteConfig.name,
@@ -89,7 +91,7 @@ export default async function BlogPostPage({ params }: Props) {
           </h1>
 
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-[#6E6A66] pt-4 border-t border-[#E8D8C8]/60 font-sans">
-            <span className="flex items-center gap-1.5"><User size="0.875rem" className="text-[#8A6240]" /> {post.author} ({post.authorRole})</span>
+            <span className="flex items-center gap-1.5"><User size="0.875rem" className="text-[#8A6240]" /> {BLOG_AUTHOR}</span>
             <span className="flex items-center gap-1.5"><Calendar size="0.875rem" className="text-[#8A6240]" /> {post.publishedAt}</span>
             <span className="flex items-center gap-1.5"><Clock size="0.875rem" className="text-[#8A6240]" /> {post.readTime}</span>
           </div>
@@ -114,11 +116,17 @@ export default async function BlogPostPage({ params }: Props) {
             {post.excerpt}
           </p>
 
-          {post.content.map((paragraph, i) => (
-            <p key={i} className="leading-relaxed">
-              {paragraph}
-            </p>
-          ))}
+          {post.contentHtml ? (
+            // Formatted article from the editor. It was cleaned when saved and is cleaned again here, so only the
+            // supported formatting (headings, bold, lists, quotes, links) can ever reach the page.
+            <div className="blog-prose" dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(post.contentHtml) }} />
+          ) : (
+            post.content.map((paragraph, i) => (
+              <p key={i} className="leading-relaxed">
+                {paragraph}
+              </p>
+            ))
+          )}
         </div>
 
         {/* CTA Banner */}
@@ -127,7 +135,7 @@ export default async function BlogPostPage({ params }: Props) {
             Book a Personal Bridal Consultation
           </h3>
           <p className="text-xs text-[#6E6A66] mb-5 font-sans">
-            Experience our bespoke haute couture collection with personalized styling advice from Pearl Kapoor.
+            Experience our bespoke haute couture collection with personalized styling advice from our team.
           </p>
           <Link
             href="/contact"

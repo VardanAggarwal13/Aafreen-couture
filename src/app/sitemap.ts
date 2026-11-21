@@ -3,6 +3,8 @@ import { siteConfig } from '@/config/site.config';
 import { SUBCATEGORY_SLUGS } from '@/config/catalog-seo.config';
 import { productRepository } from '@/server/repositories/product.repository';
 import { collectionRepository } from '@/server/repositories/collection.repository';
+import { getCatalogSnapshot } from '@/server/services/catalog-nav.service';
+import { CATEGORY_HUB_PATH } from '@/config/catalog-seo.config';
 import { blogRepository } from '@/server/repositories/blog.repository';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -91,6 +93,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('[Sitemap] Error fetching collections:', err);
   }
 
+  // Pages for admin-created categories (categories with a built-in landing page are already listed above)
+  let categoryRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const { categories } = await getCatalogSnapshot();
+    categoryRoutes = categories
+      .filter((c) => !CATEGORY_HUB_PATH[c.slug])
+      .map((c) => ({ url: `${baseUrl}/category/${c.slug}`, changeFrequency: 'weekly', priority: 0.7 }));
+  } catch (err) {
+    console.error('[Sitemap] Error fetching categories:', err);
+  }
+
   // Dynamic blog posts
   let blogRoutes: MetadataRoute.Sitemap = [];
   try {
@@ -115,6 +128,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...occasionRoutes,
     ...bagsRoutes,
     ...collectionRoutes,
+    ...categoryRoutes,
     ...productRoutes,
     ...blogRoutes,
   ];

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { collections } from '@/config/navigation.config';
 import { siteConfig } from '@/config/site.config';
+import { getCatalogSnapshot } from '@/server/services/catalog-nav.service';
 
 export const metadata: Metadata = {
   title: 'Curated Designer Collections & Edits',
@@ -43,7 +44,27 @@ const COLLECTION_GRADIENTS: Record<string, string> = {
   'occasion-lehengas': 'from-[#1A100E] via-[#301A14] to-[#C49A5A]',
 };
 
-export default function CollectionsPage() {
+interface CollectionCard {
+  label: string;
+  href: string;
+  slug: string;
+  image?: string;
+}
+
+export default async function CollectionsPage() {
+  // The built-in collections first, then any active collection from the admin that is not already listed.
+  const { collections: stored } = await getCatalogSnapshot();
+  const builtIn: CollectionCard[] = collections.map((col) => ({
+    label: col.label,
+    href: col.href,
+    slug: col.href.replace('/collections/', ''),
+  }));
+  const known = new Set(builtIn.map((c) => c.slug));
+  const added: CollectionCard[] = stored
+    .filter((c) => !known.has(c.slug))
+    .map((c) => ({ label: c.name, href: `/collections/${c.slug}`, slug: c.slug, image: c.image || undefined }));
+  const items = [...builtIn, ...added];
+
   return (
     <div className="min-h-dvh bg-[#FAF7F2]">
       {/* Page header */}
@@ -60,9 +81,9 @@ export default function CollectionsPage() {
       {/* Collections grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {collections.map((col) => {
-            const slug = col.href.replace('/collections/', '');
-            const imgSrc = COLLECTION_IMAGES[slug];
+          {items.map((col) => {
+            const slug = col.slug;
+            const imgSrc = col.image ?? COLLECTION_IMAGES[slug];
             const gradient = COLLECTION_GRADIENTS[slug] ?? 'from-[#1A1A1A] via-[#2A2A2A] to-[#C49A5A]';
             return (
               <Link

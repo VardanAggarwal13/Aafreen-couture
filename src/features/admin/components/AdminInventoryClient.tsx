@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, Minus, Save, Search } from 'lucide-react';
+import { Eye, Plus, Minus, Save, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatPrice } from '@/utils/format';
 import { AdminPagination } from '@/features/admin/components/AdminPagination';
+import { InventoryProductModal, type InventoryProduct } from '@/features/admin/components/InventoryProductModal';
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
@@ -13,6 +14,7 @@ export interface InventoryItem {
   id: string;
   productId: string;
   name: string;
+  category: string;
   sku: string;
   size: string;
   color: string;
@@ -21,12 +23,19 @@ export interface InventoryItem {
   isActive: boolean;
 }
 
-export function AdminInventoryClient({ initialItems }: { initialItems: InventoryItem[] }) {
+interface Props {
+  initialItems: InventoryItem[];
+  /** Product-level details (pictures, description, ...) for the view modal, keyed by product id. */
+  products: Record<string, InventoryProduct>;
+}
+
+export function AdminInventoryClient({ initialItems, products }: Props) {
   const router = useRouter();
   const [items, setItems] = useState<InventoryItem[]>(initialItems);
   const [dirtyIds, setDirtyIds] = useState<Set<string>>(new Set());
   const [filter, setFilter] = useState<'all' | 'low' | 'out'>('all');
   const [search, setSearch] = useState('');
+  const [viewing, setViewing] = useState<InventoryItem | null>(null);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [saving, setSaving] = useState(false);
@@ -79,7 +88,8 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
   }
 
   const filtered = items.filter((item) => {
-    if (search && !item.name.toLowerCase().includes(search.toLowerCase()) && !item.sku.toLowerCase().includes(search.toLowerCase())) {
+    const q = search.toLowerCase();
+    if (search && !item.name.toLowerCase().includes(q) && !item.sku.toLowerCase().includes(q) && !item.category.toLowerCase().includes(q)) {
       return false;
     }
     if (filter === 'low') return item.stock > 0 && item.stock <= 5;
@@ -118,7 +128,7 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
             <Search size="0.875rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
             <input
               type="text"
-              placeholder="Search SKU or product..."
+              placeholder="Search SKU, product or category..."
               value={search}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="bg-white border border-[#DDD2C5] pl-9 pr-3.5 py-2 text-xs text-[#2E221C] rounded-lg outline-none focus:border-[#C9A86A] focus:ring-1 focus:ring-[#C9A86A] transition-colors w-48 sm:w-64"
@@ -155,9 +165,9 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-[#FAF7F2] border-b border-[#DDD2C5]">
-                {['Product Name', 'SKU', 'Variant', 'Price', 'Stock Level', 'Adjust Stock', 'Status'].map((h) => (
-                  <th key={h} className="text-left px-5 py-2 text-[0.625rem] font-semibold text-[#8A6A55] uppercase tracking-wider">
-                    {h}
+                {['', 'Product Name', 'Category', 'SKU', 'Variant', 'Price', 'Stock Level', 'Adjust Stock', 'Status'].map((h, i) => (
+                  <th key={h || `col-${i}`} className={`text-left py-2 text-[0.625rem] font-semibold text-[#8A6A55] uppercase tracking-wider ${i === 0 ? 'pl-4 pr-1' : 'px-5'}`}>
+                    {h || <span className="sr-only">View</span>}
                   </th>
                 ))}
               </tr>
@@ -165,8 +175,25 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
             <tbody className="divide-y divide-[#EAE2D7]">
               {paged.map((item) => (
                 <tr key={item.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
+                  <td className="pl-4 pr-1 py-2.5">
+                    <button
+                      type="button"
+                      onClick={() => setViewing(item)}
+                      disabled={!products[item.productId]}
+                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#DDD2C5] bg-[#FAF7F2] text-[#6B4F3A] transition-colors hover:border-[#C9A86A] hover:text-[#2E221C] disabled:cursor-not-allowed disabled:opacity-40"
+                      title="View product details"
+                      aria-label={`View details of ${item.name}${item.size ? ` (${item.size})` : ''}`}
+                    >
+                      <Eye size="0.9375rem" />
+                    </button>
+                  </td>
                   <td className="px-5 py-2.5 font-sans font-medium text-[#2E221C] text-sm max-w-[15rem] truncate">
                     {item.name}
+                  </td>
+                  <td className="px-5 py-2.5">
+                    <span className="inline-block max-w-[10rem] truncate rounded-full border border-[#DDD2C5] bg-[#FAF7F2] px-2.5 py-0.5 text-[0.6875rem] font-medium text-[#6B4F3A]" title={item.category}>
+                      {item.category}
+                    </span>
                   </td>
                   <td className="px-5 py-2.5 font-mono text-[#8A6A55] text-xs">
                     {item.sku}
@@ -224,7 +251,7 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-5 py-12 text-center text-[#8A6A55]">
+                  <td colSpan={9} className="px-5 py-12 text-center text-[#8A6A55]">
                     No matching inventory records found.
                   </td>
                 </tr>
@@ -241,6 +268,15 @@ export function AdminInventoryClient({ initialItems }: { initialItems: Inventory
           onPageSizeChange={handlePageSizeChange}
         />
       </div>
+
+      {viewing && products[viewing.productId] && (
+        <InventoryProductModal
+          product={products[viewing.productId]!}
+          variants={items.filter((i) => i.productId === viewing.productId)}
+          activeVariantId={viewing.id}
+          onClose={() => setViewing(null)}
+        />
+      )}
     </div>
   );
 }

@@ -3,10 +3,14 @@
 import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Plus, Trash2, Edit2, ExternalLink, Search } from 'lucide-react';
+import { Plus, Trash2, Edit2, ExternalLink, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatPrice } from '@/utils/format';
 import { ROUTES } from '@/constants/routes';
+import { InventoryProductModal, type InventoryProduct } from '@/features/admin/components/InventoryProductModal';
+import { AdminPagination } from '@/features/admin/components/AdminPagination';
+import { AdminUrlSearch, AdminUrlSelect } from '@/features/admin/components/AdminUrlFilters';
+import { ADMIN_PAGE_SIZES, pageHref } from '@/features/admin/lib/pagination';
 
 interface ProductItem {
   _id: string;
@@ -16,7 +20,18 @@ interface ProductItem {
   basePrice: number;
   isActive: boolean;
   isFeatured?: boolean;
-  variants?: Array<{ stock: number }>;
+  isNewArrival?: boolean;
+  isBestSeller?: boolean;
+  comparePrice?: number;
+  images?: string[];
+  description?: string;
+  shortDescription?: string;
+  fabric?: string;
+  workType?: string;
+  occasion?: string[] | string;
+  tags?: string[];
+  soldCount?: number;
+  variants?: Array<{ stock: number; sku?: string; size?: string; color?: string; price?: number; images?: string[] }>;
 }
 
 interface CategoryItem {
@@ -26,8 +41,17 @@ interface CategoryItem {
 }
 
 interface Props {
+  /** Only the products of the current page, already filtered and ordered by the server. */
   initialProducts: ProductItem[];
   categories: CategoryItem[];
+  /** Products matching the current search/filters (all pages), and in the whole catalogue. */
+  total: number;
+  overallTotal: number;
+  page: number;
+  limit: number;
+  query: string;
+  categorySlug: string;
+  status: string;
 }
 
 function getCategorySlug(category: ProductItem['category']): string {
@@ -35,17 +59,41 @@ function getCategorySlug(category: ProductItem['category']): string {
   return category || 'uncategorized';
 }
 
+/** Everything the view modal shows, taken from the product row already loaded on this page. */
+function toModalProduct(p: ProductItem): InventoryProduct {
+  const own = (p.images ?? []).filter(Boolean);
+  const fromVariants = (p.variants ?? []).flatMap((v) => (v.images ?? []).slice(0, 1)).filter(Boolean);
+  return {
+    id: String(p._id),
+    slug: p.slug,
+    name: p.name,
+    category: getCategoryName(p.category),
+    images: own.length > 0 ? own : fromVariants,
+    shortDescription: p.shortDescription ?? '',
+    description: p.description ?? '',
+    fabric: p.fabric ?? '',
+    workType: p.workType ?? '',
+    occasions: Array.isArray(p.occasion) ? p.occasion : p.occasion ? [p.occasion] : [],
+    tags: p.tags ?? [],
+    badges: [p.isFeatured && 'Featured', p.isNewArrival && 'New arrival', p.isBestSeller && 'Best seller'].filter(Boolean) as string[],
+    soldCount: p.soldCount ?? 0,
+    basePrice: p.basePrice ?? 0,
+    comparePrice: p.comparePrice ?? 0,
+    isActive: p.isActive,
+  };
+}
+
 function getCategoryName(category: ProductItem['category']): string {
   if (typeof category === 'object' && category) return category.name ?? 'Uncategorized';
   return typeof category === 'string' && category ? category : 'Uncategorized';
 }
 
-export function AdminProductsClient({ initialProducts, categories }: Props) {
+export function AdminProductsClient({ initialProducts, categories, total, overallTotal, page, limit, query, categorySlug, status }: Props) {
   const router = useRouter();
   const [products, setProducts] = useState<ProductItem[]>(initialProducts);
-  const [search, setSearch] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+  const listParams = { q: query, category: categorySlug, status, limit: limit === 20 ? undefined : limit };
+  const [viewing, setViewing] = useState<ProductItem | null>(null);
 
   // Keep state in sync whenever server delivers updated initialProducts
   useEffect(() => {
@@ -98,30 +146,18 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
     }
   }
 
-  const filtered = products.filter((p) => {
-    if (search) {
-      const s = search.toLowerCase();
-      const match = p.name.toLowerCase().includes(s) || p.slug.toLowerCase().includes(s);
-      if (!match) return false;
-    }
-    if (statusFilter === 'active' && !p.isActive) return false;
-    if (statusFilter === 'inactive' && p.isActive) return false;
-    if (categoryFilter && getCategorySlug(p.category) !== categoryFilter) return false;
-    return true;
-  });
-
   // Group filtered products by category so the catalog is browsable
   // category-wise instead of one long undifferentiated list.
   const groups = useMemo(() => {
     const map = new Map<string, { slug: string; name: string; items: ProductItem[] }>();
-    for (const p of filtered) {
+    for (const p of products) {
       const slug = getCategorySlug(p.category);
       const name = getCategoryName(p.category);
       if (!map.has(slug)) map.set(slug, { slug, name, items: [] });
       map.get(slug)!.items.push(p);
     }
     return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
-  }, [filtered]);
+  }, [products]);
 
   const sortedCategories = useMemo(
     () => [...categories].sort((a, b) => a.name.localeCompare(b.name)),
@@ -137,7 +173,7 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
             Products &amp; Ensembles Catalog
           </h1>
           <p className="text-xs text-[#8A6A55] mt-1 font-sans">
-            {products.length} couture garments and accessories across {sortedCategories.length} categories.
+            {overallTotal} couture garments and accessories across {sortedCategories.length} categories.
           </p>
         </div>
         <Link
@@ -150,43 +186,35 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
 
       {/* Search & Filters */}
       <div className="flex flex-wrap items-center gap-3 bg-white p-3.5 rounded-lg border border-[#DDD2C5]/80 shadow-xs">
-        <div className="relative flex-1 min-w-[13.75rem]">
-          <Search size="0.875rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A6A55]" />
-          <input
-            type="text"
-            placeholder="Search by ensemble name or slug…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#FAF7F2] border border-[#DDD2C5] rounded-lg pl-8 pr-3 py-2 text-xs text-[#2E221C] placeholder:text-[#8A6A55]/60 outline-none focus:border-[#C9A86A] transition-colors"
-          />
-        </div>
+        <AdminUrlSearch
+          placeholder="Search by ensemble name or slug…"
+          initialValue={query}
+          className="flex-1 min-w-[13.75rem]"
+        />
 
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className="bg-[#FAF7F2] border border-[#DDD2C5] rounded-lg px-3 py-2 text-xs text-[#2E221C] outline-none focus:border-[#C9A86A]"
-        >
-          <option value="">All Categories</option>
-          {sortedCategories.map((c) => (
-            <option key={c._id} value={c.slug}>{c.name}</option>
-          ))}
-        </select>
+        <AdminUrlSelect
+          param="category"
+          value={categorySlug}
+          ariaLabel="Filter by category"
+          options={[{ value: '', label: 'All Categories' }, ...sortedCategories.map((c) => ({ value: c.slug, label: c.name }))]}
+        />
 
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="bg-[#FAF7F2] border border-[#DDD2C5] rounded-lg px-3 py-2 text-xs text-[#2E221C] outline-none focus:border-[#C9A86A]"
-        >
-          <option value="">All Visibility</option>
-          <option value="active">Active in Store</option>
-          <option value="inactive">Hidden / Draft</option>
-        </select>
+        <AdminUrlSelect
+          param="status"
+          value={status}
+          ariaLabel="Filter by visibility"
+          options={[
+            { value: '', label: 'All Visibility' },
+            { value: 'active', label: 'Active in Store' },
+            { value: 'inactive', label: 'Hidden / Draft' },
+          ]}
+        />
       </div>
 
       {/* Catalog grouped by category */}
       {groups.length === 0 ? (
         <div className="bg-white rounded-xl shadow-sm px-3.5 py-12 text-center text-[#8A6A55] text-xs">
-          No garments found matching filters.{' '}
+          {query || categorySlug || status ? 'No garments match these filters.' : 'No garments yet.'}{' '}
           <Link href={ROUTES.ADMIN_PRODUCT_NEW} className="text-[#9E7B3A] font-semibold hover:underline">
             Add a product →
           </Link>
@@ -220,8 +248,16 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
                       return (
                         <tr key={String(product._id)} className="hover:bg-[#FAF7F2]/60 transition-colors">
                           <td className="px-3.5 py-2.5 max-w-[17.5rem]">
-                            <p className="font-semibold text-[#2E221C] truncate text-sm">{product.name}</p>
-                            <p className="text-[#8A6A55] text-[0.65625rem] font-mono mt-0.5 truncate">{product.slug}</p>
+                            {/* The name opens the details too, so it works on small screens where the Actions column is off to the side. */}
+                            <button
+                              type="button"
+                              onClick={() => setViewing(product)}
+                              className="block w-full cursor-pointer text-left"
+                              aria-label={`Open details of ${product.name}`}
+                            >
+                              <span className="block font-semibold text-[#2E221C] truncate text-sm hover:text-[#9E7B3A] transition-colors">{product.name}</span>
+                              <span className="block text-[#8A6A55] text-[0.65625rem] font-mono mt-0.5 truncate">{product.slug}</span>
+                            </button>
                           </td>
                           <td className="px-3.5 py-2.5 text-[#2E221C] font-semibold">
                             {formatPrice(product.basePrice)}
@@ -253,6 +289,15 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
                           </td>
                           <td className="px-3.5 py-2.5 text-right">
                             <div className="flex items-center justify-end gap-3">
+                              <button
+                                type="button"
+                                onClick={() => setViewing(product)}
+                                className="p-1.5 text-[#8A6A55] hover:text-[#2E221C] hover:bg-[#FAF7F2] rounded-lg transition-colors cursor-pointer"
+                                title="View Ensemble"
+                                aria-label={`View details of ${product.name}`}
+                              >
+                                <Eye size="0.875rem" />
+                              </button>
                               <Link
                                 href={ROUTES.ADMIN_PRODUCT(String(product._id))}
                                 className="p-1.5 text-[#8A6A55] hover:text-[#9E7B3A] hover:bg-[#FAF7F2] rounded-lg transition-colors"
@@ -286,6 +331,33 @@ export function AdminProductsClient({ initialProducts, categories }: Props) {
             </div>
           ))}
         </div>
+      )}
+
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          totalItems={total}
+          hrefForPage={(p) => pageHref('/admin/products', listParams, p)}
+          pageSize={limit}
+          pageSizeOptions={ADMIN_PAGE_SIZES}
+        />
+      </div>
+
+      {viewing && (
+        <InventoryProductModal
+          product={toModalProduct(viewing)}
+          variants={(viewing.variants ?? []).map((v, i) => ({
+            id: `${viewing._id}-${i}`,
+            sku: v.sku ?? '',
+            size: v.size ?? '',
+            color: v.color ?? '',
+            stock: v.stock ?? 0,
+            price: v.price ?? viewing.basePrice,
+          }))}
+          activeVariantId=""
+          onClose={() => setViewing(null)}
+        />
       )}
     </div>
   );

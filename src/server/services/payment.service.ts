@@ -3,6 +3,7 @@ import { razorpay } from '@/lib/razorpay';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { productRepository } from '@/server/repositories/product.repository';
 import { emailService } from '@/server/services/email.service';
+import { notificationService } from '@/server/services/notification.service';
 import { BusinessError, NotFoundError, ValidationError } from '@/lib/api-errors';
 import type { IOrder } from '@/models/Order';
 
@@ -151,6 +152,10 @@ export class PaymentService {
     // Real-time email notification to customer & admin
     emailService.sendOrderConfirmation(updated).catch((emailErr) => {
       console.error('[PaymentService] Error dispatching confirmation email:', emailErr);
+    });
+    await notificationService.notifyOrder(orderId, 'order_placed', {
+      orderNumber: updated.orderNumber,
+      paymentMethod: 'razorpay',
     });
 
     return updated;

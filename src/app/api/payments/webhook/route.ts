@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { paymentService } from '@/server/services/payment.service';
 import { orderRepository } from '@/server/repositories/order.repository';
 import { emailService } from '@/server/services/email.service';
+import { notificationService } from '@/server/services/notification.service';
 import { handleApiError } from '@/lib/api-errors';
 
 // Must use raw body for Razorpay signature verification
@@ -69,6 +70,10 @@ export async function POST(request: NextRequest) {
           emailService.sendPaymentFailedNotification(order, payment.error_description).catch((err) =>
             console.warn('[Webhook] Failed to send payment failed notice:', err)
           );
+          await notificationService.notifyOrder(order._id.toString(), 'payment_failed', {
+            orderNumber: order.orderNumber,
+            detail: payment.error_description,
+          });
           console.log(`[Webhook] Order ${order.orderNumber} marked as payment failed`);
         }
       }

@@ -22,7 +22,7 @@ export function AdminPageSizeSelect({ pageSize, pageSizeOptions, onPageSizeChang
     }
     const params = new URLSearchParams(searchParams.toString());
     params.set('limit', String(size));
-    params.set('page', '1');
+    params.delete('page'); // page 1 is the default, so the URL stays clean
     router.push(`${pathname}?${params.toString()}`);
   }
 

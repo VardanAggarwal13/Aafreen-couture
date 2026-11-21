@@ -1,17 +1,40 @@
-import { User, ShieldCheck } from 'lucide-react';
+import { redirect } from 'next/navigation';
+import { User, ShieldCheck, Clock } from 'lucide-react';
 import { auditLogRepository } from '@/server/repositories/audit-log.repository';
+import { AUDIT_LOG_RETENTION_DAYS } from '@/constants/audit.constants';
+import { AdminPagination } from '@/features/admin/components/AdminPagination';
+import { ADMIN_PAGE_SIZES, pageHref, readPageParams } from '@/features/admin/lib/pagination';
 
 export const metadata = { title: 'Audit Logs | Admin' };
 
-export default async function AdminAuditLogsPage() {
-  const logs = await auditLogRepository.findRecent(200);
+interface Props {
+  searchParams: Promise<{ page?: string; limit?: string }>;
+}
+
+export default async function AdminAuditLogsPage({ searchParams }: Props) {
+  const { page, limit } = readPageParams(await searchParams, 20);
+  const [logs, total] = await Promise.all([
+    auditLogRepository.findPage(page, limit),
+    auditLogRepository.countRecent(),
+  ]);
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+  // A page number past the end (an old bookmark, or records expired meanwhile) goes to the last page.
+  if (page > totalPages) redirect(pageHref('/admin/audit-logs', { limit: limit === 20 ? undefined : limit }, totalPages));
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-serif text-[#2E221C] tracking-tight">Security & Audit Records</h1>
-          <p className="text-sm text-[#8A6A55] mt-1 font-sans">Immutable register of administrative updates, role promotions, and security events</p>
+          <p className="text-sm text-[#8A6A55] mt-1 font-sans">Register of administrative updates, role promotions, and security events</p>
         </div>
+      </div>
+
+      <div className="flex items-start gap-2.5 rounded-xl border border-[#E8D4BE] bg-[#FAF5EE] px-4 py-3 text-xs text-[#6B5A4E]">
+        <Clock size="0.9375rem" className="mt-0.5 shrink-0 text-[#C9A86A]" />
+        <p>
+          Records are kept for <strong className="text-[#2E221C]">{AUDIT_LOG_RETENTION_DAYS} days</strong> and then deleted automatically from the
+          database to keep it lean. {total} record{total === 1 ? '' : 's'} in the last {AUDIT_LOG_RETENTION_DAYS} days.
+        </p>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -55,13 +78,21 @@ export default async function AdminAuditLogsPage() {
               {logs.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-5 py-12 text-center text-[#8A6A55]">
-                    No administrative actions recorded yet.
+                    No administrative actions recorded in the last {AUDIT_LOG_RETENTION_DAYS} days.
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          totalItems={total}
+          hrefForPage={(p) => pageHref('/admin/audit-logs', { limit: limit === 20 ? undefined : limit }, p)}
+          pageSize={limit}
+          pageSizeOptions={ADMIN_PAGE_SIZES}
+        />
       </div>
     </div>
   );

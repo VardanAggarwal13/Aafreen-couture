@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  if (!collection) return { title: 'Collection Not Found' };
+  if (!collection) notFound(); // a real 404 status, not a 200 page that says "not found"
   const rawTitle = collection.seoTitle ?? collection.name;
   const cleanTitle = rawTitle.replace(/\s*\|\s*Aafreen Couture.*/i, '').trim();
   const rawDesc = collection.seoDescription ?? collection.description ?? '';

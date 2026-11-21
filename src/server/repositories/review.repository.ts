@@ -46,6 +46,20 @@ function userMatch(userId: string): Record<string, unknown>[] {
   return conditions;
 }
 
+function toAdminItem(r: IReview & { product: { name?: string } | null }): AdminReviewItem {
+  return {
+    _id: String(r._id),
+    productName: r.product?.name ?? 'Unknown Product',
+    authorName: r.authorName ?? 'Anonymous',
+    rating: r.rating,
+    title: r.title,
+    body: r.body,
+    isApproved: r.isApproved,
+    isVerifiedPurchase: r.isVerifiedPurchase,
+    createdAt: (r as unknown as { createdAt: Date }).createdAt?.toISOString?.() ?? '',
+  };
+}
+
 export class ReviewRepository {
   async findApprovedByProduct(productId: string, limit = 20): Promise<PublicReview[]> {
     await connectDB();
@@ -117,6 +131,33 @@ export class ReviewRepository {
     // New reviews wait for admin approval before they are public or count toward the rating.
     return Review.create({ ...data, isVerifiedPurchase: true, isApproved: false });
   }
+  /**
+   * One page of reviews for the admin list, optionally only pending or approved ones, plus the counts
+   * shown on the filter tabs. The filter is part of the database query (not applied afterwards), so
+   * every page really holds that many matching reviews.
+   */
+  async findPageForAdmin(options: {
+    status: 'all' | 'pending' | 'approved';
+    page: number;
+    limit: number;
+  }): Promise<{ items: AdminReviewItem[]; total: number; counts: { all: number; pending: number; approved: number } }> {
+    await connectDB();
+    const filter = options.status === 'pending' ? { isApproved: false } : options.status === 'approved' ? { isApproved: true } : {};
+    const [reviews, approved, all] = await Promise.all([
+      Review.find(filter)
+        .sort({ createdAt: -1 })
+        .skip((options.page - 1) * options.limit)
+        .limit(options.limit)
+        .populate('product', 'name')
+        .lean<(IReview & { product: { name?: string } | null })[]>(),
+      Review.countDocuments({ isApproved: true }),
+      Review.countDocuments({}),
+    ]);
+    const counts = { all, approved, pending: all - approved };
+    const total = options.status === 'pending' ? counts.pending : options.status === 'approved' ? counts.approved : all;
+    return { items: reviews.map(toAdminItem), total, counts };
+  }
+
   async findAllForAdmin(): Promise<AdminReviewItem[]> {
     await connectDB();
     const reviews = await Review.find({})
@@ -125,17 +166,7 @@ export class ReviewRepository {
       .populate('product', 'name')
       .lean<(IReview & { product: { name?: string } | null })[]>();
 
-    return reviews.map((r) => ({
-      _id: String(r._id),
-      productName: r.product?.name ?? 'Unknown Product',
-      authorName: r.authorName ?? 'Anonymous',
-      rating: r.rating,
-      title: r.title,
-      body: r.body,
-      isApproved: r.isApproved,
-      isVerifiedPurchase: r.isVerifiedPurchase,
-      createdAt: (r as unknown as { createdAt: Date }).createdAt?.toISOString?.() ?? '',
-    }));
+    return reviews.map(toAdminItem);
   }
 
   async findById(id: string): Promise<IReview | null> {

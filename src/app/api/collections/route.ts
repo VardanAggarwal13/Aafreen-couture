@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { CATALOG_NAV_TAG } from '@/server/services/catalog-nav.service';
 import { collectionRepository } from '@/server/repositories/collection.repository';
 import { handleApiError } from '@/lib/api-errors';
 import { requireAdmin } from '@/server/auth';
@@ -43,7 +44,9 @@ export async function POST(req: NextRequest) {
     logAdminAction(session, req, 'COLLECTION_CREATE', `Created collection "${created.name}"`);
 
     try {
+      revalidateTag(CATALOG_NAV_TAG);
       revalidatePath('/', 'layout');
+      revalidatePath('/collections');
       revalidatePath('/admin/collections');
       revalidatePath('/collections');
       revalidatePath('/shop');

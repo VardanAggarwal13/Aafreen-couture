@@ -17,7 +17,12 @@ import { useSession, authClient } from '@/lib/auth-client';
 import { api } from '@/utils/api';
 const SearchOverlay = dynamic(() => import('@/components/common/SearchOverlay').then((m) => m.SearchOverlay), { ssr: false });
 
-export function Navbar() {
+interface NavbarProps {
+  /** Menu entries for admin-created categories (built on the server from the database). */
+  extraNavLinks?: NavLink[];
+}
+
+export function Navbar({ extraNavLinks = [] }: NavbarProps) {
   const pathname = usePathname();
 
   // Authentication & admin routes use their own dedicated minimal layouts
@@ -36,10 +41,11 @@ export function Navbar() {
     return null;
   }
 
-  return <StorefrontNavbar />;
+  return <StorefrontNavbar extraNavLinks={extraNavLinks} />;
 }
 
-function StorefrontNavbar() {
+function StorefrontNavbar({ extraNavLinks }: { extraNavLinks: NavLink[] }) {
+  const allNavLinks = extraNavLinks.length > 0 ? [...navLinks, ...extraNavLinks] : navLinks;
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -136,7 +142,7 @@ function StorefrontNavbar() {
 
             {/* Center section: Desktop nav links, horizontally centered */}
             <nav className="hidden lg:flex items-center justify-center gap-0.5 xl:gap-2">
-              {navLinks.map((link) => (
+              {allNavLinks.map((link) => (
                 <NavItem
                   key={link.href}
                   link={link}
@@ -367,7 +373,7 @@ function StorefrontNavbar() {
               </div>
 
               <nav className="flex-1 overflow-y-auto">
-                {navLinks.map((link) => (
+                {allNavLinks.map((link) => (
                   <div key={link.href} className="border-b border-border/60">
                     {link.megaMenu ? (
                       <>

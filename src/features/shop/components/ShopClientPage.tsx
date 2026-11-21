@@ -79,7 +79,16 @@ const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 const FABRIC_OPTIONS = ['Silk', 'Organza', 'Velvet', 'Georgette', 'Chiffon', 'Crepe'];
 
-export function ShopClientPage({ initialData }: { initialData?: PaginatedResponse<IProduct> }) {
+interface ShopClientPageProps {
+  initialData?: PaginatedResponse<IProduct>;
+  /** Admin-created categories (from the database) to list after the built-in filters. */
+  extraCategoryFilters?: { label: string; slug: string }[];
+}
+
+export function ShopClientPage({ initialData, extraCategoryFilters = [] }: ShopClientPageProps) {
+  const categoryFilters = extraCategoryFilters.length > 0
+    ? [...CATEGORY_FILTERS, ...extraCategoryFilters.filter((e) => !CATEGORY_FILTERS.some((c) => c.slug === e.slug))]
+    : CATEGORY_FILTERS;
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
@@ -149,8 +158,8 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
   const products = data?.data ?? [];
   const pagination = data?.pagination;
 
-  const activeCatObj = CATEGORY_FILTERS.find((c) => c.slug === category);
-  const activeOccObj = CATEGORY_FILTERS.find((c) => c.slug === occasion);
+  const activeCatObj = categoryFilters.find((c) => c.slug === category);
+  const activeOccObj = categoryFilters.find((c) => c.slug === occasion);
   const isNewArrivals = sort === 'newest' && !category && !occasion;
   const pageTitle = isNewArrivals
     ? 'New Arrivals'
@@ -310,7 +319,7 @@ export function ShopClientPage({ initialData }: { initialData?: PaginatedRespons
                 Category
               </h3>
               <div className="space-y-1.5">
-                {CATEGORY_FILTERS.map((cat) => {
+                {categoryFilters.map((cat) => {
                   const isOccasion = ['reception', 'engagement', 'wedding-guest', 'mehendi', 'haldi', 'sangeet', 'jago'].includes(cat.slug);
                   const isSelected = isOccasion ? occasion === cat.slug : category === cat.slug;
                   return (

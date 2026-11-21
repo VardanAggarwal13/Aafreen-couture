@@ -43,7 +43,7 @@ export async function CustomerReviews({ fallback = null }: { fallback?: React.Re
                   <BadgeCheck size="0.8125rem" /> Verified purchase
                 </span>
                 <Link
-                  href={`/product/${review.productSlug}#reviews`}
+                  href={`/product/${review.productSlug}`}
                   className="block mt-1 text-gold hover:text-heading transition-colors"
                 >
                   {review.productName}

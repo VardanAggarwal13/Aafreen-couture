@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { ShopClientPage } from '@/features/shop/components/ShopClientPage';
 import { siteConfig } from '@/config/site.config';
 import { productService } from '@/server/services/product.service';
+import { getShopExtraFilters } from '@/server/services/catalog-nav.service';
 import { ProductCard } from '@/components/product/ProductCard';
 import { buildItemListJsonLd, jsonLdString } from '@/utils/seo';
 import type { IProduct } from '@/types';
@@ -62,9 +63,11 @@ export default async function ShopPage() {
     console.error('[ShopPage] initial fetch failed:', err);
   }
 
+  const extraCategoryFilters = await getShopExtraFilters();
+
   return (
     <Suspense fallback={<ShopFallback products={initialData?.data ?? []} />}>
-      <ShopClientPage initialData={initialData} />
+      <ShopClientPage initialData={initialData} extraCategoryFilters={extraCategoryFilters} />
     </Suspense>
   );
 }

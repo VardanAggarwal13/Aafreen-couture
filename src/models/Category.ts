@@ -7,6 +7,8 @@ export interface ICategory extends Document {
   image?: string;
   parent?: mongoose.Types.ObjectId;
   isActive: boolean;
+  /** Show this category in the site menu and the shop's category filter (in addition to its own page). */
+  showInMenu?: boolean;
   sortOrder: number;
   seoTitle?: string;
   seoDescription?: string;
@@ -22,6 +24,8 @@ const CategorySchema = new Schema<ICategory>(
     image: { type: String },
     parent: { type: Schema.Types.ObjectId, ref: 'Category', default: null },
     isActive: { type: Boolean, default: true },
+    // Existing categories keep their current menu layout; the admin form turns this on for new ones.
+    showInMenu: { type: Boolean, default: false },
     sortOrder: { type: Number, default: 0 },
     seoTitle: { type: String },
     seoDescription: { type: String },

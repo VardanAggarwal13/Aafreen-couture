@@ -11,6 +11,8 @@ interface AdminPaginationProps {
   hrefForPage?: (page: number) => string;
   /** Optional "items per page" control. */
   pageSize?: number;
+  /** Total number of items across all pages; enables the "Showing 21–40 of 134" text. */
+  totalItems?: number;
   pageSizeOptions?: number[];
   /** Client mode: called with the new page size. */
   onPageSizeChange?: (size: number) => void;
@@ -31,10 +33,12 @@ export function AdminPagination({
   onPageChange,
   hrefForPage,
   pageSize,
+  totalItems,
   pageSizeOptions,
   onPageSizeChange,
 }: AdminPaginationProps) {
   const showPageSize = pageSize !== undefined && pageSizeOptions && pageSizeOptions.length > 0;
+  if (totalItems === 0) return null; // nothing to page through
   if (totalPages <= 1 && !showPageSize) return null;
 
   const pages = pageWindow(page, totalPages);
@@ -91,7 +95,9 @@ export function AdminPagination({
     <nav className="flex items-center justify-between gap-3 px-3.5 py-2.5 border-t border-[#DDD2C5] flex-wrap" aria-label="Pagination">
       <div className="flex items-center gap-3">
         <p className="text-[0.6875rem] text-[#8A6A55] font-sans">
-          Page {page} of {totalPages}
+          {totalItems !== undefined && pageSize !== undefined
+            ? `Showing ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, totalItems)} of ${totalItems}`
+            : `Page ${page} of ${totalPages}`}
         </p>
         {showPageSize && (
           <label className="flex items-center gap-1.5 text-[0.6875rem] text-[#8A6A55] font-sans">

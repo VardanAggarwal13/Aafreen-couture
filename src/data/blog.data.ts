@@ -11,6 +11,9 @@ export interface IBlogPost {
   publishedAt: string;
 }
 
+/** Shown as the author of every article on the public blog. */
+export const BLOG_AUTHOR = 'Team Aafreencouture';
+
 export const BLOG_POSTS: IBlogPost[] = [
   {
     slug: 'choosing-the-perfect-bridal-lehenga',

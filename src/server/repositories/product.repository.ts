@@ -560,6 +560,74 @@ export class ProductRepository {
     return result.matchedCount > 0;
   }
 
+  /**
+   * One page of products for the admin catalogue (active and hidden ones), optionally filtered by a
+   * name/slug search, a category and a visibility status. Everything happens inside MongoDB: the
+   * filter runs first, then the category name is joined in so the list can be ordered category by
+   * category (then by name), and only then is the single page cut out.
+   */
+  async findAdminPage(options: {
+    q?: string;
+    categorySlug?: string;
+    status?: 'active' | 'inactive' | '';
+    page: number;
+    limit: number;
+  }): Promise<{ items: IProduct[]; total: number }> {
+    await connectDB();
+    const match: Record<string, unknown> = {};
+    if (options.status === 'active') match.isActive = true;
+    else if (options.status === 'inactive') match.isActive = false;
+    if (options.q) {
+      const pattern = new RegExp(escapeRegex(options.q.slice(0, 100)), 'i');
+      match.$or = [{ name: pattern }, { slug: pattern }];
+    }
+    if (options.categorySlug) {
+      const category = await Category.findOne({ slug: options.categorySlug }).select('_id').lean<{ _id: mongoose.Types.ObjectId }>();
+      if (!category) return { items: [], total: 0 };
+      match.category = category._id;
+    }
+
+    const [items, total] = await Promise.all([
+      Product.aggregate([
+        { $match: match },
+        {
+          $lookup: {
+            from: Category.collection.name,
+            localField: 'category',
+            foreignField: '_id',
+            pipeline: [{ $project: { name: 1, slug: 1 } }],
+            as: 'categoryDoc',
+          },
+        },
+        {
+          $addFields: {
+            category: { $ifNull: [{ $arrayElemAt: ['$categoryDoc', 0] }, null] },
+            categorySortName: { $toLower: { $ifNull: [{ $arrayElemAt: ['$categoryDoc.name', 0] }, '~'] } },
+          },
+        },
+        { $sort: { categorySortName: 1, name: 1, _id: 1 } },
+        { $skip: (options.page - 1) * options.limit },
+        { $limit: options.limit },
+        { $project: { categoryDoc: 0, categorySortName: 0 } },
+      ]),
+      Product.countDocuments(match),
+    ]);
+    return { items: items as unknown as IProduct[], total };
+  }
+
+  /** Number of products in the catalogue (active and hidden), for the admin header. */
+  async countAll(): Promise<number> {
+    await connectDB();
+    return Product.estimatedDocumentCount();
+  }
+
+  /** Slugs of every published product (used to pre-build product pages). */
+  async findAllActiveSlugs(): Promise<string[]> {
+    await connectDB();
+    const docs = await Product.find({ isActive: true }).select('slug').lean<{ slug: string }[]>();
+    return docs.map((d) => d.slug).filter(Boolean);
+  }
+
   /** Sets many variants' stock in one round trip. Returns the SKUs that matched no product. */
   async updateVariantStockBulk(
     updates: { productId: string; sku: string; stock: number }[]
